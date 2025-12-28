@@ -118,16 +118,17 @@
                 </div>
             </div>
 
-            <!-- Visual: Video Demo (LIMPIO, SIN MARCO DE TELÉFONO) -->
+            <!-- Visual: Video Demo -->
             <div class="relative fade-in" style="animation-delay: 0.2s;">
                 <div class="absolute -inset-4 bg-slate-200/50 rounded-3xl -z-10 rotate-3 scale-95 blur-sm"></div>
                 
-                <!-- Contenedor Limpio (Diseño 'Card' flotante) -->
-                <!-- Ajuste de ancho y sombras para que parezca una UI flotante -->
-                <div class="mx-auto md:mr-0 relative w-[280px] md:w-[320px] rounded-2xl shadow-2xl border border-slate-200 overflow-hidden ring-1 ring-black/5 bg-white">
+                <!-- Contenedor LIMPIO sin marco de teléfono -->
+                <!-- Nota: Cambié bg-black para que notes si carga el contenedor -->
+                <div class="mx-auto md:mr-0 relative w-[280px] md:w-[320px] rounded-2xl shadow-2xl border border-slate-200 overflow-hidden ring-1 ring-black/5 bg-black transform hover:scale-[1.02] transition-transform duration-500">
                     
-                    <!-- Video Player -->
-                    <!-- Usa la etiqueta <source> para mayor compatibilidad -->
+                    <!-- Video Player Robusto -->
+                    <!-- playsinline: Vital para que no se abra full screen en iPhone -->
+                    <!-- muted: Vital para que funcione el autoplay -->
                     <video 
                         class="w-full h-auto object-cover block"
                         autoplay 
@@ -135,8 +136,14 @@
                         muted 
                         playsinline
                     >
+                        <!-- Intenta cargar el MP4 -->
                         <source src="YunusDemo.mp4" type="video/mp4">
-                        <p class="text-xs p-4 text-center text-red-500">Tu navegador no soporta videos HTML5.</p>
+                        <!-- Si fallara, intenta con MOV (por si acaso no lo convertiste) -->
+                        <source src="YunusDemo.mov" type="video/quicktime">
+                        
+                        <div class="p-8 text-white text-center">
+                            <p>Tu navegador no puede reproducir este video.</p>
+                        </div>
                     </video>
 
                 </div>
