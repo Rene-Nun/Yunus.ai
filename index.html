@@ -207,8 +207,11 @@
                 <p class="text-lg text-slate-600 font-light">¿Cómo calculamos solvencia donde otros ven incertidumbre?</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-white p-10 rounded-xl border border-slate-200 hover:border-yunus-base/50 transition-colors duration-300 group">
+            <!-- CAMBIO: Grid de 3 columnas (md:grid-cols-3) para acomodar la nueva tarjeta -->
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- Card A: Factor Humano -->
+                <div class="bg-white p-10 rounded-xl border border-slate-200 hover:border-yunus-base/50 transition-colors duration-300 group h-full">
                     <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 border border-slate-100 group-hover:bg-blue-50 transition-colors">
                         <i data-lucide="user" class="text-slate-700 group-hover:text-yunus-base"></i>
                     </div>
@@ -218,7 +221,8 @@
                     </p>
                 </div>
 
-                <div class="bg-white p-10 rounded-xl border border-slate-200 hover:border-yunus-base/50 transition-colors duration-300 group">
+                <!-- Card B: Factor Activo -->
+                <div class="bg-white p-10 rounded-xl border border-slate-200 hover:border-yunus-base/50 transition-colors duration-300 group h-full">
                     <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 border border-slate-100 group-hover:bg-blue-50 transition-colors">
                         <i data-lucide="ticket" class="text-slate-700 group-hover:text-yunus-base"></i>
                     </div>
@@ -227,6 +231,18 @@
                         No financiamos aire. Financiamos activos con valor de reventa recuperable, distribuyendo el riesgo entre el usuario y el mercado.
                     </p>
                 </div>
+
+                <!-- Card C: Sincronización (NUEVA) -->
+                <div class="bg-white p-10 rounded-xl border border-slate-200 hover:border-yunus-base/50 transition-colors duration-300 group h-full">
+                    <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 border border-slate-100 group-hover:bg-blue-50 transition-colors">
+                        <i data-lucide="calendar-check-2" class="text-slate-700 group-hover:text-yunus-base"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl mb-4 text-slate-900">Resultado: Sincronización</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        El plan de pagos no es fijo; es dinámico. Se estructura en quincenas alineadas con la fecha del evento. El enganche y el plazo final se personalizan al 100% según la probabilidad de reventa calculada.
+                    </p>
+                </div>
+
             </div>
         </div>
     </section>
@@ -287,7 +303,7 @@
         </div>
     </section>
 
-    <!-- VISION (CORREGIDA) -->
+    <!-- VISION -->
     <section class="py-32 bg-yunus-base text-white text-center px-6 relative overflow-hidden">
         <!-- Abstract background lines -->
         <div class="absolute inset-0 opacity-10 pointer-events-none">
