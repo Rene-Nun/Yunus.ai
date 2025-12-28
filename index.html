@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yunus | Crédito Basado en Contexto</title>
     
-    <!-- 1. Tailwind CSS (Versión CDN para que funcione sin instalar nada) -->
+    <!-- 1. Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- 2. Configuración de Tailwind para tus colores y fuentes -->
+    <!-- 2. Configuración -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         yunus: {
-                            base: '#41708c', // Tu azul pizarra
+                            base: '#41708c',
                             dark: '#325a70',
                         },
                         bone: '#F5F5F7',
@@ -29,35 +29,33 @@
         }
     </script>
 
-    <!-- 3. Fuentes de Google -->
+    <!-- 3. Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-    <!-- 4. Iconos (Lucide) -->
+    <!-- 4. Iconos -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* Animaciones simples */
         .fade-in { animation: fadeIn 0.5s ease-in; }
         .slide-up { animation: slideUp 0.8s ease-out; }
-        
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        /* Selección de texto elegante */
         ::selection { background-color: #41708c; color: white; }
     </style>
 </head>
 <body class="font-sans text-slate-800 bg-bone min-h-screen">
 
     <!-- HEADER -->
-    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-6 bg-transparent">
-        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+    <!-- CAMBIO: Reduje 'py-6' a 'py-2' para quitar espacio vacío y permitir que el logo crezca sin engrosar la barra -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-2 bg-transparent flex items-center">
+        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center w-full">
             
-            <!-- LOGO: Solo la imagen, sin texto adicional -->
+            <!-- LOGO -->
             <div class="flex items-center">
-                <img src="logo.png" alt="Yunus Logo" class="h-10 w-auto object-contain">
+                <!-- CAMBIO: Aumenté a 'h-16' (móvil) y 'md:h-20' (escritorio). Ajusté márgenes negativos ligeros para aprovechar espacio -->
+                <img src="logo.png" alt="Yunus Logo" class="h-16 md:h-20 w-auto object-contain -my-2">
             </div>
 
             <!-- Botón Desktop -->
@@ -73,7 +71,7 @@
             </button>
         </div>
 
-        <!-- Menú Móvil Desplegable -->
+        <!-- Menú Móvil -->
         <div id="mobileMenu" class="hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 p-6 shadow-lg">
             <button class="w-full px-6 py-3 rounded-full border border-slate-300 text-slate-600 font-medium text-sm hover:border-yunus-base hover:text-yunus-base transition-all">
                 Join Waitlist
@@ -109,11 +107,9 @@
 
             <!-- Visual: Chat Mockup -->
             <div class="relative fade-in" style="animation-delay: 0.2s;">
-                <!-- Fondo decorativo -->
                 <div class="absolute -inset-4 bg-slate-200/50 rounded-3xl -z-10 rotate-3 scale-95 blur-sm"></div>
                 
                 <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden max-w-sm mx-auto md:mr-0">
-                    <!-- Header Ventana -->
                     <div class="bg-slate-50 border-b border-slate-100 p-4 flex items-center justify-between">
                         <div class="flex gap-1.5">
                             <div class="w-3 h-3 rounded-full bg-red-300"></div>
@@ -123,9 +119,7 @@
                         <div class="text-xs font-mono text-slate-400">yunus_agent_v1.0</div>
                     </div>
                     
-                    <!-- Chat Interface -->
                     <div class="p-6 space-y-6 font-mono text-sm">
-                        <!-- User Message -->
                         <div class="flex gap-3 justify-end">
                             <div class="bg-slate-100 text-slate-700 p-3 rounded-lg rounded-tr-none max-w-[85%]">
                                 Financiación vuelo MEX-MAD. Costo: $1,200 USD.
@@ -135,7 +129,6 @@
                             </div>
                         </div>
 
-                        <!-- Processing -->
                         <div class="flex gap-2 items-center text-xs text-slate-400 pl-12">
                             <span class="w-1.5 h-1.5 bg-yunus-base rounded-full animate-bounce"></span>
                             <span class="w-1.5 h-1.5 bg-yunus-base rounded-full animate-bounce delay-100"></span>
@@ -143,7 +136,6 @@
                             <span>Analizando liquidez...</span>
                         </div>
 
-                        <!-- AI Response -->
                         <div class="flex gap-3">
                             <div class="w-8 h-8 bg-yunus-base rounded-full flex items-center justify-center shrink-0">
                                 <span class="text-white font-serif font-bold text-xs">Y</span>
@@ -186,11 +178,9 @@
                     </p>
                 </div>
 
-                <!-- Chart Visual (CSS Only) -->
                 <div class="bg-bone p-8 rounded-xl border border-slate-100 relative">
                     <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-8 text-center">Evaluación de Crédito</h3>
                     <div class="flex items-end justify-center gap-12 h-64 border-b border-slate-300 pb-2 relative">
-                        <!-- Bars -->
                         <div class="flex flex-col items-center gap-3 w-24 group">
                             <div class="w-full bg-slate-300 h-24 rounded-t-md relative hover:bg-slate-400 transition-colors"></div>
                             <span class="text-xs font-semibold text-slate-500 text-center">Capacidad Percibida<br>(Buró)</span>
@@ -214,7 +204,6 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
-                <!-- Card A -->
                 <div class="bg-white p-10 rounded-xl border border-slate-200 hover:border-yunus-base/50 transition-colors duration-300 group">
                     <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 border border-slate-100 group-hover:bg-blue-50 transition-colors">
                         <i data-lucide="user" class="text-slate-700 group-hover:text-yunus-base"></i>
@@ -225,7 +214,6 @@
                     </p>
                 </div>
 
-                <!-- Card B -->
                 <div class="bg-white p-10 rounded-xl border border-slate-200 hover:border-yunus-base/50 transition-colors duration-300 group">
                     <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 border border-slate-100 group-hover:bg-blue-50 transition-colors">
                         <i data-lucide="ticket" class="text-slate-700 group-hover:text-yunus-base"></i>
@@ -247,7 +235,6 @@
                 <p class="text-slate-600">Utilizamos Smart Contracts de custodia para garantizar la integridad.</p>
             </div>
 
-            <!-- Steps -->
             <div class="grid md:grid-cols-3 gap-8 relative z-10">
                 <div class="flex flex-col items-center text-center group">
                     <div class="w-24 h-24 bg-white border-2 border-slate-200 rounded-full flex items-center justify-center mb-6 group-hover:border-yunus-base transition-colors">
@@ -272,7 +259,6 @@
                 </div>
             </div>
 
-            <!-- Feature Box -->
             <div class="mt-20 max-w-3xl mx-auto bg-bone border border-slate-200 rounded-lg p-8 md:p-10 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-1 h-full bg-yunus-base"></div>
                 <div class="flex items-start gap-4 mb-6">
@@ -316,31 +302,28 @@
     <footer class="bg-slate-50 pt-20 pb-10 border-t border-slate-200 text-slate-500 text-sm">
         <div class="max-w-6xl mx-auto px-6 text-center md:text-left">
             <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
-                <!-- LOGO FOOTER -->
+                <!-- LOGO FOOTER: También más grande -->
                 <div class="flex items-center gap-2">
-                    <img src="logo.png" alt="Yunus Logo" class="h-8 w-auto object-contain">
+                    <img src="logo.png" alt="Yunus Logo" class="h-12 md:h-16 w-auto object-contain">
                 </div>
                 <p>© 2026 Yunus Labs.</p>
             </div>
         </div>
     </footer>
 
-    <!-- LOGIC SCRIPTS -->
     <script>
-        // Inicializar iconos
         lucide.createIcons();
-
-        // Lógica del Navbar Scroll y Menú Móvil
         const navbar = document.getElementById('navbar');
         const mobileMenu = document.getElementById('mobileMenu');
         
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
-                navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-200', 'py-3');
-                navbar.classList.remove('bg-transparent', 'py-6');
+                // Al hacer scroll, la barra se vuelve blanca y añadimos un padding mínimo
+                navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-200', 'py-1');
+                navbar.classList.remove('bg-transparent', 'py-2');
             } else {
-                navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-200', 'py-3');
-                navbar.classList.add('bg-transparent', 'py-6');
+                navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-200', 'py-1');
+                navbar.classList.add('bg-transparent', 'py-2');
             }
         });
 
