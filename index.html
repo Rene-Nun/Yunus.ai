@@ -43,31 +43,36 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         ::selection { background-color: #41708c; color: white; }
+        
+        /* Transición suave para el logo */
+        #logo-img {
+            transition: height 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body class="font-sans text-slate-800 bg-bone min-h-screen">
 
     <!-- HEADER -->
-    <!-- CAMBIO: Reduje 'py-6' a 'py-2' para quitar espacio vacío y permitir que el logo crezca sin engrosar la barra -->
-    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-2 bg-transparent flex items-center">
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 bg-transparent flex items-center">
         <div class="max-w-6xl mx-auto px-6 flex justify-between items-center w-full">
             
             <!-- LOGO -->
-            <div class="flex items-center">
-                <!-- CAMBIO: Aumenté a 'h-16' (móvil) y 'md:h-20' (escritorio). Ajusté márgenes negativos ligeros para aprovechar espacio -->
-                <img src="logo.png" alt="Yunus Logo" class="h-16 md:h-20 w-auto object-contain -my-2">
+            <div class="flex items-center relative z-50">
+                <!-- CAMBIO: Tamaño masivo inicial (h-28 móvil / h-40 desktop) -->
+                <!-- Margen negativo (-my-6) para que el logo se salga un poco de la barra si tiene mucho espacio vacío -->
+                <img id="logo-img" src="logo.png" alt="Yunus Logo" class="h-28 md:h-40 w-auto object-contain -my-6 filter drop-shadow-sm">
             </div>
 
             <!-- Botón Desktop -->
             <div class="hidden md:block">
-                <button class="px-6 py-2 rounded-full border border-slate-300 text-slate-600 font-medium text-sm hover:border-yunus-base hover:text-yunus-base transition-all bg-white/50 hover:bg-white">
+                <button class="px-6 py-2 rounded-full border border-slate-300 text-slate-600 font-medium text-sm hover:border-yunus-base hover:text-yunus-base transition-all bg-white/50 hover:bg-white shadow-sm">
                     Join Waitlist
                 </button>
             </div>
 
             <!-- Menú Hamburguesa Móvil -->
-            <button class="md:hidden text-slate-600" onclick="toggleMenu()">
-                <i data-lucide="menu" id="menuIcon"></i>
+            <button class="md:hidden text-slate-600 p-2" onclick="toggleMenu()">
+                <i data-lucide="menu" id="menuIcon" class="w-8 h-8"></i>
             </button>
         </div>
 
@@ -80,7 +85,7 @@
     </header>
 
     <!-- HERO SECTION -->
-    <section class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+    <section class="relative pt-40 pb-20 md:pt-56 md:pb-32 overflow-hidden">
         <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
             
             <!-- Texto -->
@@ -302,9 +307,9 @@
     <footer class="bg-slate-50 pt-20 pb-10 border-t border-slate-200 text-slate-500 text-sm">
         <div class="max-w-6xl mx-auto px-6 text-center md:text-left">
             <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
-                <!-- LOGO FOOTER: También más grande -->
+                <!-- LOGO FOOTER: También gigante -->
                 <div class="flex items-center gap-2">
-                    <img src="logo.png" alt="Yunus Logo" class="h-12 md:h-16 w-auto object-contain">
+                    <img src="logo.png" alt="Yunus Logo" class="h-24 md:h-32 w-auto object-contain">
                 </div>
                 <p>© 2026 Yunus Labs.</p>
             </div>
@@ -314,16 +319,27 @@
     <script>
         lucide.createIcons();
         const navbar = document.getElementById('navbar');
+        const logoImg = document.getElementById('logo-img');
         const mobileMenu = document.getElementById('mobileMenu');
         
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
-                // Al hacer scroll, la barra se vuelve blanca y añadimos un padding mínimo
-                navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-200', 'py-1');
-                navbar.classList.remove('bg-transparent', 'py-2');
+                // Al hacer scroll: barra blanca, compacta, y el logo se reduce
+                navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200', 'shadow-sm');
+                navbar.classList.remove('bg-transparent', 'py-4');
+                navbar.classList.add('py-2');
+                
+                // Reducir logo al hacer scroll para que no estorbe (regresa a un tamaño normal)
+                logoImg.classList.remove('h-28', 'md:h-40', '-my-6');
+                logoImg.classList.add('h-12', 'md:h-16');
             } else {
-                navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-200', 'py-1');
-                navbar.classList.add('bg-transparent', 'py-2');
+                // Estado inicial: Transparente y LOGO GIGANTE
+                navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'border-b', 'border-gray-200', 'shadow-sm', 'py-2');
+                navbar.classList.add('bg-transparent', 'py-4');
+                
+                // Volver a tamaño gigante
+                logoImg.classList.add('h-28', 'md:h-40', '-my-6');
+                logoImg.classList.remove('h-12', 'md:h-16');
             }
         });
 
