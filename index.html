@@ -289,19 +289,29 @@
     </section>
 
     <!-- VISION -->
-    <section class="py-32 bg-yunus-base text-white text-center px-6 relative overflow-hidden">
-        <div class="max-w-4xl mx-auto relative z-10">
-            <div class="inline-block border border-white/30 px-4 py-1 rounded-full text-sm font-medium mb-8 tracking-widest uppercase bg-white/10 backdrop-blur-sm">
-                Score Yunus
-            </div>
-            <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-medium mb-8 leading-tight">
-                Creemos que la solvencia se demuestra, no se hereda.
-            </h2>
-            <p class="text-lg md:text-xl text-blue-100 leading-relaxed max-w-2xl mx-auto mb-12 font-light">
-                "Tecnología para los Excluidos Solventes."
-            </p>
+      <section className="py-32 bg-[#41708c] text-white text-center px-6 relative overflow-hidden">
+        {/* Abstract background lines */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+             <path d="M0 100 L100 0" stroke="white" strokeWidth="0.5" />
+             <path d="M20 100 L100 20" stroke="white" strokeWidth="0.5" />
+             <path d="M40 100 L100 40" stroke="white" strokeWidth="0.5" />
+           </svg>
         </div>
-    </section>
+
+        <div className="max-w-4xl mx-auto relative z-10">
+          <div className="inline-block border border-white/30 px-4 py-1 rounded-full text-sm font-medium mb-8 tracking-widest uppercase bg-white/10 backdrop-blur-sm">
+            Score Yunus
+          </div>
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium mb-8 leading-tight">
+            Creemos que la solvencia se demuestra, no se hereda.
+          </h2>
+          <p className="text-lg md:text-xl text-blue-100 leading-relaxed max-w-2xl mx-auto mb-12 font-light">
+            Nuestra infraestructura permite que el cumplimiento en productos de estilo de vida genere la primera huella crediticia verificable.
+          </p>
+          <span className="text-2xl font-serif italic text-white/90 block">"Tecnología para los Excluidos Solventes."</span>
+        </div>
+      </section>
 
     <!-- FOOTER -->
     <footer class="bg-slate-50 pt-20 pb-10 border-t border-slate-200 text-slate-500 text-sm">
