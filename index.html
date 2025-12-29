@@ -122,20 +122,20 @@
             <div class="relative fade-in" style="animation-delay: 0.2s;">
                 <div class="absolute -inset-4 bg-slate-200/50 rounded-3xl -z-10 rotate-3 scale-95 blur-sm"></div>
                 
-                <!-- Contenedor LIMPIO sin marco -->
+                <!-- Contenedor del teléfono -->
                 <div class="mx-auto md:mr-0 relative w-[300px] md:w-[340px] aspect-[9/19] bg-black rounded-[40px] shadow-2xl overflow-hidden ring-1 ring-white/20">
                     
-                    <!-- Video Player con ruta absoluta -->
+                    <!-- Video Player -->
                     <video 
                         id="heroVideo"
-                        class="w-full h-full object-cover bg-black"
+                        class="w-full h-full object-cover"
                         autoplay 
                         loop 
                         muted 
                         playsinline
+                        preload="auto"
                     >
-                        <!-- Usamos la ruta raíz absoluta para evitar problemas de carpetas -->
-                        <source src="/YunusDemo.mp4" type="video/mp4">
+                        <source src="./YunusDemo.mp4" type="video/mp4">
                         <p class="text-white text-center p-4">Tu navegador no soporta video.</p>
                     </video>
 
@@ -333,7 +333,7 @@
                                 Únete a la lista de espera para el Beta 2026. Sé pionero en interactuar con el primer Agente del mundo que ejecuta financiamiento en tiempo real.
                             </p>
 
-                            <!-- IMPORTANTE: PEGA TU ENDPOINT DE FORMSPREE AQUÍ -->
+                            <!-- Formulario Formspree -->
                             <form id="waitlistForm" action="https://formspree.io/f/xaqyjdjd" method="POST" class="space-y-4" onsubmit="handleFormSubmit(event)">
                                 <div>
                                     <label for="email" class="sr-only">Email</label>
@@ -387,15 +387,34 @@
         const formContent = document.getElementById('modalContent');
         const successMsg = document.getElementById('successMessage');
 
-        // VIDEO AUTOPLAY FIX
-        // Este script fuerza la reproducción del video al cargar la página
+        // VIDEO AUTOPLAY - Mejorado con múltiples intentos
         window.addEventListener('load', function() {
-            var video = document.querySelector('video');
+            const video = document.getElementById('heroVideo');
             if(video) {
-                video.muted = true; // Aseguramos que esté muteado (requisito de navegadores)
-                video.play().catch(function(error) {
-                    console.log("Autoplay fue prevenido por el navegador. Se requiere interacción del usuario.");
-                });
+                // Asegurar que está muteado
+                video.muted = true;
+                video.volume = 0;
+                
+                // Intentar reproducir
+                const playPromise = video.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(function() {
+                        console.log('Video reproduciéndose correctamente');
+                    }).catch(function(error) {
+                        console.log('Autoplay prevenido. Intentando con interacción del usuario...');
+                        
+                        // Si falla, intentar al hacer click en cualquier parte
+                        document.body.addEventListener('click', function() {
+                            video.play().catch(e => console.log('Error al reproducir:', e));
+                        }, { once: true });
+                        
+                        // También intentar al hacer scroll
+                        document.addEventListener('scroll', function() {
+                            video.play().catch(e => console.log('Error al reproducir:', e));
+                        }, { once: true });
+                    });
+                }
             }
         });
 
@@ -453,13 +472,6 @@
         async function handleFormSubmit(e) {
             e.preventDefault();
             const form = document.getElementById('waitlistForm');
-            
-            // Verificación simple para que recuerdes cambiar el endpoint
-            if (form.action.includes('[PEGAR')) {
-                alert("¡Falta configurar el endpoint de Formspree en el código!");
-                return;
-            }
-
             const data = new FormData(form);
             
             try {
@@ -475,6 +487,7 @@
                     // Éxito: Ocultar form y mostrar mensaje
                     formContent.classList.add('hidden');
                     successMsg.classList.remove('hidden');
+                    lucide.createIcons(); // Recrear iconos para el check
                     form.reset();
                 } else {
                     // Error reportado por Formspree
