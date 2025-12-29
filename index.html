@@ -66,10 +66,10 @@
             
             <!-- LOGO -->
             <div class="flex items-center relative z-50">
-                <img id="logo-img" src="logo.png" alt="Yunus Logo" class="h-28 md:h-40 w-auto object-contain -my-6 filter drop-shadow-sm">
+                <img id="logo-img" src="logo.png" alt="Yunus Logo" class="h-10 w-auto object-contain -my-6 filter drop-shadow-sm">
             </div>
 
-            <!-- Botón Desktop (Trigger) -->
+            <!-- Botón Desktop -->
             <div class="hidden md:block">
                 <button onclick="openModal()" class="px-6 py-2 rounded-full border border-slate-300 text-slate-600 font-medium text-sm hover:border-yunus-base hover:text-yunus-base transition-all bg-white/50 hover:bg-white shadow-sm">
                     Join Waitlist
@@ -106,7 +106,6 @@
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 items-start pt-4">
-                    <!-- Botón Hero (Trigger) -->
                     <button onclick="openModal()" class="bg-yunus-base text-white px-8 py-4 rounded-lg font-medium shadow-sm hover:bg-yunus-dark hover:scale-[1.02] transition-all flex items-center gap-2 group">
                         Accede primero que nadie
                         <i data-lucide="arrow-right" class="group-hover:translate-x-1 transition-transform w-4 h-4"></i>
@@ -118,25 +117,26 @@
                 </div>
             </div>
 
-            <!-- Visual: Video Demo -->
-            <div class="relative fade-in" style="animation-delay: 0.2s;">
+            <!-- Visual: Video Demo SIN BORDES NEGROS -->
+            <div class="relative fade-in flex justify-center md:justify-end" style="animation-delay: 0.2s;">
                 <div class="absolute -inset-4 bg-slate-200/50 rounded-3xl -z-10 rotate-3 scale-95 blur-sm"></div>
                 
-                <!-- Contenedor del teléfono -->
-                <div class="mx-auto md:mr-0 relative w-[300px] md:w-[340px] aspect-[9/19] bg-black rounded-[40px] shadow-2xl overflow-hidden ring-1 ring-white/20">
+                <!-- Contenedor FLOTANTE LIMPIO -->
+                <!-- Eliminado 'bg-black' y 'aspect-ratio' fijo que causaba bordes -->
+                <!-- Usamos 'rounded-[30px]' para suavizar esquinas del video -->
+                <div class="mx-auto md:mr-0 relative w-[280px] md:w-[320px] rounded-[30px] shadow-2xl border-4 border-white overflow-hidden ring-1 ring-slate-200/50 transform hover:scale-[1.02] transition-transform duration-500">
                     
-                    <!-- Video Player -->
                     <video 
                         id="heroVideo"
-                        class="w-full h-full object-cover"
+                        class="w-full h-auto object-cover block"
                         autoplay 
                         loop 
                         muted 
                         playsinline
-                        preload="auto"
+                        poster="placeholder.jpg" 
                     >
                         <source src="https://res.cloudinary.com/diwgrp0jr/video/upload/VID_20251228_125937_b9xc1n.mp4" type="video/mp4">
-                        <p class="text-white text-center p-4">Tu navegador no soporta video.</p>
+                        <p class="text-xs text-center p-4">Tu navegador no soporta video.</p>
                     </video>
 
                 </div>
@@ -222,7 +222,7 @@
     <section class="py-24 bg-white">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="font-serif text-3xl md:text-4xl text-slate-900 mb-6">Colateral Inteligente y Recuperación.</h2>
+                <h2 class="font-serif text-3xl md:text-4xl text-slate-900 mb-6">Custodia Inteligente y Recuperación.</h2>
                 <p class="text-slate-600">Utilizamos Smart Contracts de custodia para garantizar la integridad.</p>
             </div>
 
@@ -303,7 +303,7 @@
         <div class="max-w-6xl mx-auto px-6 text-center md:text-left">
             <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
                 <div class="flex items-center gap-2">
-                    <img src="logo.png" alt="Yunus Logo" class="h-24 md:h-32 w-auto object-contain">
+                    <img src="logo.png" alt="Yunus Logo" class="h-8 w-auto object-contain">
                 </div>
                 <p>© 2026 Yunus Labs.</p>
             </div>
@@ -333,7 +333,7 @@
                                 Únete a la lista de espera para el Beta 2026. Sé pionero en interactuar con el primer Agente del mundo que ejecuta financiamiento en tiempo real.
                             </p>
 
-                            <!-- Formulario Formspree -->
+                            <!-- IMPORTANTE: PEGA TU ENDPOINT DE FORMSPREE AQUÍ -->
                             <form id="waitlistForm" action="https://formspree.io/f/xaqyjdjd" method="POST" class="space-y-4" onsubmit="handleFormSubmit(event)">
                                 <div>
                                     <label for="email" class="sr-only">Email</label>
@@ -386,37 +386,6 @@
         const panel = document.getElementById('modalPanel');
         const formContent = document.getElementById('modalContent');
         const successMsg = document.getElementById('successMessage');
-
-        // VIDEO AUTOPLAY - Mejorado con múltiples intentos
-        window.addEventListener('load', function() {
-            const video = document.getElementById('heroVideo');
-            if(video) {
-                // Asegurar que está muteado
-                video.muted = true;
-                video.volume = 0;
-                
-                // Intentar reproducir
-                const playPromise = video.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.then(function() {
-                        console.log('Video reproduciéndose correctamente');
-                    }).catch(function(error) {
-                        console.log('Autoplay prevenido. Intentando con interacción del usuario...');
-                        
-                        // Si falla, intentar al hacer click en cualquier parte
-                        document.body.addEventListener('click', function() {
-                            video.play().catch(e => console.log('Error al reproducir:', e));
-                        }, { once: true });
-                        
-                        // También intentar al hacer scroll
-                        document.addEventListener('scroll', function() {
-                            video.play().catch(e => console.log('Error al reproducir:', e));
-                        }, { once: true });
-                    });
-                }
-            }
-        });
 
         // Scroll Logic
         window.addEventListener('scroll', () => {
@@ -472,6 +441,13 @@
         async function handleFormSubmit(e) {
             e.preventDefault();
             const form = document.getElementById('waitlistForm');
+            
+            // Verificación simple para que recuerdes cambiar el endpoint
+            if (form.action.includes('[PEGAR')) {
+                alert("¡Falta configurar el endpoint de Formspree en el código!");
+                return;
+            }
+
             const data = new FormData(form);
             
             try {
@@ -487,7 +463,6 @@
                     // Éxito: Ocultar form y mostrar mensaje
                     formContent.classList.add('hidden');
                     successMsg.classList.remove('hidden');
-                    lucide.createIcons(); // Recrear iconos para el check
                     form.reset();
                 } else {
                     // Error reportado por Formspree
