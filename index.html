@@ -91,7 +91,6 @@
                 </h1>
                 <p class="text-lg md:text-xl text-slate-600 font-light leading-relaxed max-w-lg">
                     La playita que te debes, los festivales más locos del año, o ese pueblo mágico en invierno. Pídeselo a nuestra IA, nosotros armamos la ruta y te financiamos al instante. ¿Buen historial, mal historial o sin historial crediticio? Nos da igual.
-
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 items-start pt-4">
@@ -273,7 +272,7 @@
           <p class="text-lg md:text-xl text-blue-100 leading-relaxed max-w-2xl mx-auto mb-12 font-light">
             Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado más desatendido de la región. Modelos de riesgo obsoletos dejan millones de dólares sobre la mesa. Con aprobación en tiempo real y mitigación de riesgo a través de activos de reventa garantizada, democratizamos el acceso a experiencias. Nacidos en Ciudad Juárez, construidos para escalar.
           </p>
-          <button onclick="openModal()" class="bg-white text-yunus-base px-8 py-4 rounded-lg font-medium shadow-sm hover:bg-slate-50 hover:scale-[1.02] transition-all inline-flex items-center gap-2 group">
+          <button onclick="openInvestorModal()" class="bg-white text-yunus-base px-8 py-4 rounded-lg font-medium shadow-sm hover:bg-slate-50 hover:scale-[1.02] transition-all inline-flex items-center gap-2 group">
               Solicitar Pitch Deck
               <i data-lucide="arrow-right" class="group-hover:translate-x-1 transition-transform w-4 h-4"></i>
           </button>
@@ -346,6 +345,65 @@
         </div>
     </div>
 
+    <div id="investorModal" class="relative z-[100] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div id="investorBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm modal-enter" onclick="closeInvestorModal()"></div>
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div id="investorPanel" class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1)] transition-all sm:my-8 w-full max-w-[450px] modal-panel-enter">
+                    
+                    <div class="p-10 relative">
+                        <button onclick="closeInvestorModal()" class="absolute top-4 right-4 text-slate-300 hover:text-slate-500 transition-colors p-1">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+
+                        <div id="investorContent">
+                            <h3 class="font-serif text-2xl font-medium leading-tight text-slate-900 mb-2">
+                                Acceso a Inversores
+                            </h3>
+                            <p class="text-slate-500 mb-6 leading-relaxed text-sm">
+                                Déjanos tus datos para enviarte el Pitch Deck y ponernos en contacto contigo.
+                            </p>
+
+                            <form id="investorForm" action="https://formspree.io/f/xaqyjdjd" method="POST" class="space-y-4" onsubmit="handleInvestorSubmit(event)">
+                                <input type="hidden" name="Tipo_de_solicitud" value="PITCH DECK - INVERSOR">
+                                
+                                <div>
+                                    <input type="text" name="Nombre" class="block w-full rounded-md border border-gray-200 py-3 px-4 text-slate-900 placeholder:text-slate-400 focus:border-[#41708c] focus:ring-1 focus:ring-[#41708c] outline-none transition-all sm:text-sm" placeholder="Nombre completo" required>
+                                </div>
+                                <div>
+                                    <input type="email" name="Email" class="block w-full rounded-md border border-gray-200 py-3 px-4 text-slate-900 placeholder:text-slate-400 focus:border-[#41708c] focus:ring-1 focus:ring-[#41708c] outline-none transition-all sm:text-sm" placeholder="Correo corporativo" required>
+                                </div>
+                                <div>
+                                    <input type="text" name="Empresa_o_Fondo" class="block w-full rounded-md border border-gray-200 py-3 px-4 text-slate-900 placeholder:text-slate-400 focus:border-[#41708c] focus:ring-1 focus:ring-[#41708c] outline-none transition-all sm:text-sm" placeholder="Empresa o Fondo" required>
+                                </div>
+                                <div>
+                                    <input type="url" name="LinkedIn" class="block w-full rounded-md border border-gray-200 py-3 px-4 text-slate-900 placeholder:text-slate-400 focus:border-[#41708c] focus:ring-1 focus:ring-[#41708c] outline-none transition-all sm:text-sm" placeholder="URL de tu LinkedIn" required>
+                                </div>
+                                
+                                <input type="text" name="_gotcha" style="display:none" />
+
+                                <button type="submit" class="w-full rounded-md bg-[#41708c] px-3.5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#325a70] transition-colors mt-2">
+                                    Solicitar Pitch Deck
+                                </button>
+                            </form>
+                        </div>
+
+                        <div id="investorSuccessMessage" class="hidden text-center py-6 animate-fade-in">
+                             <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-50 mb-4">
+                                <i data-lucide="check" class="w-7 h-7 text-green-600"></i>
+                             </div>
+                            <h3 class="text-xl font-serif font-medium text-slate-900 mb-2">Solicitud recibida</h3>
+                            <p class="text-slate-500 text-sm">Nos pondremos en contacto a la brevedad.</p>
+                            <button onclick="closeInvestorModal()" class="mt-8 text-xs font-medium text-[#41708c] hover:underline">
+                                Cerrar ventana
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         lucide.createIcons();
         
@@ -353,22 +411,27 @@
         const logoImg = document.getElementById('logo-img');
         const mobileMenu = document.getElementById('mobileMenu');
         
-        // Elementos del Modal
+        // Elementos del Modal Usuarios
         const modal = document.getElementById('waitlistModal');
         const backdrop = document.getElementById('modalBackdrop');
         const panel = document.getElementById('modalPanel');
         const formContent = document.getElementById('modalContent');
         const successMsg = document.getElementById('successMessage');
 
-        // VIDEO AUTOPLAY - Mejorado con múltiples intentos
+        // Elementos del Modal Inversores
+        const invModal = document.getElementById('investorModal');
+        const invBackdrop = document.getElementById('investorBackdrop');
+        const invPanel = document.getElementById('investorPanel');
+        const invFormContent = document.getElementById('investorContent');
+        const invSuccessMsg = document.getElementById('investorSuccessMessage');
+
+        // VIDEO AUTOPLAY
         window.addEventListener('load', function() {
             const video = document.getElementById('heroVideo');
             if(video) {
-                // Asegurar que está muteado
                 video.muted = true;
                 video.volume = 0;
                 
-                // Intentar reproducir
                 const playPromise = video.play();
                 
                 if (playPromise !== undefined) {
@@ -377,12 +440,10 @@
                     }).catch(function(error) {
                         console.log('Autoplay prevenido. Intentando con interacción del usuario...');
                         
-                        // Si falla, intentar al hacer click en cualquier parte
                         document.body.addEventListener('click', function() {
                             video.play().catch(e => console.log('Error al reproducir:', e));
                         }, { once: true });
                         
-                        // También intentar al hacer scroll
                         document.addEventListener('scroll', function() {
                             video.play().catch(e => console.log('Error al reproducir:', e));
                         }, { once: true });
@@ -411,11 +472,11 @@
             mobileMenu.classList.toggle('hidden');
         }
 
-        // Modal Logic
+        // Lógica Modal Usuarios
         function openModal() {
             formContent.classList.remove('hidden');
             successMsg.classList.add('hidden');
-            document.getElementById('email').value = '';
+            document.getElementById('waitlistForm').reset();
 
             modal.classList.remove('hidden');
             setTimeout(() => {
@@ -441,7 +502,37 @@
             }, 200); 
         }
 
-        // Lógica AJAX para enviar a Formspree sin salir de la página
+        // Lógica Modal Inversores
+        function openInvestorModal() {
+            invFormContent.classList.remove('hidden');
+            invSuccessMsg.classList.add('hidden');
+            document.getElementById('investorForm').reset();
+
+            invModal.classList.remove('hidden');
+            setTimeout(() => {
+                invBackdrop.classList.remove('modal-enter');
+                invBackdrop.classList.add('modal-enter-active');
+                invPanel.classList.remove('modal-panel-enter');
+                invPanel.classList.add('modal-panel-enter-active');
+            }, 10);
+        }
+
+        function closeInvestorModal() {
+            invBackdrop.classList.remove('modal-enter-active');
+            invBackdrop.classList.add('modal-exit-active');
+            invPanel.classList.remove('modal-panel-enter-active');
+            invPanel.classList.add('modal-panel-exit-active');
+
+            setTimeout(() => {
+                invModal.classList.add('hidden');
+                invBackdrop.classList.remove('modal-exit-active');
+                invBackdrop.classList.add('modal-enter');
+                invPanel.classList.remove('modal-panel-exit-active');
+                invPanel.classList.add('modal-panel-enter');
+            }, 200); 
+        }
+
+        // Enviar Formulario Usuarios
         async function handleFormSubmit(e) {
             e.preventDefault();
             const form = document.getElementById('waitlistForm');
@@ -451,19 +542,46 @@
                 const response = await fetch(form.action, {
                     method: form.method,
                     body: data,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
+                    headers: { 'Accept': 'application/json' }
                 });
 
                 if (response.ok) {
-                    // Éxito: Ocultar form y mostrar mensaje
                     formContent.classList.add('hidden');
                     successMsg.classList.remove('hidden');
-                    lucide.createIcons(); // Recrear iconos para el check
+                    lucide.createIcons(); 
                     form.reset();
                 } else {
-                    // Error reportado por Formspree
+                    const data = await response.json();
+                    if (Object.hasOwn(data, 'errors')) {
+                        alert(data["errors"].map(error => error["message"]).join(", "));
+                    } else {
+                        alert("Hubo un problema al enviar el formulario. Intenta de nuevo.");
+                    }
+                }
+            } catch (error) {
+                alert("Error de conexión. Por favor intenta más tarde.");
+            }
+        }
+
+        // Enviar Formulario Inversores
+        async function handleInvestorSubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('investorForm');
+            const data = new FormData(form);
+            
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    invFormContent.classList.add('hidden');
+                    invSuccessMsg.classList.remove('hidden');
+                    lucide.createIcons(); 
+                    form.reset();
+                } else {
                     const data = await response.json();
                     if (Object.hasOwn(data, 'errors')) {
                         alert(data["errors"].map(error => error["message"]).join(", "));
