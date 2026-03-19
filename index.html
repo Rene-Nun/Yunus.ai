@@ -40,55 +40,26 @@
         @keyframes blink{0%,100%{opacity:.2}50%{opacity:.8}}
         .fade-in{animation:fadeIn .6s ease-out forwards}
         @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        /* Inline SVG icon sizing */
         .icon{display:inline-block;vertical-align:middle;flex-shrink:0}
         .icon svg{display:block}
     </style>
 </head>
 <body class="font-sans text-slate-800 bg-white min-h-screen antialiased">
 
-<!-- SVG ICON DEFINITIONS (inline, no external dependency) -->
-
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="ico-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
-  </symbol>
-  <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-  </symbol>
-  <symbol id="ico-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-  </symbol>
-  <symbol id="ico-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polygon points="5 3 19 12 5 21 5 3"/>
-  </symbol>
-  <symbol id="ico-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-  </symbol>
-  <symbol id="ico-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-  </symbol>
-  <symbol id="ico-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>
-  </symbol>
-  <symbol id="ico-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/>
-  </symbol>
-  <symbol id="ico-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-  </symbol>
-  <symbol id="ico-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-  </symbol>
-  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="20 6 9 17 4 12"/>
-  </symbol>
-  <symbol id="ico-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
-  </symbol>
+  <symbol id="ico-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></symbol>
+  <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="ico-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="ico-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
+  <symbol id="ico-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <symbol id="ico-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="ico-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+  <symbol id="ico-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="ico-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+  <symbol id="ico-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="ico-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></symbol>
 </svg>
-
-<!-- Helper: use icons like <span class="icon"><svg width="16" height="16"><use href="#ico-NAME"/></svg></span> -->
 
 <!-- NAV -->
 
@@ -194,26 +165,17 @@
 <section id="demo" class="py-20">
     <div class="max-w-6xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-center">
-
-        <!-- MAC WINDOW MOCKUP (original elegant style) -->
         <div class="reveal border border-slate-200 rounded-xl overflow-hidden bg-white shadow-lg">
-            <!-- Title bar -->
             <div class="bg-slate-50 border-b border-slate-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
                 <div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
                 <div class="w-2.5 h-2.5 rounded-full bg-green-400"></div>
                 <span class="font-mono text-[11px] text-slate-400 ml-2">yunus · tu agente de boletos</span>
             </div>
-
-            <!-- Chat messages -->
             <div id="demoChat" class="p-5 flex flex-col gap-3" style="min-height:260px;">
-
-                <!-- User message -->
                 <div class="self-end max-w-[84%] bg-slate-900 text-white rounded-xl rounded-br-sm px-4 py-2.5 text-xs leading-relaxed">
                     Quiero boletos para un partido en Guadalajara.
                 </div>
-
-                <!-- Yunus processing -->
                 <div id="demoProcessing" class="self-start max-w-[84%] bg-slate-50 border border-slate-100 text-slate-600 rounded-xl rounded-bl-sm px-4 py-2.5 text-xs leading-relaxed">
                     <div class="font-mono text-[10px] text-slate-400 mb-2">YUNUS ESTÁ PROCESANDO</div>
                     <div id="step1" class="font-mono text-[10px] text-slate-300 mb-1">⚡ Analizando inventario GDL...</div>
@@ -221,15 +183,12 @@
                     <div id="step3" class="font-mono text-[10px] text-slate-300">✅ Estructurando plan de pagos...</div>
                 </div>
             </div>
-
-            <!-- Ticket card — hidden initially -->
             <div id="approvalMsg" class="hidden px-5 pb-2">
                 <div class="self-start max-w-[84%] bg-slate-50 border border-slate-100 text-slate-600 rounded-xl rounded-bl-sm px-4 py-2.5 text-xs leading-relaxed mb-3">
                     <div class="font-mono text-[10px] text-slate-400 mb-1">YUNUS</div>
                     ¡Encontré algo perfecto para ti! 🏆 Aquí está tu plan:
                 </div>
                 <div class="rounded-xl overflow-hidden border border-slate-200">
-                    <!-- Ticket header -->
                     <div class="bg-slate-900 px-4 py-3">
                         <div class="flex justify-between items-center mb-0.5">
                             <span class="font-serif text-sm text-white">Colombia vs TBA</span>
@@ -237,7 +196,6 @@
                         </div>
                         <div class="font-mono text-[10px] text-slate-400">📍 Estadio Akron · 23 Jun 2026</div>
                     </div>
-                    <!-- Numbers row -->
                     <div class="bg-slate-800 px-4 py-2.5 flex gap-0 border-t border-white/5">
                         <div class="flex-1 text-center">
                             <div class="font-mono text-[8px] text-slate-500 mb-0.5">Total</div>
@@ -252,7 +210,6 @@
                             <div class="font-mono text-[11px] text-green-400 font-semibold">$1,700</div>
                         </div>
                     </div>
-                    <!-- Payment bar -->
                     <div class="bg-slate-800 px-4 pb-3 border-t border-white/5">
                         <div class="font-mono text-[8px] text-slate-500 uppercase tracking-wide mb-1.5">Calendario de pagos</div>
                         <div class="flex gap-1 mb-1">
@@ -264,7 +221,6 @@
                         </div>
                         <div class="font-mono text-[9px] text-slate-500">$1,700/quincena</div>
                     </div>
-                    <!-- CTA -->
                     <div id="demoCTA" class="bg-slate-800 px-4 pb-4 border-t border-white/5">
                         <button onclick="runDemoPayment()" class="w-full bg-white text-slate-900 rounded-lg py-2 text-xs font-semibold hover:bg-slate-100 transition-colors cursor-pointer border-none flex items-center justify-center gap-1.5">
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
@@ -276,10 +232,7 @@
                     </div>
                 </div>
             </div>
-
             <div class="h-4"></div>
-
-            <!-- Input bar -->
             <div class="border-t border-slate-100 px-4 py-3 flex gap-2">
                 <input type="text" id="demoInput" placeholder="¿A qué partido quieres ir?" class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 outline-none focus:border-slate-400 transition-colors font-sans">
                 <button id="demoBtn" onclick="runDemo()" class="bg-slate-900 rounded-lg w-8 h-8 flex items-center justify-center text-white hover:bg-slate-700 transition-colors border-none cursor-pointer flex-shrink-0">
@@ -287,8 +240,6 @@
                 </button>
             </div>
         </div>
-
-        <!-- Right side text -->
         <div class="reveal d1">
             <h2 class="font-serif text-3xl md:text-4xl font-normal text-slate-900 leading-tight tracking-tight mb-4">Así se ve<br><em class="text-slate-400">desde adentro.</em></h2>
             <p class="text-slate-500 leading-relaxed mb-8">Pides el partido, Yunus analiza tu perfil y te presenta el plan exacto. Si te late, pagas el enganche y el boleto queda en tu Bóveda.</p>
@@ -314,7 +265,6 @@
         </div>
     </div>
 </div>
-
 </section>
 
 <!-- SEGURIDAD -->
@@ -421,27 +371,27 @@
     </div>
 </section>
 
-<!-- INVERSORES -->
+<!-- INVERSORES — fondo gris rata oscuro -->
 
-<section class="py-24 bg-white border-t border-slate-100 text-center px-6">
+<section class="py-24 text-center px-6" style="background:#2a2a2a;">
     <div class="max-w-2xl mx-auto reveal">
-        <div class="inline-block border border-slate-200 px-4 py-1 rounded-full text-xs font-mono text-slate-400 mb-8 tracking-widest uppercase">Inversores</div>
-        <h2 class="font-serif text-3xl md:text-4xl font-normal text-slate-900 leading-tight tracking-tight mb-6">Tecnología para los<br>Excluidos Solventes.</h2>
-        <p class="text-slate-500 leading-relaxed mb-10 max-w-xl mx-auto">Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado más desatendido de la región. Modelos de riesgo obsoletos dejan millones sobre la mesa. Con aprobación en tiempo real y mitigación de riesgo a través de activos de reventa garantizada, democratizamos el acceso a experiencias.</p>
-        <button onclick="openInvestorModal()" class="border border-slate-900 text-slate-900 px-8 py-3.5 rounded text-sm font-medium hover:bg-slate-900 hover:text-white transition-all inline-flex items-center gap-2 group">
+        <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xs font-mono text-white/40 mb-8 tracking-widest uppercase">Inversores</div>
+        <h2 class="font-serif text-3xl md:text-4xl font-normal text-white leading-tight tracking-tight mb-6">Tecnología para los<br>Excluidos Solventes.</h2>
+        <p class="leading-relaxed mb-10 max-w-xl mx-auto" style="color:rgba(255,255,255,0.45);">Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado más desatendido de la región. Modelos de riesgo obsoletos dejan millones sobre la mesa. Con aprobación en tiempo real y mitigación de riesgo a través de activos de reventa garantizada, democratizamos el acceso a experiencias.</p>
+        <button onclick="openInvestorModal()" class="border border-white/30 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-white hover:text-slate-900 transition-all inline-flex items-center gap-2 group">
             Solicitar Pitch Deck
             <span class="icon group-hover:translate-x-1 transition-transform inline-block"><svg width="16" height="16"><use href="#ico-arrow-right"/></svg></span>
         </button>
     </div>
 </section>
 
-<!-- FOOTER -->
+<!-- FOOTER — Bianca + logo -->
 
-<footer class="bg-slate-900 border-t border-slate-800 py-10 px-6">
+<footer style="background:#f5f0eb;" class="border-t border-slate-200 py-10 px-6">
     <div class="max-w-6xl mx-auto flex flex-col items-center gap-4 text-center">
-        <span class="font-serif text-lg text-white opacity-50">Yunus</span>
-        <div class="font-mono text-xs text-slate-600">Ampliando límites físicos · Paso del Norte Labs · Ciudad Juárez, México</div>
-        <div class="font-mono text-xs text-slate-700">© 2026 Paso del Norte Labs</div>
+        <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
+        <div class="font-mono text-xs text-slate-500">Ampliando límites físicos · Paso del Norte Labs · Ciudad Juárez, México</div>
+        <div class="font-mono text-xs text-slate-400">© 2026 Paso del Norte Labs</div>
     </div>
 </footer>
 
@@ -532,8 +482,6 @@
 </div>
 
 <script>
-// CAROUSEL
-// price → quincena: price * 0.85 / 5, rounded to nearest 10
 function quinc(p){return Math.round(p*0.85/5/10)*10;}
 var matches=[
   {teams:'México vs Sudáfrica', date:'11 Jun', venue:'Azteca · CDMX',    stage:'Fase de grupos', price:null},
@@ -552,34 +500,17 @@ var matches=[
 ];
 function buildCard(m){
   var priceRow = m.price
-    ? '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;">'
-      +'<span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span>'
-      +'<span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+quinc(m.price).toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span>'
-      +'</div>'
+    ? '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+quinc(m.price).toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
     : '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
-  return '<div style="width:190px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:0;" onclick="openModal()">'
-    +'<div style="margin-bottom:6px;">'
-      +'<div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#cbd5e1;">'+m.stage+'</div>'
-      +'<div style="font-family:\'Instrument Serif\',serif;font-size:13px;color:#0f172a;line-height:1.25;margin-top:3px;">'+m.teams+'</div>'
-    +'</div>'
-    +'<div>'
-      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
-        +'<span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#94a3b8;">'+m.date+'</span>'
-        +'<span style="font-family:\'Geist Mono\',monospace;font-size:9px;color:#cbd5e1;">'+m.venue+'</span>'
-      +'</div>'
-      +priceRow
-    +'</div>'
-  +'</div>';
+  return '<div style="width:190px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:0;" onclick="openModal()"><div style="margin-bottom:6px;"><div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#cbd5e1;">'+m.stage+'</div><div style="font-family:\'Instrument Serif\',serif;font-size:13px;color:#0f172a;line-height:1.25;margin-top:3px;">'+m.teams+'</div></div><div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#94a3b8;">'+m.date+'</span><span style="font-family:\'Geist Mono\',monospace;font-size:9px;color:#cbd5e1;">'+m.venue+'</span></div>'+priceRow+'</div></div>';
 }
 var track=document.getElementById('carouselTrack');
 if(track){var h=matches.map(buildCard).join('');track.innerHTML=h+h;}
 
-// REVEAL
 var rEls=document.querySelectorAll('.reveal');
 var rIO=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');rIO.unobserve(e.target);}});},{threshold:0.08});
 rEls.forEach(function(r){rIO.observe(r);});
 
-// DEMO
 var demoPlayed=false;
 function setDemo(txt){var i=document.getElementById('demoInput');if(i)i.value=txt;}
 function scrollChat(){var c=document.getElementById('demoChat');if(c)c.scrollTop=c.scrollHeight;}
@@ -587,37 +518,19 @@ function runDemo(){
   if(demoPlayed)return;
   demoPlayed=true;
   var btn=document.getElementById('demoBtn');if(btn)btn.style.opacity='0.4';
-  // Animate processing steps sequentially
-  setTimeout(function(){
-    var s1=document.getElementById('step1');
-    if(s1){s1.style.color='#475569';s1.textContent='⚡ Analizando inventario GDL... ✓';}
-  },700);
-  setTimeout(function(){
-    var s2=document.getElementById('step2');
-    if(s2){s2.style.color='#475569';s2.textContent='🔍 Cruzando con tu perfil... ✓';}
-  },1500);
-  setTimeout(function(){
-    var s3=document.getElementById('step3');
-    if(s3){s3.style.color='#475569';s3.textContent='✅ Plan de pagos listo ✓';}
-  },2300);
-  // Show ticket card
-  setTimeout(function(){
-    var a=document.getElementById('approvalMsg');
-    if(a)a.classList.remove('hidden');
-    scrollChat();
-  },3100);
+  setTimeout(function(){var s1=document.getElementById('step1');if(s1){s1.style.color='#475569';s1.textContent='⚡ Analizando inventario GDL... ✓';}},700);
+  setTimeout(function(){var s2=document.getElementById('step2');if(s2){s2.style.color='#475569';s2.textContent='🔍 Cruzando con tu perfil... ✓';}},1500);
+  setTimeout(function(){var s3=document.getElementById('step3');if(s3){s3.style.color='#475569';s3.textContent='✅ Plan de pagos listo ✓';}},2300);
+  setTimeout(function(){var a=document.getElementById('approvalMsg');if(a)a.classList.remove('hidden');scrollChat();},3100);
 }
 function runDemoPayment(){
-  var cta=document.getElementById('demoCTA');
-  var paid=document.getElementById('demoPaid');
-  if(cta)cta.classList.add('hidden');
-  if(paid)paid.classList.remove('hidden');
+  var cta=document.getElementById('demoCTA');var paid=document.getElementById('demoPaid');
+  if(cta)cta.classList.add('hidden');if(paid)paid.classList.remove('hidden');
 }
 var dIO=new IntersectionObserver(function(entries){if(entries[0].isIntersecting&&!demoPlayed){setTimeout(runDemo,600);dIO.disconnect();}},{threshold:0.4});
 var dSec=document.getElementById('demo');if(dSec)dIO.observe(dSec);
 document.getElementById('demoBtn').addEventListener('click',runDemo);
 
-// SEDES
 function selectSede(card,sede){
   document.querySelectorAll('.sede-card').forEach(function(c){
     c.classList.remove('bg-slate-900','border-slate-900');
@@ -633,7 +546,6 @@ function selectSede(card,sede){
   setTimeout(openModal,300);
 }
 
-// FAQ
 function toggleFaq(el){
   var a=el.querySelector('.faq-a');var i=el.querySelector('.faq-icon');
   var open=!a.classList.contains('hidden');
@@ -641,10 +553,8 @@ function toggleFaq(el){
   else{a.classList.remove('hidden');i.textContent='×';i.classList.add('bg-slate-900','text-white','border-slate-900');}
 }
 
-// MOBILE MENU
 function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('hidden');}
 
-// MODALS
 var modal=document.getElementById('waitlistModal');
 var backdrop=document.getElementById('modalBackdrop');
 var panel=document.getElementById('modalPanel');
@@ -677,7 +587,6 @@ function closeInvestorModal(){
   setTimeout(function(){invModal.classList.add('hidden');invBackdrop.classList.remove('modal-exit-active');invBackdrop.classList.add('modal-enter');invPanel.classList.remove('modal-panel-exit-active');invPanel.classList.add('modal-panel-enter');},200);
 }
 
-// FORMS
 async function handleFormSubmit(e){
   e.preventDefault();var form=document.getElementById('waitlistForm');
   try{var r=await fetch(form.action,{method:form.method,body:new FormData(form),headers:{'Accept':'application/json'}});
