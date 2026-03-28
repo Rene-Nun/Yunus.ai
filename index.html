@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -480,25 +479,24 @@
 </div>
 
 <script>
-function quinc(p){return Math.round(p*0.85/5/10)*10;}
 var matches=[
   {teams:'México vs Sudáfrica', date:'11 Jun', venue:'Azteca · CDMX',    stage:'Fase de grupos', price:null},
-  {teams:'Korea vs TBA',        date:'11 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:6000},
-  {teams:'Túnez vs TBA',        date:'14 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:3000},
-  {teams:'Uzbekistán vs Colombia',date:'17 Jun',venue:'Azteca · CDMX',   stage:'Fase de grupos', price:9000},
-  {teams:'México vs Korea',     date:'18 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:19000},
-  {teams:'Túnez vs Japón',      date:'20 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:4000},
-  {teams:'Colombia vs TBA',     date:'23 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:10000},
-  {teams:'México vs TBA',       date:'24 Jun', venue:'Azteca · CDMX',    stage:'Fase de grupos', price:19000},
-  {teams:'Sudáfrica vs Korea',  date:'24 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:3000},
-  {teams:'Uruguay vs España',   date:'26 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:14000},
-  {teams:'Round of 32 · 1F vs 2C', date:'29 Jun', venue:'BBVA · MTY',    stage:'Round of 32',    price:7000},
-  {teams:'Round of 32 · 1A vs 3C', date:'30 Jun', venue:'Azteca · CDMX', stage:'Round of 32',    price:10000},
-  {teams:'Round of 16 · W79 vs W80',date:'5 Jul',  venue:'Azteca · CDMX',stage:'Round of 16',    price:13000},
+  {teams:'Korea vs TBA',        date:'11 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:1519.04},
+  {teams:'Túnez vs TBA',        date:'14 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:759.52},
+  {teams:'Uzbekistán vs Colombia',date:'17 Jun',venue:'Azteca · CDMX',   stage:'Fase de grupos', price:2278.55},
+  {teams:'México vs Korea',     date:'18 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:4810.28},
+  {teams:'Túnez vs Japón',      date:'20 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:1012.69},
+  {teams:'Colombia vs TBA',     date:'23 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:2531.72},
+  {teams:'México vs TBA',       date:'24 Jun', venue:'Azteca · CDMX',    stage:'Fase de grupos', price:4810.28},
+  {teams:'Sudáfrica vs Korea',  date:'24 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:759.52},
+  {teams:'Uruguay vs España',   date:'26 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:3544.41},
+  {teams:'Round of 32 · 1F vs 2C', date:'29 Jun', venue:'BBVA · MTY',    stage:'Round of 32',    price:1772.21},
+  {teams:'Round of 32 · 1A vs 3C', date:'30 Jun', venue:'Azteca · CDMX', stage:'Round of 32',    price:2531.72},
+  {teams:'Round of 16 · W79 vs W80',date:'5 Jul',  venue:'Azteca · CDMX',stage:'Round of 16',    price:3291.24},
 ];
 function buildCard(m){
   var priceRow = m.price
-    ? '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+quinc(m.price).toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
+    ? '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+m.price.toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
     : '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
   return '<div style="width:190px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:0;" onclick="openModal()"><div style="margin-bottom:6px;"><div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#cbd5e1;">'+m.stage+'</div><div style="font-family:\'Instrument Serif\',serif;font-size:13px;color:#0f172a;line-height:1.25;margin-top:3px;">'+m.teams+'</div></div><div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#94a3b8;">'+m.date+'</span><span style="font-family:\'Geist Mono\',monospace;font-size:9px;color:#cbd5e1;">'+m.venue+'</span></div>'+priceRow+'</div></div>';
 }
