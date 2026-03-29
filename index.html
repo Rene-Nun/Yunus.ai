@@ -517,25 +517,25 @@
                             <input type="hidden" name="Paso" value="Registro + Perfil">
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Nombre completo</label>
-                              <input type="text" name="Nombre_completo" id="nombre" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <input type="text" name="Nombre_completo" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               <div class="card-error" id="error-nombre">Este campo es requerido</div>
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Celular</label>
                               <div class="relative">
                                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">+52</span>
-                                <input type="tel" name="Celular" id="celular" pattern="[0-9]{10}" required class="w-full pl-10 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                                <input type="tel" name="Celular" pattern="[0-9]{10}" required class="w-full pl-10 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               </div>
                               <div class="card-error" id="error-celular">Debe ser 10 dígitos</div>
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Fecha de nacimiento</label>
-                              <input type="date" name="Fecha_de_nacimiento" id="fechaNac" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <input type="date" name="Fecha_de_nacimiento" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               <div class="card-error" id="error-fecha">Debes tener 18 años o más</div>
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Entidad federativa</label>
-                              <select name="Entidad_federativa" id="entidad" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <select name="Entidad_federativa" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                                 <option value="">Selecciona una entidad</option>
                                 <option value="AGU">Aguascalientes</option>
                                 <option value="BCN">Baja California</option>
@@ -574,7 +574,7 @@
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Código postal</label>
-                              <input type="text" name="Codigo_postal" id="cp" pattern="[0-9]{5}" maxlength="5" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <input type="text" name="Codigo_postal" pattern="[0-9]{5}" maxlength="5" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               <div class="card-error" id="error-cp">Debe ser 5 dígitos</div>
                             </div>
                           </form>
@@ -597,12 +597,12 @@
                           <form id="form2">
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Ingreso mensual neto</label>
-                              <input type="number" name="Ingreso_mensual" id="ingreso" min="0" step="100" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <input type="number" name="Ingreso_mensual" min="0" step="100" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               <div class="card-error" id="error-ingreso">Ingresa un número válido</div>
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Marca de celular</label>
-                              <select name="Marca_celular" id="marca" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <select name="Marca_celular" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                                 <option value="">Selecciona una marca</option>
                                 <option value="Apple">Apple</option>
                                 <option value="Samsung">Samsung</option>
@@ -641,7 +641,7 @@
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Personas que dependen de ti</label>
-                              <select name="Dependientes" id="dependientes" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <select name="Dependientes" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                                 <option value="">Selecciona</option>
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -654,7 +654,7 @@
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">¿Cómo calificarías tu historial crediticio?</label>
-                              <select name="Historial_crediticio" id="historial" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <select name="Historial_crediticio" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                                 <option value="">Selecciona</option>
                                 <option value="Bueno">Bueno</option>
                                 <option value="Regular">Regular</option>
@@ -775,15 +775,17 @@ function goToCard(n) {
   }, 300);
 }
 
-// ✅ VALIDACIÓN CARD 1
+// ✅ Validación Card 1
 function validateAndGoToCard2() {
   let valid = true;
+  const form = document.getElementById('onboardingForm');
+  const formData = new FormData(form);
 
-  const nombre = document.getElementById('nombre')?.value?.trim() || '';
-  const celular = document.getElementById('celular')?.value || '';
-  const fechaNac = document.getElementById('fechaNac')?.value || '';
-  const entidad = document.getElementById('entidad')?.value || '';
-  const cp = document.getElementById('cp')?.value || '';
+  const nombre = formData.get('Nombre_completo')?.trim() || '';
+  const celular = formData.get('Celular') || '';
+  const fechaNac = formData.get('Fecha_de_nacimiento') || '';
+  const entidad = formData.get('Entidad_federativa') || '';
+  const cp = formData.get('Codigo_postal') || '';
 
   // Resetear errores
   ['nombre', 'celular', 'fecha', 'entidad', 'cp'].forEach(id => {
@@ -825,19 +827,21 @@ function validateAndGoToCard2() {
   }
 
   if (valid) {
-    console.log("✅ Card 1 válida → avanzando a Card 2");
     goToCard(2);
   }
 }
 
-// ✅ VALIDACIÓN CARD 2
+// ✅ Validación Card 2
 function validateAndGoToCard5() {
   let valid = true;
 
-  const ingreso = document.getElementById('ingreso')?.value || '';
-  const marca = document.getElementById('marca')?.value || '';
-  const dependientes = document.getElementById('dependientes')?.value || '';
-  const historial = document.getElementById('historial')?.value || '';
+  const form2 = document.getElementById('form2');
+  const formData2 = new FormData(form2);
+
+  const ingreso = formData2.get('Ingreso_mensual') || '';
+  const marca = formData2.get('Marca_celular') || '';
+  const dependientes = formData2.get('Dependientes') || '';
+  const historial = formData2.get('Historial_crediticio') || '';
 
   // Resetear errores
   ['ingreso', 'marca', 'dependientes', 'historial'].forEach(id => {
@@ -864,15 +868,25 @@ function validateAndGoToCard5() {
   }
 
   if (valid) {
-    console.log("✅ Card 2 válida → avanzando a Card 5");
     goToCard(5);
   }
 }
 
-// ✅ SUBMIT + WHATSAPP
+// ✅ Submit + WhatsApp
 async function submitOnboardingAndOpenWhatsApp() {
-  const form = document.getElementById('onboardingForm');
-  const formData = new FormData(form);
+  const form1 = document.getElementById('onboardingForm');
+  const form2 = document.getElementById('form2');
+  const formData1 = new FormData(form1);
+  const formData2 = new FormData(form2);
+
+  // Combinar datos de ambos formularios
+  const combinedData = new FormData();
+  for (let [key, value] of formData1.entries()) {
+    combinedData.append(key, value);
+  }
+  for (let [key, value] of formData2.entries()) {
+    combinedData.append(key, value);
+  }
 
   const btn = event.target;
   const originalText = btn.innerHTML;
@@ -882,7 +896,7 @@ async function submitOnboardingAndOpenWhatsApp() {
   try {
     const response = await fetch('https://formspree.io/f/mreyjllj', {
       method: 'POST',
-      body: formData,
+      body: combinedData,
       headers: {
         'Accept': 'application/json'
       }
@@ -926,7 +940,7 @@ var matches=[
 function buildCard(m){
   var priceRow = m.price
     ? '<div style="margin-top:5px;padding-top:5px:border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+m.price.toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
-    : '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
+    : '<div style="margin-top:5px;padding-top:5px:border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
   return '<div style="width:190px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:0;" onclick="openModal()"><div style="margin-bottom:6px;"><div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#cbd5e1;">'+m.stage+'</div><div style="font-family:\'Instrument Serif\',serif;font-size:13px;color:#0f172a;line-height:1.25;margin-top:3px;">'+m.teams+'</div></div><div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#94a3b8;">'+m.date+'</span><span style="font-family:\'Geist Mono\',monospace;font-size:9px;color:#cbd5e1;">'+m.venue+'</span></div>'+priceRow+'</div></div>';
 }
 var track=document.getElementById('carouselTrack');
