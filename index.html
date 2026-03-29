@@ -175,127 +175,167 @@
 
 <!-- DEMO -->
 
+<<!-- DEMO — WhatsApp-style, CORREGIDA -->
 <section id="demo" class="py-20">
     <div class="max-w-6xl mx-auto px-6">
-        <div class="grid md:grid-cols-2 gap-16 items-center">
-        <div class="reveal border border-slate-200 rounded-xl overflow-hidden bg-white shadow-lg">
-            <div class="bg-gray-100 px-4 py-3 flex items-center gap-2 border-b border-gray-200">
-                <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                        <path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5z"/>
-                        <polyline points="12 15 12 12 14 10"/>
-                    </svg>
-                </div>
-                <div>
-                    <div class="font-semibold text-sm text-gray-900">Yunus · tu agente de boletos</div>
-                    <div class="text-xs text-gray-500">En línea • Última actividad hace 2 min</div>
-                </div>
-            </div>
-            <div id="demoChat" class="p-4 flex flex-col gap-3 max-h-[400px] overflow-y-auto bg-gray-50" style="scroll-behavior: smooth;">
-                <div class="self-end max-w-[80%]">
-                    <div class="bg-green-500 rounded-2xl rounded-bl-none px-4 py-2.5 text-sm text-white leading-relaxed">
-                        Quiero boletos para un partido en Guadalajara.
-                    </div>
-                    <div class="text-xs text-green-200 mt-1 text-left pl-2">14:02</div>
-                </div>
-                <div class="self-start max-w-[80%]">
-                    <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
-                        <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS ESTÁ PROCESANDO</div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="animate-pulse">●</span>
-                            <span class="font-mono text-[10px]">Analizando inventario GDL...</span>
-                        </div>
-                        <div class="flex items-center gap-1.5 mt-1">
-                            <span class="animate-pulse">●</span>
-                            <span class="font-mono text-[10px]">Cruzando con tu perfil...</span>
-                        </div>
-                        <div class="flex items-center gap-1.5 mt-1">
-                            <span class="animate-pulse">●</span>
-                            <span class="font-mono text-[10px]">Estructurando plan de pagos...</span>
-                        </div>
-                    </div>
-                    <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:02</div>
-                </div>
-                <div id="approvalMsg" class="hidden self-start max-w-[80%]">
-    <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
-        <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS</div>
-        ¡Encontré algo perfecto para ti! 🏆 Aquí está tu plan:
-    </div>
-    <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:03</div>
-
-    <!-- Mensaje estilo "imagen" (texto formateado para WhatsApp) -->
-    <div class="mt-3 bg-gradient-to-b from-emerald-900 to-emerald-800 rounded-xl p-4 text-white text-xs font-mono leading-tight">
-        <div class="flex justify-between items-start mb-2">
-            <div>
-                <div class="font-bold uppercase tracking-wide">Match</div>
-                <div class="text-lg font-semibold">CIUDAD DE MÉXICO — CUARTOS DE FINAL</div>
-            </div>
-            <div class="flex items-center gap-1">
-                <span class="text-emerald-200">$</span>
-                <span class="text-white">yunus</span>
-            </div>
-        </div>
-        <div class="flex justify-between items-center mb-3">
-            <div>
-                <div class="text-[10px] text-emerald-200 uppercase">Stadium</div>
-                <div class="font-bold flex items-center gap-1">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.03 2 3 6.03 3 11c0 9.41 14.41 13.17 14.41 13.17.27.06.36-.18.36-.4v-.7c0-.26-.01-.95-.02-2.01-5.47.99-6.66-2.34-6.66-2.34-.89-2.26-2.18-2.86-2.18-2.86-1.79-1.22.13-1.2.13-1.2 1.99.14 3.05 2.02 3.05 2.02 1.78 3.05 4.65 2.17 5.79 1.67.18-.66.7-2.17.7-2.75 0-1.98-.01-3.57-.01-4.04 0-.98-.67-1.79-1.77-2.42 1.24-.27 2.57-1.26 2.57-2.79 0-1.25-.04-2.27-.04-2.57 0-.61-.22-1.22-.63-1.65 1.77-.39 3.67-1.95 3.67-4.36 0-1.07-.37-1.95-1.03-2.65 1.07-.24 2.22-.76 3.05-1.48-.1-.42-.46-1.95-.46-3.98 0-1.07.37-1.95 1.03-2.65-1.07.24-2.22.76-3.05 1.48.1.42.46 1.95.46 3.98 0 1.07-.37 1.95-1.03 2.65-1.07.24-2.22.76-3.05 1.48.1.42.46 1.95.46 3.98 0 1.07-.37 1.95-1.03 2.65-1.07.24-2.22.76-3.05 1.48.1.42.46 1.95.46 3.98 0 1.07-.37 1.95-1.03 2.65-1.07.24-2.22.76-3.05 1.48.1.42.46 1.95.46 3.98 0 1.07-.37 1.95-1.03 2.65-1.07.24-2.22.76-3.05 1.48.1.42.46 1.95.46 3.98 0 1.07-.37 1.95-1.03 2.65-1.07.24-2.22.76-3.05 1.48.1.42.46 1.95.46 3.98 0 1.07-.37 1.95-1.03 2.65-1.07.24-2.22.76-3.05 1.48.1.42.46 1.95.46 3.98 0 1.07-.37 1.95-1.03 2.65-1.07.24-2.22.76-3.05 1.48.1.42.46 1.95.46 3.98 0 1.07-.37 1.95-1.03 2.65-1.07.24-2.22.76-3.05 1.48.1.42.46 1.95.46 3.98 0 1.07-.37 1.95-1.03 2.65-1.07.24-2.22.76-3.05 1.48.1.42.46 1.95.46 3.98 0 1.07-.37 1.95-1.03 2.65-1.07.24-2.22.76-3.05 1.48.1.42.46 1.95.46 3.98 0 1.07-.37 1.95-
-                                Pagar Enganche ($1,500)
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div id="demoPaid" class="hidden self-start max-w-[80%]">
-                    <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed flex items-center gap-2">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                            <polyline points="22 4 12 14.01 9 11.01"/>
+        <div class="grid md:grid-cols-2 gap-16 items-start">
+            <!-- WhatsApp Chat Mockup -->
+            <div class="reveal border border-slate-200 rounded-xl overflow-hidden bg-white shadow-lg">
+                <div class="bg-gray-100 px-4 py-3 flex items-center gap-2 border-b border-gray-200">
+                    <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5z"/>
+                            <polyline points="12 15 12 12 14 10"/>
                         </svg>
-                        ✓ Enganche pagado — boleto en tu Bóveda ✓
                     </div>
-                    <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:04</div>
+                    <div>
+                        <div class="font-semibold text-sm text-gray-900">Yunus · tu agente de boletos</div>
+                        <div class="text-xs text-gray-500">En línea • Última actividad hace 2 min</div>
+                    </div>
+                </div>
+                <div id="demoChat" class="p-4 flex flex-col gap-3 max-h-[400px] overflow-y-auto bg-gray-50" style="scroll-behavior: smooth;">
+                    <!-- Mensaje del cliente (derecha) — CORREGIDO: bg-green-500 (con guion) -->
+                    <div class="self-end max-w-[80%]">
+                        <div class="bg-green-500 rounded-2xl rounded-bl-none px-4 py-2.5 text-sm text-white leading-relaxed">
+                            Quiero boletos para un partido en Guadalajara.
+                        </div>
+                        <div class="text-xs text-green-200 mt-1 text-left pl-2">14:02</div>
+                    </div>
+
+                    <!-- Mensaje de Yunus (izquierda) - procesando -->
+                    <div class="self-start max-w-[80%]">
+                        <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
+                            <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS ESTÁ PROCESANDO</div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="animate-pulse">●</span>
+                                <span class="font-mono text-[10px]">Analizando inventario GDL...</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 mt-1">
+                                <span class="animate-pulse">●</span>
+                                <span class="font-mono text-[10px]">Cruzando con tu perfil...</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 mt-1">
+                                <span class="animate-pulse">●</span>
+                                <span class="font-mono text-[10px]">Estructurando plan de pagos...</span>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:02</div>
+                    </div>
+
+                    <!-- Mensaje de Yunus - resultado: SIMULACIÓN DE IMAGEN (corregido a 15% + 5 quincenas) -->
+                    <div id="approvalMsg" class="hidden self-start max-w-[80%]">
+                        <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
+                            <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS</div>
+                            ¡Encontré algo perfecto para ti! 🏆 Aquí está tu plan:
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:03</div>
+
+                        <!-- Simulación de "imagen" (bloque visual como screenshot) -->
+                        <div class="mt-3 bg-gray-900 rounded-xl overflow-hidden border border-gray-700 shadow-sm p-4">
+                          <div class="flex justify-between items-start mb-2">
+                            <div class="font-serif text-sm text-white">Colombia vs TBA</div>
+                            <span class="font-mono text-[9px] text-gray-400 bg-gray-800 px-1.5 py-0.5 rounded">Cat 2</span>
+                          </div>
+                          <div class="font-mono text-[10px] text-gray-300 mb-3">📍 Estadio Akron · 23 Jun 2026</div>
+
+                          <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                              <span class="text-gray-400">Total Plan:</span>
+                              <span class="text-white font-semibold">$10,000</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                              <span class="text-amber-300">Anticipo (15%):</span>
+                              <span class="text-amber-300 font-semibold">$1,500</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                              <span class="text-green-300">Pagos:</span>
+                              <span class="text-green-300 font-semibold">5 × $1,700<br><span class="text-xs opacity-80">Quincenales</span></span>
+                            </div>
+                          </div>
+
+                          <div class="mt-3 flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-500">
+                              <rect x="1" y="4" width="22" height="16" rx="2"/>
+                              <line x1="1" y1="10" x2="23" y2="10"/>
+                            </svg>
+                            <span class="text-xs text-gray-400">Yunus Bóveda</span>
+                          </div>
+                        </div>
+
+                        <!-- Mensaje final con link -->
+                        <div class="mt-3 bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
+                          👇 Para pagar tu anticipo y reservar tu lugar 👇<br>
+                          <a href="https://yunusia.com/pagar-anticipo/" class="text-blue-600 font-medium underline">https://yunusia.com/pagar-anticipo/</a>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:03</div>
+                    </div>
+
+                    <!-- Confirmación de pago -->
+                    <div id="demoPaid" class="hidden self-start max-w-[80%]">
+                        <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            ✓ Enganche pagado — boleto en tu Bóveda ✓
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:04</div>
+                    </div>
+                </div>
+
+                <!-- Input de WhatsApp -->
+                <div class="bg-white border-t border-gray-200 px-4 py-3 flex items-center gap-2">
+                    <button class="p-2 text-gray-500 hover:text-gray-700">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+                            <circle cx="12" cy="12" r="4"/>
+                        </svg>
+                    </button>
+                    <input type="text" id="demoInput" placeholder="Escribe un mensaje..." class="flex-1 bg-gray-100 border border-gray-200 rounded-full px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-green-500 transition-colors font-sans">
+                    <button id="demoBtn" onclick="runDemo()" class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white hover:bg-green-600 transition-colors">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m12 22 16-14H6z"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
-            <div class="bg-white border-t border-gray-200 px-4 py-3 flex items-center gap-2">
-                <button class="p-2 text-gray-500 hover:text-gray-700">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
-                        <circle cx="12" cy="12" r="4"/>
-                    </svg>
+
+            <!-- Texto explicativo -->
+            <div class="reveal d1">
+                <h2 class="font-serif text-3xl md:text-4xl font-normal text-slate-900 leading-tight tracking-tight mb-4">Así se ve<br><em class="text-slate-400">desde adentro.</em></h2>
+                <p class="text-slate-500 leading-relaxed mb-8">Pides el partido, Yunus analiza tu perfil y te presenta el plan exacto. Si te late, pagas el enganche y el boleto queda en tu Bóveda.</p>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
+                        <div class="text-sm text-slate-600">
+                            <strong class="text-slate-800">Sin tarjeta ni buró</strong> — solo te pedimos lo que necesitamos para verificar
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
+                        <div class="text-sm text-slate-600">
+                            <strong class="text-slate-800">El boleto queda en tu Bóveda</strong> — apartado desde el primer pago
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
+                        <div class="text-sm text-slate-600">
+                            <strong class="text-slate-800">Pagas a tu ritmo</strong> — quincena a quincena, la última antes del partido
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
+                        <div class="text-sm text-slate-600">
+                            <strong class="text-slate-800">Si no aplicas</strong> — Yunus te muestra opciones que sí están a tu alcance
+                        </div>
+                    </div>
+                </div>
+                <button onclick="openModal()" class="mt-8 bg-slate-900 text-white px-6 py-3 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2">
+                    Habla con Yunus →
                 </button>
-                <input type="text" id="demoInput" placeholder="Escribe un mensaje..." class="flex-1 bg-gray-100 border border-gray-200 rounded-full px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-green-500 transition-colors font-sans">
-                <button id="demoBtn" onclick="runDemo()" class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white hover:bg-green-600 transition-colors">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="m12 22 16-14H6z"/>
-                    </svg>
-                </button>
             </div>
-        </div>
-        <div class="reveal d1">
-            <h2 class="font-serif text-3xl md:text-4xl font-normal text-slate-900 leading-tight tracking-tight mb-4">Así se ve<br><em class="text-slate-400">desde adentro.</em></h2>
-            <p class="text-slate-500 leading-relaxed mb-8">Pides el partido, Yunus analiza tu perfil y te presenta el plan exacto. Si te late, pagas el enganche y el boleto queda en tu Bóveda.</p>
-            <div class="space-y-4">
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                    <div class="text-sm text-slate-600"><strong class="text-slate-800">Sin tarjeta ni buró</strong> — solo te pedimos lo que necesitamos para verificar</div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                    <div class="text-sm text-slate-600"><strong class="text-slate-800">El boleto queda en tu Bóveda</strong> — apartado desde el primer pago</div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                    <div class="text-sm text-slate-600"><strong class="text-slate-800">Pagas a tu ritmo</strong> — quincena a quincena, la última antes del partido</div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                    <div class="text-sm text-slate-600"><strong class="text-slate-800">Si no aplicas</strong> — Yunus te muestra opciones que sí están a tu alcance</div>
-                </div>
-            </div>
-            <button onclick="openModal()" class="mt-8 bg-slate-900 text-white px-6 py-3 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2">Habla con Yunus →</button>
         </div>
     </div>
-</div>
 </section>
 
 <!-- SEGURIDAD -->
