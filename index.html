@@ -381,7 +381,7 @@
                 <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight mb-4">¿Y si no puedes<br><em class="text-slate-400">seguir pagando?</em></h2>
                 <p class="text-slate-500 leading-relaxed mb-8">No te dejamos colgado ni te cobramos de más. Vendemos el boleto antes del partido y recuperas lo que ya pagaste.</p>
                 <div class="relative">
-                    <div class="absolute left-[10px] top-3 bottom-3 w-1px bg-slate-200"></div>
+                    <div class="absolute left-[10px] top-3 bottom-3 w-px bg-slate-200"></div>
                     <div class="space-y-6">
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">1</div><div><div class="font-semibold text-sm mb-1">Avisas desde la app</div><div class="text-xs text-slate-500 leading-relaxed">Con un clic en "Revender" le dices a Yunus que ya no puedes continuar con los pagos.</div></div></div>
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">2</div><div><div class="font-semibold text-sm mb-1">Yunus publica el boleto</div><div class="text-xs text-slate-500 leading-relaxed">Lo listamos en nuestro Marketplace cerrado a precio de mercado, antes de que llegue la fecha del partido.</div></div></div>
@@ -507,35 +507,35 @@
                     </button>
                     <div id="onboardingFlow" class="relative h-[560px] flex flex-col">
                       <!-- Card 1 -->
-                      <div id="card1" class="onboarding-card">
+                      <div id="card1" class="onboarding-card active">
                         <div class="flex justify-center mb-6">
                           <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
                         </div>
                         <div class="card-body">
                           <h3 class="font-serif text-2xl font-bold mb-6">Regístrate</h3>
-                          <form id="form1" action="https://formspree.io/f/mreyjllj" method="POST">
-                            <input type="hidden" name="Paso" value="Registro">
+                          <form id="onboardingForm" action="https://formspree.io/f/mreyjllj" method="POST">
+                            <input type="hidden" name="Paso" value="Registro + Perfil">
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Nombre completo</label>
-                              <input type="text" name="Nombre_completo" id="nombre" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <input type="text" name="Nombre_completo" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               <div class="card-error" id="error-nombre">Este campo es requerido</div>
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Celular</label>
                               <div class="relative">
                                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">+52</span>
-                                <input type="tel" name="Celular" id="celular" pattern="[0-9]{10}" required class="w-full pl-10 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                                <input type="tel" name="Celular" pattern="[0-9]{10}" required class="w-full pl-10 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               </div>
                               <div class="card-error" id="error-celular">Debe ser 10 dígitos</div>
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Fecha de nacimiento</label>
-                              <input type="date" name="Fecha_de_nacimiento" id="fechaNac" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <input type="date" name="Fecha_de_nacimiento" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               <div class="card-error" id="error-fecha">Debes tener 18 años o más</div>
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Entidad federativa</label>
-                              <select name="Entidad_federativa" id="entidad" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <select name="Entidad_federativa" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                                 <option value="">Selecciona una entidad</option>
                                 <option value="AGU">Aguascalientes</option>
                                 <option value="BCN">Baja California</option>
@@ -574,13 +574,13 @@
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Código postal</label>
-                              <input type="text" name="Codigo_postal" id="cp" pattern="[0-9]{5}" maxlength="5" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <input type="text" name="Codigo_postal" pattern="[0-9]{5}" maxlength="5" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               <div class="card-error" id="error-cp">Debe ser 5 dígitos</div>
                             </div>
-                            <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
                           </form>
                         </div>
                         <div class="card-footer">
+                          <button type="button" onclick="validateAndGoToCard2()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
                           <p class="text-xs text-slate-500 mt-4 terms-link">
                             Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
                           </p>
@@ -594,16 +594,15 @@
                         </div>
                         <div class="card-body">
                           <h3 class="font-serif text-2xl font-bold mb-6">Tu perfil financiero</h3>
-                          <form id="form2" action="https://formspree.io/f/mreyjllj" method="POST">
-                            <input type="hidden" name="Paso" value="Perfil Financiero">
+                          <form id="form2">
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Ingreso mensual neto</label>
-                              <input type="number" name="Ingreso_mensual" id="ingreso" min="0" step="100" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <input type="number" name="Ingreso_mensual" min="0" step="100" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               <div class="card-error" id="error-ingreso">Ingresa un número válido</div>
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Marca de celular</label>
-                              <select name="Marca_celular" id="marca" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <select name="Marca_celular" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                                 <option value="">Selecciona una marca</option>
                                 <option value="Apple">Apple</option>
                                 <option value="Samsung">Samsung</option>
@@ -642,7 +641,7 @@
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Personas que dependen de ti</label>
-                              <select name="Dependientes" id="dependientes" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <select name="Dependientes" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                                 <option value="">Selecciona</option>
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -655,7 +654,7 @@
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">¿Cómo calificarías tu historial crediticio?</label>
-                              <select name="Historial_crediticio" id="historial" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <select name="Historial_crediticio" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                                 <option value="">Selecciona</option>
                                 <option value="Bueno">Bueno</option>
                                 <option value="Regular">Regular</option>
@@ -664,10 +663,10 @@
                               </select>
                               <div class="card-error" id="error-historial">Selecciona una opción</div>
                             </div>
-                            <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
                           </form>
                         </div>
                         <div class="card-footer">
+                          <button type="button" onclick="validateAndGoToCard5()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
                           <p class="text-xs text-slate-500 mt-4 terms-link">
                             Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
                           </p>
@@ -777,17 +776,14 @@ function goToCard(n) {
   }, 300);
 }
 
-// ✅ VALIDACIÓN CARD 1
-function validateCard1(e) {
-  e.preventDefault(); // Prevenir submit si hay errores
-
+// ✅ Validación Card 1
+function validateAndGoToCard2() {
   let valid = true;
-
-  const nombre = document.getElementById('nombre')?.value?.trim() || '';
-  const celular = document.getElementById('celular')?.value || '';
-  const fechaNac = document.getElementById('fechaNac')?.value || '';
-  const entidad = document.getElementById('entidad')?.value || '';
-  const cp = document.getElementById('cp')?.value || '';
+  const nombre = document.querySelector('input[name="Nombre_completo"]').value.trim();
+  const celular = document.querySelector('input[name="Celular"]').value;
+  const fechaNac = document.querySelector('input[name="Fecha_de_nacimiento"]').value;
+  const entidad = document.querySelector('select[name="Entidad_federativa"]').value;
+  const cp = document.querySelector('input[name="Codigo_postal"]').value;
 
   // Resetear errores
   ['nombre', 'celular', 'fecha', 'entidad', 'cp'].forEach(id => {
@@ -807,11 +803,12 @@ function validateCard1(e) {
   if (fechaNac) {
     const birth = new Date(fechaNac);
     const today = new Date();
-    const age = today.getFullYear() - birth.getFullYear();
+    let age = today.getFullYear() - birth.getFullYear();
     const monthDiff = today.getMonth() - birth.getMonth();
-    const dayDiff = today.getDate() - birth.getDate();
-    const totalAge = monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
-    if (totalAge < 18) {
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    if (age < 18) {
       document.getElementById('error-fecha').style.display = 'block';
       valid = false;
     }
@@ -829,30 +826,23 @@ function validateCard1(e) {
   }
 
   if (valid) {
-    console.log("✅ Card 1 válida → avanzando a Card 2");
-    document.getElementById('form1').submit(); // Enviar formulario
     goToCard(2);
   }
 }
 
-// ✅ VALIDACIÓN CARD 2
-function validateCard2(e) {
-  e.preventDefault(); // Prevenir submit si hay errores
-
+// ✅ Validación Card 2
+function validateAndGoToCard5() {
   let valid = true;
+  const ingreso = document.querySelector('input[name="Ingreso_mensual"]').value;
+  const marca = document.querySelector('select[name="Marca_celular"]').value;
+  const dependientes = document.querySelector('select[name="Dependientes"]').value;
+  const historial = document.querySelector('select[name="Historial_crediticio"]').value;
 
-  const ingreso = document.getElementById('ingreso')?.value || '';
-  const marca = document.getElementById('marca')?.value || '';
-  const dependientes = document.getElementById('dependientes')?.value || '';
-  const historial = document.getElementById('historial')?.value || '';
-
-  // Resetear errores
   ['ingreso', 'marca', 'dependientes', 'historial'].forEach(id => {
     const el = document.getElementById(`error-${id}`);
     if (el) el.style.display = 'none';
   });
 
-  // Validar campos
   if (!/^[0-9]+$/.test(ingreso) || parseInt(ingreso) <= 0) {
     document.getElementById('error-ingreso').style.display = 'block';
     valid = false;
@@ -871,8 +861,6 @@ function validateCard2(e) {
   }
 
   if (valid) {
-    console.log("✅ Card 2 válida → avanzando a Card 5");
-    document.getElementById('form2').submit(); // Enviar formulario
     goToCard(5);
   }
 }
@@ -895,7 +883,7 @@ var matches=[
 ];
 function buildCard(m){
   var priceRow = m.price
-    ? '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+m.price.toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
+    ? '<div style="margin-top:5px;padding-top:5px:border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+m.price.toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
     : '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
   return '<div style="width:190px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:0;" onclick="openModal()"><div style="margin-bottom:6px;"><div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#cbd5e1;">'+m.stage+'</div><div style="font-family:\'Instrument Serif\',serif;font-size:13px;color:#0f172a;line-height:1.25;margin-top:3px;">'+m.teams+'</div></div><div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#94a3b8;">'+m.date+'</span><span style="font-family:\'Geist Mono\',monospace;font-size:9px;color:#cbd5e1;">'+m.venue+'</span></div>'+priceRow+'</div></div>';
 }
