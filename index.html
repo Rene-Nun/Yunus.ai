@@ -577,10 +577,10 @@
                               <input type="text" name="Codigo_postal" id="cp" pattern="[0-9]{5}" maxlength="5" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               <div class="card-error" id="error-cp">Debe ser 5 dígitos</div>
                             </div>
+                            <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
                           </form>
                         </div>
                         <div class="card-footer">
-                          <button type="button" onclick="validateCard1()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
                           <p class="text-xs text-slate-500 mt-4 terms-link">
                             Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
                           </p>
@@ -664,10 +664,10 @@
                               </select>
                               <div class="card-error" id="error-historial">Selecciona una opción</div>
                             </div>
+                            <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
                           </form>
                         </div>
                         <div class="card-footer">
-                          <button type="button" onclick="validateCard2()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
                           <p class="text-xs text-slate-500 mt-4 terms-link">
                             Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
                           </p>
@@ -777,8 +777,10 @@ function goToCard(n) {
   }, 300);
 }
 
-// ✅ VALIDACIÓN CARD 1 — CORREGIDA
-function validateCard1() {
+// ✅ VALIDACIÓN CARD 1
+function validateCard1(e) {
+  e.preventDefault(); // Prevenir submit si hay errores
+
   let valid = true;
 
   const nombre = document.getElementById('nombre')?.value?.trim() || '';
@@ -793,19 +795,15 @@ function validateCard1() {
     if (el) el.style.display = 'none';
   });
 
-  // Validar nombre
+  // Validar campos
   if (!nombre) {
     document.getElementById('error-nombre').style.display = 'block';
     valid = false;
   }
-
-  // Validar celular (10 dígitos)
   if (!/^[0-9]{10}$/.test(celular)) {
     document.getElementById('error-celular').style.display = 'block';
     valid = false;
   }
-
-  // Validar fecha (≥18 años)
   if (fechaNac) {
     const birth = new Date(fechaNac);
     const today = new Date();
@@ -821,14 +819,10 @@ function validateCard1() {
     document.getElementById('error-fecha').style.display = 'block';
     valid = false;
   }
-
-  // Entidad
   if (!entidad) {
     document.getElementById('error-entidad').style.display = 'block';
     valid = false;
   }
-
-  // CP (5 dígitos)
   if (!/^[0-9]{5}$/.test(cp)) {
     document.getElementById('error-cp').style.display = 'block';
     valid = false;
@@ -836,12 +830,15 @@ function validateCard1() {
 
   if (valid) {
     console.log("✅ Card 1 válida → avanzando a Card 2");
+    document.getElementById('form1').submit(); // Enviar formulario
     goToCard(2);
   }
 }
 
-// ✅ VALIDACIÓN CARD 2 — CORREGIDA
-function validateCard2() {
+// ✅ VALIDACIÓN CARD 2
+function validateCard2(e) {
+  e.preventDefault(); // Prevenir submit si hay errores
+
   let valid = true;
 
   const ingreso = document.getElementById('ingreso')?.value || '';
@@ -855,25 +852,19 @@ function validateCard2() {
     if (el) el.style.display = 'none';
   });
 
-  // Validar ingreso (número positivo)
+  // Validar campos
   if (!/^[0-9]+$/.test(ingreso) || parseInt(ingreso) <= 0) {
     document.getElementById('error-ingreso').style.display = 'block';
     valid = false;
   }
-
-  // Validar marca
   if (!marca) {
     document.getElementById('error-marca').style.display = 'block';
     valid = false;
   }
-
-  // Validar dependientes
   if (!dependientes) {
     document.getElementById('error-dependientes').style.display = 'block';
     valid = false;
   }
-
-  // Validar historial
   if (!historial) {
     document.getElementById('error-historial').style.display = 'block';
     valid = false;
@@ -881,6 +872,7 @@ function validateCard2() {
 
   if (valid) {
     console.log("✅ Card 2 válida → avanzando a Card 5");
+    document.getElementById('form2').submit(); // Enviar formulario
     goToCard(5);
   }
 }
