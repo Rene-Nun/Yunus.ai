@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yunus — Tu Lugar en el Mundial 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+   script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -34,7 +34,7 @@
         .modal-panel-enter{opacity:0;transform:translateY(10px) scale(.95)}
         .modal-panel-enter-active{opacity:1;transform:translateY(0) scale(1);transition:all 300ms ease-out}
         .modal-panel-exit-active{opacity:0;transform:translateY(10px) scale(.95);transition:all 200ms ease-in}
-        .tdot{width:5px;height:5px;background:#888;border-radius:50%;animation:blink 1.2s infinite;display:inline-block}
+        .tdot{width:5px;height:5px;background:#888;border-radius:5%;animation:blink 1.2s infinite;display:inline-block}
         .tdot:nth-child(2){animation-delay:.2s}.tdot:nth-child(3){animation-delay:.4s}
         @keyframes blink{0%,100%{opacity:.2}50%{opacity:.8}}
         .fade-in{animation:fadeIn .6s ease-out forwards}
@@ -106,8 +106,8 @@
   <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
   <symbol id="ico-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
   <symbol id="ico-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
-  <symbol id="ico-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
-  <symbol id="ico-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="ico-zap" viewBox="0 0 2424" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <symbol id="ico-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
   <symbol id="ico-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
   <symbol id="ico-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></symbol>
   <symbol id="ico-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
@@ -375,13 +375,13 @@
 
 <!-- SEGURIDAD -->
 <section id="seguridad" class="py-20 bg-slate-50 border-t border-b border-slate-100">
-    <div class="max-w-6xl mx-auto px-6">
+div class="max-w-6xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-start">
             <div class="reveal">
                 <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight mb-4">¿Y si no puedes<br><em class="text-slate-400">seguir pagando?</em></h2>
                 <p class="text-slate-500 leading-relaxed mb-8">No te dejamos colgado ni te cobramos de más. Vendemos el boleto antes del partido y recuperas lo que ya pagaste.</p>
                 <div class="relative">
-                    <div class="absolute left-[10px] top-3 bottom-3 w-px bg-slate-200"></div>
+                    <div class="absolute left-[10px] top-3 bottom-3 w-1px bg-slate-200"></div>
                     <div class="space-y-6">
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">1</div><div><div class="font-semibold text-sm mb-1">Avisas desde la app</div><div class="text-xs text-slate-500 leading-relaxed">Con un clic en "Revender" le dices a Yunus que ya no puedes continuar con los pagos.</div></div></div>
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">2</div><div><div class="font-semibold text-sm mb-1">Yunus publica el boleto</div><div class="text-xs text-slate-500 leading-relaxed">Lo listamos en nuestro Marketplace cerrado a precio de mercado, antes de que llegue la fecha del partido.</div></div></div>
@@ -453,7 +453,7 @@
                 <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Activas "Revender" en la app. Yunus pone el boleto en venta antes del partido. Con lo que se obtenga se cubre tu deuda pendiente más un 6% de comisión, y el resto es para ti. La meta es que recuperes total o parcialmente lo que ya pagaste.</div>
             </div>
             <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
-                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿El boleto es oficial?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">El boleto es oficial?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
                 <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Sí. Yunus adquiere los boletos directamente a través de canales oficiales de FIFA. Son 100% legítimos con código QR transferible. No somos reventa — somos la forma de financiar tu acceso al partido.</div>
             </div>
         </div>
@@ -476,8 +476,8 @@
 <!-- INVERSORES -->
 <section class="py-24 text-center px-6" style="background:#2a2a2a;">
     <div class="max-w-2xl mx-auto reveal">
-        <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xs font-mono text-white/40 mb-8 tracking-widest uppercase">Inversores</div>
-        <h2 class="font-serif text-3xl md:text-4xl font-normal text-white leading-tight tracking-tight mb-6">Tecnología para los<br>Excluidos Solventes.</h2>
+        <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xsono text-white/40 mb-8 tracking-widest uppercase">Inversores</div>
+        <h2 class="font-serif text-3xl md:text-4xl font-normal text-white leading-tightight mb-6">Tecnología para los<br>Excluidos Solventes.</h2>
         <p class="leading-relaxed mb-10 max-w-xl mx-auto" style="color:rgba(255,255,255,0.45);">Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado más desatendido de la región. Modelos de riesgo obsoletos dejan millones sobre la mesa. Con aprobación en tiempo real y mitigación de riesgo a través de activos de reventa garantizada, democratizamos el acceso a experiencias.</p>
         <button onclick="openInvestorModal()" class="border border-white/30 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-white hover:text-slate-900 transition-all inline-flex items-center gap-2 group">
             Solicitar Pitch Deck
@@ -513,7 +513,7 @@
                         </div>
                         <div class="card-body">
                           <h3 class="font-serif text-2xl font-bold mb-6">Regístrate</h3>
-                          <form id="onboardingForm" action="https://formspree.io/f/mreyjllj" method="POST">
+                          <form id="onboardingForm" action="#" novalidate>
                             <input type="hidden" name="Paso" value="Registro + Perfil">
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Nombre completo</label>
@@ -580,7 +580,7 @@
                           </form>
                         </div>
                         <div class="card-footer">
-                          <button type="button" onclick="validateAndGoToCard2()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
+                          <button type="button" onclickAndGoToCard2()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
                           <p class="text-xs text-slate-500 mt-4 terms-link">
                             Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
                           </p>
@@ -686,10 +686,9 @@
                           <p class="text-slate-600 mb-6">Dile a Yunus lo que quieres y armará un plan para ti.</p>
                         </div>
                         <div class="card-footer">
-                          <a href="https://wa.me/525512345678?text=Hola%2C%20soy%20Yunus%20-%20estoy%20listo%20para%20mi%20plan" 
-                             class="inline-block bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-full transition">
-                             Hablar con Yunus en WhatsApp →
-                          </a>
+                          <button type="button" onclick="submitOnboardingAndOpenWhatsApp()" class="inline-block bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-full transition">
+                            Hablar con Yunus en WhatsApp →
+                          </button>
                           <p class="text-xs text-slate-500 mt-4">Te enviaremos tu plan personalizado en los próximos <strong>5 minutos</strong>.</p>
                         </div>
                       </div>
@@ -791,7 +790,7 @@ function validateAndGoToCard2() {
     if (el) el.style.display = 'none';
   });
 
-  // Validar campos
+  // Validar
   if (!nombre) {
     document.getElementById('error-nombre').style.display = 'block';
     valid = false;
@@ -803,12 +802,11 @@ function validateAndGoToCard2() {
   if (fechaNac) {
     const birth = new Date(fechaNac);
     const today = new Date();
-    let age = today.getFullYear() - birth.getFullYear();
+    const age = today.getFullYear() - birth.getFullYear();
     const monthDiff = today.getMonth() - birth.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-      age--;
-    }
-    if (age < 18) {
+    const dayDiff = today.getDate() - birth.getDate();
+    const totalAge = monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
+    if (totalAge < 18) {
       document.getElementById('error-fecha').style.display = 'block';
       valid = false;
     }
@@ -865,6 +863,43 @@ function validateAndGoToCard5() {
   }
 }
 
+// ✅ ENVÍO FINAL CON FETCH (FUNCIONA)
+async function submitOnboardingAndOpenWhatsApp() {
+  const form = document.getElementById('onboardingForm');
+  const formData = new FormData(form);
+  
+  const btn = event.target;
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Enviando...';
+  btn.disabled = true;
+
+  try {
+    const response = await fetch('https://formspree.io/f/mreyjllj', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      // ✅ Éxito
+      setTimeout(() => {
+        window.open('https://wa.me/525512345678?text=Hola%2C%20soy%20Yunus%20-%20estoy%20listo%20para%20mi%20plan', '_blank');
+        alert('✅ ¡Registro enviado! Ahora te abrimos WhatsApp.');
+        closeOnboardingModal();
+      }, 800);
+    } else {
+      throw new Error('Error en Formspree');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('❌ Hubo un error al enviar. Por favor, inténtalo de nuevo.');
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+  }
+}
+
 // --- Resto del JS ---
 var matches=[
   {teams:'México vs Sudáfrica', date:'11 Jun', venue:'Azteca · CDMX',    stage:'Fase de grupos', price:null},
@@ -883,7 +918,7 @@ var matches=[
 ];
 function buildCard(m){
   var priceRow = m.price
-    ? '<div style="margin-top:5px;padding-top:5px:border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+m.price.toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
+    ? '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+m.price.toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
     : '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
   return '<div style="width:190px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:0;" onclick="openModal()"><div style="margin-bottom:6px;"><div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#cbd5e1;">'+m.stage+'</div><div style="font-family:\'Instrument Serif\',serif;font-size:13px;color:#0f172a;line-height:1.25;margin-top:3px;">'+m.teams+'</div></div><div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#94a3b8;">'+m.date+'</span><span style="font-family:\'Geist Mono\',monospace;font-size:9px;color:#cbd5e1;">'+m.venue+'</span></div>'+priceRow+'</div></div>';
 }
@@ -901,7 +936,7 @@ function runDemo(){
   if(demoPlayed)return;
   demoPlayed=true;
   var btn=document.getElementById('demoBtn');if(btn)btn.style.opacity='0.4';
-  setTimeout(function(){var s1=document.getElementById('step1');if(s1){s1.style.color='#475569';s1.textContent='⚡ Analizando inventario GDL... ✓';}},700);
+  setTimeout(function(){var s1=document.getElementById('step1');if(s1){s1.color='#475569';s1.textContent='⚡ Analizando inventario GDL... ✓';}},700);
   setTimeout(function(){var s2=document.getElementById('step2');if(s2){s2.style.color='#475569';s2.textContent='🔍 Cruzando con tu perfil... ✓';}},1500);
   setTimeout(function(){var s3=document.getElementById('step3');if(s3){s3.style.color='#475569';s3.textContent='✅ Plan de pagos listo ✓';}},2300);
   setTimeout(function(){var a=document.getElementById('approvalMsg');if(a)a.classList.remove('hidden');scrollChat();},3100);
@@ -922,7 +957,7 @@ function selectSede(card,sede){
     if(s){s.style.color='';}
   });
   card.classList.add('bg-slate-900','border-slate-900');
-  var n=card.querySelector('.sede-name');var s=card.querySelector('.sede-sub');
+  n=card.querySelector('.sede-name');var s=card.querySelector('.sede-sub');
   if(n){n.classList.remove('text-slate-900');n.classList.add('text-white');}
   if(s){s.style.color='rgba(255,255,255,0.5)';}
   var sel=document.getElementById('wfsede');if(sel)sel.value=sede;
