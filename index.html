@@ -103,7 +103,7 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="ico-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></symbol>
-  <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="181="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
   <symbol id="ico-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
   <symbol id="ico-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
   <symbol id="ico-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
@@ -220,7 +220,7 @@
                     <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                             <path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5z"/>
-                            <polyline points="12 15 12 1214 10"/>
+                            <polyline points="12 15 12 12 14 10"/>
                         </svg>
                     </div>
                     <div>
@@ -228,7 +228,7 @@
                         <div class="text-xs text-gray-500">En línea • Última actividad hace 2 min</div>
                     </div>
                 </div>
-                <div id="demoChat" class="p-4 flex flex-col gap-3 max-h-[400px] overflow-gray-50" style="scroll-behavior: smooth;">
+                <div id="demoChat" class="p-4 flex flex-col gap-3 max-h-[400px] overflow-y-auto bg-gray-50" style="scroll-behavior: smooth;">
                     <!-- Mensaje del cliente -->
                     <div class="self-end max-w-[80%]">
                         <div class="bg-green-500 rounded-2xl rounded-bl-none px-4 py-2.5 text-sm text-white leading-relaxed">
@@ -271,7 +271,7 @@
                             <div class="font-serif text-sm text-white">Colombia vs TBA</div>
                             <span class="font-mono text-[9px] text-gray-400 bg-gray-800 px-1.5 py-0.5 rounded">Cat 2</span>
                           </div>
-                          <div class="font-mono text-[10px] text-gray-300 mb-3 Estadio Akron · 23 Jun 2026</div>
+                          <div class="font-mono text-[10px] text-gray-300 mb-3">📍 Estadio Akron · 23 Jun 2026</div>
 
                           <div class="space-y-2">
                             <div class="flex justify-between text-sm">
@@ -449,7 +449,7 @@
                 <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">El crédito tiene un CAT del 36% anual (3% mensual), ya incluido en el plan de pagos que ves desde el principio. No hay cobros sorpresa. Si necesitas reventa, Yunus cobra adicionalmente un 6% de comisión sobre esa operación.</div>
             </div>
             <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
-                <div class="flex justify-between items-center gap-4span class="text-sm font-medium text-slate-900">¿Qué pasa si no puedo terminar de pagar?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Qué pasa si no puedo terminar de pagar?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
                 <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Activas "Revender" en la app. Yunus pone el boleto en venta antes del partido. Con lo que se obtenga se cubre tu deuda pendiente más un 6% de comisión, y el resto es para ti. La meta es que recuperes total o parcialmente lo que ya pagaste.</div>
             </div>
             <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
@@ -476,7 +476,7 @@
 <!-- INVERSORES -->
 <section class="py-24 text-center px-6" style="background:#2a2a2a;">
     <div class="max-w-2xl mx-auto reveal">
-        <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xs font-mono text-white/40 mb8 tracking-widest uppercase">Inversores</div>
+        <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xs font-mono text-white/40 mb-8 tracking-widest uppercase">Inversores</div>
         <h2 class="font-serif text-3xl md:text-4xl font-normal text-white leading-tight tracking-tight mb-6">Tecnología para los<br>Excluidos Solventes.</h2>
         <p class="leading-relaxed mb-10 max-w-xl mx-auto" style="color:rgba(255,255,255,0.45);">Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado más desatendido de la región. Modelos de riesgo obsoletos dejan millones sobre la mesa. Con aprobación en tiempo real y mitigación de riesgo a través de activos de reventa garantizada, democratizamos el acceso a experiencias.</p>
         <button onclick="openInvestorModal()" class="border border-white/30 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-white hover:text-slate-900 transition-all inline-flex items-center gap-2 group">
@@ -600,22 +600,32 @@
                               <div class="card-error" id="error-ingreso">Ingresa un número válido</div>
                             </div>
                             <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Modelo de celular</label>
-                              <select id="celModelo" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                                <option value="">Selecciona un modelo</option>
-                                <option value="iPhone 15">iPhone 15</option>
-                                <option value="iPhone 14">iPhone 14</option>
-                                <option value="Samsung S23">Samsung Galaxy S23</option>
-                                <option value="Samsung A54">Samsung Galaxy A54</option>
-                                <option value="Xiaomi 13">Xiaomi 13</option>
-                                <option value="Redmi Note 12">Redmi Note 12</option>
-                                <option value="Motorola G84">Motorola G8</option>
-                                <option value="Otro">Otro</option>
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Marca de celular</label>
+                              <select id="marca" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                                <option value="">Selecciona una marca</option>
+                                <option value="Apple">Apple</option>
+                                <option value="Samsung">Samsung</option>
+                                <option value="Xiaomi">Xiaomi</option>
+                                <option value="OPPO">OPPO</option>
+                                <option value="Realme">Realme</option>
+                                <option value="Motorola">Motorola</option>
+                                <option value="Huawei">Huawei</option>
+                                <option value="Sony">Sony</option>
+                                <option value="Nokia">Nokia</option>
+                                <option value="LG">LG</option>
+                                <option value="OnePlus">OnePlus</option>
+                                <option value="ASUS">ASUS</option>
+                                <option value="HTC">HTC</option>
+                                <option value="TCL">TCL</option>
+                                <option value="ZTE">ZTE</option>
+                                <option value="Infinix">Infinix</option>
+                                <option value="Tecno">Tecno</option>
+                                <option value="Itel">Itel</option>
+                                <option value="Poco">Poco</option>
+                                <option value="Vivo">Vivo</option>
+                                <option value="Lenovo">Lenovo</option>
                               </select>
-                              <div id="otros-modelo" class="mt-2 hidden">
-                                <input type="text" id="modelo-especifico" placeholder="Especifica el modelo" class="w-full p-3 border border-slate-300 rounded-lg">
-                              </div>
-                              <div class="card-error" id="error-modelo">Selecciona un modelo</div>
+                              <div class="card-error" id="error-marca">Selecciona una marca</div>
                             </div>
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">¿Pagas renta?</label>
@@ -655,61 +665,7 @@
                           </form>
                         </div>
                         <div class="card-footer">
-                          <button type="button" onclick="validateCard2()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
-                          <p class="text-xs text-slate-500 mt-4 terms-link">
-                            Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
-                          </p>
-                        </div>
-                      </div>
-
-                      <!-- Card 3 -->
-                      <div id="card3" class="onboarding-card">
-                        <div class="flex justify-center mb-6">
-                          <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
-                        </div>
-                        <div class="card-body">
-                          <h3 class="font-serif text-2xl font-bold mb-6">Verificación</h3>
-                          <p class="text-slate-600 mb-4">Sube fotos del INE por ambos lados</p>
-                          <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="border-2 border-dashed rounded-lg p-4 text-center">
-                              <svg class="mx-auto w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                              <p class="text-xs text-slate-500 mt-2">Frente</p>
-                              <input type="file" accept="image/*" id="ineFrente" class="hidden">
-                              <button type="button" onclick="document.getElementById('ineFrente').click()" class="mt-2 text-xs text-blue-600">Subir foto</button>
-                            </div>
-                            <div class="border-2 border-dashed rounded-lg p-4 text-center">
-                              <svg class="mx-auto w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                              <p class="text-xs text-slate-500 mt-2">Reverso</p>
-                              <input type="file" accept="image/*" id="ineReverso" class="hidden">
-                              <button type="button" onclick="document.getElementById('ineReverso').click()" class="mt-2 text-xs text-blue-600">Subir foto</button>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card-footer">
-                          <button type="button" onclick="goToCard(4)" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
-                          <p class="text-xs text-slate-500 mt-4 terms-link">
-                            Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
-                          </p>
-                        </div>
-                      </div>
-
-                      <!-- Card 4 -->
-                      <div id="card4" class="onboarding-card">
-                        <div class="flex justify-center mb-6">
-                          <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
-                        </div>
-                        <div class="card-body">
-                          <h3 class="font-serif text-2xl font-bold mb-6">Comprobante (opcional)</h3>
-                          <p class="text-slate-600 mb-4">Sube tu último comprobante de nómina para aumentar tus posibilidades</p>
-                          <div class="border-2 border-dashed rounded-lg p-6 text-center">
-                            <svg class="mx-auto w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                            <p class="text-slate-500 mt-2">Arrastra o selecciona</p>
-                            <input type="file" accept="image/pdf" id="nomina" class="hidden">
-                            <button type="button" onclick="document.getElementById('nomina').click()" class="mt-2 text-sm text-blue-600">Subir comprobante</button>
-                          </div>
-                        </div>
-                        <div class="card-footer">
-                          <button type="button" onclick="goToCard(5)" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
+                          <button type="button" onclick="validateCard2()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
                           <p class="text-xs text-slate-500 mt-4 terms-link">
                             Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
                           </p>
@@ -733,7 +689,7 @@
                              class="inline-block bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-full transition">
                              Hablar con Yunus en WhatsApp →
                           </a>
-                          <p class="text-xs text-slate-500 mt-4">Te enviaremos tu plan personalizado en los próximos 2 minutos.</p>
+                          <p class="text-xs text-slate-500 mt-4">Te enviaremos tu plan personalizado en los próximos <strong>5 minutos</strong>.</p>
                         </div>
                       </div>
                     </div>
@@ -771,7 +727,7 @@
                             <span class="icon"><svg width="24" height="24" class="text-green-600"><use href="#ico-check"/></svg></span>
                         </div>
                         <h3 class="font-serif text-2xl text-slate-900 mb-2">Solicitud recibida</h3>
- <p class="text-sm text-slate-500">Nos pondremos en contacto a la brevedad.</p>
+                        <p class="text-sm text-slate-500">Nos pondremos en contacto a la brevedad.</p>
                         <button onclick="closeInvestorModal()" class="mt-6 text-xs text-slate-400 hover:text-slate-600 underline underline-offset-2">Cerrar</button>
                     </div>
                 </div>
@@ -888,7 +844,7 @@ function validateCard1() {
 function validateCard2() {
   let valid = true;
   const ingreso = document.getElementById('ingreso').value;
-  const modelo = document.getElementById('celModelo').value;
+  const marca = document.getElementById('marca').value;
   const dependientes = document.getElementById('dependientes').value;
   const historial = document.getElementById('historial').value;
 
@@ -900,12 +856,12 @@ function validateCard2() {
     document.getElementById('error-ingreso').style.display = 'none';
   }
 
-  // Modelo
-  if (!modelo) {
-    document.getElementById('error-modelo').style.display = 'block';
+  // Marca
+  if (!marca) {
+    document.getElementById('error-marca').style.display = 'block';
     valid = false;
   } else {
-    document.getElementById('error-modelo').style.display = 'none';
+    document.getElementById('error-marca').style.display = 'none';
   }
 
   // Dependientes
@@ -925,19 +881,9 @@ function validateCard2() {
   }
 
   if (valid) {
-    goToCard(3);
+    goToCard(5);
   }
 }
-
-// Modelo "Otro"
-document.getElementById('celModelo').addEventListener('change', function() {
-  const div = document.getElementById('otros-modelo');
-  if (this.value === 'Otro') {
-    div.classList.remove('hidden');
-  } else {
-    div.classList.add('hidden');
-  }
-});
 
 // --- Resto del JS ---
 var matches=[
@@ -958,7 +904,7 @@ var matches=[
 function buildCard(m){
   var priceRow = m.price
     ? '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+m.price.toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
-    : '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
+    : '<div style="margin-top:5px;padding-top:5px:border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
   return '<div style="width:190px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:0;" onclick="openModal()"><div style="margin-bottom:6px;"><div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#cbd5e1;">'+m.stage+'</div><div style="font-family:\'Instrument Serif\',serif;font-size:13px;color:#0f172a;line-height:1.25;margin-top:3px;">'+m.teams+'</div></div><div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#94a3b8;">'+m.date+'</span><span style="font-family:\'Geist Mono\',monospace;font-size:9px;color:#cbd5e1;">'+m.venue+'</span></div>'+priceRow+'</div></div>';
 }
 var track=document.getElementById('carouselTrack');
