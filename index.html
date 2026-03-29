@@ -10,7 +10,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        serif: ['Instrument Serif', 'Georgia', 'serif'],
+                        serif: ['', 'Georgia', 'serif'],
                         sans:  ['Geist', 'system-ui', 'sans-serif'],
                         mono:  ['Geist Mono', 'monospace'],
                     }
@@ -19,7 +19,7 @@
         }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@40;500&display=swap" rel="stylesheet">
     <style>
         ::selection{background:#0a0a0a;color:#fff}
         .carousel-track{display:flex;gap:10px;width:max-content;animation:cscroll 60s linear infinite}
@@ -41,6 +41,8 @@
         @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
         .icon{display:inline-block;vertical-align:middle;flex-shrink:0}
         .icon svg{display:block}
+        
+        /* WhatsApp chat fixes */
         #demoChat {
             height: auto;
             max-height: 400px;
@@ -55,13 +57,53 @@
             background: #e5e7eb;
             border-radius: 3px;
         }
+
+        /* Onboarding Cards — SCROLL INTERNO */
+        .onboarding-card {
+          transition: opacity 0.3s, transform 0.3s;
+          opacity: 0;
+          transform: translateX(20px);
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          flex-direction: column;
+        }
+        .onboarding-card.active {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        .onboarding-card.hidden {
+          display: none;
+        }
+        .card-body {
+          flex: 1;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+          padding-bottom: 24px;
+        }
+        .card-footer {
+          flex-shrink: 0;
+          padding-top: 16px;
+        }
+        .card-error {
+          color: #dc2626;
+          font-size: 13px;
+          margin-top: 4px;
+          display: none;
+        }
+        .terms-link {
+          @apply text-xs text-slate-500 underline hover:text-slate-700;
+        }
     </style>
 </head>
 <body class="font-sans text-slate-800 bg-white min-h-screen antialiased">
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="ico-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></symbol>
-  <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="181="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
   <symbol id="ico-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
   <symbol id="ico-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
   <symbol id="ico-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
@@ -75,35 +117,32 @@
 </svg>
 
 <!-- NAV -->
-
 <header id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
         <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
         <div class="hidden md:flex items-center gap-6">
             <a href="#solucion" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Cómo funciona</a>
             <a href="#seguridad" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Si no puedes pagar</a>
-            <button onclick="openModal()" class="px-5 py-2 rounded bg-slate-900 text-white text-sm font-medium hover:bg-slate-700 transition-colors">Ve al mundial →</button>
+            <button onclick="openOnboardingModal()" class="px-5 py-2 rounded bg-slate-900 text-white text-sm font-medium hover:bg-slate-700 transition-colors">Ve al mundial →</button>
         </div>
         <button class="md:hidden p-2" onclick="toggleMenu()">
             <span class="icon"><svg width="20" height="20" class="text-slate-600"><use href="#ico-menu"/></svg></span>
         </button>
     </div>
     <div id="mobileMenu" class="hidden absolute top-full left-0 right-0 bg-white border-b border-slate-100 p-4 shadow flex flex-col gap-2">
-        <a href="#solucion" class="text-sm text-slate py-2" onclick="toggleMenu()">Cómo funciona</a>
+        <a href="#solucion" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Cómo funciona</a>
         <a href="#seguridad" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Si no puedes pagar</a>
-        <button onclick="openModal();toggleMenu()" class="w-full py-2.5 rounded bg-slate-900 text-white text-sm font-medium">Ve al mundial →</button>
+        <button onclick="openOnboardingModal();toggleMenu()" class="w-full py-2.5 rounded bg-slate-900 text-white text-sm font-medium">Ve al mundial →</button>
     </div>
 </header>
 
 <!-- ANNOUNCE -->
-
 <div class="bg-slate-900 text-white text-center px-6 py-2.5 font-mono text-xs tracking-wide mt-20">
     Lugares limitados · Compra a partir del <strong>2 de abril</strong>
-    <button onclick="openModal()" class="underline underline-offset-2 ml-2 hover:opacity-70 transition-opacity">Aplicar →</button>
+    <button onclick="openOnboardingModal()" class="underline underline-offset-2 ml-2 hover:opacity-70 transition-opacity">Aplicar →</button>
 </div>
 
 <!-- CAROUSEL -->
-
 <div class="overflow-hidden border-b border-slate-100 py-3 relative bg-white">
     <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
     <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
@@ -111,7 +150,6 @@
 </div>
 
 <!-- HERO -->
-
 <section class="pt-16 pb-20 md:pt-20 md:pb-28 text-center">
     <div class="max-w-4xl mx-auto px-6">
         <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-normal leading-[1.02] tracking-tight text-slate-900 mb-6">
@@ -122,7 +160,7 @@
             <strong class="text-slate-800 font-medium">Sin tarjeta de crédito. Sin buró. Sin complicaciones.</strong>
         </p>
         <div class="flex flex-col items-center gap-3">
-            <button onclick="openModal()" class="bg-slate-900 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 hover:shadow-lg inline-flex items-center gap-2 group">
+            <button onclick="openOnboardingModal()" class="bg-slate-900 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 hover:shadow-lg inline-flex items-center gap-2 group">
                 Quiero ir al mundial
                 <span class="icon group-hover:translate-x-1 transition-transform inline-block"><svg width="16" height="16"><use href="#ico-arrow-right"/></svg></span>
             </button>
@@ -131,7 +169,7 @@
             </a>
         </div>
         <div class="flex items-center justify-center gap-3 mt-6 flex-wrap">
-            <span class="inline-flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1 font-mono text-[11px] text-slate-400">
+            <span class="inline-flex items-center gap-.5 border border-slate-200 rounded-full px-3 py-1 font-mono text-[11px] text-slate-400">
                 <span class="icon"><svg width="12" height="12"><use href="#ico-zap"/></svg></span> A partir del 2 de abril
             </span>
             <span class="inline-flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1 font-mono text-[11px] text-slate-400">36% CAT anual</span>
@@ -142,7 +180,6 @@
 <hr class="border-slate-100">
 
 <!-- CÓMO FUNCIONA -->
-
 <section id="solucion" class="py-20 bg-slate-50 border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-6">
         <div class="reveal text-center max-w-lg mx-auto mb-12">
@@ -183,7 +220,7 @@
                     <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                             <path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5z"/>
-                            <polyline points="12 15 12 12 14 10"/>
+                            <polyline points="12 15 12 1214 10"/>
                         </svg>
                     </div>
                     <div>
@@ -191,8 +228,8 @@
                         <div class="text-xs text-gray-500">En línea • Última actividad hace 2 min</div>
                     </div>
                 </div>
-                <div id="demoChat" class="p-4 flex flex-col gap-3 max-h-[400px] overflow-y-auto bg-gray-50" style="scroll-behavior: smooth;">
-                    <!-- Mensaje del cliente (derecha) — CORREGIDO: bg-green-500 (con guion) -->
+                <div id="demoChat" class="p-4 flex flex-col gap-3 max-h-[400px] overflow-gray-50" style="scroll-behavior: smooth;">
+                    <!-- Mensaje del cliente -->
                     <div class="self-end max-w-[80%]">
                         <div class="bg-green-500 rounded-2xl rounded-bl-none px-4 py-2.5 text-sm text-white leading-relaxed">
                             Quiero boletos para un partido en Guadalajara.
@@ -200,7 +237,7 @@
                         <div class="text-xs text-green-200 mt-1 text-left pl-2">14:02</div>
                     </div>
 
-                    <!-- Mensaje de Yunus (izquierda) - procesando -->
+                    <!-- Mensaje de Yunus - procesando -->
                     <div class="self-start max-w-[80%]">
                         <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
                             <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS ESTÁ PROCESANDO</div>
@@ -220,7 +257,7 @@
                         <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:02</div>
                     </div>
 
-                    <!-- Mensaje de Yunus - resultado: SIMULACIÓN DE IMAGEN (corregido a 15% + 5 quincenas) -->
+                    <!-- Mensaje de Yunus - resultado -->
                     <div id="approvalMsg" class="hidden self-start max-w-[80%]">
                         <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
                             <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS</div>
@@ -228,13 +265,13 @@
                         </div>
                         <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:03</div>
 
-                        <!-- Simulación de "imagen" (bloque visual como screenshot) -->
+                        <!-- Simulación de imagen -->
                         <div class="mt-3 bg-gray-900 rounded-xl overflow-hidden border border-gray-700 shadow-sm p-4">
                           <div class="flex justify-between items-start mb-2">
                             <div class="font-serif text-sm text-white">Colombia vs TBA</div>
                             <span class="font-mono text-[9px] text-gray-400 bg-gray-800 px-1.5 py-0.5 rounded">Cat 2</span>
                           </div>
-                          <div class="font-mono text-[10px] text-gray-300 mb-3">📍 Estadio Akron · 23 Jun 2026</div>
+                          <div class="font-mono text-[10px] text-gray-300 mb-3 Estadio Akron · 23 Jun 2026</div>
 
                           <div class="space-y-2">
                             <div class="flex justify-between text-sm">
@@ -260,7 +297,7 @@
                           </div>
                         </div>
 
-                        <!-- Mensaje final con link -->
+                        <!-- Mensaje final -->
                         <div class="mt-3 bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
                           👇 Para pagar tu anticipo y reservar tu lugar 👇<br>
                           <a href="https://yunusia.com/pagar-anticipo/" class="text-blue-600 font-medium underline">https://yunusia.com/pagar-anticipo/</a>
@@ -268,7 +305,7 @@
                         <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:03</div>
                     </div>
 
-                    <!-- Confirmación de pago -->
+                    <!-- Confirmación -->
                     <div id="demoPaid" class="hidden self-start max-w-[80%]">
                         <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed flex items-center gap-2">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -281,7 +318,7 @@
                     </div>
                 </div>
 
-                <!-- Input de WhatsApp -->
+                <!-- Input -->
                 <div class="bg-white border-t border-gray-200 px-4 py-3 flex items-center gap-2">
                     <button class="p-2 text-gray-500 hover:text-gray-700">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -328,7 +365,7 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="openModal()" class="mt-8 bg-slate-900 text-white px-6 py-3 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2">
+                <button onclick="openOnboardingModal()" class="mt-8 bg-slate-900 text-white px-6 py-3 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2">
                     Habla con Yunus →
                 </button>
             </div>
@@ -337,7 +374,6 @@
 </section>
 
 <!-- SEGURIDAD -->
-
 <section id="seguridad" class="py-20 bg-slate-50 border-t border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-start">
@@ -345,9 +381,9 @@
                 <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight mb-4">¿Y si no puedes<br><em class="text-slate-400">seguir pagando?</em></h2>
                 <p class="text-slate-500 leading-relaxed mb-8">No te dejamos colgado ni te cobramos de más. Vendemos el boleto antes del partido y recuperas lo que ya pagaste.</p>
                 <div class="relative">
-                    <div class="absolute left-[10px] top-3 bottom-3 w-px bg-slate-200"></div>
+                    <div class="absolute left-[10px] top-3 bottom-3 w-1px bg-slate-200"></div>
                     <div class="space-y-6">
-                        <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">1</div><div><div class="font-semibold text-sm mb-1">Avisa a Yunus</div><div class="text-xs text-slate-500 leading-relaxed">Con un mensaje de "Revender" le dices a Yunus que ya no puedes continuar con los pagos.</div></div></div>
+                        <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">1</div><div><div class="font-semibold text-sm mb-1">Avisas desde la app</div><div class="text-xs text-slate-500 leading-relaxed">Con un clic en "Revender" le dices a Yunus que ya no puedes continuar con los pagos.</div></div></div>
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">2</div><div><div class="font-semibold text-sm mb-1">Yunus publica el boleto</div><div class="text-xs text-slate-500 leading-relaxed">Lo listamos en nuestro Marketplace cerrado a precio de mercado, antes de que llegue la fecha del partido.</div></div></div>
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">3</div><div><div class="font-semibold text-sm mb-1">Se vende y se liquida tu deuda</div><div class="text-xs text-slate-500 leading-relaxed">Con lo que se obtenga, se cubre lo que aún debías más un 6% de comisión por el servicio de reventa.</div></div></div>
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">4</div><div><div class="font-semibold text-sm mb-1">Lo que sobre es tuyo</div><div class="text-xs text-slate-500 leading-relaxed">El resto va directo a tu cuenta. La meta es que recuperes total o parcialmente lo que ya habías pagado. Nadie pierde.</div></div></div>
@@ -371,7 +407,6 @@
 </section>
 
 <!-- SEDES -->
-
 <section id="sedes" class="py-20">
     <div class="max-w-6xl mx-auto px-6">
         <div class="reveal text-center max-w-md mx-auto mb-10">
@@ -395,7 +430,6 @@
 </section>
 
 <!-- FAQ -->
-
 <section id="faq" class="py-20 bg-slate-50 border-t border-slate-100">
     <div class="max-w-6xl mx-auto px-6">
         <div class="reveal text-center max-w-sm mx-auto mb-12">
@@ -404,19 +438,19 @@
         <div class="max-w-2xl mx-auto divide-y divide-slate-200 border-t border-b border-slate-200">
             <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
                 <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cómo saben si puedo pagar el boleto?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
-                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Al registrarte, Yunus hace una verificación rápida para saber si el plan de pagos es viable para ti — sin consultar buró. Si aplicas, te envia tu plan de pagos. Si no, te mostramos opciones que sí están a tu alcance.</div>
+                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Al registrarte, Yunus hace una verificación rápida para saber si el plan de pagos es viable para ti — sin consultar buró ni pedirte documentos. Si aplicas, ves el plan directo en la app. Si no, te mostramos opciones que sí están a tu alcance.</div>
             </div>
             <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
                 <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cuánto tengo que pagar para apartar el boleto?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
-                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">El 15% del valor del boleto, pagadero vía SPEI o efectivo en Oxxo. Con ese pago, el boleto queda en tu boveda y Yunus lo mantiene apartado para ti. El resto lo vas pagando en quincenas.</div>
+                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">El 15% del valor del boleto, pagadero vía SPEI o efectivo en Oxxo. Con ese pago, el boleto queda en tu Wallet y Yunus lo mantiene apartado para ti. El resto lo vas pagando en quincenas.</div>
             </div>
             <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
                 <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cuánto me cobra Yunus por el servicio?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
                 <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">El crédito tiene un CAT del 36% anual (3% mensual), ya incluido en el plan de pagos que ves desde el principio. No hay cobros sorpresa. Si necesitas reventa, Yunus cobra adicionalmente un 6% de comisión sobre esa operación.</div>
             </div>
             <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
-                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Qué pasa si no puedo terminar de pagar?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
-                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Le mandas "Revender" a Yunus. Yunus pone el boleto en venta antes del partido. Con lo que se obtenga se cubre tu deuda pendiente más un 6% de comisión, y el resto es para ti. La meta es que recuperes total o parcialmente lo que ya pagaste.</div>
+                <div class="flex justify-between items-center gap-4span class="text-sm font-medium text-slate-900">¿Qué pasa si no puedo terminar de pagar?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Activas "Revender" en la app. Yunus pone el boleto en venta antes del partido. Con lo que se obtenga se cubre tu deuda pendiente más un 6% de comisión, y el resto es para ti. La meta es que recuperes total o parcialmente lo que ya pagaste.</div>
             </div>
             <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
                 <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿El boleto es oficial?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
@@ -427,24 +461,22 @@
 </section>
 
 <!-- FINAL CTA -->
-
 <section class="py-28 bg-slate-900 text-white text-center px-6">
     <div class="max-w-2xl mx-auto reveal">
         <h2 class="font-serif text-4xl md:text-6xl font-normal leading-tight tracking-tight mb-6">Los boletos<br><em class="text-slate-500">no esperan.</em><br>Tú tampoco.</h2>
-        <p class="text-slate-400 text-lg font-light leading-relaxed mb-10 max-w-sm mx-auto">Aplica ahora y sé de los primeros en recibir tu financiación el 2 de abril.</p>
-        <button onclick="openModal()" class="bg-white text-slate-900 px-8 py-3.5 rounded text-sm font-medium hover:bg-slate-100 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2 group">
-            Solicitar
+        <p class="text-slate-400 text-lg font-light leading-relaxed mb-10 max-w-sm mx-auto">Solicita tu acceso ahora y sé de los primeros en entrar cuando el Beta abra el 2 de abril.</p>
+        <button onclick="openOnboardingModal()" class="bg-white text-slate-900 px-8 py-3.5 rounded text-sm font-medium hover:bg-slate-100 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2 group">
+            Solicitar acceso anticipado
             <span class="icon group-hover:translate-x-1 transition-transform inline-block"><svg width="16" height="16"><use href="#ico-arrow-right"/></svg></span>
         </button>
-        <div class="mt-4 font-mono text-xs text-slate-600">Sin costo · Sin compromiso · Lugares limitados</div>
+        <div class="mt-4 font-mono text-xs text-slate-600">Sin costo · Sin compromiso · Acceso por invitación</div>
     </div>
 </section>
 
-<!-- INVERSORES — fondo gris rata oscuro -->
-
+<!-- INVERSORES -->
 <section class="py-24 text-center px-6" style="background:#2a2a2a;">
     <div class="max-w-2xl mx-auto reveal">
-        <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xs font-mono text-white/40 mb-8 tracking-widest uppercase">Inversores</div>
+        <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xs font-mono text-white/40 mb8 tracking-widest uppercase">Inversores</div>
         <h2 class="font-serif text-3xl md:text-4xl font-normal text-white leading-tight tracking-tight mb-6">Tecnología para los<br>Excluidos Solventes.</h2>
         <p class="leading-relaxed mb-10 max-w-xl mx-auto" style="color:rgba(255,255,255,0.45);">Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado más desatendido de la región. Modelos de riesgo obsoletos dejan millones sobre la mesa. Con aprobación en tiempo real y mitigación de riesgo a través de activos de reventa garantizada, democratizamos el acceso a experiencias.</p>
         <button onclick="openInvestorModal()" class="border border-white/30 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-white hover:text-slate-900 transition-all inline-flex items-center gap-2 group">
@@ -454,8 +486,7 @@
     </div>
 </section>
 
-<!-- FOOTER — Bianca + logo -->
-
+<!-- FOOTER -->
 <footer class="bg-white border-t border-slate-200 py-10 px-6">
     <div class="max-w-6xl mx-auto flex flex-col items-center gap-4 text-center">
         <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
@@ -464,45 +495,247 @@
     </div>
 </footer>
 
-<!-- MODAL WAITLIST -->
-
-<div id="waitlistModal" class="relative z-[100] hidden" role="dialog" aria-modal="true">
-    <div id="modalBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm modal-enter" onclick="closeModal()"></div>
+<!-- MODAL ONBOARDING -->
+<div id="onboardingModal" class="relative z-[100] hidden" role="dialog" aria-modal="true">
+    <div id="onboardingBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm modal-enter" onclick="closeOnboardingModal()"></div>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
-            <div id="modalPanel" class="relative bg-white rounded-xl shadow-2xl w-full max-w-md modal-panel-enter overflow-hidden">
+            <div id="onboardingPanel" class="relative bg-white rounded-xl shadow-2xl w-full max-w-md modal-panel-enter overflow-hidden">
                 <div class="p-8 relative">
-                    <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-300 hover:text-slate-600 transition-colors p-1">
+                    <button onclick="closeOnboardingModal()" class="absolute top-4 right-4 text-slate-300 hover:text-slate-600 transition-colors p-1">
                         <span class="icon"><svg width="16" height="16"><use href="#ico-x"/></svg></span>
                     </button>
-                    <div id="modalContent">
-                        <div class="inline-flex items-center gap-2 bg-slate-900 text-white font-mono text-xs px-3 py-1 rounded mb-5">⬤ Limitado a invitación</div>
-                        <h3 class="font-serif text-2xl font-normal text-slate-900 mb-2 leading-tight">Solicita tu<br><em>acceso anticipado.</em></h3>
-                        <p class="text-slate-500 text-sm mb-6 leading-relaxed">Los registros anticipados obtienen acceso prioritario el 2 de abril, condiciones especiales de Beta y atención directa del equipo.</p>
-                        <form id="waitlistForm" action="https://formspree.io/f/mreyjllj" method="POST" class="space-y-3" onsubmit="handleFormSubmit(event)">
-                            <input type="hidden" name="Tipo" value="WAITLIST - USUARIO">
-                            <input type="text" name="Nombre" id="wfname" placeholder="Nombre completo" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
-                            <input type="tel" name="Celular" id="wfphone" placeholder="Celular (+52 614 123 4567)" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
-                            <select name="Sede" id="wfsede" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm text-slate-700 focus:border-slate-900 outline-none transition-colors appearance-none bg-white">
-                                <option value="" disabled selected>¿A qué sede quieres ir?</option>
-                                <option value="CDMX">Ciudad de México — Estadio Azteca</option>
-                                <option value="Monterrey">Monterrey — Estadio BBVA</option>
-                                <option value="Guadalajara">Guadalajara — Estadio Akron</option>
-                            </select>
-                            <div class="text-xs text-slate-400 bg-slate-50 border border-slate-100 rounded px-3 py-2.5 leading-relaxed">Te enviaremos los próximos pasos y tu invitación de acceso a traves de whatsapp.</div>
-                            <input type="text" name="_gotcha" style="display:none">
-                            <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded text-sm font-medium hover:bg-slate-700 transition-colors">Solicitar acceso anticipado →</button>
-                            <p class="text-center text-[11px] text-slate-400">Sin costo. Puedes cancelar tu registro en cualquier momento.</p>
-                        </form>
-                    </div>
-                    <div id="successMessage" class="hidden text-center py-8 fade-in">
-                        <div class="mx-auto w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-4">
-                            <span class="icon"><svg width="24" height="24" class="text-green-600"><use href="#ico-check"/></svg></span>
+                    <div id="onboardingFlow" class="relative h-[560px] flex flex-col">
+                      <!-- Card 1 -->
+                      <div id="card1" class="onboarding-card">
+                        <div class="flex justify-center mb-6">
+                          <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
                         </div>
-                        <h3 class="font-serif text-2xl text-slate-900 mb-2">Ya estás dentro.</h3>
-                        <p class="text-sm text-slate-500 leading-relaxed">Tu solicitud está confirmada. Recibirás en tu correo los próximos pasos y tu invitación de acceso cuando el Beta abra el 2 de abril.</p>
-                        <p class="mt-3 font-mono text-[11px] text-slate-400">Bienvenido a Yunus.</p>
-                        <button onclick="closeModal()" class="mt-6 text-xs text-slate-400 hover:text-slate-600 underline underline-offset-2">Cerrar</button>
+                        <div class="card-body">
+                          <h3 class="font-serif text-2xl font-bold mb-6">Regístrate</h3>
+                          <form id="form1">
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Nombre completo</label>
+                              <input type="text" id="nombre" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <div class="card-error" id="error-nombre">Este campo es requerido</div>
+                            </div>
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Celular</label>
+                              <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">+52</span>
+                                <input type="tel" id="celular" pattern="[0-9]{10}" required class="w-full pl-10 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              </div>
+                              <div class="card-error" id="error-celular">Debe ser 10 dígitos</div>
+                            </div>
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Fecha de nacimiento</label>
+                              <input type="date" id="fechaNac" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <div class="card-error" id="error-fecha">Debes tener 18 años o más</div>
+                            </div>
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Entidad federativa</label>
+                              <select id="entidad" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                                <option value="">Selecciona una entidad</option>
+                                <option value="AGU">Aguascalientes</option>
+                                <option value="BCN">Baja California</option>
+                                <option value="BCS">Baja California Sur</option>
+                                <option value="CAM">Campeche</option>
+                                <option value="COA">Coahuila</option>
+                                <option value="COL">Colima</option>
+                                <option value="CHP">Chiapas</option>
+                                <option value="CHH">Chihuahua</option>
+                                <option value="DIF">Ciudad de México</option>
+                                <option value="DUR">Durango</option>
+                                <option value="GTO">Guanajuato</option>
+                                <option value="GRO">Guerrero</option>
+                                <option value="HGO">Hidalgo</option>
+                                <option value="JAL">Jalisco</option>
+                                <option value="MEX">México</option>
+                                <option value="MIC">Michoacán</option>
+                                <option value="MOR">Morelos</option>
+                                <option value="NAY">Nayarit</option>
+                                <option value="NL">Nuevo León</option>
+                                <option value="OAX">Oaxaca</option>
+                                <option value="PUE">Puebla</option>
+                                <option value="QRO">Querétaro</option>
+                                <option value="QROO">Quintana Roo</option>
+                                <option value="SLP">San Luis Potosí</option>
+                                <option value="SIN">Sinaloa</option>
+                                <option value="SON">Sonora</option>
+                                <option value="TAB">Tabasco</option>
+                                <option value="TAM">Tamaulipas</option>
+                                <option value="TLA">Tlaxcala</option>
+                                <option value="VER">Veracruz</option>
+                                <option value="YUC">Yucatán</option>
+                                <option value="ZAC">Zacatecas</option>
+                              </select>
+                              <div class="card-error" id="error-entidad">Selecciona una entidad</div>
+                            </div>
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Código postal</label>
+                              <input type="text" id="cp" pattern="[0-9]{5}" maxlength="5" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <div class="card-error" id="error-cp">Debe ser 5 dígitos</div>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="card-footer">
+                          <button type="button" onclick="validateCard1()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente</button>
+                          <p class="text-xs text-slate-500 mt-4 terms-link">
+                            Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
+                          </p>
+                        </div>
+                      </div>
+
+                      <!-- Card 2 -->
+                      <div id="card2" class="onboarding-card">
+                        <div class="flex justify-center mb-6">
+                          <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
+                        </div>
+                        <div class="card-body">
+                          <h3 class="font-serif text-2xl font-bold mb-6">Tu perfil financiero</h3>
+                          <form id="form2">
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Ingreso mensual neto</label>
+                              <input type="number" id="ingreso" min="0" step="100" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                              <div class="card-error" id="error-ingreso">Ingresa un número válido</div>
+                            </div>
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Modelo de celular</label>
+                              <select id="celModelo" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                                <option value="">Selecciona un modelo</option>
+                                <option value="iPhone 15">iPhone 15</option>
+                                <option value="iPhone 14">iPhone 14</option>
+                                <option value="Samsung S23">Samsung Galaxy S23</option>
+                                <option value="Samsung A54">Samsung Galaxy A54</option>
+                                <option value="Xiaomi 13">Xiaomi 13</option>
+                                <option value="Redmi Note 12">Redmi Note 12</option>
+                                <option value="Motorola G84">Motorola G8</option>
+                                <option value="Otro">Otro</option>
+                              </select>
+                              <div id="otros-modelo" class="mt-2 hidden">
+                                <input type="text" id="modelo-especifico" placeholder="Especifica el modelo" class="w-full p-3 border border-slate-300 rounded-lg">
+                              </div>
+                              <div class="card-error" id="error-modelo">Selecciona un modelo</div>
+                            </div>
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">¿Pagas renta?</label>
+                              <div class="flex gap-4">
+                                <label class="flex items-center">
+                                  <input type="radio" name="renta" value="si" class="mr-2" required> Sí
+                                </label>
+                                <label class="flex items-center">
+                                  <input type="radio" name="renta" value="no" class="mr-2"> No
+                                </label>
+                              </div>
+                            </div>
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Personas que dependen de ti</label>
+                              <select id="dependientes" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                                <option value="">Selecciona</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5+</option>
+                              </select>
+                              <div class="card-error" id="error-dependientes">Selecciona una opción</div>
+                            </div>
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">¿Cómo calificarías tu historial crediticio?</label>
+                              <select id="historial" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                                <option value="">Selecciona</option>
+                                <option value="bueno">Bueno</option>
+                                <option value="regular">Regular</option>
+                                <option value="malo">Malo</option>
+                                <option value="ninguno">No tengo / No sé</option>
+                              </select>
+                              <div class="card-error" id="error-historial">Selecciona una opción</div>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="card-footer">
+                          <button type="button" onclick="validateCard2()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
+                          <p class="text-xs text-slate-500 mt-4 terms-link">
+                            Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
+                          </p>
+                        </div>
+                      </div>
+
+                      <!-- Card 3 -->
+                      <div id="card3" class="onboarding-card">
+                        <div class="flex justify-center mb-6">
+                          <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
+                        </div>
+                        <div class="card-body">
+                          <h3 class="font-serif text-2xl font-bold mb-6">Verificación</h3>
+                          <p class="text-slate-600 mb-4">Sube fotos del INE por ambos lados</p>
+                          <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="border-2 border-dashed rounded-lg p-4 text-center">
+                              <svg class="mx-auto w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                              <p class="text-xs text-slate-500 mt-2">Frente</p>
+                              <input type="file" accept="image/*" id="ineFrente" class="hidden">
+                              <button type="button" onclick="document.getElementById('ineFrente').click()" class="mt-2 text-xs text-blue-600">Subir foto</button>
+                            </div>
+                            <div class="border-2 border-dashed rounded-lg p-4 text-center">
+                              <svg class="mx-auto w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                              <p class="text-xs text-slate-500 mt-2">Reverso</p>
+                              <input type="file" accept="image/*" id="ineReverso" class="hidden">
+                              <button type="button" onclick="document.getElementById('ineReverso').click()" class="mt-2 text-xs text-blue-600">Subir foto</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-footer">
+                          <button type="button" onclick="goToCard(4)" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
+                          <p class="text-xs text-slate-500 mt-4 terms-link">
+                            Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
+                          </p>
+                        </div>
+                      </div>
+
+                      <!-- Card 4 -->
+                      <div id="card4" class="onboarding-card">
+                        <div class="flex justify-center mb-6">
+                          <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
+                        </div>
+                        <div class="card-body">
+                          <h3 class="font-serif text-2xl font-bold mb-6">Comprobante (opcional)</h3>
+                          <p class="text-slate-600 mb-4">Sube tu último comprobante de nómina para aumentar tus posibilidades</p>
+                          <div class="border-2 border-dashed rounded-lg p-6 text-center">
+                            <svg class="mx-auto w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                            <p class="text-slate-500 mt-2">Arrastra o selecciona</p>
+                            <input type="file" accept="image/pdf" id="nomina" class="hidden">
+                            <button type="button" onclick="document.getElementById('nomina').click()" class="mt-2 text-sm text-blue-600">Subir comprobante</button>
+                          </div>
+                        </div>
+                        <div class="card-footer">
+                          <button type="button" onclick="goToCard(5)" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
+                          <p class="text-xs text-slate-500 mt-4 terms-link">
+                            Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
+                          </p>
+                        </div>
+                      </div>
+
+                      <!-- Card 5 -->
+                      <div id="card5" class="onboarding-card text-center">
+                        <div class="flex justify-center mb-6">
+                          <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
+                        </div>
+                        <div class="card-body">
+                          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                          </div>
+                          <h3 class="font-serif text-2xl font-bold mb-2">¡Listo!</h3>
+                          <p class="text-slate-600 mb-6">Dile a Yunus lo que quieres y armará un plan para ti.</p>
+                        </div>
+                        <div class="card-footer">
+                          <a href="https://wa.me/525512345678?text=Hola%2C%20soy%20Yunus%20-%20estoy%20listo%20para%20mi%20plan" 
+                             class="inline-block bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-full transition">
+                             Hablar con Yunus en WhatsApp →
+                          </a>
+                          <p class="text-xs text-slate-500 mt-4">Te enviaremos tu plan personalizado en los próximos 2 minutos.</p>
+                        </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -511,7 +744,6 @@
 </div>
 
 <!-- MODAL INVERSORES -->
-
 <div id="investorModal" class="relative z-[100] hidden" role="dialog" aria-modal="true">
     <div id="investorBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm modal-enter" onclick="closeInvestorModal()"></div>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -539,7 +771,7 @@
                             <span class="icon"><svg width="24" height="24" class="text-green-600"><use href="#ico-check"/></svg></span>
                         </div>
                         <h3 class="font-serif text-2xl text-slate-900 mb-2">Solicitud recibida</h3>
-                        <p class="text-sm text-slate-500">Nos pondremos en contacto a la brevedad.</p>
+ <p class="text-sm text-slate-500">Nos pondremos en contacto a la brevedad.</p>
                         <button onclick="closeInvestorModal()" class="mt-6 text-xs text-slate-400 hover:text-slate-600 underline underline-offset-2">Cerrar</button>
                     </div>
                 </div>
@@ -549,6 +781,165 @@
 </div>
 
 <script>
+// --- Onboarding Logic ---
+let currentCard = 1;
+
+function openOnboardingModal() {
+  document.getElementById('onboardingFlow').classList.remove('hidden');
+  document.querySelectorAll('.onboarding-card').forEach(card => card.classList.add('hidden'));
+  document.getElementById('card1').classList.remove('hidden');
+  setTimeout(() => document.getElementById('card1').classList.add('active'), 10);
+  document.getElementById('onboardingModal').classList.remove('hidden');
+  setTimeout(() => {
+    document.getElementById('onboardingBackdrop').classList.remove('modal-enter');
+    document.getElementById('onboardingBackdrop').classList.add('modal-enter-active');
+    document.getElementById('onboardingPanel').classList.remove('modal-panel-enter');
+    document.getElementById('onboardingPanel').classList.add('modal-panel-enter-active');
+  }, 10);
+}
+
+function closeOnboardingModal() {
+  document.getElementById('onboardingBackdrop').classList.remove('modal-enter-active');
+  document.getElementById('onboardingPanel').classList.remove('modal-panel-enter-active');
+  setTimeout(() => {
+    document.getElementById('onboardingModal').classList.add('hidden');
+    document.getElementById('onboardingBackdrop').classList.add('modal-enter');
+    document.getElementById('onboardingPanel').classList.add('modal-panel-enter');
+  }, 200);
+}
+
+function goToCard(n) {
+  document.getElementById(`card${currentCard}`).classList.remove('active');
+  setTimeout(() => {
+    document.getElementById(`card${currentCard}`).classList.add('hidden');
+    currentCard = n;
+    document.getElementById(`card${currentCard}`).classList.remove('hidden');
+    setTimeout(() => document.getElementById(`card${currentCard}`).classList.add('active'), 10);
+  }, 300);
+}
+
+// Validación Card 1
+function validateCard1() {
+  let valid = true;
+  const nombre = document.getElementById('nombre').value.trim();
+  const celular = document.getElementById('celular').value;
+  const fechaNac = document.getElementById('fechaNac').value;
+  const entidad = document.getElementById('entidad').value;
+  const cp = document.getElementById('cp').value;
+
+  // Nombre
+  if (!nombre) {
+    document.getElementById('error-nombre').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('error-nombre').style.display = 'none';
+  }
+
+  // Celular (10 dígitos)
+  if (!/^[0-9]{10}$/.test(celular)) {
+    document.getElementById('error-celular').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('error-celular').style.display = 'none';
+  }
+
+  // Fecha de nacimiento (≥18 años)
+  if (fechaNac) {
+    const birthDate = new Date(fechaNac);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    if (age < 18) {
+      document.getElementById('error-fecha').style.display = 'block';
+      valid = false;
+    } else {
+      document.getElementById('error-fecha').style.display = 'none';
+    }
+  } else {
+    document.getElementById('error-fecha').style.display = 'block';
+    valid = false;
+  }
+
+  // Entidad
+  if (!entidad) {
+    document.getElementById('error-entidad').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('error-entidad').style.display = 'none';
+  }
+
+  // CP (5 dígitos)
+  if (!/^[0-9]{5}$/.test(cp)) {
+    document.getElementById('error-cp').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('error-cp').style.display = 'none';
+  }
+
+  if (valid) {
+    goToCard(2);
+  }
+}
+
+// Validación Card 2
+function validateCard2() {
+  let valid = true;
+  const ingreso = document.getElementById('ingreso').value;
+  const modelo = document.getElementById('celModelo').value;
+  const dependientes = document.getElementById('dependientes').value;
+  const historial = document.getElementById('historial').value;
+
+  // Ingreso
+  if (!/^[0-9]+$/.test(ingreso) || parseInt(ingreso) <= 0) {
+    document.getElementById('error-ingreso').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('error-ingreso').style.display = 'none';
+  }
+
+  // Modelo
+  if (!modelo) {
+    document.getElementById('error-modelo').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('error-modelo').style.display = 'none';
+  }
+
+  // Dependientes
+  if (!dependientes) {
+    document.getElementById('error-dependientes').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('error-dependientes').style.display = 'none';
+  }
+
+  // Historial
+  if (!historial) {
+    document.getElementById('error-historial').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('error-historial').style.display = 'none';
+  }
+
+  if (valid) {
+    goToCard(3);
+  }
+}
+
+// Modelo "Otro"
+document.getElementById('celModelo').addEventListener('change', function() {
+  const div = document.getElementById('otros-modelo');
+  if (this.value === 'Otro') {
+    div.classList.remove('hidden');
+  } else {
+    div.classList.add('hidden');
+  }
+});
+
+// --- Resto del JS ---
 var matches=[
   {teams:'México vs Sudáfrica', date:'11 Jun', venue:'Azteca · CDMX',    stage:'Fase de grupos', price:null},
   {teams:'Korea vs TBA',        date:'11 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:1519.04},
@@ -621,45 +1012,8 @@ function toggleFaq(el){
 
 function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('hidden');}
 
-var modal=document.getElementById('waitlistModal');
-var backdrop=document.getElementById('modalBackdrop');
-var panel=document.getElementById('modalPanel');
-function openModal(){
-  document.getElementById('modalContent').classList.remove('hidden');
-  document.getElementById('successMessage').classList.add('hidden');
-  document.getElementById('waitlistForm').reset();
-  modal.classList.remove('hidden');
-  setTimeout(function(){backdrop.classList.remove('modal-enter');backdrop.classList.add('modal-enter-active');panel.classList.remove('modal-panel-enter');panel.classList.add('modal-panel-enter-active');},10);
-}
-function closeModal(){
-  backdrop.classList.remove('modal-enter-active');backdrop.classList.add('modal-exit-active');
-  panel.classList.remove('modal-panel-enter-active');panel.classList.add('modal-panel-exit-active');
-  setTimeout(function(){modal.classList.add('hidden');backdrop.classList.remove('modal-exit-active');backdrop.classList.add('modal-enter');panel.classList.remove('modal-panel-exit-active');panel.classList.add('modal-panel-enter');},200);
-}
+function openModal(){ /* vacío — ahora todo usa onboarding */ }
 
-var invModal=document.getElementById('investorModal');
-var invBackdrop=document.getElementById('investorBackdrop');
-var invPanel=document.getElementById('investorPanel');
-function openInvestorModal(){
-  document.getElementById('investorContent').classList.remove('hidden');
-  document.getElementById('investorSuccessMessage').classList.add('hidden');
-  document.getElementById('investorForm').reset();
-  invModal.classList.remove('hidden');
-  setTimeout(function(){invBackdrop.classList.remove('modal-enter');invBackdrop.classList.add('modal-enter-active');invPanel.classList.remove('modal-panel-enter');invPanel.classList.add('modal-panel-enter-active');},10);
-}
-function closeInvestorModal(){
-  invBackdrop.classList.remove('modal-enter-active');invBackdrop.classList.add('modal-exit-active');
-  invPanel.classList.remove('modal-panel-enter-active');invPanel.classList.add('modal-panel-exit-active');
-  setTimeout(function(){invModal.classList.add('hidden');invBackdrop.classList.remove('modal-exit-active');invBackdrop.classList.add('modal-enter');invPanel.classList.remove('modal-panel-exit-active');invPanel.classList.add('modal-panel-enter');},200);
-}
-
-async function handleFormSubmit(e){
-  e.preventDefault();var form=document.getElementById('waitlistForm');
-  try{var r=await fetch(form.action,{method:form.method,body:new FormData(form),headers:{'Accept':'application/json'}});
-  if(r.ok){document.getElementById('modalContent').classList.add('hidden');document.getElementById('successMessage').classList.remove('hidden');form.reset();}
-  else alert('Hubo un problema. Intenta de nuevo.');}
-  catch(err){alert('Error de conexión. Intenta más tarde.');}
-}
 async function handleInvestorSubmit(e){
   e.preventDefault();var form=document.getElementById('investorForm');
   try{var r=await fetch(form.action,{method:form.method,body:new FormData(form),headers:{'Accept':'application/json'}});
@@ -668,6 +1022,5 @@ async function handleInvestorSubmit(e){
   catch(err){alert('Error de conexión. Intenta más tarde.');}
 }
 </script>
-
 </body>
 </html>
