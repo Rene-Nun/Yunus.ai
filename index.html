@@ -58,7 +58,7 @@
             border-radius: 3px;
         }
 
-        /* Onboarding Cards */
+        /* Onboarding Cards — SCROLL INTERNO */
         .onboarding-card {
           transition: opacity 0.3s, transform 0.3s;
           opacity: 0;
@@ -775,7 +775,7 @@ function goToCard(n) {
   }, 300);
 }
 
-// ✅ VALIDACIÓN CARD 1 — CORREGIDA Y FUNCIONAL
+// ✅ VALIDACIÓN CARD 1
 function validateAndGoToCard2() {
   let valid = true;
 
@@ -803,7 +803,7 @@ function validateAndGoToCard2() {
   if (fechaNac) {
     const birth = new Date(fechaNac);
     const today = new Date();
-    const age = today.getFullYear() - birth.getFullYear();
+    let age = today.getFullYear() - birth.getFullYear();
     const monthDiff = today.getMonth() - birth.getMonth();
     const dayDiff = today.getDate() - birth.getDate();
     const totalAge = monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
@@ -830,7 +830,7 @@ function validateAndGoToCard2() {
   }
 }
 
-// ✅ VALIDACIÓN CARD 2 — CORREGIDA Y FUNCIONAL
+// ✅ VALIDACIÓN CARD 2
 function validateAndGoToCard5() {
   let valid = true;
 
@@ -839,11 +839,13 @@ function validateAndGoToCard5() {
   const dependientes = document.getElementById('dependientes')?.value || '';
   const historial = document.getElementById('historial')?.value || '';
 
+  // Resetear errores
   ['ingreso', 'marca', 'dependientes', 'historial'].forEach(id => {
     const el = document.getElementById(`error-${id}`);
     if (el) el.style.display = 'none';
   });
 
+  // Validar campos
   if (!/^[0-9]+$/.test(ingreso) || parseInt(ingreso) <= 0) {
     document.getElementById('error-ingreso').style.display = 'block';
     valid = false;
@@ -867,7 +869,7 @@ function validateAndGoToCard5() {
   }
 }
 
-// ✅ ENVÍO FINAL A FORMSPREE + OPEN WHATSAPP
+// ✅ SUBMIT + WHATSAPP
 async function submitOnboardingAndOpenWhatsApp() {
   const form = document.getElementById('onboardingForm');
   const formData = new FormData(form);
@@ -887,14 +889,15 @@ async function submitOnboardingAndOpenWhatsApp() {
     });
 
     if (response.ok) {
-      // ✅ Éxito: abrir WhatsApp
+      console.log("✅ Formulario enviado a Formspree");
+      // ✅ Abrir WhatsApp
       setTimeout(() => {
         window.open('https://wa.me/525512345678?text=Hola%2C%20soy%20Yunus%20-%20estoy%20listo%20para%20mi%20plan', '_blank');
         alert('✅ ¡Registro enviado! Ahora te abrimos WhatsApp.');
         closeOnboardingModal();
       }, 800);
     } else {
-      throw new Error('Respuesta no OK');
+      throw new Error('Error en Formspree');
     }
   } catch (error) {
     console.error('Error:', error);
@@ -923,7 +926,7 @@ var matches=[
 function buildCard(m){
   var priceRow = m.price
     ? '<div style="margin-top:5px;padding-top:5px:border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+m.price.toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
-    : '<div style="margin-top:5px;padding-top:5px:border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
+    : '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
   return '<div style="width:190px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:0;" onclick="openModal()"><div style="margin-bottom:6px;"><div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#cbd5e1;">'+m.stage+'</div><div style="font-family:\'Instrument Serif\',serif;font-size:13px;color:#0f172a;line-height:1.25;margin-top:3px;">'+m.teams+'</div></div><div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#94a3b8;">'+m.date+'</span><span style="font-family:\'Geist Mono\',monospace;font-size:9px;color:#cbd5e1;">'+m.venue+'</span></div>'+priceRow+'</div></div>';
 }
 var track=document.getElementById('carouselTrack');
