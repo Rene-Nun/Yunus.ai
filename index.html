@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@40;500&display=swap" rel="stylesheet">
     <style>
         ::selection{background:#0a0a0a;color:#fff}
-        .carousel-track{display:flex;gap:10px;width:max-content;animation 60s linear infinite}
+        .carousel-track{display:flex;gap:10px;width:max-content;animation:cscroll 60s linear infinite}
         .carousel-track:hover{animation-play-state:paused}
         @keyframes cscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
         .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
@@ -108,7 +108,7 @@
   <symbol id="ico-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
   <symbol id="ico-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
   <symbol id="ico-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
-  <symbol id="ico-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-line="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+  <symbol id="ico-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
   <symbol id="ico-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></symbol>
   <symbol id="ico-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
   <symbol id="ico-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
@@ -121,7 +121,7 @@
     <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
         <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
         <div class="hidden md:flex items-center gap-6">
-            <a href="#solucion" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Cómo funcionaa>
+            <a href="#solucion" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Cómo funciona</a>
             <a href="#seguridad" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Si no puedes pagar</a>
             <button onclick="openOnboardingModal()" class="px-5 py-2 rounded bg-slate-900 text-white text-sm font-medium hover:bg-slate-700 transition-colors">Ve al mundial →</button>
         </div>
@@ -383,7 +383,7 @@
                 <div class="relative">
                     <div class="absolute left-[10px] top-3 bottom-3 w-1px bg-slate-200"></div>
                     <div class="space-y-6">
-                        <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">1</div><div><div class="font-semibold text-sm mb-1">Avisas desde la app</div><div class="text-xs text-slate-50 leading-relaxed">Con un clic en "Revender" le dices a Yunus que ya no puedes continuar con los pagos.</div></div></div>
+                        <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">1</div><div><div class="font-semibold text-sm mb-1">Avisas desde la app</div><div class="text-xs text-slate-500 leading-relaxed">Con un clic en "Revender" le dices a Yunus que ya no puedes continuar con los pagos.</div></div></div>
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">2</div><div><div class="font-semibold text-sm mb-1">Yunus publica el boleto</div><div class="text-xs text-slate-500 leading-relaxed">Lo listamos en nuestro Marketplace cerrado a precio de mercado, antes de que llegue la fecha del partido.</div></div></div>
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">3</div><div><div class="font-semibold text-sm mb-1">Se vende y se liquida tu deuda</div><div class="text-xs text-slate-500 leading-relaxed">Con lo que se obtenga, se cubre lo que aún debías más un 6% de comisión por el servicio de reventa.</div></div></div>
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">4</div><div><div class="font-semibold text-sm mb-1">Lo que sobre es tuyo</div><div class="text-xs text-slate-500 leading-relaxed">El resto va directo a tu cuenta. La meta es que recuperes total o parcialmente lo que ya habías pagado. Nadie pierde.</div></div></div>
@@ -394,7 +394,7 @@
                 <div class="bg-white border border-slate-200 rounded-lg p-8">
                     <div class="font-serif text-7xl text-slate-900 leading-none mb-3">6%</div>
                     <div class="font-semibold text-slate-900 mb-2">Comisión de reventa — y nada más.</div>
-                    <div class="text-sm text-slate-500 leading-relaxed">Si Yunus tiene que revender tu boleto, solo cobramos ese 6% por el servicio. Sin intereses extra, sin penalizaciones, sin llamadas de cobranza Lo que sobre del boleto es tuyo.</div>
+                    <div class="text-sm text-slate-500 leading-relaxed">Si Yunus tiene que revender tu boleto, solo cobramos ese 6% por el servicio. Sin intereses extra, sin penalizaciones, sin llamadas de cobranza. Lo que sobre del boleto es tuyo.</div>
                     <div class="mt-4 font-mono text-xs text-slate-400">CAT del crédito: 36% anual · 3% mensual</div>
                 </div>
                 <div class="bg-white border border-slate-200 rounded-lg p-6">
@@ -409,7 +409,7 @@
 <!-- SEDES -->
 <section id="sedes" class="py-20">
     <div class="max-w-6xl mx-auto px-6">
-        <div class="reveal text-center max-md mx-auto mb-10">
+        <div class="reveal text-center max-w-md mx-auto mb-10">
             <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight">¿Dónde vivirás<br><em class="text-slate-400">el Mundial?</em></h2>
         </div>
         <div class="grid md:grid-cols-3 gap-2.5 max-w-2xl mx-auto">
@@ -436,7 +436,7 @@
             <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight">Lo que necesitas<br><em class="text-slate-400">saber.</em></h2>
         </div>
         <div class="max-w-2xl mx-auto divide-y divide-slate-200 border-t border-b border-slate-200">
-            <div class="faq reveal py5 cursor-pointer" onclick="toggleFaq(this)">
+            <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
                 <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cómo saben si puedo pagar el boleto?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
                 <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Al registrarte, Yunus hace una verificación rápida para saber si el plan de pagos es viable para ti — sin consultar buró ni pedirte documentos. Si aplicas, ves el plan directo en la app. Si no, te mostramos opciones que sí están a tu alcance.</div>
             </div>
@@ -476,7 +476,7 @@
 <!-- INVERSORES -->
 <section class="py-24 text-center px-6" style="background:#2a2a2a;">
     <div class="max-w-2xl mx-auto reveal">
-        <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xs font-mono text-white/40 mb8 tracking-widest uppercase">Inversores</div>
+        <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xs font-mono text-white/40 mb-8 tracking-widest uppercase">Inversores</div>
         <h2 class="font-serif text-3xl md:text-4xl font-normal text-white leading-tight tracking-tight mb-6">Tecnología para los<br>Excluidos Solventes.</h2>
         <p class="leading-relaxed mb-10 max-w-xl mx-auto" style="color:rgba(255,255,255,0.45);">Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado más desatendido de la región. Modelos de riesgo obsoletos dejan millones sobre la mesa. Con aprobación en tiempo real y mitigación de riesgo a través de activos de reventa garantizada, democratizamos el acceso a experiencias.</p>
         <button onclick="openInvestorModal()" class="border border-white/30 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-white hover:text-slate-900 transition-all inline-flex items-center gap-2 group">
@@ -496,7 +496,7 @@
 </footer>
 
 <!-- MODAL ONBOARDING -->
-<div id="onModal" class="relative z-[100] hidden" role="dialog" aria-modal="true">
+<div id="onboardingModal" class="relative z-[100] hidden" role="dialog" aria-modal="true">
     <div id="onboardingBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm modal-enter" onclick="closeOnboardingModal()"></div>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
@@ -567,7 +567,7 @@
                                 <option value="TAM">Tamaulipas</option>
                                 <option value="TLA">Tlaxcala</option>
                                 <option value="VER">Veracruz</option>
-                                <">Yucatán</option>
+                                <option value="YUC">Yucatán</option>
                                 <option value="ZAC">Zacatecas</option>
                               </select>
                               <div class="card-error" id="error-entidad">Selecciona una entidad</div>
@@ -777,7 +777,7 @@ function goToCard(n) {
   }, 300);
 }
 
-// ✅ VALIDACIÓN CARD 1 — CORREGIDA (funciona)
+// ✅ VALIDACIÓN CARD 1 — CORREGIDA
 function validateCard1() {
   let valid = true;
 
@@ -828,14 +828,14 @@ function validateCard1() {
     valid = false;
   }
 
-  // CP
+  // CP (5 dígitos)
   if (!/^[0-9]{5}$/.test(cp)) {
     document.getElementById('error-cp').style.display = 'block';
     valid = false;
   }
 
   if (valid) {
-    console.log("✅ Card 1 válido → avanzando a Card 2");
+    console.log("✅ Card 1 válida → avanzando a Card 2");
     goToCard(2);
   }
 }
@@ -849,30 +849,38 @@ function validateCard2() {
   const dependientes = document.getElementById('dependientes')?.value || '';
   const historial = document.getElementById('historial')?.value || '';
 
+  // Resetear errores
   ['ingreso', 'marca', 'dependientes', 'historial'].forEach(id => {
     const el = document.getElementById(`error-${id}`);
     if (el) el.style.display = 'none';
   });
 
+  // Validar ingreso (número positivo)
   if (!/^[0-9]+$/.test(ingreso) || parseInt(ingreso) <= 0) {
     document.getElementById('error-ingreso').style.display = 'block';
     valid = false;
   }
+
+  // Validar marca
   if (!marca) {
     document.getElementById('error-marca').style.display = 'block';
     valid = false;
   }
+
+  // Validar dependientes
   if (!dependientes) {
     document.getElementById('error-dependientes').style.display = 'block';
     valid = false;
   }
+
+  // Validar historial
   if (!historial) {
     document.getElementById('error-historial').style.display = 'block';
     valid = false;
   }
 
   if (valid) {
-    console.log("✅ Card 2 válido → avanzando a Card 5");
+    console.log("✅ Card 2 válida → avanzando a Card 5");
     goToCard(5);
   }
 }
