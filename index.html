@@ -25,10 +25,27 @@
         ::selection{background:#0a0a0a;color:#fff}
 
 ```
-    /* ── CAROUSEL ── */
-    .carousel-track{display:flex;gap:20px;width:max-content;animation:cscroll 60s linear infinite}
-    .carousel-track:hover{animation-play-state:paused}
-    @keyframes cscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    /* ── CAROUSEL WRAPPER ── */
+    .carousel-outer{
+        overflow: hidden !important;
+        position: relative;
+        width: 100%;
+    }
+    /* ── CAROUSEL TRACK ── */
+    .carousel-track{
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 20px !important;
+        width: max-content !important;
+        animation: cscroll 60s linear infinite;
+        will-change: transform;
+    }
+    .carousel-track:hover{ animation-play-state: paused; }
+    @keyframes cscroll{
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+    }
 
     /* ── REVEAL: visible por defecto, animación solo si JS la activa ── */
     .reveal{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
@@ -75,10 +92,26 @@
     .legal-modal-content ul{list-style-type:disc;padding-left:1.5rem;margin-bottom:.75rem}
 
     /* ── EVENT CARDS ── */
-    .event-card{width:340px;height:450px;flex-shrink:0;border-radius:12px;overflow:hidden;position:relative;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;color:white;transition:transform 0.3s ease}
+    .event-card{
+        width:340px !important;
+        height:450px !important;
+        min-width:340px !important;
+        max-width:340px !important;
+        flex-shrink:0 !important;
+        flex-grow:0 !important;
+        border-radius:12px !important;
+        overflow:hidden !important;
+        position:relative !important;
+        cursor:pointer !important;
+        display:flex !important;
+        flex-direction:column !important;
+        justify-content:flex-end !important;
+        color:white !important;
+        transition:transform 0.3s ease;
+    }
     .event-card:hover{transform:translateY(-5px)}
-    .event-card img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}
-    .event-content{position:relative;z-index:10;padding:24px;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);width:100%}
+    .event-card img{position:absolute !important;top:0;left:0;width:100% !important;height:100% !important;object-fit:cover !important;z-index:0 !important}
+    .event-content{position:relative !important;z-index:10 !important;padding:24px !important;background:linear-gradient(to top,rgba(0,0,0,0.85),transparent) !important;width:100% !important}
 
     /* ── GRADIENT FALLBACKS para cuando no hay imágenes ── */
     .ev-baja    { background: linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 50%,#3b82f6 100%); }
@@ -159,7 +192,7 @@
 
 ```
 <!-- CAROUSEL -->
-<div class="overflow-hidden border-b border-slate-100 py-3 relative bg-white">
+<div class="carousel-outer border-b border-slate-100 py-3 bg-white">
     <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
     <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
     <div class="carousel-track">
