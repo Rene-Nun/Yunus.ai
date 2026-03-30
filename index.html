@@ -46,6 +46,9 @@
         from { transform: translateX(0); }
         to   { transform: translateX(-50%); }
     }
+    /* Extra especificidad para garantizar carrusel */
+    div.carousel-track { display:flex !important; flex-wrap:nowrap !important; }
+    div.carousel-track > div { flex-shrink:0 !important; }
 
     /* ── REVEAL: visible por defecto, animación solo si JS la activa ── */
     .reveal{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
@@ -192,85 +195,86 @@
 
 ```
 <!-- CAROUSEL -->
-<div class="carousel-outer border-b border-slate-100 py-3 bg-white">
-    <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-    <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+<div style="overflow:hidden;position:relative;width:100%;background:#fff;border-bottom:1px solid #f1f5f9;padding:12px 0;">
+    <!-- fade edges -->
+    <div style="position:absolute;left:0;top:0;bottom:0;width:64px;background:linear-gradient(to right,#fff,transparent);z-index:10;pointer-events:none;"></div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:64px;background:linear-gradient(to left,#fff,transparent);z-index:10;pointer-events:none;"></div>
     <div class="carousel-track">
         <!-- Baja Beach Fest -->
         <div class="event-card ev-baja" onclick="openOnboardingModal()">
             <img src="BajaB.jpeg" alt="Baja Beach Fest" onerror="this.style.display='none'">
             <div class="event-content">
-                <span class="font-mono text-xs text-blue-200 mb-2 uppercase tracking-widest block">Festival · Rosarito</span>
-                <h3 class="font-serif text-3xl text-white mb-2">Baja Beach Fest</h3>
-                <p class="text-sm text-gray-300 mb-4">7-9 Agosto 2026</p>
-                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $49 USD/q</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#bfdbfe;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Festival · Rosarito</span>
+                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Baja Beach Fest</h3>
+                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">7-9 Agosto 2026</p>
+                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $49 USD/q</span>
             </div>
         </div>
         <!-- Rosalía -->
         <div class="event-card ev-rosalia" onclick="openOnboardingModal()">
             <img src="Rosalia.jpeg" alt="Rosalía Lux Tour" onerror="this.style.display='none'">
             <div class="event-content">
-                <span class="font-mono text-xs text-red-200 mb-2 uppercase tracking-widest block">Concierto · CDMX / MTY</span>
-                <h3 class="font-serif text-3xl text-white mb-2">Rosalía: Lux Tour</h3>
-                <p class="text-sm text-gray-300 mb-4">Agosto 2026</p>
-                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $208 MXN/q</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#fecdd3;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Concierto · CDMX / MTY</span>
+                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Rosalía: Lux Tour</h3>
+                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">Agosto 2026</p>
+                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $208 MXN/q</span>
             </div>
         </div>
         <!-- Vans Warped Tour -->
         <div class="event-card ev-vans" onclick="openOnboardingModal()">
             <img src="VansW.webp" alt="Vans Warped Tour" onerror="this.style.display='none'">
             <div class="event-content">
-                <span class="font-mono text-xs text-orange-200 mb-2 uppercase tracking-widest block">Festival · CDMX</span>
-                <h3 class="font-serif text-3xl text-white mb-2">Vans Warped Tour</h3>
-                <p class="text-sm text-gray-300 mb-4">12-13 Sep 2026</p>
-                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $380 MXN/q</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#fed7aa;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Festival · CDMX</span>
+                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Vans Warped Tour</h3>
+                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">12-13 Sep 2026</p>
+                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $380 MXN/q</span>
             </div>
         </div>
         <!-- Bruno Mars -->
         <div class="event-card ev-bruno" onclick="openOnboardingModal()">
             <img src="BrunoM.jpeg" alt="Bruno Mars" onerror="this.style.display='none'">
             <div class="event-content">
-                <span class="font-mono text-xs text-green-200 mb-2 uppercase tracking-widest block">Concierto · CDMX</span>
-                <h3 class="font-serif text-3xl text-white mb-2">Bruno Mars</h3>
-                <p class="text-sm text-gray-300 mb-4">3 Dic 2026</p>
-                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $144 MXN/q</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#bbf7d0;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Concierto · CDMX</span>
+                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Bruno Mars</h3>
+                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">3 Dic 2026</p>
+                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $144 MXN/q</span>
             </div>
         </div>
         <!-- DUPLICADOS -->
         <div class="event-card ev-baja" onclick="openOnboardingModal()">
             <img src="BajaB.jpeg" alt="Baja Beach Fest" onerror="this.style.display='none'">
             <div class="event-content">
-                <span class="font-mono text-xs text-blue-200 mb-2 uppercase tracking-widest block">Festival · Rosarito</span>
-                <h3 class="font-serif text-3xl text-white mb-2">Baja Beach Fest</h3>
-                <p class="text-sm text-gray-300 mb-4">7-9 Agosto 2026</p>
-                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $49 USD/q</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#bfdbfe;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Festival · Rosarito</span>
+                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Baja Beach Fest</h3>
+                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">7-9 Agosto 2026</p>
+                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $49 USD/q</span>
             </div>
         </div>
         <div class="event-card ev-rosalia" onclick="openOnboardingModal()">
             <img src="Rosalia.jpeg" alt="Rosalía Lux Tour" onerror="this.style.display='none'">
             <div class="event-content">
-                <span class="font-mono text-xs text-red-200 mb-2 uppercase tracking-widest block">Concierto · CDMX / MTY</span>
-                <h3 class="font-serif text-3xl text-white mb-2">Rosalía: Lux Tour</h3>
-                <p class="text-sm text-gray-300 mb-4">Agosto 2026</p>
-                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $208 MXN/q</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#fecdd3;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Concierto · CDMX / MTY</span>
+                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Rosalía: Lux Tour</h3>
+                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">Agosto 2026</p>
+                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $208 MXN/q</span>
             </div>
         </div>
         <div class="event-card ev-vans" onclick="openOnboardingModal()">
             <img src="VansW.webp" alt="Vans Warped Tour" onerror="this.style.display='none'">
             <div class="event-content">
-                <span class="font-mono text-xs text-orange-200 mb-2 uppercase tracking-widest block">Festival · CDMX</span>
-                <h3 class="font-serif text-3xl text-white mb-2">Vans Warped Tour</h3>
-                <p class="text-sm text-gray-300 mb-4">12-13 Sep 2026</p>
-                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $380 MXN/q</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#fed7aa;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Festival · CDMX</span>
+                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Vans Warped Tour</h3>
+                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">12-13 Sep 2026</p>
+                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $380 MXN/q</span>
             </div>
         </div>
         <div class="event-card ev-bruno" onclick="openOnboardingModal()">
             <img src="BrunoM.jpeg" alt="Bruno Mars" onerror="this.style.display='none'">
             <div class="event-content">
-                <span class="font-mono text-xs text-green-200 mb-2 uppercase tracking-widest block">Concierto · CDMX</span>
-                <h3 class="font-serif text-3xl text-white mb-2">Bruno Mars</h3>
-                <p class="text-sm text-gray-300 mb-4">3 Dic 2026</p>
-                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $144 MXN/q</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#bbf7d0;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Concierto · CDMX</span>
+                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Bruno Mars</h3>
+                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">3 Dic 2026</p>
+                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $144 MXN/q</span>
             </div>
         </div>
     </div>
