@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yunus — Financia tu Experiencia</title>
+    <title>Yunus — Tu Lugar en el Mundial 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@40;500&display=swap" rel="stylesheet">
     <style>
         ::selection{background:#0a0a0a;color:#fff}
-        .carousel-track{display:flex;gap:0;width:max-content;animation:cscroll 60s linear infinite}
+        .carousel-track{display:flex;gap:10px;width:max-content;animation:cscroll 60s linear infinite}
         .carousel-track:hover{animation-play-state:paused}
         @keyframes cscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
         .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
@@ -50,66 +50,67 @@
             scroll-behavior: smooth;
             padding-bottom: 16px;
         }
-        #demoChat::-webkit-scrollbar { width: 6px; }
-        #demoChat::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 3px; }
+        #demoChat::-webkit-scrollbar {
+            width: 6px;
+        }
+        #demoChat::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 3px;
+        }
 
-        /* Onboarding Cards */
+        /* Onboarding Cards — SCROLL INTERNO */
         .onboarding-card {
           transition: opacity 0.3s, transform 0.3s;
           opacity: 0;
           transform: translateX(20px);
           position: absolute;
-          top: 0; left: 0; right: 0; bottom: 0;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
           display: flex;
           flex-direction: column;
         }
-        .onboarding-card.active { opacity: 1; transform: translateX(0); }
-        .onboarding-card.hidden { display: none; }
-        .card-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 24px; }
-        .card-footer { flex-shrink: 0; padding-top: 16px; }
-        .card-error { color: #dc2626; font-size: 13px; margin-top: 4px; display: none; }
-        .terms-link { @apply text-xs text-slate-500 underline hover:text-slate-700 cursor-pointer; }
+        .onboarding-card.active {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        .onboarding-card.hidden {
+          display: none;
+        }
+        .card-body {
+          flex: 1;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+          padding-bottom: 24px;
+        }
+        .card-footer {
+          flex-shrink: 0;
+          padding-top: 16px;
+        }
+        .card-error {
+          color: #dc2626;
+          font-size: 13px;
+          margin-top: 4px;
+          display: none;
+        }
+        .terms-link {
+          @apply text-xs text-slate-500 underline hover:text-slate-700 cursor-pointer;
+        }
         
-        /* Legal Modal */
-        .legal-modal-content { max-height: 70vh; overflow-y: auto; text-align: left; font-size: 0.875rem; line-height: 1.6; color: #334155; }
+        /* Legal Modal Styles */
+        .legal-modal-content {
+            max-height: 70vh;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #334155;
+        }
         .legal-modal-content h2 { font-size: 1.25rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; color: #0f172a; }
         .legal-modal-content h3 { font-size: 1.1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.5rem; color: #334155; }
         .legal-modal-content p { margin-bottom: 0.75rem; }
         .legal-modal-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
-
-        /* EVENT CARDS STYLES (NUEVO) */
-        .event-card-wrapper {
-            width: 90vw;
-            max-width: 1200px;
-            height: 60vh;
-            min-height: 500px;
-            flex-shrink: 0;
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-            margin: 0 10px;
-            cursor: pointer;
-            background-color: #f1f5f9;
-        }
-        .event-card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .event-card-wrapper:hover .event-card-img { transform: scale(1.05); }
-        .event-card-overlay {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            padding: 40px 30px 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: flex-start;
-            color: white;
-        }
     </style>
 </head>
 <body class="font-sans text-slate-800 bg-white min-h-screen antialiased">
@@ -134,150 +135,58 @@
     <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
         <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
         <div class="hidden md:flex items-center gap-6">
-            <a href="#eventos" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Eventos</a>
-            <a href="#como-funciona" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Cómo funciona</a>
-            <button onclick="openOnboardingModal()" class="px-5 py-2 rounded bg-slate-900 text-white text-sm font-medium hover:bg-slate-700 transition-colors">Financiar ahora →</button>
+            <a href="#solucion" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Cómo funciona</a>
+            <a href="#seguridad" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Si no puedes pagar</a>
+            <button onclick="openOnboardingModal()" class="px-5 py-2 rounded bg-slate-900 text-white text-sm font-medium hover:bg-slate-700 transition-colors">Ve al mundial →</button>
         </div>
         <button class="md:hidden p-2" onclick="toggleMenu()">
             <span class="icon"><svg width="20" height="20" class="text-slate-600"><use href="#ico-menu"/></svg></span>
         </button>
     </div>
     <div id="mobileMenu" class="hidden absolute top-full left-0 right-0 bg-white border-b border-slate-100 p-4 shadow flex flex-col gap-2">
-        <a href="#eventos" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Eventos</a>
-        <a href="#como-funciona" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Cómo funciona</a>
-        <button onclick="openOnboardingModal();toggleMenu()" class="w-full py-2.5 rounded bg-slate-900 text-white text-sm font-medium">Financiar ahora →</button>
+        <a href="#solucion" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Cómo funciona</a>
+        <a href="#seguridad" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Si no puedes pagar</a>
+        <button onclick="openOnboardingModal();toggleMenu()" class="w-full py-2.5 rounded bg-slate-900 text-white text-sm font-medium">Ve al mundial →</button>
     </div>
 </header>
 
 <!-- ANNOUNCE -->
 <div class="bg-slate-900 text-white text-center px-6 py-2.5 font-mono text-xs tracking-wide mt-20">
-    Temporada 2026 · Plazos hasta 15 quincenas
+    Lugares limitados · Compra a partir del <strong>2 de abril</strong>
     <button onclick="openOnboardingModal()" class="underline underline-offset-2 ml-2 hover:opacity-70 transition-opacity">Aplicar →</button>
 </div>
 
-<!-- HERO SECTION CON CARRUSEL DE EVENTOS -->
-<section id="eventos" class="pt-16 pb-20 md:pt-20 md:pb-28 text-center">
-    <div class="max-w-4xl mx-auto px-6 mb-12">
+<!-- CAROUSEL -->
+<div class="overflow-hidden border-b border-slate-100 py-3 relative bg-white">
+    <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+    <div class="carousel-track" id="carouselTrack"></div>
+</div>
+
+<!-- HERO -->
+<section class="pt-16 pb-20 md:pt-20 md:pb-28 text-center">
+    <div class="max-w-4xl mx-auto px-6">
         <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-normal leading-[1.02] tracking-tight text-slate-900 mb-6">
-            Vive la experiencia.<br><em class="text-slate-400">Págalo después.</em>
+            Aparta tu boleto<br><em class="text-slate-400">hoy.</em> Págalo<br>en quincenas.
         </h1>
         <p class="text-lg md:text-xl text-slate-500 font-light leading-relaxed max-w-xl mx-auto mb-10">
-            Asegura tu lugar en los mejores conciertos y festivales del año. Paga un enganche y divide el resto en quincenas cómodas.
-            <strong class="text-slate-800 font-medium">Sin tarjeta. Sin buró. Sin complicaciones.</strong>
+            Pides el boleto, Yunus lo compra y te lo aparta. Tú pagas el 15% para empezar y el resto en quincenas cómodas hasta el partido.
+            <strong class="text-slate-800 font-medium">Sin tarjeta de crédito. Sin buró. Sin complicaciones.</strong>
         </p>
-    </div>
-
-    <!-- CARRUSEL FULL WIDTH -->
-    <div class="overflow-hidden border-b border-slate-100 py-3 relative bg-white">
-        <div class="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
-        
-        <div class="carousel-track" id="carouselTrack">
-            <!-- Evento 1: Baja Beach Fest -->
-            <div class="event-card-wrapper" onclick="openOnboardingModal()">
-                <img src="BajaB.jpeg" alt="Baja Beach Fest" class="event-card-img" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#1e3a8a'">
-                <div class="event-card-overlay">
-                    <span class="font-mono text-xs text-blue-200 mb-2 uppercase tracking-widest">Festival · Rosarito</span>
-                    <h3 class="font-serif text-3xl md:text-4xl text-white mb-2">Baja Beach Fest</h3>
-                    <p class="text-sm text-gray-300 mb-4">7-9 Agosto 2026 · Anuel AA, Ozuna</p>
-                    <div class="flex items-center gap-3">
-                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $49 USD/q</span>
-                        <span class="text-white text-xs underline decoration-white/50">Ver planes →</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Evento 2: Rosalía -->
-            <div class="event-card-wrapper" onclick="openOnboardingModal()">
-                <img src="Rosalia.jpeg" alt="Rosalía Lux Tour" class="event-card-img" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#9f1239'">
-                <div class="event-card-overlay">
-                    <span class="font-mono text-xs text-red-200 mb-2 uppercase tracking-widest">Concierto · CDMX / MTY</span>
-                    <h3 class="font-serif text-3xl md:text-4xl text-white mb-2">Rosalía: Lux Tour</h3>
-                    <p class="text-sm text-gray-300 mb-4">Agosto 2026 · Palacio de los Deportes</p>
-                    <div class="flex items-center gap-3">
-                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $208 MXN/q</span>
-                        <span class="text-white text-xs underline decoration-white/50">Ver planes →</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Evento 3: Vans Warped Tour -->
-            <div class="event-card-wrapper" onclick="openOnboardingModal()">
-                <img src="VansW.webp" alt="Vans Warped Tour" class="event-card-img" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#ea580c'">
-                <div class="event-card-overlay">
-                    <span class="font-mono text-xs text-orange-200 mb-2 uppercase tracking-widest">Festival · CDMX</span>
-                    <h3 class="font-serif text-3xl md:text-4xl text-white mb-2">Vans Warped Tour</h3>
-                    <p class="text-sm text-gray-300 mb-4">12-13 Sep 2026 · Autódromo Hnos. Rodríguez</p>
-                    <div class="flex items-center gap-3">
-                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $380 MXN/q</span>
-                        <span class="text-white text-xs underline decoration-white/50">Ver planes →</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Evento 4: Bruno Mars -->
-            <div class="event-card-wrapper" onclick="openOnboardingModal()">
-                <img src="BrunoM.jpeg" alt="Bruno Mars" class="event-card-img" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#166534'">
-                <div class="event-card-overlay">
-                    <span class="font-mono text-xs text-green-200 mb-2 uppercase tracking-widest">Concierto · CDMX</span>
-                    <h3 class="font-serif text-3xl md:text-4xl text-white mb-2">Bruno Mars</h3>
-                    <p class="text-sm text-gray-300 mb-4">3 Dic 2026 · Foro Sol</p>
-                    <div class="flex items-center gap-3">
-                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $144 MXN/q</span>
-                        <span class="text-white text-xs underline decoration-white/50">Ver planes →</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- DUPLICADOS PARA EFECTO INFINITO -->
-             <div class="event-card-wrapper" onclick="openOnboardingModal()">
-                <img src="BajaB.jpeg" alt="Baja Beach Fest" class="event-card-img" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#1e3a8a'">
-                <div class="event-card-overlay">
-                    <span class="font-mono text-xs text-blue-200 mb-2 uppercase tracking-widest">Festival · Rosarito</span>
-                    <h3 class="font-serif text-3xl md:text-4xl text-white mb-2">Baja Beach Fest</h3>
-                    <p class="text-sm text-gray-300 mb-4">7-9 Agosto 2026 · Anuel AA, Ozuna</p>
-                    <div class="flex items-center gap-3">
-                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $49 USD/q</span>
-                        <span class="text-white text-xs underline decoration-white/50">Ver planes →</span>
-                    </div>
-                </div>
-            </div>
-             <div class="event-card-wrapper" onclick="openOnboardingModal()">
-                <img src="Rosalia.jpeg" alt="Rosalía Lux Tour" class="event-card-img" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#9f1239'">
-                <div class="event-card-overlay">
-                    <span class="font-mono text-xs text-red-200 mb-2 uppercase tracking-widest">Concierto · CDMX / MTY</span>
-                    <h3 class="font-serif text-3xl md:text-4xl text-white mb-2">Rosalía: Lux Tour</h3>
-                    <p class="text-sm text-gray-300 mb-4">Agosto 2026 · Palacio de los Deportes</p>
-                    <div class="flex items-center gap-3">
-                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $208 MXN/q</span>
-                        <span class="text-white text-xs underline decoration-white/50">Ver planes →</span>
-                    </div>
-                </div>
-            </div>
-             <div class="event-card-wrapper" onclick="openOnboardingModal()">
-                <img src="VansW.webp" alt="Vans Warped Tour" class="event-card-img" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#ea580c'">
-                <div class="event-card-overlay">
-                    <span class="font-mono text-xs text-orange-200 mb-2 uppercase tracking-widest">Festival · CDMX</span>
-                    <h3 class="font-serif text-3xl md:text-4xl text-white mb-2">Vans Warped Tour</h3>
-                    <p class="text-sm text-gray-300 mb-4">12-13 Sep 2026 · Autódromo Hnos. Rodríguez</p>
-                    <div class="flex items-center gap-3">
-                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $380 MXN/q</span>
-                        <span class="text-white text-xs underline decoration-white/50">Ver planes →</span>
-                    </div>
-                </div>
-            </div>
-             <div class="event-card-wrapper" onclick="openOnboardingModal()">
-                <img src="BrunoM.jpeg" alt="Bruno Mars" class="event-card-img" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#166534'">
-                <div class="event-card-overlay">
-                    <span class="font-mono text-xs text-green-200 mb-2 uppercase tracking-widest">Concierto · CDMX</span>
-                    <h3 class="font-serif text-3xl md:text-4xl text-white mb-2">Bruno Mars</h3>
-                    <p class="text-sm text-gray-300 mb-4">3 Dic 2026 · Foro Sol</p>
-                    <div class="flex items-center gap-3">
-                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $144 MXN/q</span>
-                        <span class="text-white text-xs underline decoration-white/50">Ver planes →</span>
-                    </div>
-                </div>
-            </div>
+        <div class="flex flex-col items-center gap-3">
+            <button onclick="openOnboardingModal()" class="bg-slate-900 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 hover:shadow-lg inline-flex items-center gap-2 group">
+                Quiero ir al mundial
+                <span class="icon group-hover:translate-x-1 transition-transform inline-block"><svg width="16" height="16"><use href="#ico-arrow-right"/></svg></span>
+            </button>
+            <a href="#demo" class="text-sm text-slate-400 border border-slate-200 px-6 py-2.5 rounded hover:border-slate-400 hover:text-slate-600 transition-all inline-flex items-center gap-2">
+                <span class="icon"><svg width="14" height="14"><use href="#ico-play"/></svg></span> Ver cómo funciona
+            </a>
+        </div>
+        <div class="flex items-center justify-center gap-3 mt-6 flex-wrap">
+            <span class="inline-flex items-center gap-.5 border border-slate-200 rounded-full px-3 py-1 font-mono text-[11px] text-slate-400">
+                <span class="icon"><svg width="12" height="12"><use href="#ico-zap"/></svg></span> A partir del 2 de abril
+            </span>
+            <span class="inline-flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1 font-mono text-[11px] text-slate-400">36% CAT anual</span>
         </div>
     </div>
 </section>
@@ -285,7 +194,7 @@
 <hr class="border-slate-100">
 
 <!-- CÓMO FUNCIONA -->
-<section id="como-funciona" class="py-20 bg-slate-50 border-b border-slate-100">
+<section id="solucion" class="py-20 bg-slate-50 border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-6">
         <div class="reveal text-center max-w-lg mx-auto mb-12">
             <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight">Así de<br><em class="text-slate-400">sencillo.</em></h2>
@@ -293,29 +202,29 @@
         <div class="grid md:grid-cols-4 gap-3">
             <div class="reveal bg-white border border-slate-200 rounded-lg p-5 flex flex-col gap-3 hover:border-slate-400 transition-colors">
                 <span class="icon"><svg width="20" height="20" class="text-slate-500"><use href="#ico-message-circle"/></svg></span>
-                <div class="font-semibold text-sm text-slate-900">Eliges tu evento</div>
-                <div class="text-xs text-slate-500 leading-relaxed">Selecciona entre Baja Beach Fest, Rosalía, Vans Warped Tour o Bruno Mars.</div>
+                <div class="font-semibold text-sm text-slate-900">Pides el boleto que quieres</div>
+                <div class="text-xs text-slate-500 leading-relaxed">Dile a Yunus a qué partido quieres ir. Tan específico o tan abierto como quieras — Yunus te muestra lo que hay disponible.</div>
             </div>
             <div class="reveal d1 bg-white border border-slate-200 rounded-lg p-5 flex flex-col gap-3 hover:border-slate-400 transition-colors">
                 <span class="icon"><svg width="20" height="20" class="text-slate-500"><use href="#ico-shield-check"/></svg></span>
-                <div class="font-semibold text-sm text-slate-900">Yunus verifica tu perfil</div>
-                <div class="text-xs text-slate-500 leading-relaxed">Analizamos tu capacidad de pago real sin consultar buró. Rápido y seguro.</div>
+                <div class="font-semibold text-sm text-slate-900">Yunus verifica y te presenta tu plan</div>
+                <div class="text-xs text-slate-500 leading-relaxed">Si aplicas, ves el boleto apartado con tu plan de pagos exacto: el enganche y cada quincena hasta el partido. Aceptas y listo.</div>
             </div>
             <div class="reveal d2 bg-white border border-slate-200 rounded-lg p-5 flex flex-col gap-3 hover:border-slate-400 transition-colors">
                 <span class="icon"><svg width="20" height="20" class="text-slate-500"><use href="#ico-ticket"/></svg></span>
-                <div class="font-semibold text-sm text-slate-900">Pagas el 15% inicial</div>
-                <div class="text-xs text-slate-500 leading-relaxed">Das un enganche pequeño vía SPEI u Oxxo y Yunus asegura tu boleto inmediatamente.</div>
+                <div class="font-semibold text-sm text-slate-900">Pagas el 15% y el boleto es tuyo</div>
+                <div class="text-xs text-slate-500 leading-relaxed">Con ese primer pago vía SPEI u Oxxo, Yunus compra el boleto y lo guarda en tu boveda. Ya es tuyo — solo queda terminar de pagarlo.</div>
             </div>
             <div class="reveal d3 bg-white border border-slate-200 rounded-lg p-5 flex flex-col gap-3 hover:border-slate-400 transition-colors">
                 <span class="icon"><svg width="20" height="20" class="text-slate-500"><use href="#ico-calendar"/></svg></span>
-                <div class="font-semibold text-sm text-slate-900">Pagas en quincenas</div>
-                <div class="text-xs text-slate-500 leading-relaxed">Divides el resto en pagos quincenales hasta antes del evento. ¡Disfruta sin estrés!</div>
+                <div class="font-semibold text-sm text-slate-900">Pagas en quincenas hasta el partido</div>
+                <div class="text-xs text-slate-500 leading-relaxed">El resto se divide en pagos quincenales. La última quincena cae antes del partido. Llegas al estadio con todo pagado.</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- DEMO CHAT -->
+<!-- DEMO -->
 <section id="demo" class="py-20">
     <div class="max-w-6xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-start">
@@ -329,7 +238,7 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="font-semibold text-sm text-gray-900">Yunus · Tu agente de boletos</div>
+                        <div class="font-semibold text-sm text-gray-900">Yunus · tu agente de boletos</div>
                         <div class="text-xs text-gray-500">En línea • Última actividad hace 2 min</div>
                     </div>
                 </div>
@@ -337,7 +246,7 @@
                     <!-- Mensaje del cliente -->
                     <div class="self-end max-w-[80%]">
                         <div class="bg-green-500 rounded-2xl rounded-bl-none px-4 py-2.5 text-sm text-white leading-relaxed">
-                            Quiero boletos para Bruno Mars.
+                            Quiero boletos para un partido en Guadalajara.
                         </div>
                         <div class="text-xs text-green-200 mt-1 text-left pl-2">14:02</div>
                     </div>
@@ -348,7 +257,7 @@
                             <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS ESTÁ PROCESANDO</div>
                             <div class="flex items-center gap-1.5">
                                 <span class="animate-pulse">●</span>
-                                <span class="font-mono text-[10px]">Analizando inventario...</span>
+                                <span class="font-mono text-[10px]">Analizando inventario GDL...</span>
                             </div>
                             <div class="flex items-center gap-1.5 mt-1">
                                 <span class="animate-pulse">●</span>
@@ -366,30 +275,30 @@
                     <div id="approvalMsg" class="hidden self-start max-w-[80%]">
                         <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
                             <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS</div>
-                            ¡Encontré algo perfecto para ti! 🎤 Aquí está tu plan:
+                            ¡Encontré algo perfecto para ti! 🏆 Aquí está tu plan:
                         </div>
                         <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:03</div>
 
                         <!-- Simulación de imagen -->
                         <div class="mt-3 bg-gray-900 rounded-xl overflow-hidden border border-gray-700 shadow-sm p-4">
                           <div class="flex justify-between items-start mb-2">
-                            <div class="font-serif text-sm text-white">Bruno Mars</div>
-                            <span class="font-mono text-[9px] text-gray-400 bg-gray-800 px-1.5 py-0.5 rounded">Foro Sol</span>
+                            <div class="font-serif text-sm text-white">Colombia vs TBA</div>
+                            <span class="font-mono text-[9px] text-gray-400 bg-gray-800 px-1.5 py-0.5 rounded">Cat 2</span>
                           </div>
-                          <div class="font-mono text-[10px] text-gray-300 mb-3">📍 3 Dic 2026</div>
+                          <div class="font-mono text-[10px] text-gray-300 mb-3">📍 Estadio Akron · 23 Jun 2026</div>
 
                           <div class="space-y-2">
                             <div class="flex justify-between text-sm">
                               <span class="text-gray-400">Total Plan:</span>
-                              <span class="text-white font-semibold">$12,887</span>
+                              <span class="text-white font-semibold">$10,000</span>
                             </div>
                             <div class="flex justify-between text-sm">
                               <span class="text-amber-300">Anticipo (15%):</span>
-                              <span class="text-amber-300 font-semibold">$1,933</span>
+                              <span class="text-amber-300 font-semibold">$1,500</span>
                             </div>
                             <div class="flex justify-between text-sm">
                               <span class="text-green-300">Pagos:</span>
-                              <span class="text-green-300 font-semibold">15 × $869<br><span class="text-xs opacity-80">Quincenales</span></span>
+                              <span class="text-green-300 font-semibold">5 × $1,700<br><span class="text-xs opacity-80">Quincenales</span></span>
                             </div>
                           </div>
 
@@ -405,7 +314,7 @@
                         <!-- Mensaje final -->
                         <div class="mt-3 bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
                           👇 Para pagar tu anticipo y reservar tu lugar 👇<br>
-                          <a href="#" class="text-blue-600 font-medium underline">https://yunusia.com/pagar-anticipo/</a>
+                          <a href="https://yunusia.com/pagar-anticipo/" class="text-blue-600 font-medium underline">https://yunusia.com/pagar-anticipo/</a>
                         </div>
                         <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:03</div>
                     </div>
@@ -443,7 +352,7 @@
             <!-- Texto explicativo -->
             <div class="reveal d1">
                 <h2 class="font-serif text-3xl md:text-4xl font-normal text-slate-900 leading-tight tracking-tight mb-4">Así se ve<br><em class="text-slate-400">desde adentro.</em></h2>
-                <p class="text-slate-500 leading-relaxed mb-8">Eliges el evento, Yunus analiza tu perfil y te presenta el plan exacto. Si te late, pagas el enganche y el boleto queda en tu Bóveda.</p>
+                <p class="text-slate-500 leading-relaxed mb-8">Pides el partido, Yunus analiza tu perfil y te presenta el plan exacto. Si te late, pagas el enganche y el boleto queda en tu Bóveda.</p>
                 <div class="space-y-4">
                     <div class="flex items-start gap-3">
                         <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
@@ -460,7 +369,7 @@
                     <div class="flex items-start gap-3">
                         <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
                         <div class="text-sm text-slate-600">
-                            <strong class="text-slate-800">Pagas a tu ritmo</strong> — quincena a quincena, la última antes del evento
+                            <strong class="text-slate-800">Pagas a tu ritmo</strong> — quincena a quincena, la última antes del partido
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
@@ -484,12 +393,12 @@
         <div class="grid md:grid-cols-2 gap-16 items-start">
             <div class="reveal">
                 <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight mb-4">¿Y si no puedes<br><em class="text-slate-400">seguir pagando?</em></h2>
-                <p class="text-slate-500 leading-relaxed mb-8">No te dejamos colgado ni te cobramos de más. Gestionamos la reventa del boleto antes del evento y recuperas lo que ya pagaste.</p>
+                <p class="text-slate-500 leading-relaxed mb-8">No te dejamos colgado ni te cobramos de más. Vendemos el boleto antes del partido y recuperas lo que ya pagaste.</p>
                 <div class="relative">
                     <div class="absolute left-[10px] top-3 bottom-3 w-1px bg-slate-200"></div>
                     <div class="space-y-6">
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">1</div><div><div class="font-semibold text-sm mb-1">Avisas desde la app</div><div class="text-xs text-slate-500 leading-relaxed">Con un clic en "Revender" le dices a Yunus que ya no puedes continuar con los pagos.</div></div></div>
-                        <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">2</div><div><div class="font-semibold text-sm mb-1">Yunus publica el boleto</div><div class="text-xs text-slate-500 leading-relaxed">Lo listamos en nuestro Marketplace cerrado a precio de mercado, antes de que llegue la fecha del evento.</div></div></div>
+                        <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">2</div><div><div class="font-semibold text-sm mb-1">Yunus publica el boleto</div><div class="text-xs text-slate-500 leading-relaxed">Lo listamos en nuestro Marketplace cerrado a precio de mercado, antes de que llegue la fecha del partido.</div></div></div>
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">3</div><div><div class="font-semibold text-sm mb-1">Se vende y se liquida tu deuda</div><div class="text-xs text-slate-500 leading-relaxed">Con lo que se obtenga, se cubre lo que aún debías más un 6% de comisión por el servicio de reventa.</div></div></div>
                         <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">4</div><div><div class="font-semibold text-sm mb-1">Lo que sobre es tuyo</div><div class="text-xs text-slate-500 leading-relaxed">El resto va directo a tu cuenta. La meta es que recuperes total o parcialmente lo que ya habías pagado. Nadie pierde.</div></div></div>
                     </div>
@@ -504,8 +413,62 @@
                 </div>
                 <div class="bg-white border border-slate-200 rounded-lg p-6">
                     <div class="font-mono text-xs text-slate-400 mb-3 uppercase tracking-wide">¿Por qué funciona?</div>
-                    <p class="text-sm text-slate-500 leading-relaxed">Un boleto de concierto o festival siempre tiene valor en el mercado. Eso es lo que hace posible que, si algo sale mal, nadie se quede sin nada.</p>
+                    <p class="text-sm text-slate-500 leading-relaxed">Un boleto del Mundial siempre tiene valor en el mercado. Eso es lo que hace posible que, si algo sale mal, nadie se quede sin nada.</p>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEDES -->
+<section id="sedes" class="py-20">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal text-center max-w-md mx-auto mb-10">
+            <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight">¿Dónde vivirás<br><em class="text-slate-400">el Mundial?</em></h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-2.5 max-w-2xl mx-auto">
+            <div class="reveal sede-card border border-slate-200 rounded-lg py-7 px-6 text-center cursor-pointer hover:border-slate-900 transition-all duration-200 select-none" onclick="selectSede(this,'CDMX')">
+                <div class="sede-name font-serif text-2xl text-slate-900 leading-tight mb-1.5">Ciudad<br>de México</div>
+                <div class="sede-sub font-mono text-[11px] text-slate-400 uppercase tracking-wide">Estadio Azteca</div>
+            </div>
+            <div class="reveal d1 sede-card border border-slate-200 rounded-lg py-7 px-6 text-center cursor-pointer hover:border-slate-900 transition-all duration-200 select-none" onclick="selectSede(this,'Monterrey')">
+                <div class="sede-name font-serif text-2xl text-slate-900 leading-tight mb-1.5">Monterrey</div>
+                <div class="sede-sub font-mono text-[11px] text-slate-400 uppercase tracking-wide">Estadio BBVA</div>
+            </div>
+            <div class="reveal d2 sede-card border border-slate-200 rounded-lg py-7 px-6 text-center cursor-pointer hover:border-slate-900 transition-all duration-200 select-none" onclick="selectSede(this,'Guadalajara')">
+                <div class="sede-name font-serif text-2xl text-slate-900 leading-tight mb-1.5">Guadalajara</div>
+                <div class="sede-sub font-mono text-[11px] text-slate-400 uppercase tracking-wide">Estadio Akron</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-20 bg-slate-50 border-t border-slate-100">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal text-center max-w-sm mx-auto mb-12">
+            <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight">Lo que necesitas<br><em class="text-slate-400">saber.</em></h2>
+        </div>
+        <div class="max-w-2xl mx-auto divide-y divide-slate-200 border-t border-b border-slate-200">
+            <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cómo saben si puedo pagar el boleto?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Al registrarte, Yunus hace una verificación rápida para saber si el plan de pagos es viable para ti — sin consultar buró ni pedirte documentos. Si aplicas, ves el plan directo en la app. Si no, te mostramos opciones que sí están a tu alcance.</div>
+            </div>
+            <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cuánto tengo que pagar para apartar el boleto?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">El 15% del valor del boleto, pagadero vía SPEI o efectivo en Oxxo. Con ese pago, el boleto queda en tu Wallet y Yunus lo mantiene apartado para ti. El resto lo vas pagando en quincenas.</div>
+            </div>
+            <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cuánto me cobra Yunus por el servicio?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">El crédito tiene un CAT del 36% anual (3% mensual), ya incluido en el plan de pagos que ves desde el principio. No hay cobros sorpresa. Si necesitas reventa, Yunus cobra adicionalmente un 6% de comisión sobre esa operación.</div>
+            </div>
+            <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Qué pasa si no puedo terminar de pagar?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Activas "Revender" en la app. Yunus pone el boleto en venta antes del partido. Con lo que se obtenga se cubre tu deuda pendiente más un 6% de comisión, y el resto es para ti. La meta es que recuperes total o parcialmente lo que ya pagaste.</div>
+            </div>
+            <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿El boleto es oficial?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Sí. Yunus adquiere los boletos directamente a través de canales oficiales de FIFA. Son 100% legítimos con código QR transferible. No somos reventa — somos la forma de financiar tu acceso al partido.</div>
             </div>
         </div>
     </div>
@@ -515,12 +478,25 @@
 <section class="py-28 bg-slate-900 text-white text-center px-6">
     <div class="max-w-2xl mx-auto reveal">
         <h2 class="font-serif text-4xl md:text-6xl font-normal leading-tight tracking-tight mb-6">Los boletos<br><em class="text-slate-500">no esperan.</em><br>Tú tampoco.</h2>
-        <p class="text-slate-400 text-lg font-light leading-relaxed mb-10 max-w-sm mx-auto">Solicita tu acceso ahora y sé de los primeros en entrar cuando el Beta abra.</p>
+        <p class="text-slate-400 text-lg font-light leading-relaxed mb-10 max-w-sm mx-auto">Solicita tu acceso ahora y sé de los primeros en entrar cuando el Beta abra el 2 de abril.</p>
         <button onclick="openOnboardingModal()" class="bg-white text-slate-900 px-8 py-3.5 rounded text-sm font-medium hover:bg-slate-100 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2 group">
             Solicitar acceso anticipado
             <span class="icon group-hover:translate-x-1 transition-transform inline-block"><svg width="16" height="16"><use href="#ico-arrow-right"/></svg></span>
         </button>
         <div class="mt-4 font-mono text-xs text-slate-600">Sin costo · Sin compromiso · Acceso por invitación</div>
+    </div>
+</section>
+
+<!-- INVERSORES -->
+<section class="py-24 text-center px-6" style="background:#2a2a2a;">
+    <div class="max-w-2xl mx-auto reveal">
+        <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xs font-mono text-white/40 mb-8 tracking-widest uppercase">Inversores</div>
+        <h2 class="font-serif text-3xl md:text-4xl font-normal text-white leading-tight tracking-tight mb-6">Tecnología para los<br>Excluidos Solventes.</h2>
+        <p class="leading-relaxed mb-10 max-w-xl mx-auto" style="color:rgba(255,255,255,0.45);">Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado más desatendido de la región. Modelos de riesgo obsoletos dejan millones sobre la mesa. Con aprobación en tiempo real y mitigación de riesgo a través de activos de reventa garantizada, democratizamos el acceso a experiencias.</p>
+        <button onclick="openInvestorModal()" class="border border-white/30 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-white hover:text-slate-900 transition-all inline-flex items-center gap-2 group">
+            Solicitar Pitch Deck
+            <span class="icon group-hover:translate-x-1 transition-transform inline-block"><svg width="16" height="16"><use href="#ico-arrow-right"/></svg></span>
+        </button>
     </div>
 </section>
 
@@ -630,7 +606,7 @@
                         </div>
                       </div>
 
-                      <!-- Card 2 -->
+                      <!-- Card 2 (ACTUALIZADA) -->
                       <div id="card2" class="onboarding-card hidden">
                         <div class="flex justify-center mb-6">
                           <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
@@ -640,6 +616,7 @@
                           <form id="form2">
                             <input type="hidden" name="Paso" value="Registro + Perfil">
                             
+                            <!-- Ingreso -->
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Ingreso mensual neto</label>
                               <input type="number" name="Ingreso_mensual" id="ingreso" min="0" step="100" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
@@ -676,7 +653,7 @@
                               <div class="card-error" id="error-marca">Selecciona una marca</div>
                             </div>
 
-                            <!-- Gastos de Celular -->
+                            <!-- NUEVO: Gastos de Celular -->
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de celular</label>
                               <select name="Gastos_celular" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
@@ -687,7 +664,7 @@
                               <div class="card-error" id="error-gastos-celular">Selecciona una opción</div>
                             </div>
 
-                            <!-- Gastos de Vivienda -->
+                            <!-- NUEVO: Gastos de Vivienda (Reemplaza Renta) -->
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de vivienda</label>
                               <select name="Gastos_vivienda" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
@@ -699,7 +676,7 @@
                               <div class="card-error" id="error-gastos-vivienda">Selecciona una opción</div>
                             </div>
 
-                            <!-- Gastos de Automóvil -->
+                            <!-- NUEVO: Gastos de Automóvil -->
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de automóvil</label>
                               <select name="Gastos_automovil" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
@@ -739,7 +716,7 @@
                               <div class="card-error" id="error-historial">Selecciona una opción</div>
                             </div>
 
-                            <!-- Otras Deudas -->
+                            <!-- NUEVO: Otras Deudas -->
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">¿Estás pagando actualmente otro tipo de crédito o deuda?</label>
                               <select name="Otras_deudas" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
@@ -794,7 +771,7 @@
     </div>
 </div>
 
-<!-- MODAL LEGAL -->
+<!-- MODAL LEGAL (Términos y Privacidad) -->
 <div id="legalModal" class="relative z-[110] hidden" role="dialog" aria-modal="true">
     <div id="legalBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm modal-enter" onclick="closeLegalModal()"></div>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -862,7 +839,7 @@ const legalTexts = {
         <p><strong>Última actualización:</strong> Domingo 29 de marzo de 2026</p>
         
         <h3>1. ACEPTACIÓN</h3>
-        <p>Al utilizar el sitio web yunusia.com y completar el formulario de registro, usted acepta los presentes Términos y Condiciones. Este documento regula el uso del servicio de pre-registro para el financiamiento de boletos para conciertos y festivales ofrecido por Yunus (en adelante, "la Plataforma").</p>
+        <p>Al utilizar el sitio web yunusia.com y completar el formulario de registro, usted acepta los presentes Términos y Condiciones. Este documento regula el uso del servicio de pre-registro para el financiamiento de boletos para la Copa Mundial de la FIFA 2026 ofrecido por Yunus (en adelante, "la Plataforma").</p>
 
         <h3>2. NATURALEZA DEL SERVICIO (PRE-REGISTRO)</h3>
         <p>El llenado del formulario en este sitio web constituye una <strong>solicitud de evaluación financiera</strong>, no una contratación definitiva ni una aprobación de crédito inmediata.</p>
@@ -877,7 +854,7 @@ const legalTexts = {
         <ul>
             <li><strong>Enganche:</strong> El usuario deberá cubrir un pago inicial (generalmente el 15% del valor del boleto) vía SPEI o efectivo en Oxxo para apartar el boleto.</li>
             <li><strong>Propiedad:</strong> Una vez cubierto el enganche, Yunus adquiere el boleto y lo resguarda en su "Bóveda" a nombre del usuario, quien comienza a disfrutar de la titularidad condicional.</li>
-            <li><strong>Pagos Restantes:</strong> El saldo restante se divide en pagos quincenales hasta la fecha del evento.</li>
+            <li><strong>Pagos Restantes:</strong> El saldo restante se divide en pagos quincenales hasta la fecha del partido.</li>
             <li><strong>Costos:</strong> El servicio incluye un Costo Anual Total (CAT) referencial del 36% anual, el cual ya está integrado en las cuotas presentadas en su plan personalizado. No hay costos ocultos.</li>
         </ul>
 
@@ -1085,6 +1062,34 @@ function closeLegalModal() {
 }
 
 // --- Resto del JS ---
+var matches=[
+  {teams:'México vs Sudáfrica', date:'11 Jun', venue:'Azteca · CDMX',    stage:'Fase de grupos', price:null},
+  {teams:'Korea vs TBA',        date:'11 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:1519.04},
+  {teams:'Túnez vs TBA',        date:'14 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:759.52},
+  {teams:'Uzbekistán vs Colombia',date:'17 Jun',venue:'Azteca · CDMX',   stage:'Fase de grupos', price:2278.55},
+  {teams:'México vs Korea',     date:'18 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:4810.28},
+  {teams:'Túnez vs Japón',      date:'20 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:1012.69},
+  {teams:'Colombia vs TBA',     date:'23 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:2531.72},
+  {teams:'México vs TBA',       date:'24 Jun', venue:'Azteca · CDMX',    stage:'Fase de grupos', price:4810.28},
+  {teams:'Sudáfrica vs Korea',  date:'24 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:759.52},
+  {teams:'Uruguay vs España',   date:'26 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:3544.41},
+  {teams:'Round of 32 · 1F vs 2C', date:'29 Jun', venue:'BBVA · MTY',    stage:'Round of 32',    price:1772.21},
+  {teams:'Round of 32 · 1A vs 3C', date:'30 Jun', venue:'Azteca · CDMX', stage:'Round of 32',    price:2531.72},
+  {teams:'Round of 16 · W79 vs W80',date:'5 Jul',  venue:'Azteca · CDMX',stage:'Round of 16',    price:3291.24},
+];
+function buildCard(m){
+  var priceRow = m.price
+    ? '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+m.price.toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
+    : '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
+  return '<div style="width:190px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:0;" onclick="openModal()"><div style="margin-bottom:6px;"><div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#cbd5e1;">'+m.stage+'</div><div style="font-family:\'Instrument Serif\',serif;font-size:13px;color:#0f172a;line-height:1.25;margin-top:3px;">'+m.teams+'</div></div><div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#94a3b8;">'+m.date+'</span><span style="font-family:\'Geist Mono\',monospace;font-size:9px;color:#cbd5e1;">'+m.venue+'</span></div>'+priceRow+'</div></div>';
+}
+var track=document.getElementById('carouselTrack');
+if(track){var h=matches.map(buildCard).join('');track.innerHTML=h+h;}
+
+var rEls=document.querySelectorAll('.reveal');
+var rIO=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');rIO.unobserve(e.target);}});},{threshold:0.08});
+rEls.forEach(function(r){rIO.observe(r);});
+
 var demoPlayed=false;
 function setDemo(txt){var i=document.getElementById('demoInput');if(i)i.value=txt;}
 function scrollChat(){var c=document.getElementById('demoChat');if(c)c.scrollTop=c.scrollHeight;}
@@ -1092,7 +1097,7 @@ function runDemo(){
   if(demoPlayed)return;
   demoPlayed=true;
   var btn=document.getElementById('demoBtn');if(btn)btn.style.opacity='0.4';
-  setTimeout(function(){var s1=document.getElementById('step1');if(s1){s1.style.color='#475569';s1.textContent='⚡ Analizando inventario... ✓';}},700);
+  setTimeout(function(){var s1=document.getElementById('step1');if(s1){s1.style.color='#475569';s1.textContent='⚡ Analizando inventario GDL... ✓';}},700);
   setTimeout(function(){var s2=document.getElementById('step2');if(s2){s2.style.color='#475569';s2.textContent='🔍 Cruzando con tu perfil... ✓';}},1500);
   setTimeout(function(){var s3=document.getElementById('step3');if(s3){s3.style.color='#475569';s3.textContent='✅ Plan de pagos listo ✓';}},2300);
   setTimeout(function(){var a=document.getElementById('approvalMsg');if(a)a.classList.remove('hidden');scrollChat();},3100);
@@ -1104,6 +1109,28 @@ function runDemoPayment(){
 var dIO=new IntersectionObserver(function(entries){if(entries[0].isIntersecting&&!demoPlayed){setTimeout(runDemo,600);dIO.disconnect();}},{threshold:0.4});
 var dSec=document.getElementById('demo');if(dSec)dIO.observe(dSec);
 document.getElementById('demoBtn').addEventListener('click',runDemo);
+
+function selectSede(card,sede){
+  document.querySelectorAll('.sede-card').forEach(function(c){
+    c.classList.remove('bg-slate-900','border-slate-900');
+    var n=c.querySelector('.sede-name');var s=c.querySelector('.sede-sub');
+    if(n){n.classList.remove('text-white');n.classList.add('text-slate-900');}
+    if(s){s.style.color='';}
+  });
+  card.classList.add('bg-slate-900','border-slate-900');
+  var n=card.querySelector('.sede-name');var s=card.querySelector('.sede-sub');
+  if(n){n.classList.remove('text-slate-900');n.classList.add('text-white');}
+  if(s){s.style.color='rgba(255,255,255,0.5)';}
+  var sel=document.getElementById('wfsede');if(sel)sel.value=sede;
+  setTimeout(openModal,300);
+}
+
+function toggleFaq(el){
+  var a=el.querySelector('.faq-a');var i=el.querySelector('.faq-icon');
+  var open=!a.classList.contains('hidden');
+  if(open){a.classList.add('hidden');i.textContent='+';i.classList.remove('bg-slate-900','text-white','border-slate-900');}
+  else{a.classList.remove('hidden');i.textContent='×';i.classList.add('bg-slate-900','text-white','border-slate-900');}
+}
 
 function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('hidden');}
 
