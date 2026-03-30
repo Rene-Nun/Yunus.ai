@@ -1,16 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yunus — Tu Lugar en el Mundial 2026</title>
+    <title>Yunus — Financia tu Experiencia</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        serif: ['', 'Georgia', 'serif'],
+                        serif: ['Instrument Serif', 'Georgia', 'serif'],
                         sans:  ['Geist', 'system-ui', 'sans-serif'],
                         mono:  ['Geist Mono', 'monospace'],
                     }
@@ -19,182 +20,237 @@
         }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@40;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         ::selection{background:#0a0a0a;color:#fff}
-        .carousel-track{display:flex;gap:10px;width:max-content;animation:cscroll 60s linear infinite}
-        .carousel-track:hover{animation-play-state:paused}
-        @keyframes cscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-        .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
-        .reveal.visible{opacity:1;transform:translateY(0)}
-        .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
-        .modal-enter{opacity:0}
-        .modal-enter-active{opacity:1;transition:opacity 300ms ease-out}
-        .modal-exit-active{opacity:0;transition:opacity 200ms ease-in}
-        .modal-panel-enter{opacity:0;transform:translateY(10px) scale(.95)}
-        .modal-panel-enter-active{opacity:1;transform:translateY(0) scale(1);transition:all 300ms ease-out}
-        .modal-panel-exit-active{opacity:0;transform:translateY(10px) scale(.95);transition:all 200ms ease-in}
-        .tdot{width:5px;height:5px;background:#888;border-radius:50%;animation:blink 1.2s infinite;display:inline-block}
-        .tdot:nth-child(2){animation-delay:.2s}.tdot:nth-child(3){animation-delay:.4s}
-        @keyframes blink{0%,100%{opacity:.2}50%{opacity:.8}}
-        .fade-in{animation:fadeIn .6s ease-out forwards}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        .icon{display:inline-block;vertical-align:middle;flex-shrink:0}
-        .icon svg{display:block}
-        
-        /* WhatsApp chat fixes */
-        #demoChat {
-            height: auto;
-            max-height: 400px;
-            overflow-y: auto;
-            scroll-behavior: smooth;
-            padding-bottom: 16px;
-        }
-        #demoChat::-webkit-scrollbar {
-            width: 6px;
-        }
-        #demoChat::-webkit-scrollbar-thumb {
-            background: #e5e7eb;
-            border-radius: 3px;
-        }
 
-        /* Onboarding Cards — SCROLL INTERNO */
-        .onboarding-card {
-          transition: opacity 0.3s, transform 0.3s;
-          opacity: 0;
-          transform: translateX(20px);
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          display: flex;
-          flex-direction: column;
-        }
-        .onboarding-card.active {
-          opacity: 1;
-          transform: translateX(0);
-        }
-        .onboarding-card.hidden {
-          display: none;
-        }
-        .card-body {
-          flex: 1;
-          overflow-y: auto;
-          -webkit-overflow-scrolling: touch;
-          padding-bottom: 24px;
-        }
-        .card-footer {
-          flex-shrink: 0;
-          padding-top: 16px;
-        }
-        .card-error {
-          color: #dc2626;
-          font-size: 13px;
-          margin-top: 4px;
-          display: none;
-        }
-        .terms-link {
-          @apply text-xs text-slate-500 underline hover:text-slate-700 cursor-pointer;
-        }
-        
-        /* Legal Modal Styles */
-        .legal-modal-content {
-            max-height: 70vh;
-            overflow-y: auto;
-            text-align: left;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: #334155;
-        }
-        .legal-modal-content h2 { font-size: 1.25rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; color: #0f172a; }
-        .legal-modal-content h3 { font-size: 1.1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.5rem; color: #334155; }
-        .legal-modal-content p { margin-bottom: 0.75rem; }
-        .legal-modal-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
-    </style>
+```
+    /* ── CAROUSEL ── */
+    .carousel-track{display:flex;gap:20px;width:max-content;animation:cscroll 60s linear infinite}
+    .carousel-track:hover{animation-play-state:paused}
+    @keyframes cscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    /* ── REVEAL: visible por defecto, animación solo si JS la activa ── */
+    .reveal{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+    .reveal.animate-ready{opacity:0;transform:translateY(16px)}
+    .reveal.animate-ready.visible{opacity:1;transform:translateY(0)}
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+    /* ── MODAL ── */
+    .modal-enter{opacity:0}
+    .modal-enter-active{opacity:1;transition:opacity 300ms ease-out}
+    .modal-exit-active{opacity:0;transition:opacity 200ms ease-in}
+    .modal-panel-enter{opacity:0;transform:translateY(10px) scale(.95)}
+    .modal-panel-enter-active{opacity:1;transform:translateY(0) scale(1);transition:all 300ms ease-out}
+    .modal-panel-exit-active{opacity:0;transform:translateY(10px) scale(.95);transition:all 200ms ease-in}
+
+    /* ── TYPING DOTS ── */
+    .tdot{width:5px;height:5px;background:#888;border-radius:50%;animation:blink 1.2s infinite;display:inline-block}
+    .tdot:nth-child(2){animation-delay:.2s}.tdot:nth-child(3){animation-delay:.4s}
+    @keyframes blink{0%,100%{opacity:.2}50%{opacity:.8}}
+
+    .fade-in{animation:fadeIn .6s ease-out forwards}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .icon{display:inline-block;vertical-align:middle;flex-shrink:0}
+    .icon svg{display:block}
+
+    /* ── CHAT ── */
+    #demoChat{height:auto;max-height:400px;overflow-y:auto;scroll-behavior:smooth;padding-bottom:16px}
+    #demoChat::-webkit-scrollbar{width:6px}
+    #demoChat::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:3px}
+
+    /* ── ONBOARDING CARDS ── */
+    .onboarding-card{transition:opacity 0.3s,transform 0.3s;opacity:0;transform:translateX(20px);position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column}
+    .onboarding-card.active{opacity:1;transform:translateX(0)}
+    .onboarding-card.hidden{display:none}
+    .card-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px}
+    .card-footer{flex-shrink:0;padding-top:16px}
+    .card-error{color:#dc2626;font-size:13px;margin-top:4px;display:none}
+
+    /* ── LEGAL MODAL ── */
+    .legal-modal-content{max-height:70vh;overflow-y:auto;text-align:left;font-size:.875rem;line-height:1.6;color:#334155}
+    .legal-modal-content h2{font-size:1.25rem;font-weight:bold;margin-top:1rem;margin-bottom:.5rem;color:#0f172a}
+    .legal-modal-content h3{font-size:1.1rem;font-weight:600;margin-top:1rem;margin-bottom:.5rem;color:#334155}
+    .legal-modal-content p{margin-bottom:.75rem}
+    .legal-modal-content ul{list-style-type:disc;padding-left:1.5rem;margin-bottom:.75rem}
+
+    /* ── EVENT CARDS ── */
+    .event-card{width:340px;height:450px;flex-shrink:0;border-radius:12px;overflow:hidden;position:relative;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;color:white;transition:transform 0.3s ease}
+    .event-card:hover{transform:translateY(-5px)}
+    .event-card img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}
+    .event-content{position:relative;z-index:10;padding:24px;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);width:100%}
+
+    /* ── GRADIENT FALLBACKS para cuando no hay imágenes ── */
+    .ev-baja    { background: linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 50%,#3b82f6 100%); }
+    .ev-rosalia { background: linear-gradient(135deg,#9f1239 0%,#be185d 50%,#ec4899 100%); }
+    .ev-vans    { background: linear-gradient(135deg,#c2410c 0%,#ea580c 50%,#fb923c 100%); }
+    .ev-bruno   { background: linear-gradient(135deg,#14532d 0%,#166534 50%,#22c55e 100%); }
+
+    /* ── NOISE OVERLAY en event cards ── */
+    .event-card::before{content:'';position:absolute;inset:0;z-index:1;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+</style>
+```
+
 </head>
 <body class="font-sans text-slate-800 bg-white min-h-screen antialiased">
 
+<!-- ── SVG SPRITE ── -->
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="ico-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></symbol>
-  <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="ico-menu"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></symbol>
+  <symbol id="ico-x"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
   <symbol id="ico-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
-  <symbol id="ico-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
-  <symbol id="ico-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
   <symbol id="ico-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
   <symbol id="ico-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
   <symbol id="ico-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></symbol>
   <symbol id="ico-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
-  <symbol id="ico-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
   <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
-  <symbol id="ico-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></symbol>
+  <symbol id="ico-arrow-right-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
 </svg>
 
-<!-- NAV -->
+<!-- ── NAV ── -->
+
 <header id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
-        <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
+        <!-- LOGO: texto como fallback si no hay imagen -->
+        <div class="flex items-center gap-2">
+            <img src="logo.jpeg" alt="Yunus" class="h-14 w-auto object-contain" onerror="this.style.display='none';document.getElementById('logoText').style.display='block'">
+            <span id="logoText" style="display:none" class="font-serif text-2xl font-normal text-slate-900">Yunus</span>
+        </div>
         <div class="hidden md:flex items-center gap-6">
-            <a href="#solucion" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Cómo funciona</a>
-            <a href="#seguridad" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Si no puedes pagar</a>
-            <button onclick="openOnboardingModal()" class="px-5 py-2 rounded bg-slate-900 text-white text-sm font-medium hover:bg-slate-700 transition-colors">Ve al mundial →</button>
+            <a href="#eventos" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Eventos</a>
+            <a href="#como-funciona" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Cómo funciona</a>
+            <button onclick="openOnboardingModal()" class="px-5 py-2 rounded bg-slate-900 text-white text-sm font-medium hover:bg-slate-700 transition-colors">Financiar ahora →</button>
         </div>
         <button class="md:hidden p-2" onclick="toggleMenu()">
             <span class="icon"><svg width="20" height="20" class="text-slate-600"><use href="#ico-menu"/></svg></span>
         </button>
     </div>
     <div id="mobileMenu" class="hidden absolute top-full left-0 right-0 bg-white border-b border-slate-100 p-4 shadow flex flex-col gap-2">
-        <a href="#solucion" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Cómo funciona</a>
-        <a href="#seguridad" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Si no puedes pagar</a>
-        <button onclick="openOnboardingModal();toggleMenu()" class="w-full py-2.5 rounded bg-slate-900 text-white text-sm font-medium">Ve al mundial →</button>
+        <a href="#eventos" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Eventos</a>
+        <a href="#como-funciona" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Cómo funciona</a>
+        <button onclick="openOnboardingModal();toggleMenu()" class="w-full py-2.5 rounded bg-slate-900 text-white text-sm font-medium">Financiar ahora →</button>
     </div>
 </header>
 
-<!-- ANNOUNCE -->
+<!-- ── ANNOUNCE ── -->
+
 <div class="bg-slate-900 text-white text-center px-6 py-2.5 font-mono text-xs tracking-wide mt-20">
-    Lugares limitados · Compra a partir del <strong>2 de abril</strong>
+    Temporada 2026 · Plazos hasta 15 quincenas
     <button onclick="openOnboardingModal()" class="underline underline-offset-2 ml-2 hover:opacity-70 transition-opacity">Aplicar →</button>
 </div>
 
+<!-- ── HERO + CAROUSEL ── -->
+
+<section id="eventos" class="pt-16 pb-20 md:pt-20 md:pb-28 text-center">
+    <div class="max-w-4xl mx-auto px-6 mb-12">
+        <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-normal leading-[1.02] tracking-tight text-slate-900 mb-6">
+            Vive la experiencia.<br><em class="text-slate-400">Págalo después.</em>
+        </h1>
+        <p class="text-lg md:text-xl text-slate-500 font-light leading-relaxed max-w-xl mx-auto mb-10">
+            Asegura tu lugar en los mejores conciertos y festivales del año. Paga un enganche y divide el resto en quincenas cómodas.
+            <strong class="text-slate-800 font-medium">Sin tarjeta. Sin buró. Sin complicaciones.</strong>
+        </p>
+        <button onclick="openOnboardingModal()" class="bg-slate-900 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2 group">
+            Financiar mi boleto
+            <span class="icon group-hover:translate-x-1 transition-transform inline-block"><svg width="16" height="16"><use href="#ico-arrow-right"/></svg></span>
+        </button>
+    </div>
+
+```
 <!-- CAROUSEL -->
 <div class="overflow-hidden border-b border-slate-100 py-3 relative bg-white">
     <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
     <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
-    <div class="carousel-track" id="carouselTrack"></div>
-</div>
-
-<!-- HERO -->
-<section class="pt-16 pb-20 md:pt-20 md:pb-28 text-center">
-    <div class="max-w-4xl mx-auto px-6">
-        <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-normal leading-[1.02] tracking-tight text-slate-900 mb-6">
-            Aparta tu boleto<br><em class="text-slate-400">hoy.</em> Págalo<br>en quincenas.
-        </h1>
-        <p class="text-lg md:text-xl text-slate-500 font-light leading-relaxed max-w-xl mx-auto mb-10">
-            Pides el boleto, Yunus lo compra y te lo aparta. Tú pagas el 15% para empezar y el resto en quincenas cómodas hasta el partido.
-            <strong class="text-slate-800 font-medium">Sin tarjeta de crédito. Sin buró. Sin complicaciones.</strong>
-        </p>
-        <div class="flex flex-col items-center gap-3">
-            <button onclick="openOnboardingModal()" class="bg-slate-900 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 hover:shadow-lg inline-flex items-center gap-2 group">
-                Quiero ir al mundial
-                <span class="icon group-hover:translate-x-1 transition-transform inline-block"><svg width="16" height="16"><use href="#ico-arrow-right"/></svg></span>
-            </button>
-            <a href="#demo" class="text-sm text-slate-400 border border-slate-200 px-6 py-2.5 rounded hover:border-slate-400 hover:text-slate-600 transition-all inline-flex items-center gap-2">
-                <span class="icon"><svg width="14" height="14"><use href="#ico-play"/></svg></span> Ver cómo funciona
-            </a>
+    <div class="carousel-track">
+        <!-- Baja Beach Fest -->
+        <div class="event-card ev-baja" onclick="openOnboardingModal()">
+            <img src="BajaB.jpeg" alt="Baja Beach Fest" onerror="this.style.display='none'">
+            <div class="event-content">
+                <span class="font-mono text-xs text-blue-200 mb-2 uppercase tracking-widest block">Festival · Rosarito</span>
+                <h3 class="font-serif text-3xl text-white mb-2">Baja Beach Fest</h3>
+                <p class="text-sm text-gray-300 mb-4">7-9 Agosto 2026</p>
+                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $49 USD/q</span>
+            </div>
         </div>
-        <div class="flex items-center justify-center gap-3 mt-6 flex-wrap">
-            <span class="inline-flex items-center gap-.5 border border-slate-200 rounded-full px-3 py-1 font-mono text-[11px] text-slate-400">
-                <span class="icon"><svg width="12" height="12"><use href="#ico-zap"/></svg></span> A partir del 2 de abril
-            </span>
-            <span class="inline-flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1 font-mono text-[11px] text-slate-400">36% CAT anual</span>
+        <!-- Rosalía -->
+        <div class="event-card ev-rosalia" onclick="openOnboardingModal()">
+            <img src="Rosalia.jpeg" alt="Rosalía Lux Tour" onerror="this.style.display='none'">
+            <div class="event-content">
+                <span class="font-mono text-xs text-red-200 mb-2 uppercase tracking-widest block">Concierto · CDMX / MTY</span>
+                <h3 class="font-serif text-3xl text-white mb-2">Rosalía: Lux Tour</h3>
+                <p class="text-sm text-gray-300 mb-4">Agosto 2026</p>
+                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $208 MXN/q</span>
+            </div>
+        </div>
+        <!-- Vans Warped Tour -->
+        <div class="event-card ev-vans" onclick="openOnboardingModal()">
+            <img src="VansW.webp" alt="Vans Warped Tour" onerror="this.style.display='none'">
+            <div class="event-content">
+                <span class="font-mono text-xs text-orange-200 mb-2 uppercase tracking-widest block">Festival · CDMX</span>
+                <h3 class="font-serif text-3xl text-white mb-2">Vans Warped Tour</h3>
+                <p class="text-sm text-gray-300 mb-4">12-13 Sep 2026</p>
+                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $380 MXN/q</span>
+            </div>
+        </div>
+        <!-- Bruno Mars -->
+        <div class="event-card ev-bruno" onclick="openOnboardingModal()">
+            <img src="BrunoM.jpeg" alt="Bruno Mars" onerror="this.style.display='none'">
+            <div class="event-content">
+                <span class="font-mono text-xs text-green-200 mb-2 uppercase tracking-widest block">Concierto · CDMX</span>
+                <h3 class="font-serif text-3xl text-white mb-2">Bruno Mars</h3>
+                <p class="text-sm text-gray-300 mb-4">3 Dic 2026</p>
+                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $144 MXN/q</span>
+            </div>
+        </div>
+        <!-- DUPLICADOS -->
+        <div class="event-card ev-baja" onclick="openOnboardingModal()">
+            <img src="BajaB.jpeg" alt="Baja Beach Fest" onerror="this.style.display='none'">
+            <div class="event-content">
+                <span class="font-mono text-xs text-blue-200 mb-2 uppercase tracking-widest block">Festival · Rosarito</span>
+                <h3 class="font-serif text-3xl text-white mb-2">Baja Beach Fest</h3>
+                <p class="text-sm text-gray-300 mb-4">7-9 Agosto 2026</p>
+                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $49 USD/q</span>
+            </div>
+        </div>
+        <div class="event-card ev-rosalia" onclick="openOnboardingModal()">
+            <img src="Rosalia.jpeg" alt="Rosalía Lux Tour" onerror="this.style.display='none'">
+            <div class="event-content">
+                <span class="font-mono text-xs text-red-200 mb-2 uppercase tracking-widest block">Concierto · CDMX / MTY</span>
+                <h3 class="font-serif text-3xl text-white mb-2">Rosalía: Lux Tour</h3>
+                <p class="text-sm text-gray-300 mb-4">Agosto 2026</p>
+                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $208 MXN/q</span>
+            </div>
+        </div>
+        <div class="event-card ev-vans" onclick="openOnboardingModal()">
+            <img src="VansW.webp" alt="Vans Warped Tour" onerror="this.style.display='none'">
+            <div class="event-content">
+                <span class="font-mono text-xs text-orange-200 mb-2 uppercase tracking-widest block">Festival · CDMX</span>
+                <h3 class="font-serif text-3xl text-white mb-2">Vans Warped Tour</h3>
+                <p class="text-sm text-gray-300 mb-4">12-13 Sep 2026</p>
+                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $380 MXN/q</span>
+            </div>
+        </div>
+        <div class="event-card ev-bruno" onclick="openOnboardingModal()">
+            <img src="BrunoM.jpeg" alt="Bruno Mars" onerror="this.style.display='none'">
+            <div class="event-content">
+                <span class="font-mono text-xs text-green-200 mb-2 uppercase tracking-widest block">Concierto · CDMX</span>
+                <h3 class="font-serif text-3xl text-white mb-2">Bruno Mars</h3>
+                <p class="text-sm text-gray-300 mb-4">3 Dic 2026</p>
+                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white">Desde $144 MXN/q</span>
+            </div>
         </div>
     </div>
+</div>
+```
+
 </section>
 
 <hr class="border-slate-100">
 
-<!-- CÓMO FUNCIONA -->
-<section id="solucion" class="py-20 bg-slate-50 border-b border-slate-100">
+<!-- ── CÓMO FUNCIONA ── -->
+
+<section id="como-funciona" class="py-20 bg-slate-50 border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-6">
         <div class="reveal text-center max-w-lg mx-auto mb-12">
             <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight">Así de<br><em class="text-slate-400">sencillo.</em></h2>
@@ -202,29 +258,30 @@
         <div class="grid md:grid-cols-4 gap-3">
             <div class="reveal bg-white border border-slate-200 rounded-lg p-5 flex flex-col gap-3 hover:border-slate-400 transition-colors">
                 <span class="icon"><svg width="20" height="20" class="text-slate-500"><use href="#ico-message-circle"/></svg></span>
-                <div class="font-semibold text-sm text-slate-900">Pides el boleto que quieres</div>
-                <div class="text-xs text-slate-500 leading-relaxed">Dile a Yunus a qué partido quieres ir. Tan específico o tan abierto como quieras — Yunus te muestra lo que hay disponible.</div>
+                <div class="font-semibold text-sm text-slate-900">Eliges tu evento</div>
+                <div class="text-xs text-slate-500 leading-relaxed">Selecciona entre Baja Beach Fest, Rosalía, Vans Warped Tour o Bruno Mars.</div>
             </div>
             <div class="reveal d1 bg-white border border-slate-200 rounded-lg p-5 flex flex-col gap-3 hover:border-slate-400 transition-colors">
                 <span class="icon"><svg width="20" height="20" class="text-slate-500"><use href="#ico-shield-check"/></svg></span>
-                <div class="font-semibold text-sm text-slate-900">Yunus verifica y te presenta tu plan</div>
-                <div class="text-xs text-slate-500 leading-relaxed">Si aplicas, ves el boleto apartado con tu plan de pagos exacto: el enganche y cada quincena hasta el partido. Aceptas y listo.</div>
+                <div class="font-semibold text-sm text-slate-900">Yunus verifica tu perfil</div>
+                <div class="text-xs text-slate-500 leading-relaxed">Analizamos tu capacidad de pago real sin consultar buró. Rápido y seguro.</div>
             </div>
             <div class="reveal d2 bg-white border border-slate-200 rounded-lg p-5 flex flex-col gap-3 hover:border-slate-400 transition-colors">
                 <span class="icon"><svg width="20" height="20" class="text-slate-500"><use href="#ico-ticket"/></svg></span>
-                <div class="font-semibold text-sm text-slate-900">Pagas el 15% y el boleto es tuyo</div>
-                <div class="text-xs text-slate-500 leading-relaxed">Con ese primer pago vía SPEI u Oxxo, Yunus compra el boleto y lo guarda en tu boveda. Ya es tuyo — solo queda terminar de pagarlo.</div>
+                <div class="font-semibold text-sm text-slate-900">Pagas el 15% inicial</div>
+                <div class="text-xs text-slate-500 leading-relaxed">Das un enganche pequeño vía SPEI u Oxxo y Yunus asegura tu boleto inmediatamente.</div>
             </div>
             <div class="reveal d3 bg-white border border-slate-200 rounded-lg p-5 flex flex-col gap-3 hover:border-slate-400 transition-colors">
                 <span class="icon"><svg width="20" height="20" class="text-slate-500"><use href="#ico-calendar"/></svg></span>
-                <div class="font-semibold text-sm text-slate-900">Pagas en quincenas hasta el partido</div>
-                <div class="text-xs text-slate-500 leading-relaxed">El resto se divide en pagos quincenales. La última quincena cae antes del partido. Llegas al estadio con todo pagado.</div>
+                <div class="font-semibold text-sm text-slate-900">Pagas en quincenas</div>
+                <div class="text-xs text-slate-500 leading-relaxed">Divides el resto en pagos quincenales hasta antes del evento. ¡Disfruta sin estrés!</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- DEMO -->
+<!-- ── DEMO CHAT ── -->
+
 <section id="demo" class="py-20">
     <div class="max-w-6xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-start">
@@ -233,175 +290,125 @@
                 <div class="bg-gray-100 px-4 py-3 flex items-center gap-2 border-b border-gray-200">
                     <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                            <path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5z"/>
-                            <polyline points="12 15 12 12 14 10"/>
+                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
                         </svg>
                     </div>
                     <div>
-                        <div class="font-semibold text-sm text-gray-900">Yunus · tu agente de boletos</div>
+                        <div class="font-semibold text-sm text-gray-900">Yunus · Tu agente de boletos</div>
                         <div class="text-xs text-gray-500">En línea • Última actividad hace 2 min</div>
                     </div>
                 </div>
-                <div id="demoChat" class="p-4 flex flex-col gap-3 max-h-[400px] overflow-y-auto bg-gray-50" style="scroll-behavior: smooth;">
+                <div id="demoChat" class="p-4 flex flex-col gap-3 bg-gray-50">
                     <!-- Mensaje del cliente -->
                     <div class="self-end max-w-[80%]">
                         <div class="bg-green-500 rounded-2xl rounded-bl-none px-4 py-2.5 text-sm text-white leading-relaxed">
-                            Quiero boletos para un partido en Guadalajara.
+                            Quiero boletos para Bruno Mars.
                         </div>
-                        <div class="text-xs text-green-200 mt-1 text-left pl-2">14:02</div>
+                        <div class="text-xs text-gray-400 mt-1 text-right pr-2">14:02</div>
                     </div>
-
-                    <!-- Mensaje de Yunus - procesando -->
+                    <!-- Yunus procesando -->
                     <div class="self-start max-w-[80%]">
                         <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
                             <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS ESTÁ PROCESANDO</div>
-                            <div class="flex items-center gap-1.5">
-                                <span class="animate-pulse">●</span>
-                                <span class="font-mono text-[10px]">Analizando inventario GDL...</span>
-                            </div>
-                            <div class="flex items-center gap-1.5 mt-1">
-                                <span class="animate-pulse">●</span>
-                                <span class="font-mono text-[10px]">Cruzando con tu perfil...</span>
-                            </div>
-                            <div class="flex items-center gap-1.5 mt-1">
-                                <span class="animate-pulse">●</span>
-                                <span class="font-mono text-[10px]">Estructurando plan de pagos...</span>
-                            </div>
+                            <div id="step1" class="flex items-center gap-1.5 font-mono text-[10px]"><span class="animate-pulse">●</span> Analizando inventario...</div>
+                            <div id="step2" class="flex items-center gap-1.5 mt-1 font-mono text-[10px]"><span class="animate-pulse">●</span> Cruzando con tu perfil...</div>
+                            <div id="step3" class="flex items-center gap-1.5 mt-1 font-mono text-[10px]"><span class="animate-pulse">●</span> Estructurando plan de pagos...</div>
                         </div>
-                        <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:02</div>
+                        <div class="text-xs text-gray-400 mt-1 text-right pr-2">14:02</div>
                     </div>
-
-                    <!-- Mensaje de Yunus - resultado -->
+                    <!-- Resultado -->
                     <div id="approvalMsg" class="hidden self-start max-w-[80%]">
                         <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
                             <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS</div>
-                            ¡Encontré algo perfecto para ti! 🏆 Aquí está tu plan:
+                            ¡Encontré algo perfecto para ti! 🎤 Aquí está tu plan:
                         </div>
-                        <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:03</div>
-
-                        <!-- Simulación de imagen -->
+                        <div class="text-xs text-gray-400 mt-1 text-right pr-2">14:03</div>
                         <div class="mt-3 bg-gray-900 rounded-xl overflow-hidden border border-gray-700 shadow-sm p-4">
-                          <div class="flex justify-between items-start mb-2">
-                            <div class="font-serif text-sm text-white">Colombia vs TBA</div>
-                            <span class="font-mono text-[9px] text-gray-400 bg-gray-800 px-1.5 py-0.5 rounded">Cat 2</span>
-                          </div>
-                          <div class="font-mono text-[10px] text-gray-300 mb-3">📍 Estadio Akron · 23 Jun 2026</div>
-
-                          <div class="space-y-2">
-                            <div class="flex justify-between text-sm">
-                              <span class="text-gray-400">Total Plan:</span>
-                              <span class="text-white font-semibold">$10,000</span>
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="font-serif text-sm text-white">Bruno Mars</div>
+                                <span class="font-mono text-[9px] text-gray-400 bg-gray-800 px-1.5 py-0.5 rounded">Foro Sol</span>
                             </div>
-                            <div class="flex justify-between text-sm">
-                              <span class="text-amber-300">Anticipo (15%):</span>
-                              <span class="text-amber-300 font-semibold">$1,500</span>
+                            <div class="font-mono text-[10px] text-gray-300 mb-3">📍 3 Dic 2026</div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm"><span class="text-gray-400">Total Plan:</span><span class="text-white font-semibold">$12,887</span></div>
+                                <div class="flex justify-between text-sm"><span class="text-amber-300">Anticipo (15%):</span><span class="text-amber-300 font-semibold">$1,933</span></div>
+                                <div class="flex justify-between text-sm"><span class="text-green-300">Pagos:</span><span class="text-green-300 font-semibold">15 × $869 <span class="text-xs opacity-80">Quincenales</span></span></div>
                             </div>
-                            <div class="flex justify-between text-sm">
-                              <span class="text-green-300">Pagos:</span>
-                              <span class="text-green-300 font-semibold">5 × $1,700<br><span class="text-xs opacity-80">Quincenales</span></span>
+                            <div class="mt-3 flex items-center gap-2">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                                <span class="text-xs text-gray-400">Yunus Bóveda</span>
                             </div>
-                          </div>
-
-                          <div class="mt-3 flex items-center gap-2">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-500">
-                              <rect x="1" y="4" width="22" height="16" rx="2"/>
-                              <line x1="1" y1="10" x2="23" y2="10"/>
-                            </svg>
-                            <span class="text-xs text-gray-400">Yunus Bóveda</span>
-                          </div>
                         </div>
-
-                        <!-- Mensaje final -->
                         <div class="mt-3 bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
-                          👇 Para pagar tu anticipo y reservar tu lugar 👇<br>
-                          <a href="https://yunusia.com/pagar-anticipo/" class="text-blue-600 font-medium underline">https://yunusia.com/pagar-anticipo/</a>
+                            👇 Para pagar tu anticipo y reservar tu lugar 👇<br>
+                            <span class="text-blue-600 font-medium underline">https://yunusia.com/pagar-anticipo/</span>
                         </div>
-                        <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:03</div>
+                        <div class="text-xs text-gray-400 mt-1 text-right pr-2">14:03</div>
                     </div>
-
                     <!-- Confirmación -->
                     <div id="demoPaid" class="hidden self-start max-w-[80%]">
                         <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed flex items-center gap-2">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                <polyline points="22 4 12 14.01 9 11.01"/>
-                            </svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                             ✓ Enganche pagado — boleto en tu Bóveda ✓
                         </div>
-                        <div class="text-xs text-gray-500 mt-1 text-right pr-2">14:04</div>
+                        <div class="text-xs text-gray-400 mt-1 text-right pr-2">14:04</div>
                     </div>
                 </div>
-
                 <!-- Input -->
                 <div class="bg-white border-t border-gray-200 px-4 py-3 flex items-center gap-2">
-                    <button class="p-2 text-gray-500 hover:text-gray-700">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
-                            <circle cx="12" cy="12" r="4"/>
-                        </svg>
-                    </button>
                     <input type="text" id="demoInput" placeholder="Escribe un mensaje..." class="flex-1 bg-gray-100 border border-gray-200 rounded-full px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-green-500 transition-colors font-sans">
                     <button id="demoBtn" onclick="runDemo()" class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white hover:bg-green-600 transition-colors">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="m12 22 16-14H6z"/>
-                        </svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                     </button>
                 </div>
             </div>
 
-            <!-- Texto explicativo -->
-            <div class="reveal d1">
-                <h2 class="font-serif text-3xl md:text-4xl font-normal text-slate-900 leading-tight tracking-tight mb-4">Así se ve<br><em class="text-slate-400">desde adentro.</em></h2>
-                <p class="text-slate-500 leading-relaxed mb-8">Pides el partido, Yunus analiza tu perfil y te presenta el plan exacto. Si te late, pagas el enganche y el boleto queda en tu Bóveda.</p>
-                <div class="space-y-4">
-                    <div class="flex items-start gap-3">
-                        <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                        <div class="text-sm text-slate-600">
-                            <strong class="text-slate-800">Sin tarjeta ni buró</strong> — solo te pedimos lo que necesitamos para verificar
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                        <div class="text-sm text-slate-600">
-                            <strong class="text-slate-800">El boleto queda en tu Bóveda</strong> — apartado desde el primer pago
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                        <div class="text-sm text-slate-600">
-                            <strong class="text-slate-800">Pagas a tu ritmo</strong> — quincena a quincena, la última antes del partido
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                        <div class="text-sm text-slate-600">
-                            <strong class="text-slate-800">Si no aplicas</strong> — Yunus te muestra opciones que sí están a tu alcance
-                        </div>
-                    </div>
+```
+        <!-- Texto explicativo -->
+        <div class="reveal d1">
+            <h2 class="font-serif text-3xl md:text-4xl font-normal text-slate-900 leading-tight tracking-tight mb-4">Así se ve<br><em class="text-slate-400">desde adentro.</em></h2>
+            <p class="text-slate-500 leading-relaxed mb-8">Eliges el evento, Yunus analiza tu perfil y te presenta el plan exacto. Si te late, pagas el enganche y el boleto queda en tu Bóveda.</p>
+            <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
+                    <div class="text-sm text-slate-600"><strong class="text-slate-800">Sin tarjeta ni buró</strong> — solo te pedimos lo que necesitamos para verificar</div>
                 </div>
-                <button onclick="openOnboardingModal()" class="mt-8 bg-slate-900 text-white px-6 py-3 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2">
-                    Habla con Yunus →
-                </button>
+                <div class="flex items-start gap-3">
+                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
+                    <div class="text-sm text-slate-600"><strong class="text-slate-800">El boleto queda en tu Bóveda</strong> — apartado desde el primer pago</div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
+                    <div class="text-sm text-slate-600"><strong class="text-slate-800">Pagas a tu ritmo</strong> — quincena a quincena, la última antes del evento</div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
+                    <div class="text-sm text-slate-600"><strong class="text-slate-800">Si no aplicas</strong> — Yunus te muestra opciones que sí están a tu alcance</div>
+                </div>
             </div>
+            <button onclick="openOnboardingModal()" class="mt-8 bg-slate-900 text-white px-6 py-3 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2">
+                Habla con Yunus →
+            </button>
         </div>
     </div>
+</div>
+```
+
 </section>
 
-<!-- SEGURIDAD -->
+<!-- ── SEGURIDAD ── -->
+
 <section id="seguridad" class="py-20 bg-slate-50 border-t border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-start">
             <div class="reveal">
                 <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight mb-4">¿Y si no puedes<br><em class="text-slate-400">seguir pagando?</em></h2>
-                <p class="text-slate-500 leading-relaxed mb-8">No te dejamos colgado ni te cobramos de más. Vendemos el boleto antes del partido y recuperas lo que ya pagaste.</p>
-                <div class="relative">
-                    <div class="absolute left-[10px] top-3 bottom-3 w-1px bg-slate-200"></div>
-                    <div class="space-y-6">
-                        <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">1</div><div><div class="font-semibold text-sm mb-1">Avisas desde la app</div><div class="text-xs text-slate-500 leading-relaxed">Con un clic en "Revender" le dices a Yunus que ya no puedes continuar con los pagos.</div></div></div>
-                        <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">2</div><div><div class="font-semibold text-sm mb-1">Yunus publica el boleto</div><div class="text-xs text-slate-500 leading-relaxed">Lo listamos en nuestro Marketplace cerrado a precio de mercado, antes de que llegue la fecha del partido.</div></div></div>
-                        <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">3</div><div><div class="font-semibold text-sm mb-1">Se vende y se liquida tu deuda</div><div class="text-xs text-slate-500 leading-relaxed">Con lo que se obtenga, se cubre lo que aún debías más un 6% de comisión por el servicio de reventa.</div></div></div>
-                        <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 text-[10px] font-bold flex-shrink-0 relative z-10 mt-0.5">4</div><div><div class="font-semibold text-sm mb-1">Lo que sobre es tuyo</div><div class="text-xs text-slate-500 leading-relaxed">El resto va directo a tu cuenta. La meta es que recuperes total o parcialmente lo que ya habías pagado. Nadie pierde.</div></div></div>
-                    </div>
+                <p class="text-slate-500 leading-relaxed mb-8">No te dejamos colgado ni te cobramos de más. Gestionamos la reventa del boleto antes del evento y recuperas lo que ya pagaste.</p>
+                <div class="space-y-6">
+                    <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">1</div><div><div class="font-semibold text-sm mb-1">Avisas desde la app</div><div class="text-xs text-slate-500 leading-relaxed">Con un clic en "Revender" le dices a Yunus que ya no puedes continuar con los pagos.</div></div></div>
+                    <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">2</div><div><div class="font-semibold text-sm mb-1">Yunus publica el boleto</div><div class="text-xs text-slate-500 leading-relaxed">Lo listamos en nuestro Marketplace cerrado a precio de mercado, antes de que llegue la fecha del evento.</div></div></div>
+                    <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">3</div><div><div class="font-semibold text-sm mb-1">Se vende y se liquida tu deuda</div><div class="text-xs text-slate-500 leading-relaxed">Con lo que se obtenga, se cubre lo que aún debías más un 6% de comisión por el servicio de reventa.</div></div></div>
+                    <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 text-[10px] font-bold flex-shrink-0 mt-0.5">4</div><div><div class="font-semibold text-sm mb-1">Lo que sobre es tuyo</div><div class="text-xs text-slate-500 leading-relaxed">El resto va directo a tu cuenta. La meta es que recuperes total o parcialmente lo que ya habías pagado.</div></div></div>
                 </div>
             </div>
             <div class="reveal d1 space-y-4">
@@ -413,72 +420,19 @@
                 </div>
                 <div class="bg-white border border-slate-200 rounded-lg p-6">
                     <div class="font-mono text-xs text-slate-400 mb-3 uppercase tracking-wide">¿Por qué funciona?</div>
-                    <p class="text-sm text-slate-500 leading-relaxed">Un boleto del Mundial siempre tiene valor en el mercado. Eso es lo que hace posible que, si algo sale mal, nadie se quede sin nada.</p>
+                    <p class="text-sm text-slate-500 leading-relaxed">Un boleto de concierto o festival siempre tiene valor en el mercado. Eso es lo que hace posible que, si algo sale mal, nadie se quede sin nada.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- SEDES -->
-<section id="sedes" class="py-20">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="reveal text-center max-w-md mx-auto mb-10">
-            <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight">¿Dónde vivirás<br><em class="text-slate-400">el Mundial?</em></h2>
-        </div>
-        <div class="grid md:grid-cols-3 gap-2.5 max-w-2xl mx-auto">
-            <div class="reveal sede-card border border-slate-200 rounded-lg py-7 px-6 text-center cursor-pointer hover:border-slate-900 transition-all duration-200 select-none" onclick="selectSede(this,'CDMX')">
-                <div class="sede-name font-serif text-2xl text-slate-900 leading-tight mb-1.5">Ciudad<br>de México</div>
-                <div class="sede-sub font-mono text-[11px] text-slate-400 uppercase tracking-wide">Estadio Azteca</div>
-            </div>
-            <div class="reveal d1 sede-card border border-slate-200 rounded-lg py-7 px-6 text-center cursor-pointer hover:border-slate-900 transition-all duration-200 select-none" onclick="selectSede(this,'Monterrey')">
-                <div class="sede-name font-serif text-2xl text-slate-900 leading-tight mb-1.5">Monterrey</div>
-                <div class="sede-sub font-mono text-[11px] text-slate-400 uppercase tracking-wide">Estadio BBVA</div>
-            </div>
-            <div class="reveal d2 sede-card border border-slate-200 rounded-lg py-7 px-6 text-center cursor-pointer hover:border-slate-900 transition-all duration-200 select-none" onclick="selectSede(this,'Guadalajara')">
-                <div class="sede-name font-serif text-2xl text-slate-900 leading-tight mb-1.5">Guadalajara</div>
-                <div class="sede-sub font-mono text-[11px] text-slate-400 uppercase tracking-wide">Estadio Akron</div>
-            </div>
-        </div>
-    </div>
-</section>
+<!-- ── FINAL CTA ── -->
 
-<!-- FAQ -->
-<section id="faq" class="py-20 bg-slate-50 border-t border-slate-100">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="reveal text-center max-w-sm mx-auto mb-12">
-            <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight">Lo que necesitas<br><em class="text-slate-400">saber.</em></h2>
-        </div>
-        <div class="max-w-2xl mx-auto divide-y divide-slate-200 border-t border-b border-slate-200">
-            <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
-                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cómo saben si puedo pagar el boleto?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
-                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Al registrarte, Yunus hace una verificación rápida para saber si el plan de pagos es viable para ti — sin consultar buró ni pedirte documentos. Si aplicas, ves el plan directo en la app. Si no, te mostramos opciones que sí están a tu alcance.</div>
-            </div>
-            <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
-                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cuánto tengo que pagar para apartar el boleto?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
-                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">El 15% del valor del boleto, pagadero vía SPEI o efectivo en Oxxo. Con ese pago, el boleto queda en tu Wallet y Yunus lo mantiene apartado para ti. El resto lo vas pagando en quincenas.</div>
-            </div>
-            <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
-                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cuánto me cobra Yunus por el servicio?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
-                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">El crédito tiene un CAT del 36% anual (3% mensual), ya incluido en el plan de pagos que ves desde el principio. No hay cobros sorpresa. Si necesitas reventa, Yunus cobra adicionalmente un 6% de comisión sobre esa operación.</div>
-            </div>
-            <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
-                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Qué pasa si no puedo terminar de pagar?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
-                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Activas "Revender" en la app. Yunus pone el boleto en venta antes del partido. Con lo que se obtenga se cubre tu deuda pendiente más un 6% de comisión, y el resto es para ti. La meta es que recuperes total o parcialmente lo que ya pagaste.</div>
-            </div>
-            <div class="faq-item reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
-                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿El boleto es oficial?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
-                <div class="faq-a hidden mt-3 text-sm text-slate-500 leading-relaxed">Sí. Yunus adquiere los boletos directamente a través de canales oficiales de FIFA. Son 100% legítimos con código QR transferible. No somos reventa — somos la forma de financiar tu acceso al partido.</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FINAL CTA -->
 <section class="py-28 bg-slate-900 text-white text-center px-6">
     <div class="max-w-2xl mx-auto reveal">
         <h2 class="font-serif text-4xl md:text-6xl font-normal leading-tight tracking-tight mb-6">Los boletos<br><em class="text-slate-500">no esperan.</em><br>Tú tampoco.</h2>
-        <p class="text-slate-400 text-lg font-light leading-relaxed mb-10 max-w-sm mx-auto">Solicita tu acceso ahora y sé de los primeros en entrar cuando el Beta abra el 2 de abril.</p>
+        <p class="text-slate-400 text-lg font-light leading-relaxed mb-10 max-w-sm mx-auto">Solicita tu acceso ahora y sé de los primeros en entrar cuando el Beta abra.</p>
         <button onclick="openOnboardingModal()" class="bg-white text-slate-900 px-8 py-3.5 rounded text-sm font-medium hover:bg-slate-100 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2 group">
             Solicitar acceso anticipado
             <span class="icon group-hover:translate-x-1 transition-transform inline-block"><svg width="16" height="16"><use href="#ico-arrow-right"/></svg></span>
@@ -487,23 +441,14 @@
     </div>
 </section>
 
-<!-- INVERSORES -->
-<section class="py-24 text-center px-6" style="background:#2a2a2a;">
-    <div class="max-w-2xl mx-auto reveal">
-        <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xs font-mono text-white/40 mb-8 tracking-widest uppercase">Inversores</div>
-        <h2 class="font-serif text-3xl md:text-4xl font-normal text-white leading-tight tracking-tight mb-6">Tecnología para los<br>Excluidos Solventes.</h2>
-        <p class="leading-relaxed mb-10 max-w-xl mx-auto" style="color:rgba(255,255,255,0.45);">Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado más desatendido de la región. Modelos de riesgo obsoletos dejan millones sobre la mesa. Con aprobación en tiempo real y mitigación de riesgo a través de activos de reventa garantizada, democratizamos el acceso a experiencias.</p>
-        <button onclick="openInvestorModal()" class="border border-white/30 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-white hover:text-slate-900 transition-all inline-flex items-center gap-2 group">
-            Solicitar Pitch Deck
-            <span class="icon group-hover:translate-x-1 transition-transform inline-block"><svg width="16" height="16"><use href="#ico-arrow-right"/></svg></span>
-        </button>
-    </div>
-</section>
+<!-- ── FOOTER ── -->
 
-<!-- FOOTER -->
 <footer class="bg-white border-t border-slate-200 py-10 px-6">
     <div class="max-w-6xl mx-auto flex flex-col items-center gap-4 text-center">
-        <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
+        <div class="flex items-center gap-2">
+            <img src="logo.jpeg" alt="Yunus" class="h-14 w-auto object-contain" onerror="this.style.display='none';document.getElementById('logoFooter').style.display='block'">
+            <span id="logoFooter" style="display:none" class="font-serif text-2xl font-normal text-slate-900">Yunus</span>
+        </div>
         <div class="font-mono text-xs text-slate-500">Ampliando límites físicos · Paso del Norte Labs · Ciudad Juárez, México</div>
         <div class="flex gap-4 text-xs text-slate-400">
             <span onclick="openLegalModal('terms')" class="cursor-pointer hover:text-slate-700 underline">Términos y condiciones</span>
@@ -514,7 +459,8 @@
     </div>
 </footer>
 
-<!-- MODAL ONBOARDING -->
+<!-- ── MODAL ONBOARDING ── -->
+
 <div id="onboardingModal" class="relative z-[100] hidden" role="dialog" aria-modal="true">
     <div id="onboardingBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm modal-enter" onclick="closeOnboardingModal()"></div>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -525,253 +471,167 @@
                         <span class="icon"><svg width="16" height="16"><use href="#ico-x"/></svg></span>
                     </button>
                     <div id="onboardingFlow" class="relative h-[560px] flex flex-col">
-                      <!-- Card 1 -->
-                      <div id="card1" class="onboarding-card active">
+                        <!-- Card 1 -->
+                        <div id="card1" class="onboarding-card active">
+                            <div class="flex justify-center mb-6">
+                                <span class="font-serif text-2xl font-normal text-slate-900">Yunus</span>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="font-serif text-2xl font-bold mb-6">Regístrate</h3>
+                                <form id="form1">
+                                    <input type="hidden" name="Paso" value="Registro">
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Nombre completo</label>
+                                        <input type="text" name="Nombre_completo" id="nombre" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none">
+                                        <div class="card-error" id="error-nombre">Este campo es requerido</div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Celular</label>
+                                        <div class="relative">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">+52</span>
+                                            <input type="tel" name="Celular" id="celular" pattern="[0-9]{10}" required class="w-full pl-10 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none">
+                                        </div>
+                                        <div class="card-error" id="error-celular">Debe ser 10 dígitos</div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Fecha de nacimiento</label>
+                                        <input type="date" name="Fecha_de_nacimiento" id="fechaNac" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none">
+                                        <div class="card-error" id="error-fecha">Debes tener 18 años o más</div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Entidad federativa</label>
+                                        <select name="Entidad_federativa" id="entidad" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none">
+                                            <option value="">Selecciona una entidad</option>
+                                            <option value="AGU">Aguascalientes</option><option value="BCN">Baja California</option><option value="BCS">Baja California Sur</option><option value="CAM">Campeche</option><option value="COA">Coahuila</option><option value="COL">Colima</option><option value="CHP">Chiapas</option><option value="CHH">Chihuahua</option><option value="CMX">Ciudad de México</option><option value="DUR">Durango</option><option value="GTO">Guanajuato</option><option value="GRO">Guerrero</option><option value="HGO">Hidalgo</option><option value="JAL">Jalisco</option><option value="MEX">México</option><option value="MIC">Michoacán</option><option value="MOR">Morelos</option><option value="NAY">Nayarit</option><option value="NL">Nuevo León</option><option value="OAX">Oaxaca</option><option value="PUE">Puebla</option><option value="QRO">Querétaro</option><option value="QROO">Quintana Roo</option><option value="SLP">San Luis Potosí</option><option value="SIN">Sinaloa</option><option value="SON">Sonora</option><option value="TAB">Tabasco</option><option value="TAM">Tamaulipas</option><option value="TLA">Tlaxcala</option><option value="VER">Veracruz</option><option value="YUC">Yucatán</option><option value="ZAC">Zacatecas</option>
+                                        </select>
+                                        <div class="card-error" id="error-entidad">Selecciona una entidad</div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Código postal</label>
+                                        <input type="text" name="Codigo_postal" id="cp" pattern="[0-9]{5}" maxlength="5" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none">
+                                        <div class="card-error" id="error-cp">Debe ser 5 dígitos</div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" onclick="goToCard(2)" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
+                                <p class="text-xs text-slate-500 mt-4">Al continuar aceptas haber leído nuestros <span onclick="openLegalModal('terms')" class="underline cursor-pointer">Términos</span> y <span onclick="openLegalModal('privacy')" class="underline cursor-pointer">Política de privacidad</span>.</p>
+                            </div>
+                        </div>
+
+```
+                    <!-- Card 2 -->
+                    <div id="card2" class="onboarding-card hidden">
                         <div class="flex justify-center mb-6">
-                          <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
+                            <span class="font-serif text-2xl font-normal text-slate-900">Yunus</span>
                         </div>
                         <div class="card-body">
-                          <h3 class="font-serif text-2xl font-bold mb-6">Regístrate</h3>
-                          <form id="form1">
-                            <input type="hidden" name="Paso" value="Registro">
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Nombre completo</label>
-                              <input type="text" name="Nombre_completo" id="nombre" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                              <div class="card-error" id="error-nombre">Este campo es requerido</div>
-                            </div>
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Celular</label>
-                              <div class="relative">
-                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">+52</span>
-                                <input type="tel" name="Celular" id="celular" pattern="[0-9]{10}" required class="w-full pl-10 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                              </div>
-                              <div class="card-error" id="error-celular">Debe ser 10 dígitos</div>
-                            </div>
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Fecha de nacimiento</label>
-                              <input type="date" name="Fecha_de_nacimiento" id="fechaNac" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                              <div class="card-error" id="error-fecha">Debes tener 18 años o más</div>
-                            </div>
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Entidad federativa</label>
-                              <select name="Entidad_federativa" id="entidad" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                                <option value="">Selecciona una entidad</option>
-                                <option value="AGU">Aguascalientes</option>
-                                <option value="BCN">Baja California</option>
-                                <option value="BCS">Baja California Sur</option>
-                                <option value="CAM">Campeche</option>
-                                <option value="COA">Coahuila</option>
-                                <option value="COL">Colima</option>
-                                <option value="CHP">Chiapas</option>
-                                <option value="CHH">Chihuahua</option>
-                                <option value="CMX">Ciudad de México</option>
-                                <option value="DUR">Durango</option>
-                                <option value="GTO">Guanajuato</option>
-                                <option value="GRO">Guerrero</option>
-                                <option value="HGO">Hidalgo</option>
-                                <option value="JAL">Jalisco</option>
-                                <option value="MEX">México</option>
-                                <option value="MIC">Michoacán</option>
-                                <option value="MOR">Morelos</option>
-                                <option value="NAY">Nayarit</option>
-                                <option value="NL">Nuevo León</option>
-                                <option value="OAX">Oaxaca</option>
-                                <option value="PUE">Puebla</option>
-                                <option value="QRO">Querétaro</option>
-                                <option value="QROO">Quintana Roo</option>
-                                <option value="SLP">San Luis Potosí</option>
-                                <option value="SIN">Sinaloa</option>
-                                <option value="SON">Sonora</option>
-                                <option value="TAB">Tabasco</option>
-                                <option value="TAM">Tamaulipas</option>
-                                <option value="TLA">Tlaxcala</option>
-                                <option value="VER">Veracruz</option>
-                                <option value="YUC">Yucatán</option>
-                                <option value="ZAC">Zacatecas</option>
-                              </select>
-                              <div class="card-error" id="error-entidad">Selecciona una entidad</div>
-                            </div>
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Código postal</label>
-                              <input type="text" name="Codigo_postal" id="cp" pattern="[0-9]{5}" maxlength="5" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                              <div class="card-error" id="error-cp">Debe ser 5 dígitos</div>
-                            </div>
-                          </form>
+                            <h3 class="font-serif text-2xl font-bold mb-6">Tu perfil financiero</h3>
+                            <form id="form2">
+                                <input type="hidden" name="Paso" value="Registro + Perfil">
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Ingreso mensual neto</label>
+                                    <input type="number" name="Ingreso_mensual" id="ingreso" min="0" step="100" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
+                                    <div class="card-error" id="error-ingreso">Ingresa un número válido</div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Marca de celular</label>
+                                    <select name="Marca_celular" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
+                                        <option value="">Selecciona una marca</option>
+                                        <option>Apple</option><option>Samsung</option><option>Xiaomi</option><option>OPPO</option><option>Realme</option><option>Motorola</option><option>Huawei</option><option>Sony</option><option>Nokia</option><option>LG</option><option>OnePlus</option><option>ASUS</option><option>Lenovo</option><option>Otro</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de celular</label>
+                                    <select name="Gastos_celular" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="credito_activo">Crédito de celular activo</option>
+                                        <option value="sin_deudas">Sin deudas / Plan de renta</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de vivienda</label>
+                                    <select name="Gastos_vivienda" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="sin_gastos">No tengo gastos de vivienda</option>
+                                        <option value="pago_renta">Pago renta</option>
+                                        <option value="pago_hipoteca">Pago hipoteca</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de automóvil</label>
+                                    <select name="Gastos_automovil" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="no_tengo">No tengo carro</option>
+                                        <option value="credito_auto">Tengo un crédito automotriz</option>
+                                        <option value="auto_sin_deuda">Tengo auto sin deuda</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Personas que dependen de ti</label>
+                                    <select name="Dependientes" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
+                                        <option value="">Selecciona</option>
+                                        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">¿Cómo calificarías tu historial crediticio?</label>
+                                    <select name="Historial_crediticio" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
+                                        <option value="">Selecciona</option>
+                                        <option value="Bueno">Bueno</option><option value="Regular">Regular</option><option value="Malo">Malo</option><option value="No tengo">No tengo / No sé</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">¿Estás pagando actualmente otro crédito o deuda?</label>
+                                    <select name="Otras_deudas" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="si">Sí</option><option value="no">No</option>
+                                    </select>
+                                </div>
+                                <div class="mt-6 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                                    <label class="flex items-start gap-2 cursor-pointer">
+                                        <input type="checkbox" id="acceptTerms" class="mt-1 w-4 h-4 text-slate-900 border-slate-300 rounded">
+                                        <span class="text-xs text-slate-600 leading-tight">He leído y acepto los <span onclick="openLegalModal('terms')" class="underline text-slate-900 font-medium cursor-pointer">Términos y condiciones</span> y la <span onclick="openLegalModal('privacy')" class="underline text-slate-900 font-medium cursor-pointer">Política de privacidad</span>.</span>
+                                    </label>
+                                    <div id="error-terms" class="text-xs text-red-600 mt-1 hidden">Debes aceptar los términos para continuar.</div>
+                                </div>
+                            </form>
                         </div>
                         <div class="card-footer">
-                          <button type="button" onclick="goToCard(2)" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
-                          <p class="text-xs text-slate-500 mt-4 terms-link">
-                            Al continuar aceptas haber leído nuestros <span onclick="openLegalModal('terms')" class="underline">Términos y condiciones</span> y <span onclick="openLegalModal('privacy')" class="underline">Política de privacidad</span>.
-                          </p>
+                            <button type="button" onclick="submitAllDataAndGoToCard3()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
                         </div>
-                      </div>
+                    </div>
 
-                      <!-- Card 2 (ACTUALIZADA) -->
-                      <div id="card2" class="onboarding-card hidden">
+                    <!-- Card 3 -->
+                    <div id="card3" class="onboarding-card hidden text-center">
                         <div class="flex justify-center mb-6">
-                          <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
+                            <span class="font-serif text-2xl font-normal text-slate-900">Yunus</span>
                         </div>
                         <div class="card-body">
-                          <h3 class="font-serif text-2xl font-bold mb-6">Tu perfil financiero</h3>
-                          <form id="form2">
-                            <input type="hidden" name="Paso" value="Registro + Perfil">
-                            
-                            <!-- Ingreso -->
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Ingreso mensual neto</label>
-                              <input type="number" name="Ingreso_mensual" id="ingreso" min="0" step="100" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                              <div class="card-error" id="error-ingreso">Ingresa un número válido</div>
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             </div>
-
-                            <!-- Marca Celular -->
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Marca de celular</label>
-                              <select name="Marca_celular" id="marca" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                                <option value="">Selecciona una marca</option>
-                                <option value="Apple">Apple</option>
-                                <option value="Samsung">Samsung</option>
-                                <option value="Xiaomi">Xiaomi</option>
-                                <option value="OPPO">OPPO</option>
-                                <option value="Realme">Realme</option>
-                                <option value="Motorola">Motorola</option>
-                                <option value="Huawei">Huawei</option>
-                                <option value="Sony">Sony</option>
-                                <option value="Nokia">Nokia</option>
-                                <option value="LG">LG</option>
-                                <option value="OnePlus">OnePlus</option>
-                                <option value="ASUS">ASUS</option>
-                                <option value="HTC">HTC</option>
-                                <option value="TCL">TCL</option>
-                                <option value="ZTE">ZTE</option>
-                                <option value="Infinix">Infinix</option>
-                                <option value="Tecno">Tecno</option>
-                                <option value="Itel">Itel</option>
-                                <option value="Poco">Poco</option>
-                                <option value="Vivo">Vivo</option>
-                                <option value="Lenovo">Lenovo</option>
-                              </select>
-                              <div class="card-error" id="error-marca">Selecciona una marca</div>
-                            </div>
-
-                            <!-- NUEVO: Gastos de Celular -->
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de celular</label>
-                              <select name="Gastos_celular" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                                <option value="">Selecciona una opción</option>
-                                <option value="credito_activo">Crédito de celular activo</option>
-                                <option value="sin_deudas">Sin deudas / Plan de renta</option>
-                              </select>
-                              <div class="card-error" id="error-gastos-celular">Selecciona una opción</div>
-                            </div>
-
-                            <!-- NUEVO: Gastos de Vivienda (Reemplaza Renta) -->
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de vivienda</label>
-                              <select name="Gastos_vivienda" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                                <option value="">Selecciona una opción</option>
-                                <option value="sin_gastos">No tengo gastos de vivienda</option>
-                                <option value="pago_renta">Pago renta</option>
-                                <option value="pago_hipoteca">Pago hipoteca</option>
-                              </select>
-                              <div class="card-error" id="error-gastos-vivienda">Selecciona una opción</div>
-                            </div>
-
-                            <!-- NUEVO: Gastos de Automóvil -->
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de automóvil</label>
-                              <select name="Gastos_automovil" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                                <option value="">Selecciona una opción</option>
-                                <option value="no_tengo">No tengo carro</option>
-                                <option value="credito_auto">Tengo un crédito automotriz</option>
-                                <option value="auto_sin_deuda">Tengo auto sin deuda</option>
-                              </select>
-                              <div class="card-error" id="error-gastos-auto">Selecciona una opción</div>
-                            </div>
-
-                            <!-- Dependientes -->
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">Personas que dependen de ti</label>
-                              <select name="Dependientes" id="dependientes" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                                <option value="">Selecciona</option>
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5+</option>
-                              </select>
-                              <div class="card-error" id="error-dependientes">Selecciona una opción</div>
-                            </div>
-
-                            <!-- Historial -->
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">¿Cómo calificarías tu historial crediticio?</label>
-                              <select name="Historial_crediticio" id="historial" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                                <option value="">Selecciona</option>
-                                <option value="Bueno">Bueno</option>
-                                <option value="Regular">Regular</option>
-                                <option value="Malo">Malo</option>
-                                <option value="No tengo">No tengo / No sé</option>
-                              </select>
-                              <div class="card-error" id="error-historial">Selecciona una opción</div>
-                            </div>
-
-                            <!-- NUEVO: Otras Deudas -->
-                            <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">¿Estás pagando actualmente otro tipo de crédito o deuda?</label>
-                              <select name="Otras_deudas" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
-                                <option value="">Selecciona una opción</option>
-                                <option value="si">Sí</option>
-                                <option value="no">No</option>
-                              </select>
-                              <div class="card-error" id="error-otras-deudas">Selecciona una opción</div>
-                            </div>
-                            
-                            <!-- Checkbox Obligatorio -->
-                            <div class="mt-6 p-3 bg-slate-50 border border-slate-200 rounded-lg">
-                                <label class="flex items-start gap-2 cursor-pointer">
-                                    <input type="checkbox" id="acceptTerms" class="mt-1 w-4 h-4 text-slate-900 border-slate-300 rounded focus:ring-slate-500">
-                                    <span class="text-xs text-slate-600 leading-tight">
-                                        He leído y acepto los <span onclick="openLegalModal('terms')" class="underline text-slate-900 font-medium cursor-pointer">Términos y condiciones</span> y la <span onclick="openLegalModal('privacy')" class="underline text-slate-900 font-medium cursor-pointer">Política de privacidad</span>.
-                                    </span>
-                                </label>
-                                <div id="error-terms" class="text-xs text-red-600 mt-1 hidden">Debes aceptar los términos para continuar.</div>
-                            </div>
-
-                          </form>
+                            <h3 class="font-serif text-2xl font-bold mb-2">¡Listo!</h3>
+                            <p class="text-slate-600 mb-6">Dile a Yunus lo que quieres y armará un plan para ti.</p>
                         </div>
                         <div class="card-footer">
-                          <button type="button" onclick="submitAllDataAndGoToCard3()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
+                            <button type="button" onclick="openWhatsApp()" class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition">
+                                Hablar con Yunus en WhatsApp →
+                            </button>
+                            <p class="text-xs text-slate-500 mt-4">Te enviaremos tu plan personalizado en los próximos <strong>5 minutos</strong>.</p>
                         </div>
-                      </div>
-
-                      <!-- Card 3 -->
-                      <div id="card3" class="onboarding-card hidden text-center">
-                        <div class="flex justify-center mb-6">
-                          <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
-                        </div>
-                        <div class="card-body">
-                          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-                          </div>
-                          <h3 class="font-serif text-2xl font-bold mb-2">¡Listo!</h3>
-                          <p class="text-slate-600 mb-6">Dile a Yunus lo que quieres y armará un plan para ti.</p>
-                        </div>
-                        <div class="card-footer">
-                          <button type="button" onclick="openWhatsApp()" class="inline-block bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-full transition">
-                            Hablar con Yunus en WhatsApp →
-                          </button>
-                          <p class="text-xs text-slate-500 mt-4">Te enviaremos tu plan personalizado en los próximos <strong>5 minutos</strong>.</p>
-                        </div>
-                      </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+```
 
-<!-- MODAL LEGAL (Términos y Privacidad) -->
+</div>
+
+<!-- ── MODAL LEGAL ── -->
+
 <div id="legalModal" class="relative z-[110] hidden" role="dialog" aria-modal="true">
     <div id="legalBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm modal-enter" onclick="closeLegalModal()"></div>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -783,9 +643,7 @@
                         <span class="icon"><svg width="24" height="24"><use href="#ico-x"/></svg></span>
                     </button>
                 </div>
-                <div id="legalContent" class="p-6 legal-modal-content flex-grow">
-                    <!-- Contenido dinámico -->
-                </div>
+                <div id="legalContent" class="p-6 legal-modal-content flex-grow"></div>
                 <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end flex-shrink-0">
                     <button onclick="closeLegalModal()" class="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">Cerrar</button>
                 </div>
@@ -794,355 +652,206 @@
     </div>
 </div>
 
-<!-- MODAL INVERSORES -->
-<div id="investorModal" class="relative z-[100] hidden" role="dialog" aria-modal="true">
-    <div id="investorBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm modal-enter" onclick="closeInvestorModal()"></div>
-    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div class="flex min-h-full items-center justify-center p-4">
-            <div id="investorPanel" class="relative bg-white rounded-xl shadow-2xl w-full max-w-md modal-panel-enter overflow-hidden">
-                <div class="p-8 relative">
-                    <button onclick="closeInvestorModal()" class="absolute top-4 right-4 text-slate-300 hover:text-slate-600 transition-colors p-1">
-                        <span class="icon"><svg width="16" height="16"><use href="#ico-x"/></svg></span>
-                    </button>
-                    <div id="investorContent">
-                        <h3 class="font-serif text-2xl font-normal text-slate-900 mb-2">Acceso a Inversores</h3>
-                        <p class="text-slate-500 text-sm mb-6 leading-relaxed">Déjanos tus datos para enviarte el Pitch Deck y ponernos en contacto contigo.</p>
-                        <form id="investorForm" action="https://formspree.io/f/mreyjllj" method="POST" class="space-y-3" onsubmit="handleInvestorSubmit(event)">
-                            <input type="hidden" name="Tipo_de_solicitud" value="PITCH DECK - INVERSOR">
-                            <input type="text" name="Nombre" placeholder="Nombre completo" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
-                            <input type="email" name="Email" placeholder="Correo corporativo" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
-                            <input type="text" name="Empresa_o_Fondo" placeholder="Empresa o Fondo" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
-                            <input type="url" name="LinkedIn" placeholder="URL de tu LinkedIn" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
-                            <input type="text" name="_gotcha" style="display:none">
-                            <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded text-sm font-medium hover:bg-slate-700 transition-colors mt-1">Solicitar Pitch Deck →</button>
-                        </form>
-                    </div>
-                    <div id="investorSuccessMessage" class="hidden text-center py-8 fade-in">
-                        <div class="mx-auto w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-4">
-                            <span class="icon"><svg width="24" height="24" class="text-green-600"><use href="#ico-check"/></svg></span>
-                        </div>
-                        <h3 class="font-serif text-2xl text-slate-900 mb-2">Solicitud recibida</h3>
-                        <p class="text-sm text-slate-500">Nos pondremos en contacto a la brevedad.</p>
-                        <button onclick="closeInvestorModal()" class="mt-6 text-xs text-slate-400 hover:text-slate-600 underline underline-offset-2">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
-// --- Textos Legales ---
+// ── LEGAL TEXTS ──
 const legalTexts = {
     terms: `
         <h2>TÉRMINOS Y CONDICIONES DE USO – YUNUS (MVP)</h2>
-        <p><strong>Última actualización:</strong> Domingo 29 de marzo de 2026</p>
-        
+        <p><strong>Última actualización:</strong> 29 de marzo de 2026</p>
         <h3>1. ACEPTACIÓN</h3>
-        <p>Al utilizar el sitio web yunusia.com y completar el formulario de registro, usted acepta los presentes Términos y Condiciones. Este documento regula el uso del servicio de pre-registro para el financiamiento de boletos para la Copa Mundial de la FIFA 2026 ofrecido por Yunus (en adelante, "la Plataforma").</p>
-
-        <h3>2. NATURALEZA DEL SERVICIO (PRE-REGISTRO)</h3>
-        <p>El llenado del formulario en este sitio web constituye una <strong>solicitud de evaluación financiera</strong>, no una contratación definitiva ni una aprobación de crédito inmediata.</p>
-        <ul>
-            <li>Yunus analizará la información proporcionada (ingresos, historial, identidad) para determinar su elegibilidad.</li>
-            <li>La aprobación final y las condiciones específicas del plan de pagos (monto de enganche, número de quincenas, CAT) se comunicarán exclusivamente a través del canal oficial de WhatsApp indicado al finalizar el registro.</li>
-            <li>Yunus se reserva el derecho de admisión y aprobación basado en su modelo interno de riesgo.</li>
-        </ul>
-
+        <p>Al utilizar el sitio web yunusia.com y completar el formulario de registro, usted acepta los presentes Términos y Condiciones.</p>
+        <h3>2. NATURALEZA DEL SERVICIO</h3>
+        <p>El llenado del formulario constituye una <strong>solicitud de evaluación financiera</strong>, no una contratación definitiva ni una aprobación de crédito inmediata. Yunus se reserva el derecho de admisión basado en su modelo interno de riesgo.</p>
         <h3>3. MODELO DE FINANCIAMIENTO</h3>
-        <p>En caso de ser aprobado, el funcionamiento general del servicio es el siguiente:</p>
         <ul>
-            <li><strong>Enganche:</strong> El usuario deberá cubrir un pago inicial (generalmente el 15% del valor del boleto) vía SPEI o efectivo en Oxxo para apartar el boleto.</li>
-            <li><strong>Propiedad:</strong> Una vez cubierto el enganche, Yunus adquiere el boleto y lo resguarda en su "Bóveda" a nombre del usuario, quien comienza a disfrutar de la titularidad condicional.</li>
-            <li><strong>Pagos Restantes:</strong> El saldo restante se divide en pagos quincenales hasta la fecha del partido.</li>
-            <li><strong>Costos:</strong> El servicio incluye un Costo Anual Total (CAT) referencial del 36% anual, el cual ya está integrado en las cuotas presentadas en su plan personalizado. No hay costos ocultos.</li>
+            <li><strong>Enganche:</strong> El usuario cubre un pago inicial (generalmente el 15%) vía SPEI u Oxxo para apartar el boleto.</li>
+            <li><strong>Propiedad:</strong> Yunus adquiere el boleto y lo resguarda en su "Bóveda" hasta completar el pago.</li>
+            <li><strong>CAT referencial:</strong> 36% anual · 3% mensual, ya incluido en las cuotas presentadas.</li>
         </ul>
-
-        <h3>4. POLÍTICA DE INCUMPLIMIENTO Y REVENTA</h3>
-        <p>Si el usuario deja de realizar los pagos quincenales pactados:</p>
-        <ul>
-            <li>Yunus activará el protocolo de "Revender".</li>
-            <li>La Plataforma pondrá el boleto a la venta en su mercado secundario antes de la fecha del evento.</li>
-            <li>Con lo obtenido de la venta, se liquidará la deuda pendiente del usuario más una <strong>comisión administrativa del 6%</strong> por el servicio de gestión de reventa.</li>
-            <li>El remanente (si lo hubiera) será devuelto al usuario. No se generarán reportes negativos a burós de crédito tradicionales por esta operación específica en esta etapa MVP.</li>
-        </ul>
-
+        <h3>4. POLÍTICA DE INCUMPLIMIENTO</h3>
+        <p>Si el usuario deja de pagar, Yunus activa el protocolo de reventa. Con lo obtenido se liquida la deuda más una <strong>comisión del 6%</strong>. El remanente se devuelve al usuario.</p>
         <h3>5. VERACIDAD DE LA INFORMACIÓN</h3>
-        <p>El usuario declara bajo protesta de decir verdad que los datos proporcionados en el formulario (identidad, ingresos, domicilio) son reales y actuales. La provisión de información falsa es causal inmediata de rechazo de la solicitud y posible cancelación de beneficios futuros.</p>
-
-        <h3>6. MODIFICACIONES</h3>
-        <p>Yunus se reserva el derecho de modificar estos términos para futuras contrataciones. Las condiciones pactadas al momento de la aprobación de su plan se mantendrán inalterables para dicho pedido específico.</p>
-
-        <h3>7. CONTACTO</h3>
-        <p>Para dudas sobre estos términos, escriba directamente a nuestro agente oficial en WhatsApp o a christianturista@proton.me.</p>
+        <p>El usuario declara que los datos proporcionados son reales y actuales. La información falsa es causal de rechazo inmediato.</p>
+        <h3>6. CONTACTO</h3>
+        <p>Para dudas: christianturista@proton.me</p>
     `,
     privacy: `
-        <h2>POLÍTICA DE PRIVACIDAD Y PROTECCIÓN DE DATOS – YUNUS</h2>
-        <p><strong>Última actualización:</strong> Domingo 29 de marzo de 2026</p>
-
-        <p>En <strong>Yunus</strong> (operado por Paso del Norte Labs), nos tomamos muy en serio la seguridad de su información financiera y personal. Esta política explica cómo tratamos los datos que nos proporciona en este formulario de pre-registro.</p>
-
+        <h2>POLÍTICA DE PRIVACIDAD – YUNUS</h2>
+        <p><strong>Última actualización:</strong> 29 de marzo de 2026</p>
         <h3>1. DATOS QUE RECOPILAMOS</h3>
-        <p>Para poder evaluar su perfil de riesgo y ofrecerle un plan de financiamiento a medida, solicitamos los siguientes datos:</p>
         <ul>
-            <li><strong>Identificación:</strong> Nombre completo, fecha de nacimiento, entidad federativa, código postal.</li>
-            <li><strong>Contacto:</strong> Número de celular (vital para la comunicación vía WhatsApp).</li>
-            <li><strong>Perfil Financiero:</strong> Ingreso mensual neto, gastos fijos (renta/hipoteca), dependientes económicos, deudas de celular/auto y auto-evaluación de historial crediticio.</li>
-            <li><strong>Documentación (Fase siguiente):</strong> En etapas posteriores del flujo (vía WhatsApp), podremos solicitar fotografía de INE y comprobantes de ingresos para validar la identidad.</li>
+            <li><strong>Identificación:</strong> Nombre, fecha de nacimiento, entidad federativa, CP.</li>
+            <li><strong>Contacto:</strong> Número de celular.</li>
+            <li><strong>Perfil Financiero:</strong> Ingreso mensual, gastos fijos, dependientes, deudas.</li>
         </ul>
-
-        <h3>2. FINALIDAD DEL TRATAMIENTO</h3>
-        <p>Sus datos serán utilizados estrictamente para:</p>
-        <ol>
-            <li><strong>Evaluación de Riesgo:</strong> Cruzar su información con nuestra base de datos de boletos disponibles y calcular su capacidad de pago real sin endeudamiento excesivo.</li>
-            <li><strong>Comunicación:</strong> Contactarlo a través de WhatsApp para informarle si fue aprobado, presentarle su plan de pagos y guiarlo en el primer pago.</li>
-            <li><strong>Prevención de Fraude:</strong> Verificar que la solicitud sea legítima.</li>
-        </ol>
-        <p><strong>NO vendemos, rentamos ni compartimos sus datos financieros con terceros, bancos o burós de crédito tradicionales.</strong></p>
-
-        <h3>3. BASE LEGAL Y CONSENTIMIENTO</h3>
-        <p>Al marcar la casilla de aceptación y enviar el formulario, usted otorga su consentimiento expreso para que Yunus trate sus datos personales con las finalidades descritas. Usted declara ser mayor de 18 años.</p>
-
-        <h3>4. SEGURIDAD DE LOS DATOS</h3>
-        <p>Actualmente, la información recabada en este MVP se almacena de forma segura en nuestras bases de datos internas y en las herramientas de gestión de formularios (Formspree), accesibles solo por el equipo fundador de Yunus. Estamos trabajando en implementar protocolos de encriptación más robustos de cara al lanzamiento oficial de la App.</p>
-
-        <h3>5. DERECHOS ARCO (Acceso, Rectificación, Cancelación y Oposición)</h3>
-        <p>Usted tiene derecho en cualquier momento a:</p>
-        <ul>
-            <li>Saber qué datos tenemos de usted.</li>
-            <li>Corregir algún dato erróneo (ej. cambió de número de teléfono).</li>
-            <li>Solicitar la eliminación de sus datos de nuestra base (derecho al olvido), siempre que no exista un plan de financiamiento activo.</li>
-        </ul>
-        <p>Para ejercer estos derechos, envíe un mensaje directo a nuestro WhatsApp oficial o un correo a christianturista@proton.me.</p>
-
-        <h3>6. CAMBIOS A LA POLÍTICA</h3>
-        <p>Nos reservamos el derecho de efectuar en cualquier momento modificaciones o actualizaciones a la presente política, para la atención de novedades legislativas o cambios internos. Dichos cambios serán notificados a través de nuestro sitio web o canal de WhatsApp.</p>
-
-        <h3>7. CONTACTO</h3>
-        <p>Cualquier duda sobre el manejo de sus datos, por favor contáctenos en:</p>
-        <ul>
-            <li>Correo: christianturista@proton.me</li>
-            <li>Domicilio: Ciudad Juárez, Chihuahua, México.</li>
-        </ul>
+        <h3>2. FINALIDAD</h3>
+        <p>Sus datos se usan estrictamente para evaluación de riesgo, comunicación por WhatsApp y prevención de fraude. <strong>NO vendemos ni compartimos sus datos con terceros o burós de crédito.</strong></p>
+        <h3>3. SEGURIDAD</h3>
+        <p>La información se almacena en nuestras bases de datos internas y en Formspree, accesibles solo por el equipo fundador de Yunus.</p>
+        <h3>4. DERECHOS ARCO</h3>
+        <p>Puede acceder, corregir o eliminar sus datos en cualquier momento contactándonos en christianturista@proton.me.</p>
+        <h3>5. CONTACTO</h3>
+        <p>Correo: christianturista@proton.me · Ciudad Juárez, Chihuahua, México.</p>
     `
 };
 
-// --- Onboarding Logic ---
+// ── ONBOARDING ──
 let currentCard = 1;
 
 function openOnboardingModal() {
-  document.getElementById('onboardingFlow').classList.remove('hidden');
-  document.querySelectorAll('.onboarding-card').forEach(card => card.classList.add('hidden'));
-  document.getElementById('card1').classList.remove('hidden');
-  setTimeout(() => document.getElementById('card1').classList.add('active'), 10);
-  document.getElementById('onboardingModal').classList.remove('hidden');
-  setTimeout(() => {
-    document.getElementById('onboardingBackdrop').classList.remove('modal-enter');
-    document.getElementById('onboardingBackdrop').classList.add('modal-enter-active');
-    document.getElementById('onboardingPanel').classList.remove('modal-panel-enter');
-    document.getElementById('onboardingPanel').classList.add('modal-panel-enter-active');
-  }, 10);
+    currentCard = 1;
+    document.querySelectorAll('.onboarding-card').forEach(c => { c.classList.add('hidden'); c.classList.remove('active'); });
+    document.getElementById('card1').classList.remove('hidden');
+    setTimeout(() => document.getElementById('card1').classList.add('active'), 10);
+    document.getElementById('onboardingModal').classList.remove('hidden');
+    setTimeout(() => {
+        document.getElementById('onboardingBackdrop').classList.remove('modal-enter');
+        document.getElementById('onboardingBackdrop').classList.add('modal-enter-active');
+        document.getElementById('onboardingPanel').classList.remove('modal-panel-enter');
+        document.getElementById('onboardingPanel').classList.add('modal-panel-enter-active');
+    }, 10);
 }
 
 function closeOnboardingModal() {
-  document.getElementById('onboardingBackdrop').classList.remove('modal-enter-active');
-  document.getElementById('onboardingPanel').classList.remove('modal-panel-enter-active');
-  setTimeout(() => {
-    document.getElementById('onboardingModal').classList.add('hidden');
-    document.getElementById('onboardingBackdrop').classList.add('modal-enter');
-    document.getElementById('onboardingPanel').classList.add('modal-panel-enter');
-  }, 200);
+    document.getElementById('onboardingBackdrop').classList.remove('modal-enter-active');
+    document.getElementById('onboardingPanel').classList.remove('modal-panel-enter-active');
+    setTimeout(() => {
+        document.getElementById('onboardingModal').classList.add('hidden');
+        document.getElementById('onboardingBackdrop').classList.add('modal-enter');
+        document.getElementById('onboardingPanel').classList.add('modal-panel-enter');
+    }, 200);
 }
 
 function goToCard(n) {
-  if (currentCard === n) return;
-  document.getElementById(`card${currentCard}`).classList.remove('active');
-  setTimeout(() => {
-    document.getElementById(`card${currentCard}`).classList.add('hidden');
-    currentCard = n;
-    document.getElementById(`card${currentCard}`).classList.remove('hidden');
-    setTimeout(() => document.getElementById(`card${currentCard}`).classList.add('active'), 10);
-  }, 300);
+    if (currentCard === n) return;
+    const prev = currentCard;
+    document.getElementById('card' + prev).classList.remove('active');
+    setTimeout(() => {
+        document.getElementById('card' + prev).classList.add('hidden');
+        currentCard = n;
+        document.getElementById('card' + n).classList.remove('hidden');
+        setTimeout(() => document.getElementById('card' + n).classList.add('active'), 10);
+    }, 300);
 }
 
-// ✅ Enviar datos de ambas cards y avanzar a Card 3
 async function submitAllDataAndGoToCard3() {
-  // Validar Checkbox
-  const acceptTerms = document.getElementById('acceptTerms');
-  const errorTerms = document.getElementById('error-terms');
-  
-  if (!acceptTerms.checked) {
-    errorTerms.classList.remove('hidden');
-    acceptTerms.focus();
-    acceptTerms.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  } else {
-    errorTerms.classList.add('hidden');
-  }
-
-  const form1Data = new FormData(document.getElementById('form1'));
-  const form2Data = new FormData(document.getElementById('form2'));
-
-  // Combinar datos
-  const combinedData = new FormData();
-  for (let [k, v] of form1Data.entries()) combinedData.append(k, v);
-  for (let [k, v] of form2Data.entries()) combinedData.append(k, v);
-
-  const btn = event.target;
-  const originalText = btn.innerHTML;
-  btn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Enviando...';
-  btn.disabled = true;
-
-  try {
-    const response = await fetch('https://formspree.io/f/mreyjllj', {
-      method: 'POST',
-      body: combinedData,
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
-
-    if (response.ok) {
-      console.log("✅ Datos enviados a Formspree");
-      setTimeout(() => {
-        goToCard(3);
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-      }, 800);
-    } else {
-      throw new Error('Error en Formspree');
+    const acceptTerms = document.getElementById('acceptTerms');
+    const errorTerms = document.getElementById('error-terms');
+    if (!acceptTerms.checked) {
+        errorTerms.classList.remove('hidden');
+        acceptTerms.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
     }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('❌ Hubo un error al enviar. Por favor, inténtalo de nuevo.');
-    btn.innerHTML = originalText;
-    btn.disabled = false;
-  }
+    errorTerms.classList.add('hidden');
+
+    const combinedData = new FormData();
+    for (let [k, v] of new FormData(document.getElementById('form1')).entries()) combinedData.append(k, v);
+    for (let [k, v] of new FormData(document.getElementById('form2')).entries()) combinedData.append(k, v);
+
+    const btn = document.querySelector('#card2 .card-footer button');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span> Enviando...';
+    btn.disabled = true;
+
+    try {
+        const res = await fetch('https://formspree.io/f/mreyjllj', {
+            method: 'POST', body: combinedData, headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+            setTimeout(() => { goToCard(3); btn.innerHTML = orig; btn.disabled = false; }, 800);
+        } else { throw new Error('Formspree error'); }
+    } catch (e) {
+        alert('❌ Hubo un error al enviar. Por favor, inténtalo de nuevo.');
+        btn.innerHTML = orig; btn.disabled = false;
+    }
 }
 
-// ✅ Abrir WhatsApp
 function openWhatsApp() {
-  window.open('https://wa.me/525512345678?text=Hola%2C%20soy%20Yunus%20-%20estoy%20listo%20para%20mi%20plan', '_blank');
-  alert('✅ ¡Listo! Te abrimos WhatsApp.');
-  closeOnboardingModal();
+    window.open('https://wa.me/525512345678?text=Hola%2C%20acabo%20de%20registrarme%20en%20Yunus%20y%20quiero%20mi%20plan', '_blank');
+    closeOnboardingModal();
 }
 
-// ✅ Modales Legales
+// ── LEGAL MODAL ──
 function openLegalModal(type) {
-  const modal = document.getElementById('legalModal');
-  const title = document.getElementById('legalTitle');
-  const content = document.getElementById('legalContent');
-  
-  if (type === 'terms') {
-    title.innerText = 'Términos y Condiciones';
-    content.innerHTML = legalTexts.terms;
-  } else if (type === 'privacy') {
-    title.innerText = 'Política de Privacidad';
-    content.innerHTML = legalTexts.privacy;
-  }
-  
-  modal.classList.remove('hidden');
-  setTimeout(() => {
-    document.getElementById('legalBackdrop').classList.remove('modal-enter');
-    document.getElementById('legalBackdrop').classList.add('modal-enter-active');
-    document.getElementById('legalPanel').classList.remove('modal-panel-enter');
-    document.getElementById('legalPanel').classList.add('modal-panel-enter-active');
-  }, 10);
+    document.getElementById('legalTitle').innerText = type === 'terms' ? 'Términos y Condiciones' : 'Política de Privacidad';
+    document.getElementById('legalContent').innerHTML = legalTexts[type];
+    document.getElementById('legalModal').classList.remove('hidden');
+    setTimeout(() => {
+        document.getElementById('legalBackdrop').classList.remove('modal-enter');
+        document.getElementById('legalBackdrop').classList.add('modal-enter-active');
+        document.getElementById('legalPanel').classList.remove('modal-panel-enter');
+        document.getElementById('legalPanel').classList.add('modal-panel-enter-active');
+    }, 10);
 }
 
 function closeLegalModal() {
-  const modal = document.getElementById('legalModal');
-  document.getElementById('legalBackdrop').classList.remove('modal-enter-active');
-  document.getElementById('legalPanel').classList.remove('modal-panel-enter-active');
-  setTimeout(() => {
-    modal.classList.add('hidden');
-    document.getElementById('legalBackdrop').classList.add('modal-enter');
-    document.getElementById('legalPanel').classList.add('modal-panel-enter');
-  }, 200);
+    document.getElementById('legalBackdrop').classList.remove('modal-enter-active');
+    document.getElementById('legalPanel').classList.remove('modal-panel-enter-active');
+    setTimeout(() => {
+        document.getElementById('legalModal').classList.add('hidden');
+        document.getElementById('legalBackdrop').classList.add('modal-enter');
+        document.getElementById('legalPanel').classList.add('modal-panel-enter');
+    }, 200);
 }
 
-// --- Resto del JS ---
-var matches=[
-  {teams:'México vs Sudáfrica', date:'11 Jun', venue:'Azteca · CDMX',    stage:'Fase de grupos', price:null},
-  {teams:'Korea vs TBA',        date:'11 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:1519.04},
-  {teams:'Túnez vs TBA',        date:'14 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:759.52},
-  {teams:'Uzbekistán vs Colombia',date:'17 Jun',venue:'Azteca · CDMX',   stage:'Fase de grupos', price:2278.55},
-  {teams:'México vs Korea',     date:'18 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:4810.28},
-  {teams:'Túnez vs Japón',      date:'20 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:1012.69},
-  {teams:'Colombia vs TBA',     date:'23 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:2531.72},
-  {teams:'México vs TBA',       date:'24 Jun', venue:'Azteca · CDMX',    stage:'Fase de grupos', price:4810.28},
-  {teams:'Sudáfrica vs Korea',  date:'24 Jun', venue:'BBVA · MTY',       stage:'Fase de grupos', price:759.52},
-  {teams:'Uruguay vs España',   date:'26 Jun', venue:'Akron · GDL',      stage:'Fase de grupos', price:3544.41},
-  {teams:'Round of 32 · 1F vs 2C', date:'29 Jun', venue:'BBVA · MTY',    stage:'Round of 32',    price:1772.21},
-  {teams:'Round of 32 · 1A vs 3C', date:'30 Jun', venue:'Azteca · CDMX', stage:'Round of 32',    price:2531.72},
-  {teams:'Round of 16 · W79 vs W80',date:'5 Jul',  venue:'Azteca · CDMX',stage:'Round of 16',    price:3291.24},
-];
-function buildCard(m){
-  var priceRow = m.price
-    ? '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+m.price.toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
-    : '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
-  return '<div style="width:190px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:0;" onclick="openModal()"><div style="margin-bottom:6px;"><div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#cbd5e1;">'+m.stage+'</div><div style="font-family:\'Instrument Serif\',serif;font-size:13px;color:#0f172a;line-height:1.25;margin-top:3px;">'+m.teams+'</div></div><div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#94a3b8;">'+m.date+'</span><span style="font-family:\'Geist Mono\',monospace;font-size:9px;color:#cbd5e1;">'+m.venue+'</span></div>'+priceRow+'</div></div>';
-}
-var track=document.getElementById('carouselTrack');
-if(track){var h=matches.map(buildCard).join('');track.innerHTML=h+h;}
+// ── DEMO CHAT ──
+var demoPlayed = false;
+function scrollChat() { var c = document.getElementById('demoChat'); if (c) c.scrollTop = c.scrollHeight; }
 
-var rEls=document.querySelectorAll('.reveal');
-var rIO=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');rIO.unobserve(e.target);}});},{threshold:0.08});
-rEls.forEach(function(r){rIO.observe(r);});
+function runDemo() {
+    if (demoPlayed) return;
+    demoPlayed = true;
+    var btn = document.getElementById('demoBtn');
+    if (btn) btn.style.opacity = '0.4';
 
-var demoPlayed=false;
-function setDemo(txt){var i=document.getElementById('demoInput');if(i)i.value=txt;}
-function scrollChat(){var c=document.getElementById('demoChat');if(c)c.scrollTop=c.scrollHeight;}
-function runDemo(){
-  if(demoPlayed)return;
-  demoPlayed=true;
-  var btn=document.getElementById('demoBtn');if(btn)btn.style.opacity='0.4';
-  setTimeout(function(){var s1=document.getElementById('step1');if(s1){s1.style.color='#475569';s1.textContent='⚡ Analizando inventario GDL... ✓';}},700);
-  setTimeout(function(){var s2=document.getElementById('step2');if(s2){s2.style.color='#475569';s2.textContent='🔍 Cruzando con tu perfil... ✓';}},1500);
-  setTimeout(function(){var s3=document.getElementById('step3');if(s3){s3.style.color='#475569';s3.textContent='✅ Plan de pagos listo ✓';}},2300);
-  setTimeout(function(){var a=document.getElementById('approvalMsg');if(a)a.classList.remove('hidden');scrollChat();},3100);
-}
-function runDemoPayment(){
-  var cta=document.getElementById('demoCTA');var paid=document.getElementById('demoPaid');
-  if(cta)cta.classList.add('hidden');if(paid)paid.classList.remove('hidden');
-}
-var dIO=new IntersectionObserver(function(entries){if(entries[0].isIntersecting&&!demoPlayed){setTimeout(runDemo,600);dIO.disconnect();}},{threshold:0.4});
-var dSec=document.getElementById('demo');if(dSec)dIO.observe(dSec);
-document.getElementById('demoBtn').addEventListener('click',runDemo);
-
-function selectSede(card,sede){
-  document.querySelectorAll('.sede-card').forEach(function(c){
-    c.classList.remove('bg-slate-900','border-slate-900');
-    var n=c.querySelector('.sede-name');var s=c.querySelector('.sede-sub');
-    if(n){n.classList.remove('text-white');n.classList.add('text-slate-900');}
-    if(s){s.style.color='';}
-  });
-  card.classList.add('bg-slate-900','border-slate-900');
-  var n=card.querySelector('.sede-name');var s=card.querySelector('.sede-sub');
-  if(n){n.classList.remove('text-slate-900');n.classList.add('text-white');}
-  if(s){s.style.color='rgba(255,255,255,0.5)';}
-  var sel=document.getElementById('wfsede');if(sel)sel.value=sede;
-  setTimeout(openModal,300);
+    setTimeout(function() {
+        var s = document.getElementById('step1');
+        if (s) s.innerHTML = '<span class="text-green-600">✓</span> Inventario analizado';
+    }, 700);
+    setTimeout(function() {
+        var s = document.getElementById('step2');
+        if (s) s.innerHTML = '<span class="text-green-600">✓</span> Perfil cruzado';
+    }, 1500);
+    setTimeout(function() {
+        var s = document.getElementById('step3');
+        if (s) s.innerHTML = '<span class="text-green-600">✓</span> Plan de pagos listo';
+    }, 2300);
+    setTimeout(function() {
+        var a = document.getElementById('approvalMsg');
+        if (a) { a.classList.remove('hidden'); scrollChat(); }
+    }, 3100);
 }
 
-function toggleFaq(el){
-  var a=el.querySelector('.faq-a');var i=el.querySelector('.faq-icon');
-  var open=!a.classList.contains('hidden');
-  if(open){a.classList.add('hidden');i.textContent='+';i.classList.remove('bg-slate-900','text-white','border-slate-900');}
-  else{a.classList.remove('hidden');i.textContent='×';i.classList.add('bg-slate-900','text-white','border-slate-900');}
+// Auto-trigger demo on scroll
+if ('IntersectionObserver' in window) {
+    var dIO = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting && !demoPlayed) { setTimeout(runDemo, 600); dIO.disconnect(); }
+    }, { threshold: 0.3 });
+    var dSec = document.getElementById('demo');
+    if (dSec) dIO.observe(dSec);
 }
 
-function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('hidden');}
-
-function openModal(){ /* vacío */ }
-
-async function handleInvestorSubmit(e){
-  e.preventDefault();var form=document.getElementById('investorForm');
-  try{var r=await fetch(form.action,{method:form.method,body:new FormData(form),headers:{'Accept':'application/json'}});
-  if(r.ok){document.getElementById('investorContent').classList.add('hidden');document.getElementById('investorSuccessMessage').classList.remove('hidden');form.reset();}
-  else alert('Hubo un problema. Intenta de nuevo.');}
-  catch(err){alert('Error de conexión. Intenta más tarde.');}
+// ── REVEAL ANIMATION (solo si IntersectionObserver disponible) ──
+if ('IntersectionObserver' in window) {
+    document.querySelectorAll('.reveal').forEach(function(el) {
+        el.classList.add('animate-ready');
+    });
+    var revealObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) {
+        revealObserver.observe(el);
+    });
 }
+
+// ── NAV MOBILE ──
+function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
 </script>
+
 </body>
 </html>
