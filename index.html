@@ -22,140 +22,81 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        ::selection{background:#0a0a0a;color:#fff}
+        ::selection { background:#0a0a0a; color:#fff; }
 
 ```
-    /* ── CAROUSEL WRAPPER ── */
-    .carousel-outer{
-        overflow: hidden !important;
-        position: relative;
-        width: 100%;
-    }
-    /* ── CAROUSEL TRACK ── */
-    .carousel-track{
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        gap: 20px !important;
-        width: max-content !important;
-        animation: cscroll 60s linear infinite;
-        will-change: transform;
-    }
-    .carousel-track:hover{ animation-play-state: paused; }
-    @keyframes cscroll{
-        from { transform: translateX(0); }
-        to   { transform: translateX(-50%); }
-    }
-    /* Extra especificidad para garantizar carrusel */
-    div.carousel-track { display:flex !important; flex-wrap:nowrap !important; }
-    div.carousel-track > div { flex-shrink:0 !important; }
+    /* REVEAL */
+    .reveal { opacity:1; transform:none; transition:opacity .6s ease, transform .6s ease; }
+    .reveal.animate-ready { opacity:0; transform:translateY(16px); }
+    .reveal.animate-ready.visible { opacity:1; transform:translateY(0); }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
 
-    /* ── REVEAL: visible por defecto, animación solo si JS la activa ── */
-    .reveal{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
-    .reveal.animate-ready{opacity:0;transform:translateY(16px)}
-    .reveal.animate-ready.visible{opacity:1;transform:translateY(0)}
-    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+    /* MODALS */
+    .modal-enter { opacity:0; }
+    .modal-enter-active { opacity:1; transition:opacity 300ms ease-out; }
+    .modal-panel-enter { opacity:0; transform:translateY(10px) scale(.95); }
+    .modal-panel-enter-active { opacity:1; transform:translateY(0) scale(1); transition:all 300ms ease-out; }
 
-    /* ── MODAL ── */
-    .modal-enter{opacity:0}
-    .modal-enter-active{opacity:1;transition:opacity 300ms ease-out}
-    .modal-exit-active{opacity:0;transition:opacity 200ms ease-in}
-    .modal-panel-enter{opacity:0;transform:translateY(10px) scale(.95)}
-    .modal-panel-enter-active{opacity:1;transform:translateY(0) scale(1);transition:all 300ms ease-out}
-    .modal-panel-exit-active{opacity:0;transform:translateY(10px) scale(.95);transition:all 200ms ease-in}
+    .icon { display:inline-block; vertical-align:middle; flex-shrink:0; }
+    .icon svg { display:block; }
+    .fade-in { animation:fadeIn .6s ease-out forwards; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
-    /* ── TYPING DOTS ── */
-    .tdot{width:5px;height:5px;background:#888;border-radius:50%;animation:blink 1.2s infinite;display:inline-block}
-    .tdot:nth-child(2){animation-delay:.2s}.tdot:nth-child(3){animation-delay:.4s}
-    @keyframes blink{0%,100%{opacity:.2}50%{opacity:.8}}
+    /* CHAT */
+    #demoChat { max-height:400px; overflow-y:auto; scroll-behavior:smooth; }
+    #demoChat::-webkit-scrollbar { width:6px; }
+    #demoChat::-webkit-scrollbar-thumb { background:#e5e7eb; border-radius:3px; }
 
-    .fade-in{animation:fadeIn .6s ease-out forwards}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    .icon{display:inline-block;vertical-align:middle;flex-shrink:0}
-    .icon svg{display:block}
+    /* ONBOARDING */
+    .onboarding-card { transition:opacity .3s,transform .3s; opacity:0; transform:translateX(20px); position:absolute; top:0; left:0; right:0; bottom:0; display:flex; flex-direction:column; }
+    .onboarding-card.active { opacity:1; transform:translateX(0); }
+    .onboarding-card.hidden { display:none; }
+    .card-body { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:24px; }
+    .card-footer { flex-shrink:0; padding-top:16px; }
 
-    /* ── CHAT ── */
-    #demoChat{height:auto;max-height:400px;overflow-y:auto;scroll-behavior:smooth;padding-bottom:16px}
-    #demoChat::-webkit-scrollbar{width:6px}
-    #demoChat::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:3px}
+    /* LEGAL */
+    .legal-modal-content { max-height:70vh; overflow-y:auto; text-align:left; font-size:.875rem; line-height:1.6; color:#334155; }
+    .legal-modal-content h2 { font-size:1.25rem; font-weight:bold; margin-top:1rem; margin-bottom:.5rem; color:#0f172a; }
+    .legal-modal-content h3 { font-size:1.1rem; font-weight:600; margin-top:1rem; margin-bottom:.5rem; color:#334155; }
+    .legal-modal-content p { margin-bottom:.75rem; }
+    .legal-modal-content ul { list-style-type:disc; padding-left:1.5rem; margin-bottom:.75rem; }
 
-    /* ── ONBOARDING CARDS ── */
-    .onboarding-card{transition:opacity 0.3s,transform 0.3s;opacity:0;transform:translateX(20px);position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column}
-    .onboarding-card.active{opacity:1;transform:translateX(0)}
-    .onboarding-card.hidden{display:none}
-    .card-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px}
-    .card-footer{flex-shrink:0;padding-top:16px}
-    .card-error{color:#dc2626;font-size:13px;margin-top:4px;display:none}
+    /* CAROUSEL */
+    @keyframes cscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    #evTrack:hover { animation-play-state:paused; }
 
-    /* ── LEGAL MODAL ── */
-    .legal-modal-content{max-height:70vh;overflow-y:auto;text-align:left;font-size:.875rem;line-height:1.6;color:#334155}
-    .legal-modal-content h2{font-size:1.25rem;font-weight:bold;margin-top:1rem;margin-bottom:.5rem;color:#0f172a}
-    .legal-modal-content h3{font-size:1.1rem;font-weight:600;margin-top:1rem;margin-bottom:.5rem;color:#334155}
-    .legal-modal-content p{margin-bottom:.75rem}
-    .legal-modal-content ul{list-style-type:disc;padding-left:1.5rem;margin-bottom:.75rem}
-
-    /* ── EVENT CARDS ── */
-    .event-card{
-        width:340px !important;
-        height:450px !important;
-        min-width:340px !important;
-        max-width:340px !important;
-        flex-shrink:0 !important;
-        flex-grow:0 !important;
-        border-radius:12px !important;
-        overflow:hidden !important;
-        position:relative !important;
-        cursor:pointer !important;
-        display:flex !important;
-        flex-direction:column !important;
-        justify-content:flex-end !important;
-        color:white !important;
-        transition:transform 0.3s ease;
-    }
-    .event-card:hover{transform:translateY(-5px)}
-    .event-card img{position:absolute !important;top:0;left:0;width:100% !important;height:100% !important;object-fit:cover !important;z-index:0 !important}
-    .event-content{position:relative !important;z-index:10 !important;padding:24px !important;background:linear-gradient(to top,rgba(0,0,0,0.85),transparent) !important;width:100% !important}
-
-    /* ── GRADIENT FALLBACKS para cuando no hay imágenes ── */
-    .ev-baja    { background: linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 50%,#3b82f6 100%); }
-    .ev-rosalia { background: linear-gradient(135deg,#9f1239 0%,#be185d 50%,#ec4899 100%); }
-    .ev-vans    { background: linear-gradient(135deg,#c2410c 0%,#ea580c 50%,#fb923c 100%); }
-    .ev-bruno   { background: linear-gradient(135deg,#14532d 0%,#166534 50%,#22c55e 100%); }
-
-    /* ── NOISE OVERLAY en event cards ── */
-    .event-card::before{content:'';position:absolute;inset:0;z-index:1;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+    /* FAQ */
+    .faq-a { display:none; }
+    .faq-a.open { display:block; }
 </style>
 ```
 
 </head>
 <body class="font-sans text-slate-800 bg-white min-h-screen antialiased">
 
-<!-- ── SVG SPRITE ── -->
-
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="ico-menu"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></symbol>
-  <symbol id="ico-x"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="ico-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></symbol>
+  <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
   <symbol id="ico-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
   <symbol id="ico-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
   <symbol id="ico-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
   <symbol id="ico-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></symbol>
   <symbol id="ico-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
   <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
-  <symbol id="ico-arrow-right-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
 </svg>
 
-<!-- ── NAV ── -->
+<!-- NAV -->
 
-<header id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-100">
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
-        <!-- LOGO: texto como fallback si no hay imagen -->
         <div class="flex items-center gap-2">
-            <img src="logo.jpeg" alt="Yunus" class="h-14 w-auto object-contain" onerror="this.style.display='none';document.getElementById('logoText').style.display='block'">
-            <span id="logoText" style="display:none" class="font-serif text-2xl font-normal text-slate-900">Yunus</span>
+            <img src="logo.jpeg" alt="Yunus" class="h-14 w-auto object-contain" onerror="this.style.display='none';document.getElementById('logoNav').style.display='block'">
+            <span id="logoNav" style="display:none" class="font-serif text-2xl text-slate-900">Yunus</span>
         </div>
         <div class="hidden md:flex items-center gap-6">
             <a href="#eventos" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Eventos</a>
             <a href="#como-funciona" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Cómo funciona</a>
+            <a href="#seguridad" class="text-sm text-slate-500 hover:text-slate-900 transition-colors">Si no puedes pagar</a>
             <button onclick="openOnboardingModal()" class="px-5 py-2 rounded bg-slate-900 text-white text-sm font-medium hover:bg-slate-700 transition-colors">Financiar ahora →</button>
         </div>
         <button class="md:hidden p-2" onclick="toggleMenu()">
@@ -165,20 +106,21 @@
     <div id="mobileMenu" class="hidden absolute top-full left-0 right-0 bg-white border-b border-slate-100 p-4 shadow flex flex-col gap-2">
         <a href="#eventos" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Eventos</a>
         <a href="#como-funciona" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Cómo funciona</a>
+        <a href="#seguridad" class="text-sm text-slate-600 py-2" onclick="toggleMenu()">Si no puedes pagar</a>
         <button onclick="openOnboardingModal();toggleMenu()" class="w-full py-2.5 rounded bg-slate-900 text-white text-sm font-medium">Financiar ahora →</button>
     </div>
 </header>
 
-<!-- ── ANNOUNCE ── -->
+<!-- ANNOUNCE -->
 
 <div class="bg-slate-900 text-white text-center px-6 py-2.5 font-mono text-xs tracking-wide mt-20">
     Temporada 2026 · Plazos hasta 15 quincenas
     <button onclick="openOnboardingModal()" class="underline underline-offset-2 ml-2 hover:opacity-70 transition-opacity">Aplicar →</button>
 </div>
 
-<!-- ── HERO + CAROUSEL ── -->
+<!-- HERO -->
 
-<section id="eventos" class="pt-16 pb-20 md:pt-20 md:pb-28 text-center">
+<section id="eventos" class="pt-16 pb-12 md:pt-20 md:pb-16 text-center">
     <div class="max-w-4xl mx-auto px-6 mb-12">
         <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-normal leading-[1.02] tracking-tight text-slate-900 mb-6">
             Vive la experiencia.<br><em class="text-slate-400">Págalo después.</em>
@@ -194,90 +136,11 @@
     </div>
 
 ```
-<!-- CAROUSEL -->
-<div style="overflow:hidden;position:relative;width:100%;background:#fff;border-bottom:1px solid #f1f5f9;padding:12px 0;">
-    <!-- fade edges -->
-    <div style="position:absolute;left:0;top:0;bottom:0;width:64px;background:linear-gradient(to right,#fff,transparent);z-index:10;pointer-events:none;"></div>
-    <div style="position:absolute;right:0;top:0;bottom:0;width:64px;background:linear-gradient(to left,#fff,transparent);z-index:10;pointer-events:none;"></div>
-    <div class="carousel-track">
-        <!-- Baja Beach Fest -->
-        <div class="event-card ev-baja" onclick="openOnboardingModal()">
-            <img src="BajaB.jpeg" alt="Baja Beach Fest" onerror="this.style.display='none'">
-            <div class="event-content">
-                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#bfdbfe;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Festival · Rosarito</span>
-                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Baja Beach Fest</h3>
-                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">7-9 Agosto 2026</p>
-                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $49 USD/q</span>
-            </div>
-        </div>
-        <!-- Rosalía -->
-        <div class="event-card ev-rosalia" onclick="openOnboardingModal()">
-            <img src="Rosalia.jpeg" alt="Rosalía Lux Tour" onerror="this.style.display='none'">
-            <div class="event-content">
-                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#fecdd3;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Concierto · CDMX / MTY</span>
-                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Rosalía: Lux Tour</h3>
-                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">Agosto 2026</p>
-                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $208 MXN/q</span>
-            </div>
-        </div>
-        <!-- Vans Warped Tour -->
-        <div class="event-card ev-vans" onclick="openOnboardingModal()">
-            <img src="VansW.webp" alt="Vans Warped Tour" onerror="this.style.display='none'">
-            <div class="event-content">
-                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#fed7aa;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Festival · CDMX</span>
-                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Vans Warped Tour</h3>
-                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">12-13 Sep 2026</p>
-                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $380 MXN/q</span>
-            </div>
-        </div>
-        <!-- Bruno Mars -->
-        <div class="event-card ev-bruno" onclick="openOnboardingModal()">
-            <img src="BrunoM.jpeg" alt="Bruno Mars" onerror="this.style.display='none'">
-            <div class="event-content">
-                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#bbf7d0;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Concierto · CDMX</span>
-                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Bruno Mars</h3>
-                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">3 Dic 2026</p>
-                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $144 MXN/q</span>
-            </div>
-        </div>
-        <!-- DUPLICADOS -->
-        <div class="event-card ev-baja" onclick="openOnboardingModal()">
-            <img src="BajaB.jpeg" alt="Baja Beach Fest" onerror="this.style.display='none'">
-            <div class="event-content">
-                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#bfdbfe;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Festival · Rosarito</span>
-                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Baja Beach Fest</h3>
-                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">7-9 Agosto 2026</p>
-                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $49 USD/q</span>
-            </div>
-        </div>
-        <div class="event-card ev-rosalia" onclick="openOnboardingModal()">
-            <img src="Rosalia.jpeg" alt="Rosalía Lux Tour" onerror="this.style.display='none'">
-            <div class="event-content">
-                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#fecdd3;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Concierto · CDMX / MTY</span>
-                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Rosalía: Lux Tour</h3>
-                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">Agosto 2026</p>
-                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $208 MXN/q</span>
-            </div>
-        </div>
-        <div class="event-card ev-vans" onclick="openOnboardingModal()">
-            <img src="VansW.webp" alt="Vans Warped Tour" onerror="this.style.display='none'">
-            <div class="event-content">
-                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#fed7aa;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Festival · CDMX</span>
-                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Vans Warped Tour</h3>
-                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">12-13 Sep 2026</p>
-                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $380 MXN/q</span>
-            </div>
-        </div>
-        <div class="event-card ev-bruno" onclick="openOnboardingModal()">
-            <img src="BrunoM.jpeg" alt="Bruno Mars" onerror="this.style.display='none'">
-            <div class="event-content">
-                <span style="font-family:'Geist Mono',monospace;font-size:10px;color:#bbf7d0;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px;">Concierto · CDMX</span>
-                <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#fff;margin:0 0 8px;">Bruno Mars</h3>
-                <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;">3 Dic 2026</p>
-                <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;color:#fff;">Desde $144 MXN/q</span>
-            </div>
-        </div>
-    </div>
+<!-- CAROUSEL — todo inline para evitar conflictos Tailwind -->
+<div style="overflow:hidden;position:relative;width:100%;border-bottom:1px solid #f1f5f9;padding:14px 0;background:#fff;">
+    <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,#fff,transparent);z-index:10;pointer-events:none;"></div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,#fff,transparent);z-index:10;pointer-events:none;"></div>
+    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;animation:cscroll 50s linear infinite;will-change:transform;padding:0 28px;"></div>
 </div>
 ```
 
@@ -285,7 +148,7 @@
 
 <hr class="border-slate-100">
 
-<!-- ── CÓMO FUNCIONA ── -->
+<!-- CÓMO FUNCIONA -->
 
 <section id="como-funciona" class="py-20 bg-slate-50 border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-6">
@@ -317,18 +180,15 @@
     </div>
 </section>
 
-<!-- ── DEMO CHAT ── -->
+<!-- DEMO CHAT -->
 
 <section id="demo" class="py-20">
     <div class="max-w-6xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-start">
-            <!-- WhatsApp Chat Mockup -->
             <div class="reveal border border-slate-200 rounded-xl overflow-hidden bg-white shadow-lg">
                 <div class="bg-gray-100 px-4 py-3 flex items-center gap-2 border-b border-gray-200">
                     <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-                        </svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                     </div>
                     <div>
                         <div class="font-semibold text-sm text-gray-900">Yunus · Tu agente de boletos</div>
@@ -336,104 +196,67 @@
                     </div>
                 </div>
                 <div id="demoChat" class="p-4 flex flex-col gap-3 bg-gray-50">
-                    <!-- Mensaje del cliente -->
                     <div class="self-end max-w-[80%]">
-                        <div class="bg-green-500 rounded-2xl rounded-bl-none px-4 py-2.5 text-sm text-white leading-relaxed">
-                            Quiero boletos para Bruno Mars.
-                        </div>
+                        <div class="bg-green-500 rounded-2xl rounded-bl-none px-4 py-2.5 text-sm text-white leading-relaxed">Quiero boletos para Bruno Mars.</div>
                         <div class="text-xs text-gray-400 mt-1 text-right pr-2">14:02</div>
                     </div>
-                    <!-- Yunus procesando -->
                     <div class="self-start max-w-[80%]">
                         <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
                             <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS ESTÁ PROCESANDO</div>
-                            <div id="step1" class="flex items-center gap-1.5 font-mono text-[10px]"><span class="animate-pulse">●</span> Analizando inventario...</div>
-                            <div id="step2" class="flex items-center gap-1.5 mt-1 font-mono text-[10px]"><span class="animate-pulse">●</span> Cruzando con tu perfil...</div>
-                            <div id="step3" class="flex items-center gap-1.5 mt-1 font-mono text-[10px]"><span class="animate-pulse">●</span> Estructurando plan de pagos...</div>
+                            <div id="step1" class="font-mono text-[10px]">● Analizando inventario...</div>
+                            <div id="step2" class="font-mono text-[10px] mt-1">● Cruzando con tu perfil...</div>
+                            <div id="step3" class="font-mono text-[10px] mt-1">● Estructurando plan de pagos...</div>
                         </div>
                         <div class="text-xs text-gray-400 mt-1 text-right pr-2">14:02</div>
                     </div>
-                    <!-- Resultado -->
                     <div id="approvalMsg" class="hidden self-start max-w-[80%]">
                         <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
                             <div class="font-mono text-[10px] text-gray-500 mb-1">YUNUS</div>
                             ¡Encontré algo perfecto para ti! 🎤 Aquí está tu plan:
                         </div>
                         <div class="text-xs text-gray-400 mt-1 text-right pr-2">14:03</div>
-                        <div class="mt-3 bg-gray-900 rounded-xl overflow-hidden border border-gray-700 shadow-sm p-4">
+                        <div class="mt-3 bg-gray-900 rounded-xl p-4 border border-gray-700">
                             <div class="flex justify-between items-start mb-2">
                                 <div class="font-serif text-sm text-white">Bruno Mars</div>
                                 <span class="font-mono text-[9px] text-gray-400 bg-gray-800 px-1.5 py-0.5 rounded">Foro Sol</span>
                             </div>
                             <div class="font-mono text-[10px] text-gray-300 mb-3">📍 3 Dic 2026</div>
-                            <div class="space-y-2">
+                            <div class="space-y-1.5">
                                 <div class="flex justify-between text-sm"><span class="text-gray-400">Total Plan:</span><span class="text-white font-semibold">$12,887</span></div>
                                 <div class="flex justify-between text-sm"><span class="text-amber-300">Anticipo (15%):</span><span class="text-amber-300 font-semibold">$1,933</span></div>
-                                <div class="flex justify-between text-sm"><span class="text-green-300">Pagos:</span><span class="text-green-300 font-semibold">15 × $869 <span class="text-xs opacity-80">Quincenales</span></span></div>
-                            </div>
-                            <div class="mt-3 flex items-center gap-2">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                                <span class="text-xs text-gray-400">Yunus Bóveda</span>
+                                <div class="flex justify-between text-sm"><span class="text-green-300">Pagos:</span><span class="text-green-300 font-semibold">15 × $869</span></div>
                             </div>
                         </div>
                         <div class="mt-3 bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed">
-                            👇 Para pagar tu anticipo y reservar tu lugar 👇<br>
-                            <span class="text-blue-600 font-medium underline">https://yunusia.com/pagar-anticipo/</span>
+                            👇 Para pagar tu anticipo y reservar tu lugar<br>
+                            <span class="text-blue-600 font-medium underline">yunusia.com/pagar-anticipo/</span>
                         </div>
                         <div class="text-xs text-gray-400 mt-1 text-right pr-2">14:03</div>
                     </div>
-                    <!-- Confirmación -->
-                    <div id="demoPaid" class="hidden self-start max-w-[80%]">
-                        <div class="bg-gray-200 rounded-2xl rounded-br-none px-4 py-2.5 text-sm text-gray-800 leading-relaxed flex items-center gap-2">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                            ✓ Enganche pagado — boleto en tu Bóveda ✓
-                        </div>
-                        <div class="text-xs text-gray-400 mt-1 text-right pr-2">14:04</div>
-                    </div>
                 </div>
-                <!-- Input -->
                 <div class="bg-white border-t border-gray-200 px-4 py-3 flex items-center gap-2">
-                    <input type="text" id="demoInput" placeholder="Escribe un mensaje..." class="flex-1 bg-gray-100 border border-gray-200 rounded-full px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-green-500 transition-colors font-sans">
+                    <input type="text" id="demoInput" placeholder="Escribe un mensaje..." class="flex-1 bg-gray-100 border border-gray-200 rounded-full px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-green-500 transition-colors">
                     <button id="demoBtn" onclick="runDemo()" class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white hover:bg-green-600 transition-colors">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                     </button>
                 </div>
             </div>
-
-```
-        <!-- Texto explicativo -->
-        <div class="reveal d1">
-            <h2 class="font-serif text-3xl md:text-4xl font-normal text-slate-900 leading-tight tracking-tight mb-4">Así se ve<br><em class="text-slate-400">desde adentro.</em></h2>
-            <p class="text-slate-500 leading-relaxed mb-8">Eliges el evento, Yunus analiza tu perfil y te presenta el plan exacto. Si te late, pagas el enganche y el boleto queda en tu Bóveda.</p>
-            <div class="space-y-4">
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                    <div class="text-sm text-slate-600"><strong class="text-slate-800">Sin tarjeta ni buró</strong> — solo te pedimos lo que necesitamos para verificar</div>
+            <div class="reveal d1">
+                <h2 class="font-serif text-3xl md:text-4xl font-normal text-slate-900 leading-tight tracking-tight mb-4">Así se ve<br><em class="text-slate-400">desde adentro.</em></h2>
+                <p class="text-slate-500 leading-relaxed mb-8">Eliges el evento, Yunus analiza tu perfil y te presenta el plan exacto. Si te late, pagas el enganche y el boleto queda en tu Bóveda.</p>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div><div class="text-sm text-slate-600"><strong class="text-slate-800">Sin tarjeta ni buró</strong> — solo te pedimos lo que necesitamos para verificar</div></div>
+                    <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div><div class="text-sm text-slate-600"><strong class="text-slate-800">El boleto queda en tu Bóveda</strong> — apartado desde el primer pago</div></div>
+                    <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div><div class="text-sm text-slate-600"><strong class="text-slate-800">Pagas a tu ritmo</strong> — quincena a quincena, la última antes del evento</div></div>
+                    <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div><div class="text-sm text-slate-600"><strong class="text-slate-800">Si no aplicas</strong> — Yunus te muestra opciones que sí están a tu alcance</div></div>
                 </div>
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                    <div class="text-sm text-slate-600"><strong class="text-slate-800">El boleto queda en tu Bóveda</strong> — apartado desde el primer pago</div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                    <div class="text-sm text-slate-600"><strong class="text-slate-800">Pagas a tu ritmo</strong> — quincena a quincena, la última antes del evento</div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">✓</div>
-                    <div class="text-sm text-slate-600"><strong class="text-slate-800">Si no aplicas</strong> — Yunus te muestra opciones que sí están a tu alcance</div>
-                </div>
+                <button onclick="openOnboardingModal()" class="mt-8 bg-slate-900 text-white px-6 py-3 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2">Habla con Yunus →</button>
             </div>
-            <button onclick="openOnboardingModal()" class="mt-8 bg-slate-900 text-white px-6 py-3 rounded text-sm font-medium hover:bg-slate-700 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2">
-                Habla con Yunus →
-            </button>
         </div>
     </div>
-</div>
-```
-
 </section>
 
-<!-- ── SEGURIDAD ── -->
+<!-- SEGURIDAD -->
 
 <section id="seguridad" class="py-20 bg-slate-50 border-t border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-6">
@@ -445,7 +268,7 @@
                     <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">1</div><div><div class="font-semibold text-sm mb-1">Avisas desde la app</div><div class="text-xs text-slate-500 leading-relaxed">Con un clic en "Revender" le dices a Yunus que ya no puedes continuar con los pagos.</div></div></div>
                     <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">2</div><div><div class="font-semibold text-sm mb-1">Yunus publica el boleto</div><div class="text-xs text-slate-500 leading-relaxed">Lo listamos en nuestro Marketplace cerrado a precio de mercado, antes de que llegue la fecha del evento.</div></div></div>
                     <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 mt-0.5">3</div><div><div class="font-semibold text-sm mb-1">Se vende y se liquida tu deuda</div><div class="text-xs text-slate-500 leading-relaxed">Con lo que se obtenga, se cubre lo que aún debías más un 6% de comisión por el servicio de reventa.</div></div></div>
-                    <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 text-[10px] font-bold flex-shrink-0 mt-0.5">4</div><div><div class="font-semibold text-sm mb-1">Lo que sobre es tuyo</div><div class="text-xs text-slate-500 leading-relaxed">El resto va directo a tu cuenta. La meta es que recuperes total o parcialmente lo que ya habías pagado.</div></div></div>
+                    <div class="flex gap-5"><div class="w-5 h-5 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 text-[10px] font-bold flex-shrink-0 mt-0.5">4</div><div><div class="font-semibold text-sm mb-1">Lo que sobre es tuyo</div><div class="text-xs text-slate-500 leading-relaxed">El resto va directo a tu cuenta. La meta es que recuperes total o parcialmente lo que ya habías pagado. Nadie pierde.</div></div></div>
                 </div>
             </div>
             <div class="reveal d1 space-y-4">
@@ -464,7 +287,35 @@
     </div>
 </section>
 
-<!-- ── FINAL CTA ── -->
+<!-- FAQ -->
+
+<section class="py-20 border-b border-slate-100">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal text-center max-w-sm mx-auto mb-12">
+            <h2 class="font-serif text-4xl md:text-5xl font-normal text-slate-900 leading-tight tracking-tight">Lo que necesitas<br><em class="text-slate-400">saber.</em></h2>
+        </div>
+        <div class="max-w-2xl mx-auto divide-y divide-slate-200 border-t border-b border-slate-200">
+            <div class="reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cómo saben si puedo pagar el boleto?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="faq-a mt-3 text-sm text-slate-500 leading-relaxed">Al registrarte, Yunus hace una verificación rápida para saber si el plan de pagos es viable — sin consultar buró ni pedirte documentos. Si aplicas, ves el plan directo. Si no, te mostramos opciones que sí están a tu alcance.</div>
+            </div>
+            <div class="reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cuánto tengo que pagar para apartar el boleto?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="faq-a mt-3 text-sm text-slate-500 leading-relaxed">El 15% del valor del boleto, pagadero vía SPEI o efectivo en Oxxo. Con ese pago, el boleto queda en tu Bóveda. El resto lo vas pagando en quincenas.</div>
+            </div>
+            <div class="reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cuánto me cobra Yunus por el servicio?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="faq-a mt-3 text-sm text-slate-500 leading-relaxed">El crédito tiene un CAT del 36% anual (3% mensual), ya incluido en el plan de pagos. No hay cobros sorpresa. Si necesitas reventa, Yunus cobra adicionalmente un 6% de comisión sobre esa operación.</div>
+            </div>
+            <div class="reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Qué pasa si no puedo terminar de pagar?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="faq-a mt-3 text-sm text-slate-500 leading-relaxed">Activas "Revender" en la app. Yunus pone el boleto en venta antes del evento. Con lo que se obtenga se cubre tu deuda pendiente más el 6% de comisión, y el resto es para ti.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA FINAL -->
 
 <section class="py-28 bg-slate-900 text-white text-center px-6">
     <div class="max-w-2xl mx-auto reveal">
@@ -479,11 +330,12 @@
 </section>
 
 <!-- INVERSORES -->
-<section class="py-24 text-center px-6" style="background:#2a2a2a;">
+
+<section class="py-24 text-center px-6" style="background:#1a1a1a;">
     <div class="max-w-2xl mx-auto reveal">
         <div class="inline-block border border-white/20 px-4 py-1 rounded-full text-xs font-mono text-white/40 mb-8 tracking-widest uppercase">Inversores</div>
         <h2 class="font-serif text-3xl md:text-4xl font-normal text-white leading-tight tracking-tight mb-6">Tecnología para los<br>Excluidos Solventes.</h2>
-        <p class="leading-relaxed mb-10 max-w-xl mx-auto" style="color:rgba(255,255,255,0.45);">Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado más desatendido de la región. Modelos de riesgo obsoletos dejan millones sobre la mesa. Con aprobación en tiempo real y mitigación de riesgo a través de activos de reventa garantizada, democratizamos el acceso a experiencias.</p>
+        <p class="leading-relaxed mb-10 max-w-xl mx-auto" style="color:rgba(255,255,255,0.4);">Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado más desatendido de la región. Modelos de riesgo obsoletos dejan millones sobre la mesa. Con aprobación en tiempo real y mitigación de riesgo a través de activos de reventa garantizada, democratizamos el acceso a experiencias.</p>
         <button onclick="openInvestorModal()" class="border border-white/30 text-white px-8 py-3.5 rounded text-sm font-medium hover:bg-white hover:text-slate-900 transition-all inline-flex items-center gap-2 group">
             Solicitar Pitch Deck
             <span class="icon group-hover:translate-x-1 transition-transform inline-block"><svg width="16" height="16"><use href="#ico-arrow-right"/></svg></span>
@@ -491,7 +343,7 @@
     </div>
 </section>
 
-<!-- ── FOOTER ── -->
+<!-- FOOTER -->
 
 <footer class="bg-white border-t border-slate-200 py-10 px-6">
     <div class="max-w-6xl mx-auto flex flex-col items-center gap-4 text-center">
@@ -509,7 +361,7 @@
     </div>
 </footer>
 
-<!-- ── MODAL ONBOARDING ── -->
+<!-- MODAL ONBOARDING -->
 
 <div id="onboardingModal" class="relative z-[100] hidden" role="dialog" aria-modal="true">
     <div id="onboardingBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm modal-enter" onclick="closeOnboardingModal()"></div>
@@ -523,179 +375,73 @@
                     <div id="onboardingFlow" class="relative h-[560px] flex flex-col">
                         <!-- Card 1 -->
                         <div id="card1" class="onboarding-card active">
-                            <div class="flex justify-center mb-6">
-                                <span class="font-serif text-2xl font-normal text-slate-900">Yunus</span>
-                            </div>
+                            <div class="flex justify-center mb-6"><span class="font-serif text-2xl text-slate-900">Yunus</span></div>
                             <div class="card-body">
                                 <h3 class="font-serif text-2xl font-bold mb-6">Regístrate</h3>
                                 <form id="form1">
                                     <input type="hidden" name="Paso" value="Registro">
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">Nombre completo</label>
-                                        <input type="text" name="Nombre_completo" id="nombre" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none">
-                                        <div class="card-error" id="error-nombre">Este campo es requerido</div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">Celular</label>
-                                        <div class="relative">
-                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">+52</span>
-                                            <input type="tel" name="Celular" id="celular" pattern="[0-9]{10}" required class="w-full pl-10 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none">
-                                        </div>
-                                        <div class="card-error" id="error-celular">Debe ser 10 dígitos</div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">Fecha de nacimiento</label>
-                                        <input type="date" name="Fecha_de_nacimiento" id="fechaNac" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none">
-                                        <div class="card-error" id="error-fecha">Debes tener 18 años o más</div>
-                                    </div>
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">Nombre completo</label><input type="text" name="Nombre_completo" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"></div>
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">Celular</label><div class="relative"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">+52</span><input type="tel" name="Celular" pattern="[0-9]{10}" required class="w-full pl-10 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"></div></div>
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">Fecha de nacimiento</label><input type="date" name="Fecha_de_nacimiento" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"></div>
                                     <div class="mb-4">
                                         <label class="block text-sm font-medium text-slate-700 mb-1">Entidad federativa</label>
-                                        <select name="Entidad_federativa" id="entidad" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none">
+                                        <select name="Entidad_federativa" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
                                             <option value="">Selecciona una entidad</option>
                                             <option value="AGU">Aguascalientes</option><option value="BCN">Baja California</option><option value="BCS">Baja California Sur</option><option value="CAM">Campeche</option><option value="COA">Coahuila</option><option value="COL">Colima</option><option value="CHP">Chiapas</option><option value="CHH">Chihuahua</option><option value="CMX">Ciudad de México</option><option value="DUR">Durango</option><option value="GTO">Guanajuato</option><option value="GRO">Guerrero</option><option value="HGO">Hidalgo</option><option value="JAL">Jalisco</option><option value="MEX">México</option><option value="MIC">Michoacán</option><option value="MOR">Morelos</option><option value="NAY">Nayarit</option><option value="NL">Nuevo León</option><option value="OAX">Oaxaca</option><option value="PUE">Puebla</option><option value="QRO">Querétaro</option><option value="QROO">Quintana Roo</option><option value="SLP">San Luis Potosí</option><option value="SIN">Sinaloa</option><option value="SON">Sonora</option><option value="TAB">Tabasco</option><option value="TAM">Tamaulipas</option><option value="TLA">Tlaxcala</option><option value="VER">Veracruz</option><option value="YUC">Yucatán</option><option value="ZAC">Zacatecas</option>
                                         </select>
-                                        <div class="card-error" id="error-entidad">Selecciona una entidad</div>
                                     </div>
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">Código postal</label>
-                                        <input type="text" name="Codigo_postal" id="cp" pattern="[0-9]{5}" maxlength="5" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none">
-                                        <div class="card-error" id="error-cp">Debe ser 5 dígitos</div>
-                                    </div>
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">Código postal</label><input type="text" name="Codigo_postal" pattern="[0-9]{5}" maxlength="5" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"></div>
                                 </form>
                             </div>
                             <div class="card-footer">
                                 <button type="button" onclick="goToCard(2)" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
-                                <p class="text-xs text-slate-500 mt-4">Al continuar aceptas haber leído nuestros <span onclick="openLegalModal('terms')" class="underline cursor-pointer">Términos</span> y <span onclick="openLegalModal('privacy')" class="underline cursor-pointer">Política de privacidad</span>.</p>
+                                <p class="text-xs text-slate-500 mt-4">Al continuar aceptas nuestros <span onclick="openLegalModal('terms')" class="underline cursor-pointer">Términos</span> y <span onclick="openLegalModal('privacy')" class="underline cursor-pointer">Política de privacidad</span>.</p>
                             </div>
                         </div>
-
-```
-                    <!-- Card 2 -->
-                    <div id="card2" class="onboarding-card hidden">
-                        <div class="flex justify-center mb-6">
-                            <span class="font-serif text-2xl font-normal text-slate-900">Yunus</span>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="font-serif text-2xl font-bold mb-6">Tu perfil financiero</h3>
-                            <form id="form2">
-                                <input type="hidden" name="Paso" value="Registro + Perfil">
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Ingreso mensual neto</label>
-                                    <input type="number" name="Ingreso_mensual" id="ingreso" min="0" step="100" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
-                                    <div class="card-error" id="error-ingreso">Ingresa un número válido</div>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Marca de celular</label>
-                                    <select name="Marca_celular" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
-                                        <option value="">Selecciona una marca</option>
-                                        <option>Apple</option><option>Samsung</option><option>Xiaomi</option><option>OPPO</option><option>Realme</option><option>Motorola</option><option>Huawei</option><option>Sony</option><option>Nokia</option><option>LG</option><option>OnePlus</option><option>ASUS</option><option>Lenovo</option><option>Otro</option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de celular</label>
-                                    <select name="Gastos_celular" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
-                                        <option value="">Selecciona una opción</option>
-                                        <option value="credito_activo">Crédito de celular activo</option>
-                                        <option value="sin_deudas">Sin deudas / Plan de renta</option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de vivienda</label>
-                                    <select name="Gastos_vivienda" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
-                                        <option value="">Selecciona una opción</option>
-                                        <option value="sin_gastos">No tengo gastos de vivienda</option>
-                                        <option value="pago_renta">Pago renta</option>
-                                        <option value="pago_hipoteca">Pago hipoteca</option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de automóvil</label>
-                                    <select name="Gastos_automovil" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
-                                        <option value="">Selecciona una opción</option>
-                                        <option value="no_tengo">No tengo carro</option>
-                                        <option value="credito_auto">Tengo un crédito automotriz</option>
-                                        <option value="auto_sin_deuda">Tengo auto sin deuda</option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Personas que dependen de ti</label>
-                                    <select name="Dependientes" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
-                                        <option value="">Selecciona</option>
-                                        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">¿Cómo calificarías tu historial crediticio?</label>
-                                    <select name="Historial_crediticio" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
-                                        <option value="">Selecciona</option>
-                                        <option value="Bueno">Bueno</option><option value="Regular">Regular</option><option value="Malo">Malo</option><option value="No tengo">No tengo / No sé</option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">¿Estás pagando actualmente otro crédito o deuda?</label>
-                                    <select name="Otras_deudas" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none">
-                                        <option value="">Selecciona una opción</option>
-                                        <option value="si">Sí</option><option value="no">No</option>
-                                    </select>
-                                </div>
-                                <div class="mt-6 p-3 bg-slate-50 border border-slate-200 rounded-lg">
-                                    <label class="flex items-start gap-2 cursor-pointer">
-                                        <input type="checkbox" id="acceptTerms" class="mt-1 w-4 h-4 text-slate-900 border-slate-300 rounded">
-                                        <span class="text-xs text-slate-600 leading-tight">He leído y acepto los <span onclick="openLegalModal('terms')" class="underline text-slate-900 font-medium cursor-pointer">Términos y condiciones</span> y la <span onclick="openLegalModal('privacy')" class="underline text-slate-900 font-medium cursor-pointer">Política de privacidad</span>.</span>
-                                    </label>
-                                    <div id="error-terms" class="text-xs text-red-600 mt-1 hidden">Debes aceptar los términos para continuar.</div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="card-footer">
-                            <button type="button" onclick="submitAllDataAndGoToCard3()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
-                        </div>
-                    </div>
-
-                    <!-- Card 3 -->
-                    <div id="card3" class="onboarding-card hidden text-center">
-                        <div class="flex justify-center mb-6">
-                            <span class="font-serif text-2xl font-normal text-slate-900">Yunus</span>
-                        </div>
-                        <div class="card-body">
-                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <!-- Card 2 -->
+                        <div id="card2" class="onboarding-card hidden">
+                            <div class="flex justify-center mb-6"><span class="font-serif text-2xl text-slate-900">Yunus</span></div>
+                            <div class="card-body">
+                                <h3 class="font-serif text-2xl font-bold mb-6">Tu perfil financiero</h3>
+                                <form id="form2">
+                                    <input type="hidden" name="Paso" value="Registro + Perfil">
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">Ingreso mensual neto</label><input type="number" name="Ingreso_mensual" min="0" step="100" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"></div>
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">Marca de celular</label><select name="Marca_celular" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"><option value="">Selecciona</option><option>Apple</option><option>Samsung</option><option>Xiaomi</option><option>OPPO</option><option>Realme</option><option>Motorola</option><option>Huawei</option><option>Sony</option><option>Nokia</option><option>LG</option><option>OnePlus</option><option>ASUS</option><option>Lenovo</option><option>Otro</option></select></div>
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">Gastos de celular</label><select name="Gastos_celular" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"><option value="">Selecciona</option><option value="credito_activo">Crédito de celular activo</option><option value="sin_deudas">Sin deudas / Plan de renta</option></select></div>
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">Gastos de vivienda</label><select name="Gastos_vivienda" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"><option value="">Selecciona</option><option value="sin_gastos">No tengo gastos de vivienda</option><option value="pago_renta">Pago renta</option><option value="pago_hipoteca">Pago hipoteca</option></select></div>
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">Gastos de automóvil</label><select name="Gastos_automovil" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"><option value="">Selecciona</option><option value="no_tengo">No tengo carro</option><option value="credito_auto">Tengo un crédito automotriz</option><option value="auto_sin_deuda">Tengo auto sin deuda</option></select></div>
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">Personas que dependen de ti</label><select name="Dependientes" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"><option value="">Selecciona</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select></div>
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">¿Cómo calificarías tu historial crediticio?</label><select name="Historial_crediticio" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"><option value="">Selecciona</option><option value="Bueno">Bueno</option><option value="Regular">Regular</option><option value="Malo">Malo</option><option value="No tengo">No tengo / No sé</option></select></div>
+                                    <div class="mb-4"><label class="block text-sm font-medium text-slate-700 mb-1">¿Estás pagando actualmente otro crédito o deuda?</label><select name="Otras_deudas" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"><option value="">Selecciona</option><option value="si">Sí</option><option value="no">No</option></select></div>
+                                    <div class="mt-6 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                                        <label class="flex items-start gap-2 cursor-pointer">
+                                            <input type="checkbox" id="acceptTerms" class="mt-1 w-4 h-4 text-slate-900 border-slate-300 rounded">
+                                            <span class="text-xs text-slate-600 leading-tight">He leído y acepto los <span onclick="openLegalModal('terms')" class="underline text-slate-900 font-medium cursor-pointer">Términos y condiciones</span> y la <span onclick="openLegalModal('privacy')" class="underline text-slate-900 font-medium cursor-pointer">Política de privacidad</span>.</span>
+                                        </label>
+                                        <div id="error-terms" class="text-xs text-red-600 mt-1 hidden">Debes aceptar los términos para continuar.</div>
+                                    </div>
+                                </form>
                             </div>
-                            <h3 class="font-serif text-2xl font-bold mb-2">¡Listo!</h3>
-                            <p class="text-slate-600 mb-6">Dile a Yunus lo que quieres y armará un plan para ti.</p>
+                            <div class="card-footer">
+                                <button type="button" onclick="submitAllDataAndGoToCard3()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <button type="button" onclick="openWhatsApp()" class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition">
-                                Hablar con Yunus en WhatsApp →
-                            </button>
-                            <p class="text-xs text-slate-500 mt-4">Te enviaremos tu plan personalizado en los próximos <strong>5 minutos</strong>.</p>
+                        <!-- Card 3 -->
+                        <div id="card3" class="onboarding-card hidden text-center">
+                            <div class="flex justify-center mb-6"><span class="font-serif text-2xl text-slate-900">Yunus</span></div>
+                            <div class="card-body">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                                <h3 class="font-serif text-2xl font-bold mb-2">¡Listo!</h3>
+                                <p class="text-slate-600 mb-6">Dile a Yunus lo que quieres y armará un plan para ti.</p>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" onclick="openWhatsApp()" class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition">Hablar con Yunus en WhatsApp →</button>
+                                <p class="text-xs text-slate-500 mt-4">Te enviaremos tu plan personalizado en los próximos <strong>5 minutos</strong>.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-```
-
-</div>
-
-<!-- ── MODAL LEGAL ── -->
-
-<div id="legalModal" class="relative z-[110] hidden" role="dialog" aria-modal="true">
-    <div id="legalBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm modal-enter" onclick="closeLegalModal()"></div>
-    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div class="flex min-h-full items-center justify-center p-4">
-            <div id="legalPanel" class="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl modal-panel-enter overflow-hidden flex flex-col max-h-[80vh]">
-                <div class="p-6 border-b border-slate-100 flex justify-between items-center flex-shrink-0">
-                    <h3 id="legalTitle" class="font-serif text-xl font-bold text-slate-900">Título</h3>
-                    <button onclick="closeLegalModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
-                        <span class="icon"><svg width="24" height="24"><use href="#ico-x"/></svg></span>
-                    </button>
-                </div>
-                <div id="legalContent" class="p-6 legal-modal-content flex-grow"></div>
-                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end flex-shrink-0">
-                    <button onclick="closeLegalModal()" class="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -703,6 +449,7 @@
 </div>
 
 <!-- MODAL INVERSORES -->
+
 <div id="investorModal" class="relative z-[100] hidden" role="dialog" aria-modal="true">
     <div id="investorBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm modal-enter" onclick="closeInvestorModal()"></div>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -722,7 +469,7 @@
                             <input type="text" name="Empresa_o_Fondo" placeholder="Empresa o Fondo" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
                             <input type="url" name="LinkedIn" placeholder="URL de tu LinkedIn" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
                             <input type="text" name="_gotcha" style="display:none">
-                            <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded text-sm font-medium hover:bg-slate-700 transition-colors mt-1">Solicitar Pitch Deck →</button>
+                            <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded text-sm font-medium hover:bg-slate-700 transition-colors">Solicitar Pitch Deck →</button>
                         </form>
                     </div>
                     <div id="investorSuccessMessage" class="hidden text-center py-8 fade-in">
@@ -739,52 +486,66 @@
     </div>
 </div>
 
+<!-- MODAL LEGAL -->
+
+<div id="legalModal" class="relative z-[110] hidden" role="dialog" aria-modal="true">
+    <div id="legalBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm modal-enter" onclick="closeLegalModal()"></div>
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div id="legalPanel" class="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl modal-panel-enter overflow-hidden flex flex-col max-h-[80vh]">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center flex-shrink-0">
+                    <h3 id="legalTitle" class="font-serif text-xl font-bold text-slate-900">Título</h3>
+                    <button onclick="closeLegalModal()" class="text-slate-400 hover:text-slate-600 transition-colors"><span class="icon"><svg width="24" height="24"><use href="#ico-x"/></svg></span></button>
+                </div>
+                <div id="legalContent" class="p-6 legal-modal-content flex-grow"></div>
+                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end flex-shrink-0">
+                    <button onclick="closeLegalModal()" class="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+// ── EVENT CARDS (minimalistas, con imagen pequeña) ──
+const events = [
+    { name:'Baja Beach Fest',   tag:'Festival · Rosarito',    date:'7-9 Ago 2026',   price:'$49 USD/q',  img:'BajaB.jpeg',   accent:'#2563eb' },
+    { name:'Rosalía: Lux Tour', tag:'Concierto · CDMX / MTY', date:'Ago 2026',        price:'$208 MXN/q', img:'Rosalia.jpeg', accent:'#be185d' },
+    { name:'Vans Warped Tour',  tag:'Festival · CDMX',        date:'12-13 Sep 2026',  price:'$380 MXN/q', img:'VansW.webp',   accent:'#ea580c' },
+    { name:'Bruno Mars',        tag:'Concierto · CDMX',       date:'3 Dic 2026',      price:'$144 MXN/q', img:'BrunoM.jpeg',  accent:'#16a34a' },
+];
+
+function buildEventCard(e) {
+    return `<div onclick="openOnboardingModal()" style="width:210px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;background:#fff;cursor:pointer;display:flex;flex-direction:column;" onmouseover="this.style.borderColor='#0f172a';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform='none'" >
+        <div style="width:100%;height:100px;overflow:hidden;background:${e.accent}15;position:relative;flex-shrink:0;">
+            <img src="${e.img}" alt="${e.name}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.style.background='${e.accent}30'">
+        </div>
+        <div style="padding:11px 13px;">
+            <div style="font-family:'Geist Mono',monospace;font-size:8.5px;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">${e.tag}</div>
+            <div style="font-family:'Instrument Serif',Georgia,serif;font-size:14px;color:#0f172a;line-height:1.2;margin-bottom:7px;">${e.name}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-family:'Geist Mono',monospace;font-size:9.5px;color:#94a3b8;">${e.date}</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:9.5px;color:${e.accent};font-weight:600;">${e.price}</span>
+            </div>
+        </div>
+    </div>`;
+}
+
+(function() {
+    const track = document.getElementById('evTrack');
+    if (!track) return;
+    const cards = events.map(buildEventCard).join('');
+    track.innerHTML = cards + cards;
+})();
+
 // ── LEGAL TEXTS ──
 const legalTexts = {
-    terms: `
-        <h2>TÉRMINOS Y CONDICIONES DE USO – YUNUS (MVP)</h2>
-        <p><strong>Última actualización:</strong> 29 de marzo de 2026</p>
-        <h3>1. ACEPTACIÓN</h3>
-        <p>Al utilizar el sitio web yunusia.com y completar el formulario de registro, usted acepta los presentes Términos y Condiciones.</p>
-        <h3>2. NATURALEZA DEL SERVICIO</h3>
-        <p>El llenado del formulario constituye una <strong>solicitud de evaluación financiera</strong>, no una contratación definitiva ni una aprobación de crédito inmediata. Yunus se reserva el derecho de admisión basado en su modelo interno de riesgo.</p>
-        <h3>3. MODELO DE FINANCIAMIENTO</h3>
-        <ul>
-            <li><strong>Enganche:</strong> El usuario cubre un pago inicial (generalmente el 15%) vía SPEI u Oxxo para apartar el boleto.</li>
-            <li><strong>Propiedad:</strong> Yunus adquiere el boleto y lo resguarda en su "Bóveda" hasta completar el pago.</li>
-            <li><strong>CAT referencial:</strong> 36% anual · 3% mensual, ya incluido en las cuotas presentadas.</li>
-        </ul>
-        <h3>4. POLÍTICA DE INCUMPLIMIENTO</h3>
-        <p>Si el usuario deja de pagar, Yunus activa el protocolo de reventa. Con lo obtenido se liquida la deuda más una <strong>comisión del 6%</strong>. El remanente se devuelve al usuario.</p>
-        <h3>5. VERACIDAD DE LA INFORMACIÓN</h3>
-        <p>El usuario declara que los datos proporcionados son reales y actuales. La información falsa es causal de rechazo inmediato.</p>
-        <h3>6. CONTACTO</h3>
-        <p>Para dudas: christianturista@proton.me</p>
-    `,
-    privacy: `
-        <h2>POLÍTICA DE PRIVACIDAD – YUNUS</h2>
-        <p><strong>Última actualización:</strong> 29 de marzo de 2026</p>
-        <h3>1. DATOS QUE RECOPILAMOS</h3>
-        <ul>
-            <li><strong>Identificación:</strong> Nombre, fecha de nacimiento, entidad federativa, CP.</li>
-            <li><strong>Contacto:</strong> Número de celular.</li>
-            <li><strong>Perfil Financiero:</strong> Ingreso mensual, gastos fijos, dependientes, deudas.</li>
-        </ul>
-        <h3>2. FINALIDAD</h3>
-        <p>Sus datos se usan estrictamente para evaluación de riesgo, comunicación por WhatsApp y prevención de fraude. <strong>NO vendemos ni compartimos sus datos con terceros o burós de crédito.</strong></p>
-        <h3>3. SEGURIDAD</h3>
-        <p>La información se almacena en nuestras bases de datos internas y en Formspree, accesibles solo por el equipo fundador de Yunus.</p>
-        <h3>4. DERECHOS ARCO</h3>
-        <p>Puede acceder, corregir o eliminar sus datos en cualquier momento contactándonos en christianturista@proton.me.</p>
-        <h3>5. CONTACTO</h3>
-        <p>Correo: christianturista@proton.me · Ciudad Juárez, Chihuahua, México.</p>
-    `
+    terms: `<h2>TÉRMINOS Y CONDICIONES – YUNUS (MVP)</h2><p><strong>Última actualización:</strong> 29 de marzo de 2026</p><h3>1. ACEPTACIÓN</h3><p>Al utilizar yunusia.com y completar el formulario de registro, usted acepta estos Términos y Condiciones.</p><h3>2. NATURALEZA DEL SERVICIO</h3><p>El formulario constituye una <strong>solicitud de evaluación financiera</strong>, no una contratación definitiva. Yunus se reserva el derecho de admisión.</p><h3>3. MODELO DE FINANCIAMIENTO</h3><ul><li><strong>Enganche:</strong> 15% del valor del boleto vía SPEI u Oxxo.</li><li><strong>Propiedad:</strong> Yunus adquiere el boleto y lo resguarda en su "Bóveda" hasta completar el pago.</li><li><strong>CAT:</strong> 36% anual · 3% mensual, incluido en las cuotas.</li></ul><h3>4. INCUMPLIMIENTO</h3><p>Si el usuario deja de pagar, Yunus activa reventa. La deuda se liquida más un <strong>6% de comisión</strong>. El remanente se devuelve al usuario.</p><h3>5. VERACIDAD</h3><p>El usuario declara que sus datos son reales. La información falsa es causal de rechazo inmediato.</p><h3>6. CONTACTO</h3><p>christianturista@proton.me</p>`,
+    privacy: `<h2>POLÍTICA DE PRIVACIDAD – YUNUS</h2><p><strong>Última actualización:</strong> 29 de marzo de 2026</p><h3>1. DATOS QUE RECOPILAMOS</h3><ul><li><strong>Identificación:</strong> Nombre, fecha de nacimiento, entidad federativa, CP.</li><li><strong>Contacto:</strong> Número de celular.</li><li><strong>Perfil Financiero:</strong> Ingreso mensual, gastos fijos, dependientes, deudas.</li></ul><h3>2. FINALIDAD</h3><p>Evaluación de riesgo, comunicación por WhatsApp y prevención de fraude. <strong>NO vendemos ni compartimos datos con terceros o burós de crédito.</strong></p><h3>3. SEGURIDAD</h3><p>La información se almacena en nuestras bases de datos internas y en Formspree, accesibles solo por el equipo fundador.</p><h3>4. DERECHOS ARCO</h3><p>Puede acceder, corregir o eliminar sus datos contactándonos en christianturista@proton.me.</p><h3>5. CONTACTO</h3><p>christianturista@proton.me · Ciudad Juárez, Chihuahua, México.</p>`
 };
 
 // ── ONBOARDING ──
 let currentCard = 1;
-
 function openOnboardingModal() {
     currentCard = 1;
     document.querySelectorAll('.onboarding-card').forEach(c => { c.classList.add('hidden'); c.classList.remove('active'); });
@@ -798,7 +559,6 @@ function openOnboardingModal() {
         document.getElementById('onboardingPanel').classList.add('modal-panel-enter-active');
     }, 10);
 }
-
 function closeOnboardingModal() {
     document.getElementById('onboardingBackdrop').classList.remove('modal-enter-active');
     document.getElementById('onboardingPanel').classList.remove('modal-panel-enter-active');
@@ -808,54 +568,67 @@ function closeOnboardingModal() {
         document.getElementById('onboardingPanel').classList.add('modal-panel-enter');
     }, 200);
 }
-
 function goToCard(n) {
     if (currentCard === n) return;
     const prev = currentCard;
-    document.getElementById('card' + prev).classList.remove('active');
+    document.getElementById('card'+prev).classList.remove('active');
     setTimeout(() => {
-        document.getElementById('card' + prev).classList.add('hidden');
+        document.getElementById('card'+prev).classList.add('hidden');
         currentCard = n;
-        document.getElementById('card' + n).classList.remove('hidden');
-        setTimeout(() => document.getElementById('card' + n).classList.add('active'), 10);
+        document.getElementById('card'+n).classList.remove('hidden');
+        setTimeout(() => document.getElementById('card'+n).classList.add('active'), 10);
     }, 300);
 }
-
 async function submitAllDataAndGoToCard3() {
-    const acceptTerms = document.getElementById('acceptTerms');
-    const errorTerms = document.getElementById('error-terms');
-    if (!acceptTerms.checked) {
-        errorTerms.classList.remove('hidden');
-        acceptTerms.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-    }
-    errorTerms.classList.add('hidden');
-
-    const combinedData = new FormData();
-    for (let [k, v] of new FormData(document.getElementById('form1')).entries()) combinedData.append(k, v);
-    for (let [k, v] of new FormData(document.getElementById('form2')).entries()) combinedData.append(k, v);
-
+    const cb = document.getElementById('acceptTerms');
+    const err = document.getElementById('error-terms');
+    if (!cb.checked) { err.classList.remove('hidden'); cb.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+    err.classList.add('hidden');
+    const combined = new FormData();
+    for (let [k,v] of new FormData(document.getElementById('form1')).entries()) combined.append(k,v);
+    for (let [k,v] of new FormData(document.getElementById('form2')).entries()) combined.append(k,v);
     const btn = document.querySelector('#card2 .card-footer button');
     const orig = btn.innerHTML;
-    btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span> Enviando...';
+    btn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle;"></span>Enviando...';
     btn.disabled = true;
-
     try {
-        const res = await fetch('https://formspree.io/f/mreyjllj', {
-            method: 'POST', body: combinedData, headers: { 'Accept': 'application/json' }
-        });
-        if (res.ok) {
-            setTimeout(() => { goToCard(3); btn.innerHTML = orig; btn.disabled = false; }, 800);
-        } else { throw new Error('Formspree error'); }
-    } catch (e) {
-        alert('❌ Hubo un error al enviar. Por favor, inténtalo de nuevo.');
-        btn.innerHTML = orig; btn.disabled = false;
-    }
+        const res = await fetch('https://formspree.io/f/mreyjllj', { method:'POST', body:combined, headers:{'Accept':'application/json'} });
+        if (res.ok) { setTimeout(() => { goToCard(3); btn.innerHTML=orig; btn.disabled=false; }, 800); }
+        else throw new Error();
+    } catch { alert('❌ Hubo un error. Por favor, inténtalo de nuevo.'); btn.innerHTML=orig; btn.disabled=false; }
 }
-
 function openWhatsApp() {
     window.open('https://wa.me/525512345678?text=Hola%2C%20acabo%20de%20registrarme%20en%20Yunus%20y%20quiero%20mi%20plan', '_blank');
     closeOnboardingModal();
+}
+
+// ── INVESTOR MODAL ──
+function openInvestorModal() {
+    document.getElementById('investorModal').classList.remove('hidden');
+    setTimeout(() => {
+        document.getElementById('investorBackdrop').classList.remove('modal-enter');
+        document.getElementById('investorBackdrop').classList.add('modal-enter-active');
+        document.getElementById('investorPanel').classList.remove('modal-panel-enter');
+        document.getElementById('investorPanel').classList.add('modal-panel-enter-active');
+    }, 10);
+}
+function closeInvestorModal() {
+    document.getElementById('investorBackdrop').classList.remove('modal-enter-active');
+    document.getElementById('investorPanel').classList.remove('modal-panel-enter-active');
+    setTimeout(() => {
+        document.getElementById('investorModal').classList.add('hidden');
+        document.getElementById('investorBackdrop').classList.add('modal-enter');
+        document.getElementById('investorPanel').classList.add('modal-panel-enter');
+    }, 200);
+}
+async function handleInvestorSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('investorForm');
+    try {
+        const r = await fetch(form.action, { method:form.method, body:new FormData(form), headers:{'Accept':'application/json'} });
+        if (r.ok) { document.getElementById('investorContent').classList.add('hidden'); document.getElementById('investorSuccessMessage').classList.remove('hidden'); form.reset(); }
+        else alert('Hubo un problema. Intenta de nuevo.');
+    } catch { alert('Error de conexión. Intenta más tarde.'); }
 }
 
 // ── LEGAL MODAL ──
@@ -870,7 +643,6 @@ function openLegalModal(type) {
         document.getElementById('legalPanel').classList.add('modal-panel-enter-active');
     }, 10);
 }
-
 function closeLegalModal() {
     document.getElementById('legalBackdrop').classList.remove('modal-enter-active');
     document.getElementById('legalPanel').classList.remove('modal-panel-enter-active');
@@ -883,61 +655,43 @@ function closeLegalModal() {
 
 // ── DEMO CHAT ──
 var demoPlayed = false;
-function scrollChat() { var c = document.getElementById('demoChat'); if (c) c.scrollTop = c.scrollHeight; }
-
+function scrollChat() { var c = document.getElementById('demoChat'); if(c) c.scrollTop = c.scrollHeight; }
 function runDemo() {
     if (demoPlayed) return;
     demoPlayed = true;
-    var btn = document.getElementById('demoBtn');
-    if (btn) btn.style.opacity = '0.4';
-
-    setTimeout(function() {
-        var s = document.getElementById('step1');
-        if (s) s.innerHTML = '<span class="text-green-600">✓</span> Inventario analizado';
-    }, 700);
-    setTimeout(function() {
-        var s = document.getElementById('step2');
-        if (s) s.innerHTML = '<span class="text-green-600">✓</span> Perfil cruzado';
-    }, 1500);
-    setTimeout(function() {
-        var s = document.getElementById('step3');
-        if (s) s.innerHTML = '<span class="text-green-600">✓</span> Plan de pagos listo';
-    }, 2300);
-    setTimeout(function() {
-        var a = document.getElementById('approvalMsg');
-        if (a) { a.classList.remove('hidden'); scrollChat(); }
-    }, 3100);
+    var btn = document.getElementById('demoBtn'); if(btn) btn.style.opacity = '0.4';
+    setTimeout(() => { var s=document.getElementById('step1'); if(s) s.innerHTML='<span style="color:#22c55e">✓</span> Inventario analizado'; }, 700);
+    setTimeout(() => { var s=document.getElementById('step2'); if(s) s.innerHTML='<span style="color:#22c55e">✓</span> Perfil cruzado'; }, 1500);
+    setTimeout(() => { var s=document.getElementById('step3'); if(s) s.innerHTML='<span style="color:#22c55e">✓</span> Plan de pagos listo'; }, 2300);
+    setTimeout(() => { var a=document.getElementById('approvalMsg'); if(a){a.classList.remove('hidden'); scrollChat();} }, 3100);
 }
-
-// Auto-trigger demo on scroll
 if ('IntersectionObserver' in window) {
-    var dIO = new IntersectionObserver(function(entries) {
-        if (entries[0].isIntersecting && !demoPlayed) { setTimeout(runDemo, 600); dIO.disconnect(); }
-    }, { threshold: 0.3 });
-    var dSec = document.getElementById('demo');
-    if (dSec) dIO.observe(dSec);
+    var dIO = new IntersectionObserver(entries => { if(entries[0].isIntersecting && !demoPlayed){setTimeout(runDemo,600); dIO.disconnect();} }, {threshold:0.3});
+    var dSec = document.getElementById('demo'); if(dSec) dIO.observe(dSec);
+    // Reveal animation
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('animate-ready'));
+    var rIO = new IntersectionObserver(entries => {
+        entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); rIO.unobserve(e.target); } });
+    }, { threshold:0.08 });
+    document.querySelectorAll('.reveal').forEach(el => rIO.observe(el));
+}
+document.getElementById('demoBtn').addEventListener('click', runDemo);
+
+// ── FAQ ──
+function toggleFaq(el) {
+    var a = el.querySelector('.faq-a'), i = el.querySelector('.faq-icon');
+    var open = a.classList.contains('open');
+    if (open) { a.classList.remove('open'); i.textContent='+'; i.classList.remove('bg-slate-900','text-white','border-slate-900'); }
+    else { a.classList.add('open'); i.textContent='×'; i.classList.add('bg-slate-900','text-white','border-slate-900'); }
 }
 
-// ── REVEAL ANIMATION (solo si IntersectionObserver disponible) ──
-if ('IntersectionObserver' in window) {
-    document.querySelectorAll('.reveal').forEach(function(el) {
-        el.classList.add('animate-ready');
-    });
-    var revealObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                revealObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach(function(el) {
-        revealObserver.observe(el);
-    });
-}
-
-// ── NAV MOBILE ──
+// ── NAV ──
 function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+
+// ── SPINNER CSS ──
+var spinStyle = document.createElement('style');
+spinStyle.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+document.head.appendChild(spinStyle);
 </script>
 
 </body>
