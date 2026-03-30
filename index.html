@@ -702,6 +702,43 @@
     </div>
 </div>
 
+<!-- MODAL INVERSORES -->
+<div id="investorModal" class="relative z-[100] hidden" role="dialog" aria-modal="true">
+    <div id="investorBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm modal-enter" onclick="closeInvestorModal()"></div>
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div id="investorPanel" class="relative bg-white rounded-xl shadow-2xl w-full max-w-md modal-panel-enter overflow-hidden">
+                <div class="p-8 relative">
+                    <button onclick="closeInvestorModal()" class="absolute top-4 right-4 text-slate-300 hover:text-slate-600 transition-colors p-1">
+                        <span class="icon"><svg width="16" height="16"><use href="#ico-x"/></svg></span>
+                    </button>
+                    <div id="investorContent">
+                        <h3 class="font-serif text-2xl font-normal text-slate-900 mb-2">Acceso a Inversores</h3>
+                        <p class="text-slate-500 text-sm mb-6 leading-relaxed">Déjanos tus datos para enviarte el Pitch Deck y ponernos en contacto contigo.</p>
+                        <form id="investorForm" action="https://formspree.io/f/mreyjllj" method="POST" class="space-y-3" onsubmit="handleInvestorSubmit(event)">
+                            <input type="hidden" name="Tipo_de_solicitud" value="PITCH DECK - INVERSOR">
+                            <input type="text" name="Nombre" placeholder="Nombre completo" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
+                            <input type="email" name="Email" placeholder="Correo corporativo" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
+                            <input type="text" name="Empresa_o_Fondo" placeholder="Empresa o Fondo" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
+                            <input type="url" name="LinkedIn" placeholder="URL de tu LinkedIn" required class="block w-full border border-slate-200 rounded px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-900 outline-none transition-colors">
+                            <input type="text" name="_gotcha" style="display:none">
+                            <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded text-sm font-medium hover:bg-slate-700 transition-colors mt-1">Solicitar Pitch Deck →</button>
+                        </form>
+                    </div>
+                    <div id="investorSuccessMessage" class="hidden text-center py-8 fade-in">
+                        <div class="mx-auto w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-4">
+                            <span class="icon"><svg width="24" height="24" class="text-green-600"><use href="#ico-check"/></svg></span>
+                        </div>
+                        <h3 class="font-serif text-2xl text-slate-900 mb-2">Solicitud recibida</h3>
+                        <p class="text-sm text-slate-500">Nos pondremos en contacto a la brevedad.</p>
+                        <button onclick="closeInvestorModal()" class="mt-6 text-xs text-slate-400 hover:text-slate-600 underline underline-offset-2">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // ── LEGAL TEXTS ──
 const legalTexts = {
