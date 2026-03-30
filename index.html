@@ -95,8 +95,22 @@
           display: none;
         }
         .terms-link {
-          @apply text-xs text-slate-500 underline hover:text-slate-700;
+          @apply text-xs text-slate-500 underline hover:text-slate-700 cursor-pointer;
         }
+        
+        /* Legal Modal Styles */
+        .legal-modal-content {
+            max-height: 70vh;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+        .legal-modal-content h2 { font-size: 1.25rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; color: #0f172a; }
+        .legal-modal-content h3 { font-size: 1.1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.5rem; color: #334155; }
+        .legal-modal-content p { margin-bottom: 0.75rem; }
+        .legal-modal-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
     </style>
 </head>
 <body class="font-sans text-slate-800 bg-white min-h-screen antialiased">
@@ -491,6 +505,11 @@
     <div class="max-w-6xl mx-auto flex flex-col items-center gap-4 text-center">
         <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
         <div class="font-mono text-xs text-slate-500">Ampliando límites físicos · Paso del Norte Labs · Ciudad Juárez, México</div>
+        <div class="flex gap-4 text-xs text-slate-400">
+            <span onclick="openLegalModal('terms')" class="cursor-pointer hover:text-slate-700 underline">Términos y condiciones</span>
+            <span>|</span>
+            <span onclick="openLegalModal('privacy')" class="cursor-pointer hover:text-slate-700 underline">Política de privacidad</span>
+        </div>
         <div class="font-mono text-xs text-slate-400">© 2026 Paso del Norte Labs</div>
     </div>
 </footer>
@@ -582,7 +601,7 @@
                         <div class="card-footer">
                           <button type="button" onclick="goToCard(2)" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Siguiente →</button>
                           <p class="text-xs text-slate-500 mt-4 terms-link">
-                            Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
+                            Al continuar aceptas haber leído nuestros <span onclick="openLegalModal('terms')" class="underline">Términos y condiciones</span> y <span onclick="openLegalModal('privacy')" class="underline">Política de privacidad</span>.
                           </p>
                         </div>
                       </div>
@@ -664,13 +683,22 @@
                               </select>
                               <div class="card-error" id="error-historial">Selecciona una opción</div>
                             </div>
+                            
+                            <!-- Checkbox Obligatorio -->
+                            <div class="mt-6 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                                <label class="flex items-start gap-2 cursor-pointer">
+                                    <input type="checkbox" id="acceptTerms" class="mt-1 w-4 h-4 text-slate-900 border-slate-300 rounded focus:ring-slate-500">
+                                    <span class="text-xs text-slate-600 leading-tight">
+                                        He leído y acepto los <span onclick="openLegalModal('terms')" class="underline text-slate-900 font-medium cursor-pointer">Términos y condiciones</span> y la <span onclick="openLegalModal('privacy')" class="underline text-slate-900 font-medium cursor-pointer">Política de privacidad</span>.
+                                    </span>
+                                </label>
+                                <div id="error-terms" class="text-xs text-red-600 mt-1 hidden">Debes aceptar los términos para continuar.</div>
+                            </div>
+
                           </form>
                         </div>
                         <div class="card-footer">
                           <button type="button" onclick="submitAllDataAndGoToCard3()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-700 transition">Continuar →</button>
-                          <p class="text-xs text-slate-500 mt-4 terms-link">
-                            Al continuar aceptas haber leído nuestros <a href="#" class="underline">Términos y condiciones</a> y <a href="#" class="underline">Política de privacidad</a>.
-                          </p>
                         </div>
                       </div>
 
@@ -683,17 +711,40 @@
                           <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
                           </div>
-                          <h3 class="font-serif text-2xl font-bold mb-2">¡Registro listo!</h3>
-                          <p class="text-slate-600 mb-6">Seguiras el proceso de solicitud con Yunus</p>
+                          <h3 class="font-serif text-2xl font-bold mb-2">¡Listo!</h3>
+                          <p class="text-slate-600 mb-6">Dile a Yunus lo que quieres y armará un plan para ti.</p>
                         </div>
                         <div class="card-footer">
                           <button type="button" onclick="openWhatsApp()" class="inline-block bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-full transition">
                             Hablar con Yunus en WhatsApp →
                           </button>
-                          <p class="text-xs text-slate-500 mt-4">Descubre si aplicas en menos de <strong>5 minutos</strong>.</p>
+                          <p class="text-xs text-slate-500 mt-4">Te enviaremos tu plan personalizado en los próximos <strong>5 minutos</strong>.</p>
                         </div>
                       </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL LEGAL (Términos y Privacidad) -->
+<div id="legalModal" class="relative z-[110] hidden" role="dialog" aria-modal="true">
+    <div id="legalBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm modal-enter" onclick="closeLegalModal()"></div>
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div id="legalPanel" class="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl modal-panel-enter overflow-hidden flex flex-col max-h-[80vh]">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center flex-shrink-0">
+                    <h3 id="legalTitle" class="font-serif text-xl font-bold text-slate-900">Título</h3>
+                    <button onclick="closeLegalModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                        <span class="icon"><svg width="24" height="24"><use href="#ico-x"/></svg></span>
+                    </button>
+                </div>
+                <div id="legalContent" class="p-6 legal-modal-content flex-grow">
+                    <!-- Contenido dinámico -->
+                </div>
+                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end flex-shrink-0">
+                    <button onclick="closeLegalModal()" class="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -738,6 +789,101 @@
 </div>
 
 <script>
+// --- Textos Legales ---
+const legalTexts = {
+    terms: `
+        <h2>TÉRMINOS Y CONDICIONES DE USO – YUNUS (MVP)</h2>
+        <p><strong>Última actualización:</strong> Domingo 29 de marzo de 2026</p>
+        
+        <h3>1. ACEPTACIÓN</h3>
+        <p>Al utilizar el sitio web yunusia.com y completar el formulario de registro, usted acepta los presentes Términos y Condiciones. Este documento regula el uso del servicio de pre-registro para el financiamiento de boletos para la Copa Mundial de la FIFA 2026 ofrecido por Yunus (en adelante, "la Plataforma").</p>
+
+        <h3>2. NATURALEZA DEL SERVICIO (PRE-REGISTRO)</h3>
+        <p>El llenado del formulario en este sitio web constituye una <strong>solicitud de evaluación financiera</strong>, no una contratación definitiva ni una aprobación de crédito inmediata.</p>
+        <ul>
+            <li>Yunus analizará la información proporcionada (ingresos, historial, identidad) para determinar su elegibilidad.</li>
+            <li>La aprobación final y las condiciones específicas del plan de pagos (monto de enganche, número de quincenas, CAT) se comunicarán exclusivamente a través del canal oficial de WhatsApp indicado al finalizar el registro.</li>
+            <li>Yunus se reserva el derecho de admisión y aprobación basado en su modelo interno de riesgo.</li>
+        </ul>
+
+        <h3>3. MODELO DE FINANCIAMIENTO</h3>
+        <p>En caso de ser aprobado, el funcionamiento general del servicio es el siguiente:</p>
+        <ul>
+            <li><strong>Enganche:</strong> El usuario deberá cubrir un pago inicial (generalmente el 15% del valor del boleto) vía SPEI o efectivo en Oxxo para apartar el boleto.</li>
+            <li><strong>Propiedad:</strong> Una vez cubierto el enganche, Yunus adquiere el boleto y lo resguarda en su "Bóveda" a nombre del usuario, quien comienza a disfrutar de la titularidad condicional.</li>
+            <li><strong>Pagos Restantes:</strong> El saldo restante se divide en pagos quincenales hasta la fecha del partido.</li>
+            <li><strong>Costos:</strong> El servicio incluye un Costo Anual Total (CAT) referencial del 36% anual, el cual ya está integrado en las cuotas presentadas en su plan personalizado. No hay costos ocultos.</li>
+        </ul>
+
+        <h3>4. POLÍTICA DE INCUMPLIMIENTO Y REVENTA</h3>
+        <p>Si el usuario deja de realizar los pagos quincenales pactados:</p>
+        <ul>
+            <li>Yunus activará el protocolo de "Revender".</li>
+            <li>La Plataforma pondrá el boleto a la venta en su mercado secundario antes de la fecha del evento.</li>
+            <li>Con lo obtenido de la venta, se liquidará la deuda pendiente del usuario más una <strong>comisión administrativa del 6%</strong> por el servicio de gestión de reventa.</li>
+            <li>El remanente (si lo hubiera) será devuelto al usuario. No se generarán reportes negativos a burós de crédito tradicionales por esta operación específica en esta etapa MVP.</li>
+        </ul>
+
+        <h3>5. VERACIDAD DE LA INFORMACIÓN</h3>
+        <p>El usuario declara bajo protesta de decir verdad que los datos proporcionados en el formulario (identidad, ingresos, domicilio) son reales y actuales. La provisión de información falsa es causal inmediata de rechazo de la solicitud y posible cancelación de beneficios futuros.</p>
+
+        <h3>6. MODIFICACIONES</h3>
+        <p>Yunus se reserva el derecho de modificar estos términos para futuras contrataciones. Las condiciones pactadas al momento de la aprobación de su plan se mantendrán inalterables para dicho pedido específico.</p>
+
+        <h3>7. CONTACTO</h3>
+        <p>Para dudas sobre estos términos, escriba directamente a nuestro agente oficial en WhatsApp o a christianturista@proton.me.</p>
+    `,
+    privacy: `
+        <h2>POLÍTICA DE PRIVACIDAD Y PROTECCIÓN DE DATOS – YUNUS</h2>
+        <p><strong>Última actualización:</strong> Domingo 29 de marzo de 2026</p>
+
+        <p>En <strong>Yunus</strong> (operado por Paso del Norte Labs), nos tomamos muy en serio la seguridad de su información financiera y personal. Esta política explica cómo tratamos los datos que nos proporciona en este formulario de pre-registro.</p>
+
+        <h3>1. DATOS QUE RECOPILAMOS</h3>
+        <p>Para poder evaluar su perfil de riesgo y ofrecerle un plan de financiamiento a medida, solicitamos los siguientes datos:</p>
+        <ul>
+            <li><strong>Identificación:</strong> Nombre completo, fecha de nacimiento, entidad federativa, código postal.</li>
+            <li><strong>Contacto:</strong> Número de celular (vital para la comunicación vía WhatsApp).</li>
+            <li><strong>Perfil Financiero:</strong> Ingreso mensual neto, gastos fijos (renta), dependientes económicos y auto-evaluación de historial crediticio.</li>
+            <li><strong>Documentación (Fase siguiente):</strong> En etapas posteriores del flujo (vía WhatsApp), podremos solicitar fotografía de INE y comprobantes de ingresos para validar la identidad.</li>
+        </ul>
+
+        <h3>2. FINALIDAD DEL TRATAMIENTO</h3>
+        <p>Sus datos serán utilizados estrictamente para:</p>
+        <ol>
+            <li><strong>Evaluación de Riesgo:</strong> Cruzar su información con nuestra base de datos de boletos disponibles y calcular su capacidad de pago real sin endeudamiento excesivo.</li>
+            <li><strong>Comunicación:</strong> Contactarlo a través de WhatsApp para informarle si fue aprobado, presentarle su plan de pagos y guiarlo en el primer pago.</li>
+            <li><strong>Prevención de Fraude:</strong> Verificar que la solicitud sea legítima.</li>
+        </ol>
+        <p><strong>NO vendemos, rentamos ni compartimos sus datos financieros con terceros, bancos o burós de crédito tradicionales.</strong></p>
+
+        <h3>3. BASE LEGAL Y CONSENTIMIENTO</h3>
+        <p>Al marcar la casilla de aceptación y enviar el formulario, usted otorga su consentimiento expreso para que Yunus trate sus datos personales con las finalidades descritas. Usted declara ser mayor de 18 años.</p>
+
+        <h3>4. SEGURIDAD DE LOS DATOS</h3>
+        <p>Actualmente, la información recabada en este MVP se almacena de forma segura en nuestras bases de datos internas y en las herramientas de gestión de formularios (Formspree), accesibles solo por el equipo fundador de Yunus. Estamos trabajando en implementar protocolos de encriptación más robustos de cara al lanzamiento oficial de la App.</p>
+
+        <h3>5. DERECHOS ARCO (Acceso, Rectificación, Cancelación y Oposición)</h3>
+        <p>Usted tiene derecho en cualquier momento a:</p>
+        <ul>
+            <li>Saber qué datos tenemos de usted.</li>
+            <li>Corregir algún dato erróneo (ej. cambió de número de teléfono).</li>
+            <li>Solicitar la eliminación de sus datos de nuestra base (derecho al olvido), siempre que no exista un plan de financiamiento activo.</li>
+        </ul>
+        <p>Para ejercer estos derechos, envíe un mensaje directo a nuestro WhatsApp oficial o un correo a christianturista@proton.me.</p>
+
+        <h3>6. CAMBIOS A LA POLÍTICA</h3>
+        <p>Nos reservamos el derecho de efectuar en cualquier momento modificaciones o actualizaciones a la presente política, para la atención de novedades legislativas o cambios internos. Dichos cambios serán notificados a través de nuestro sitio web o canal de WhatsApp.</p>
+
+        <h3>7. CONTACTO</h3>
+        <p>Cualquier duda sobre el manejo de sus datos, por favor contáctenos en:</p>
+        <ul>
+            <li>Correo: christianturista@proton.me</li>
+            <li>Domicilio: Ciudad Juárez, Chihuahua, México.</li>
+        </ul>
+    `
+};
+
 // --- Onboarding Logic ---
 let currentCard = 1;
 
@@ -778,6 +924,20 @@ function goToCard(n) {
 
 // ✅ Enviar datos de ambas cards y avanzar a Card 3
 async function submitAllDataAndGoToCard3() {
+  // Validar Checkbox
+  const acceptTerms = document.getElementById('acceptTerms');
+  const errorTerms = document.getElementById('error-terms');
+  
+  if (!acceptTerms.checked) {
+    errorTerms.classList.remove('hidden');
+    acceptTerms.focus();
+    // Scroll al error si es necesario
+    acceptTerms.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  } else {
+    errorTerms.classList.add('hidden');
+  }
+
   const form1Data = new FormData(document.getElementById('form1'));
   const form2Data = new FormData(document.getElementById('form2'));
 
@@ -825,6 +985,40 @@ function openWhatsApp() {
   closeOnboardingModal();
 }
 
+// ✅ Modales Legales
+function openLegalModal(type) {
+  const modal = document.getElementById('legalModal');
+  const title = document.getElementById('legalTitle');
+  const content = document.getElementById('legalContent');
+  
+  if (type === 'terms') {
+    title.innerText = 'Términos y Condiciones';
+    content.innerHTML = legalTexts.terms;
+  } else if (type === 'privacy') {
+    title.innerText = 'Política de Privacidad';
+    content.innerHTML = legalTexts.privacy;
+  }
+  
+  modal.classList.remove('hidden');
+  setTimeout(() => {
+    document.getElementById('legalBackdrop').classList.remove('modal-enter');
+    document.getElementById('legalBackdrop').classList.add('modal-enter-active');
+    document.getElementById('legalPanel').classList.remove('modal-panel-enter');
+    document.getElementById('legalPanel').classList.add('modal-panel-enter-active');
+  }, 10);
+}
+
+function closeLegalModal() {
+  const modal = document.getElementById('legalModal');
+  document.getElementById('legalBackdrop').classList.remove('modal-enter-active');
+  document.getElementById('legalPanel').classList.remove('modal-panel-enter-active');
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    document.getElementById('legalBackdrop').classList.add('modal-enter');
+    document.getElementById('legalPanel').classList.add('modal-panel-enter');
+  }, 200);
+}
+
 // --- Resto del JS ---
 var matches=[
   {teams:'México vs Sudáfrica', date:'11 Jun', venue:'Azteca · CDMX',    stage:'Fase de grupos', price:null},
@@ -844,7 +1038,7 @@ var matches=[
 function buildCard(m){
   var priceRow = m.price
     ? '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">desde</span><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#1a6b3c;font-weight:600;">$'+m.price.toLocaleString()+' <span style="font-weight:400;font-size:8px;">c/quincena</span></span></div>'
-    : '<div style="margin-top:5px;padding-top:5px:border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
+    : '<div style="margin-top:5px;padding-top:5px;border-top:1px solid #f1f5f9;font-family:\'Geist Mono\',monospace;font-size:8px;color:#cbd5e1;">Precio por confirmar</div>';
   return '<div style="width:190px;flex-shrink:0;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:0;" onclick="openModal()"><div style="margin-bottom:6px;"><div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#cbd5e1;">'+m.stage+'</div><div style="font-family:\'Instrument Serif\',serif;font-size:13px;color:#0f172a;line-height:1.25;margin-top:3px;">'+m.teams+'</div></div><div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:#94a3b8;">'+m.date+'</span><span style="font-family:\'Geist Mono\',monospace;font-size:9px;color:#cbd5e1;">'+m.venue+'</span></div>'+priceRow+'</div></div>';
 }
 var track=document.getElementById('carouselTrack');
