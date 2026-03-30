@@ -118,6 +118,13 @@
     <button onclick="openOnboardingModal()" class="underline underline-offset-2 ml-2 hover:opacity-70 transition-opacity">Aplicar →</button>
 </div>
 
+<!-- CAROUSEL — todo inline para evitar conflictos Tailwind -->
+<div style="overflow:hidden;position:relative;width:100%;border-bottom:1px solid #f1f5f9;padding:14px 0;background:#fff;">
+    <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,#fff,transparent);z-index:10;pointer-events:none;"></div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,#fff,transparent);z-index:10;pointer-events:none;"></div>
+    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;animation:cscroll 50s linear infinite;will-change:transform;padding:0 28px;"></div>
+</div>
+
 <!-- HERO -->
 
 <section id="eventos" class="pt-16 pb-12 md:pt-20 md:pb-16 text-center">
@@ -135,14 +142,6 @@
         </button>
     </div>
 
-```
-<!-- CAROUSEL — todo inline para evitar conflictos Tailwind -->
-<div style="overflow:hidden;position:relative;width:100%;border-bottom:1px solid #f1f5f9;padding:14px 0;background:#fff;">
-    <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,#fff,transparent);z-index:10;pointer-events:none;"></div>
-    <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,#fff,transparent);z-index:10;pointer-events:none;"></div>
-    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;animation:cscroll 50s linear infinite;will-change:transform;padding:0 28px;"></div>
-</div>
-```
 
 </section>
 
