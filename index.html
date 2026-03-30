@@ -606,7 +606,7 @@
                         </div>
                       </div>
 
-                      <!-- Card 2 -->
+                      <!-- Card 2 (ACTUALIZADA) -->
                       <div id="card2" class="onboarding-card hidden">
                         <div class="flex justify-center mb-6">
                           <img src="logo.jpeg" alt="Yunus" class="h-16 w-auto object-contain">
@@ -615,11 +615,15 @@
                           <h3 class="font-serif text-2xl font-bold mb-6">Tu perfil financiero</h3>
                           <form id="form2">
                             <input type="hidden" name="Paso" value="Registro + Perfil">
+                            
+                            <!-- Ingreso -->
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Ingreso mensual neto</label>
                               <input type="number" name="Ingreso_mensual" id="ingreso" min="0" step="100" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
                               <div class="card-error" id="error-ingreso">Ingresa un número válido</div>
                             </div>
+
+                            <!-- Marca Celular -->
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Marca de celular</label>
                               <select name="Marca_celular" id="marca" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
@@ -648,17 +652,43 @@
                               </select>
                               <div class="card-error" id="error-marca">Selecciona una marca</div>
                             </div>
+
+                            <!-- NUEVO: Gastos de Celular -->
                             <div class="mb-4">
-                              <label class="block text-sm font-medium text-slate-700 mb-1">¿Pagas renta?</label>
-                              <div class="flex gap-4">
-                                <label class="flex items-center">
-                                  <input type="radio" name="Paga_renta" value="Sí" required> Sí
-                                </label>
-                                <label class="flex items-center">
-                                  <input type="radio" name="Paga_renta" value="No"> No
-                                </label>
-                              </div>
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de celular</label>
+                              <select name="Gastos_celular" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                                <option value="">Selecciona una opción</option>
+                                <option value="credito_activo">Crédito de celular activo</option>
+                                <option value="sin_deudas">Sin deudas / Plan de renta</option>
+                              </select>
+                              <div class="card-error" id="error-gastos-celular">Selecciona una opción</div>
                             </div>
+
+                            <!-- NUEVO: Gastos de Vivienda (Reemplaza Renta) -->
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de vivienda</label>
+                              <select name="Gastos_vivienda" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                                <option value="">Selecciona una opción</option>
+                                <option value="sin_gastos">No tengo gastos de vivienda</option>
+                                <option value="pago_renta">Pago renta</option>
+                                <option value="pago_hipoteca">Pago hipoteca</option>
+                              </select>
+                              <div class="card-error" id="error-gastos-vivienda">Selecciona una opción</div>
+                            </div>
+
+                            <!-- NUEVO: Gastos de Automóvil -->
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">Gastos de automóvil</label>
+                              <select name="Gastos_automovil" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                                <option value="">Selecciona una opción</option>
+                                <option value="no_tengo">No tengo carro</option>
+                                <option value="credito_auto">Tengo un crédito automotriz</option>
+                                <option value="auto_sin_deuda">Tengo auto sin deuda</option>
+                              </select>
+                              <div class="card-error" id="error-gastos-auto">Selecciona una opción</div>
+                            </div>
+
+                            <!-- Dependientes -->
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">Personas que dependen de ti</label>
                               <select name="Dependientes" id="dependientes" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
@@ -672,6 +702,8 @@
                               </select>
                               <div class="card-error" id="error-dependientes">Selecciona una opción</div>
                             </div>
+
+                            <!-- Historial -->
                             <div class="mb-4">
                               <label class="block text-sm font-medium text-slate-700 mb-1">¿Cómo calificarías tu historial crediticio?</label>
                               <select name="Historial_crediticio" id="historial" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
@@ -682,6 +714,17 @@
                                 <option value="No tengo">No tengo / No sé</option>
                               </select>
                               <div class="card-error" id="error-historial">Selecciona una opción</div>
+                            </div>
+
+                            <!-- NUEVO: Otras Deudas -->
+                            <div class="mb-4">
+                              <label class="block text-sm font-medium text-slate-700 mb-1">¿Estás pagando actualmente otro tipo de crédito o deuda?</label>
+                              <select name="Otras_deudas" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                                <option value="">Selecciona una opción</option>
+                                <option value="si">Sí</option>
+                                <option value="no">No</option>
+                              </select>
+                              <div class="card-error" id="error-otras-deudas">Selecciona una opción</div>
                             </div>
                             
                             <!-- Checkbox Obligatorio -->
@@ -844,7 +887,7 @@ const legalTexts = {
         <ul>
             <li><strong>Identificación:</strong> Nombre completo, fecha de nacimiento, entidad federativa, código postal.</li>
             <li><strong>Contacto:</strong> Número de celular (vital para la comunicación vía WhatsApp).</li>
-            <li><strong>Perfil Financiero:</strong> Ingreso mensual neto, gastos fijos (renta), dependientes económicos y auto-evaluación de historial crediticio.</li>
+            <li><strong>Perfil Financiero:</strong> Ingreso mensual neto, gastos fijos (renta/hipoteca), dependientes económicos, deudas de celular/auto y auto-evaluación de historial crediticio.</li>
             <li><strong>Documentación (Fase siguiente):</strong> En etapas posteriores del flujo (vía WhatsApp), podremos solicitar fotografía de INE y comprobantes de ingresos para validar la identidad.</li>
         </ul>
 
@@ -931,7 +974,6 @@ async function submitAllDataAndGoToCard3() {
   if (!acceptTerms.checked) {
     errorTerms.classList.remove('hidden');
     acceptTerms.focus();
-    // Scroll al error si es necesario
     acceptTerms.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   } else {
