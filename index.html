@@ -24,49 +24,52 @@
     <style>
         ::selection { background:#0a0a0a; color:#fff; }
 
-    /* REVEAL */
-    .reveal { opacity:1; transform:none; transition:opacity .6s ease, transform .6s ease; }
-    .reveal.animate-ready { opacity:0; transform:translateY(16px); }
-    .reveal.animate-ready.visible { opacity:1; transform:translateY(0); }
-    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+```
+/* REVEAL */
+.reveal { opacity:1; transform:none; transition:opacity .6s ease, transform .6s ease; }
+.reveal.animate-ready { opacity:0; transform:translateY(16px); }
+.reveal.animate-ready.visible { opacity:1; transform:translateY(0); }
+.d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
 
-    /* MODALS */
-    .modal-enter { opacity:0; }
-    .modal-enter-active { opacity:1; transition:opacity 300ms ease-out; }
-    .modal-panel-enter { opacity:0; transform:translateY(10px) scale(.95); }
-    .modal-panel-enter-active { opacity:1; transform:translateY(0) scale(1); transition:all 300ms ease-out; }
+/* MODALS */
+.modal-enter { opacity:0; }
+.modal-enter-active { opacity:1; transition:opacity 300ms ease-out; }
+.modal-panel-enter { opacity:0; transform:translateY(10px) scale(.95); }
+.modal-panel-enter-active { opacity:1; transform:translateY(0) scale(1); transition:all 300ms ease-out; }
 
-    .icon { display:inline-block; vertical-align:middle; flex-shrink:0; }
-    .icon svg { display:block; }
-    .fade-in { animation:fadeIn .6s ease-out forwards; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.icon { display:inline-block; vertical-align:middle; flex-shrink:0; }
+.icon svg { display:block; }
+.fade-in { animation:fadeIn .6s ease-out forwards; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
-    /* CHAT */
-    #demoChat { max-height:400px; overflow-y:auto; scroll-behavior:smooth; }
-    #demoChat::-webkit-scrollbar { width:6px; }
-    #demoChat::-webkit-scrollbar-thumb { background:#e5e7eb; border-radius:3px; }
+/* CHAT */
+#demoChat { max-height:400px; overflow-y:auto; scroll-behavior:smooth; }
+#demoChat::-webkit-scrollbar { width:6px; }
+#demoChat::-webkit-scrollbar-thumb { background:#e5e7eb; border-radius:3px; }
 
-    /* ONBOARDING */
-    .onboarding-card { transition:opacity .3s,transform .3s; opacity:0; transform:translateX(20px); position:absolute; top:0; left:0; right:0; bottom:0; display:flex; flex-direction:column; }
-    .onboarding-card.active { opacity:1; transform:translateX(0); }
-    .onboarding-card.hidden { display:none; }
-    .card-body { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:24px; }
-    .card-footer { flex-shrink:0; padding-top:16px; }
+/* ONBOARDING */
+.onboarding-card { transition:opacity .3s,transform .3s; opacity:0; transform:translateX(20px); position:absolute; top:0; left:0; right:0; bottom:0; display:flex; flex-direction:column; }
+.onboarding-card.active { opacity:1; transform:translateX(0); }
+.onboarding-card.hidden { display:none; }
+.card-body { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:24px; }
+.card-footer { flex-shrink:0; padding-top:16px; }
 
-    /* LEGAL */
-    .legal-modal-content { max-height:70vh; overflow-y:auto; text-align:left; font-size:.875rem; line-height:1.6; color:#334155; }
-    .legal-modal-content h2 { font-size:1.25rem; font-weight:bold; margin-top:1rem; margin-bottom:.5rem; color:#0f172a; }
-    .legal-modal-content h3 { font-size:1.1rem; font-weight:600; margin-top:1rem; margin-bottom:.5rem; color:#334155; }
-    .legal-modal-content p { margin-bottom:.75rem; }
-    .legal-modal-content ul { list-style-type:disc; padding-left:1.5rem; margin-bottom:.75rem; }
+/* LEGAL */
+.legal-modal-content { max-height:70vh; overflow-y:auto; text-align:left; font-size:.875rem; line-height:1.6; color:#334155; }
+.legal-modal-content h2 { font-size:1.25rem; font-weight:bold; margin-top:1rem; margin-bottom:.5rem; color:#0f172a; }
+.legal-modal-content h3 { font-size:1.1rem; font-weight:600; margin-top:1rem; margin-bottom:.5rem; color:#334155; }
+.legal-modal-content p { margin-bottom:.75rem; }
+.legal-modal-content ul { list-style-type:disc; padding-left:1.5rem; margin-bottom:.75rem; }
 
-    /* CAROUSEL */
-    @keyframes cscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-    #evTrack:hover { animation-play-state:paused; }
+/* CAROUSEL */
+@keyframes cscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+#evTrack:hover { animation-play-state:paused; }
 
-    /* FAQ */
-    .faq-a { display:none; }
-    .faq-a.open { display:block; }
+/* FAQ */
+.faq-a { display:none; }
+.faq-a.open { display:block; }
+```
+
 </style>
 
 </head>
@@ -84,9 +87,6 @@
 </svg>
 
 <!-- NAV -->
-
-<!-- FIX 1: El header es fixed, la announce bar va justo después sin mt-20.
-     El body tiene padding-top equivalente a header (80px) + announce bar (~40px) = pt-[120px] en el hero. -->
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
@@ -110,17 +110,12 @@
     </div>
 </header>
 
-<!-- ANNOUNCE — FIX 1: sin mt-20, ahora va fija debajo del header usando padding-top en el wrapper -->
-
-<!-- Usamos un wrapper pt-20 para compensar el header fixed, y la announce bar queda pegada inmediatamente -->
-
 <div class="pt-20">
     <div class="bg-slate-900 text-white text-center px-6 py-2.5 font-mono text-xs tracking-wide">
         Cupo limitado · Despliegues a partir del 2 de abril
         <button onclick="openOnboardingModal()" class="underline underline-offset-2 ml-2 hover:opacity-70 transition-opacity">Aplicar →</button>
     </div>
 
-<!-- CAROUSEL — todo inline para evitar conflictos Tailwind -->
 <div style="overflow:hidden;position:relative;width:100%;border-bottom:1px solid #f1f5f9;padding:14px 0;background:#fff;">
     <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,#fff,transparent);z-index:10;pointer-events:none;"></div>
     <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,#fff,transparent);z-index:10;pointer-events:none;"></div>
@@ -376,7 +371,6 @@
                     <div id="onboardingFlow" class="relative h-[560px] flex flex-col">
                         <!-- Card 1 -->
                         <div id="card1" class="onboarding-card active">
-                            <!-- FIX 2: Logo en lugar de texto "Yunus" -->
                             <div class="flex justify-center mb-6">
                                 <img src="logo.jpeg" alt="Yunus" class="h-14 w-auto object-contain" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
                                 <span style="display:none" class="font-serif text-2xl text-slate-900">Yunus</span>
@@ -405,7 +399,6 @@
                         </div>
                         <!-- Card 2 -->
                         <div id="card2" class="onboarding-card hidden">
-                            <!-- FIX 2: Logo en lugar de texto "Yunus" -->
                             <div class="flex justify-center mb-6">
                                 <img src="logo.jpeg" alt="Yunus" class="h-14 w-auto object-contain" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
                                 <span style="display:none" class="font-serif text-2xl text-slate-900">Yunus</span>
@@ -437,7 +430,6 @@
                         </div>
                         <!-- Card 3 -->
                         <div id="card3" class="onboarding-card hidden text-center">
-                            <!-- FIX 2: Logo en lugar de texto "Yunus" -->
                             <div class="flex justify-center mb-6">
                                 <img src="logo.jpeg" alt="Yunus" class="h-14 w-auto object-contain" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
                                 <span style="display:none" class="font-serif text-2xl text-slate-900">Yunus</span>
@@ -592,24 +584,32 @@ function goToCard(n) {
         setTimeout(() => document.getElementById('card'+n).classList.add('active'), 10);
     }, 300);
 }
+
+// ── SUBMIT → MAKE WEBHOOK ──
 async function submitAllDataAndGoToCard3() {
     const cb = document.getElementById('acceptTerms');
     const err = document.getElementById('error-terms');
     if (!cb.checked) { err.classList.remove('hidden'); cb.scrollIntoView({behavior:'smooth',block:'center'}); return; }
     err.classList.add('hidden');
-    const combined = new FormData();
-    for (let [k,v] of new FormData(document.getElementById('form1')).entries()) combined.append(k,v);
-    for (let [k,v] of new FormData(document.getElementById('form2')).entries()) combined.append(k,v);
+    const combined = {};
+    for (let [k,v] of new FormData(document.getElementById('form1')).entries()) combined[k] = v;
+    for (let [k,v] of new FormData(document.getElementById('form2')).entries()) combined[k] = v;
     const btn = document.querySelector('#card2 .card-footer button');
     const orig = btn.innerHTML;
     btn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle;"></span>Enviando...';
     btn.disabled = true;
     try {
-        const res = await fetch('https://formspree.io/f/mreyjllj', { method:'POST', body:combined, headers:{'Accept':'application/json'} });
-        if (res.ok) { setTimeout(() => { goToCard(3); btn.innerHTML=orig; btn.disabled=false; }, 800); }
-        else throw new Error();
+        const res = await fetch('https://hook.us2.make.com/tl3f9fmtl8ietwe61t8comsfon7det8b', {
+            method: 'POST',
+            body: JSON.stringify(combined),
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        });
+        if (res.ok || res.status === 200) {
+            setTimeout(() => { goToCard(3); btn.innerHTML=orig; btn.disabled=false; }, 800);
+        } else throw new Error();
     } catch { alert('❌ Hubo un error. Por favor, inténtalo de nuevo.'); btn.innerHTML=orig; btn.disabled=false; }
 }
+
 function openWhatsApp() {
     window.open('https://wa.me/525512345678?text=Hola%2C%20acabo%20de%20registrarme%20en%20Yunus%20y%20quiero%20mi%20plan', '_blank');
     closeOnboardingModal();
