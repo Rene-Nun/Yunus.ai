@@ -25,52 +25,51 @@
         ::selection { background:#0a0a0a; color:#fff; }
 
 ```
-/* REVEAL */
-.reveal { opacity:1; transform:none; transition:opacity .6s ease, transform .6s ease; }
-.reveal.animate-ready { opacity:0; transform:translateY(16px); }
-.reveal.animate-ready.visible { opacity:1; transform:translateY(0); }
-.d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+    /* REVEAL */
+    .reveal { opacity:1; transform:none; transition:opacity .6s ease, transform .6s ease; }
+    .reveal.animate-ready { opacity:0; transform:translateY(16px); }
+    .reveal.animate-ready.visible { opacity:1; transform:translateY(0); }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
 
-/* MODALS */
-.modal-enter { opacity:0; }
-.modal-enter-active { opacity:1; transition:opacity 300ms ease-out; }
-.modal-panel-enter { opacity:0; transform:translateY(10px) scale(.95); }
-.modal-panel-enter-active { opacity:1; transform:translateY(0) scale(1); transition:all 300ms ease-out; }
+    /* MODALS */
+    .modal-enter { opacity:0; }
+    .modal-enter-active { opacity:1; transition:opacity 300ms ease-out; }
+    .modal-panel-enter { opacity:0; transform:translateY(10px) scale(.95); }
+    .modal-panel-enter-active { opacity:1; transform:translateY(0) scale(1); transition:all 300ms ease-out; }
 
-.icon { display:inline-block; vertical-align:middle; flex-shrink:0; }
-.icon svg { display:block; }
-.fade-in { animation:fadeIn .6s ease-out forwards; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .icon { display:inline-block; vertical-align:middle; flex-shrink:0; }
+    .icon svg { display:block; }
+    .fade-in { animation:fadeIn .6s ease-out forwards; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
-/* CHAT */
-#demoChat { max-height:400px; overflow-y:auto; scroll-behavior:smooth; }
-#demoChat::-webkit-scrollbar { width:6px; }
-#demoChat::-webkit-scrollbar-thumb { background:#e5e7eb; border-radius:3px; }
+    /* CHAT */
+    #demoChat { max-height:400px; overflow-y:auto; scroll-behavior:smooth; }
+    #demoChat::-webkit-scrollbar { width:6px; }
+    #demoChat::-webkit-scrollbar-thumb { background:#e5e7eb; border-radius:3px; }
 
-/* ONBOARDING */
-.onboarding-card { transition:opacity .3s,transform .3s; opacity:0; transform:translateX(20px); position:absolute; top:0; left:0; right:0; bottom:0; display:flex; flex-direction:column; }
-.onboarding-card.active { opacity:1; transform:translateX(0); }
-.onboarding-card.hidden { display:none; }
-.card-body { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:24px; }
-.card-footer { flex-shrink:0; padding-top:16px; }
+    /* ONBOARDING */
+    .onboarding-card { transition:opacity .3s,transform .3s; opacity:0; transform:translateX(20px); position:absolute; top:0; left:0; right:0; bottom:0; display:flex; flex-direction:column; }
+    .onboarding-card.active { opacity:1; transform:translateX(0); }
+    .onboarding-card.hidden { display:none; }
+    .card-body { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:24px; }
+    .card-footer { flex-shrink:0; padding-top:16px; }
 
-/* LEGAL */
-.legal-modal-content { max-height:70vh; overflow-y:auto; text-align:left; font-size:.875rem; line-height:1.6; color:#334155; }
-.legal-modal-content h2 { font-size:1.25rem; font-weight:bold; margin-top:1rem; margin-bottom:.5rem; color:#0f172a; }
-.legal-modal-content h3 { font-size:1.1rem; font-weight:600; margin-top:1rem; margin-bottom:.5rem; color:#334155; }
-.legal-modal-content p { margin-bottom:.75rem; }
-.legal-modal-content ul { list-style-type:disc; padding-left:1.5rem; margin-bottom:.75rem; }
+    /* LEGAL */
+    .legal-modal-content { max-height:70vh; overflow-y:auto; text-align:left; font-size:.875rem; line-height:1.6; color:#334155; }
+    .legal-modal-content h2 { font-size:1.25rem; font-weight:bold; margin-top:1rem; margin-bottom:.5rem; color:#0f172a; }
+    .legal-modal-content h3 { font-size:1.1rem; font-weight:600; margin-top:1rem; margin-bottom:.5rem; color:#334155; }
+    .legal-modal-content p { margin-bottom:.75rem; }
+    .legal-modal-content ul { list-style-type:disc; padding-left:1.5rem; margin-bottom:.75rem; }
 
-/* CAROUSEL */
-@keyframes cscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-#evTrack:hover { animation-play-state:paused; }
+    /* CAROUSEL */
+    @keyframes cscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    #evTrack:hover { animation-play-state:paused; }
 
-/* FAQ */
-.faq-a { display:none; }
-.faq-a.open { display:block; }
-```
-
+    /* FAQ */
+    .faq-a { display:none; }
+    .faq-a.open { display:block; }
 </style>
+```
 
 </head>
 <body class="font-sans text-slate-800 bg-white min-h-screen antialiased">
@@ -300,7 +299,7 @@
                 <div class="faq-a mt-3 text-sm text-slate-500 leading-relaxed">El 15% del valor del boleto, pagadero vía SPEI o efectivo en Oxxo. Con ese pago, el boleto queda en tu Bóveda. El resto lo vas pagando en quincenas.</div>
             </div>
             <div class="reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
-                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cuánto me cobra Yunus por el servicio?</span><span class="faq-icon w-5 h-5 border border-slate-300 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
+                <div class="flex justify-between items-center gap-4"><span class="text-sm font-medium text-slate-900">¿Cuánto me cobra Yunus por el servicio?</span><span class="faq-icon w-5 h-5 border border-slate-900 rounded flex items-center justify-center text-slate-400 text-sm flex-shrink-0">+</span></div>
                 <div class="faq-a mt-3 text-sm text-slate-500 leading-relaxed">El crédito tiene un CAT del 36% anual (3% mensual), ya incluido en el plan de pagos. No hay cobros sorpresa. Si necesitas reventa, Yunus cobra adicionalmente un 6% de comisión sobre esa operación.</div>
             </div>
             <div class="reveal py-5 cursor-pointer" onclick="toggleFaq(this)">
@@ -599,7 +598,7 @@ async function submitAllDataAndGoToCard3() {
     btn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle;"></span>Enviando...';
     btn.disabled = true;
     try {
-        const res = await fetch('https://hook.us2.make.com/tl3f9fmtl8ietwe61t8comsfon7det8b', {
+        const res = await fetch('https://hook.us2.make.com/xxdbhuqw3rv3klrq0kewfipr8hsiogwe', {
             method: 'POST',
             body: JSON.stringify(combined),
             headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
