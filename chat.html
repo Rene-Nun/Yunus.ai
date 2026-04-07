@@ -1,172 +1,145 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yunus — Chat</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { height: 100%; overflow: hidden; font-family: 'Geist', sans-serif; background: #f8fafc; }
-        #app { display: flex; flex-direction: column; height: 100dvh; max-width: 480px; margin: 0 auto; background: #f8fafc; }
-        #mensajes { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
-        #mensajes::-webkit-scrollbar { display: none; }
-    </style>
-</head>
-<body>
+import Groq from "groq-sdk";
+import { Client } from "@notionhq/client";
+import { v2 as cloudinary } from "cloudinary";
 
-<div id="app">
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 
-    <!-- HEADER -->
-    <div style="background: #fff; border-bottom: 1px solid #e2e8f0; padding: 14px 20px; flex-shrink: 0; display: flex; align-items: center;">
-        <span style="font-size: 15px; font-weight: 500; color: #0f172a; letter-spacing: -0.01em;">Yunus 1.0 BETA</span>
-    </div>
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-    <!-- LOGIN -->
-    <div id="loginBox" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px; min-height: 0;">
-        <div style="width: 100%; max-width: 320px;">
-            <h2 style="font-size: 18px; font-weight: 600; color: #0f172a; margin-bottom: 6px;">Ingresa tu número</h2>
-            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">El mismo con el que te registraste.</p>
-            <div style="display: flex; gap: 8px;">
-                <span style="padding: 10px 12px; background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; color: #64748b;">+52</span>
-                <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10"
-                    style="flex: 1; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; outline: none; font-family: inherit;"
-                    onfocus="this.style.borderColor='#0f172a'" onblur="this.style.borderColor='#cbd5e1'">
-            </div>
-            <button onclick="iniciarChat()"
-                style="width: 100%; margin-top: 12px; background: #0f172a; color: #fff; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 500; border: none; cursor: pointer; font-family: inherit;">
-                Entrar →
-            </button>
-        </div>
-    </div>
+export default async function handler(req, res) {
+  if (req.method !== "POST") return res.status(405).end();
 
-    <!-- CHAT -->
-    <div id="chatBox" style="display: none; flex-direction: column; flex: 1; min-height: 0;">
-        <div id="mensajes"></div>
-        <div style="background: #fff; border-top: 1px solid #e2e8f0; padding: 10px 14px; display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
-            <label for="inputFoto" style="width: 38px; height: 38px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                    <circle cx="12" cy="13" r="4"/>
-                </svg>
-            </label>
-            <input id="inputFoto" type="file" accept="image/*" style="display:none;" onchange="enviarFoto(this)">
-            <input id="inputMsg" type="text" placeholder="Escribe un mensaje..."
-                style="flex: 1; background: #f1f5f9; border: none; border-radius: 999px; padding: 10px 16px; font-size: 13px; outline: none; font-family: inherit;"
-                onkeydown="if(event.key==='Enter') enviar()">
-            <button onclick="enviar()" style="width: 38px; height: 38px; border-radius: 50%; background: #0f172a; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                </svg>
-            </button>
-        </div>
-    </div>
+  const { mensaje, celular, imagen } = req.body;
+  const celularNotion = `whatsapp:+521${celular.replace('+52', '')}`;
 
-</div>
-
-<script>
-let celular = '';
-let primerMensajeYunus = true;
-
-function iniciarChat() {
-    const input = document.getElementById('celularInput').value.trim();
-    if (input.length !== 10) { alert('Ingresa 10 dígitos'); return; }
-    celular = '+52' + input;
-    document.getElementById('loginBox').style.display = 'none';
-    const chatBox = document.getElementById('chatBox');
-    chatBox.style.display = 'flex';
-    agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
-}
-
-function agregarMensaje(texto, tipo, esImagen = false) {
-    const contenedor = document.getElementById('mensajes');
-    const esYunus = tipo === 'yunus';
-
-    const wrapper = document.createElement('div');
-    wrapper.style.cssText = `display: flex; align-items: flex-end; gap: 8px; justify-content: ${esYunus ? 'flex-start' : 'flex-end'};`;
-
-    if (esYunus && primerMensajeYunus) {
-        const avatar = document.createElement('img');
-        avatar.src = 'Vector.png';
-        avatar.style.cssText = 'width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid #e2e8f0;';
-        avatar.onerror = function() { this.style.display = 'none'; };
-        wrapper.appendChild(avatar);
-        primerMensajeYunus = false;
-    } else if (esYunus) {
-        const spacer = document.createElement('div');
-        spacer.style.cssText = 'width: 28px; flex-shrink: 0;';
-        wrapper.appendChild(spacer);
+  const search = await notion.databases.query({
+    database_id: DATABASE_ID,
+    filter: {
+      property: "Teléfono",
+      title: { equals: celularNotion }
     }
+  });
 
-    const burbuja = document.createElement('div');
-    if (esYunus) {
-        burbuja.style.cssText = 'max-width: 78%; background: #fff; border: 1px solid #e2e8f0; border-radius: 18px; border-bottom-left-radius: 4px; padding: 10px 14px; font-size: 13px; color: #1e293b;';
-    } else {
-        burbuja.style.cssText = 'max-width: 78%; background: #0f172a; border-radius: 18px; border-bottom-right-radius: 4px; padding: 10px 14px; font-size: 13px; color: #fff;';
-    }
+  if (search.results.length === 0) {
+    return res.status(404).json({ error: "Usuario no encontrado" });
+  }
 
-    if (esImagen) {
-        const img = document.createElement('img');
-        img.src = texto;
-        img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 180px; object-fit: cover; display: block;';
-        burbuja.appendChild(img);
-    } else {
-        burbuja.textContent = texto;
-    }
+  const page = search.results[0];
+  const pageId = page.id;
+  const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || "Usuario";
+  const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
+  const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
 
-    wrapper.appendChild(burbuja);
-    contenedor.appendChild(wrapper);
-    contenedor.scrollTop = contenedor.scrollHeight;
-}
-
-function toBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
+  let imagenUrl = null;
+  if (imagen) {
+    const upload = await cloudinary.uploader.upload(imagen, {
+      folder: `yunus/${celular}`,
+      resource_type: "image"
     });
-}
+    imagenUrl = upload.secure_url;
+  }
 
-async function enviarFoto(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const base64 = await toBase64(file);
-    agregarMensaje(base64, 'usuario', true);
-    input.value = '';
-    try {
-        const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
-        });
-        const data = await res.json();
-        agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
-    } catch {
-        agregarMensaje('Error de conexión.', 'yunus');
+  const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
+
+  const completion = await groq.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
+    messages: [
+      {
+        role: "system",
+        content: `Eres Yunus, agente financiero de Yunus IA. Tu personalidad es cercana, directa y con energía — como un amigo que sabe de finanzas. Usas emojis con moderación. Nunca saludas si ya saludaste antes. El nombre del usuario es ${nombre}.
+
+EVENTOS DISPONIBLES EN EL MVP:
+- Baja Beach Fest (7-9 Ago 2026, Rosarito Beach, BC) — Festival 3 días
+- Rosalía: Lux Tour (15-16 Ago GDL / 22-26-28 Ago CDMX) — Concierto
+- Vans Warped Tour (12-13 Sep 2026, CDMX) — Festival 2 días
+- Bruno Mars: The Romantic Tour (4-7-8 Dic 2026, CDMX) — Concierto
+
+DINÁMICA DE FINANCIAMIENTO (para cuando la expliques):
+- Enganche del 15% del precio final
+- Resto en pagos quincenales hasta el evento
+- Sin buró, sin tarjeta
+- CAT 36% anual / 3% mensual ya incluido en las cuotas
+- En cuanto se aparta el boleto queda guardado en la Bóveda personal del usuario dentro de Yunus IA, donde puede verlo en todo momento mientras termina de pagarlo
+- Si no puede seguir pagando: Yunus revende el boleto, liquida la deuda y devuelve el sobrante (comisión 6%)
+
+INSTRUCCIONES POR ETAPA — sigue SOLO la etapa actual, no te adelantes:
+
+Si etapa es 'bienvenida':
+Saluda al usuario por nombre con energía. Explica muy brevemente la dinámica: enganche del 15% + quincenas, sin buró ni tarjeta. Menciona que en cuanto se aparta el boleto, este queda guardado de forma segura en su Bóveda personal dentro de Yunusia — donde podrá verlo en todo momento mientras termina de pagarlo. Luego presenta los 4 eventos disponibles con fecha y lugar. Pregunta cuál le interesa.
+
+Si etapa es 'ask_specs':
+NO saludes. El usuario ya eligió un evento. Según el evento mencionado responde con UN SOLO MENSAJE que incluya todas las preguntas relevantes:
+- Si es Rosalía: pregunta ciudad (GDL o CDMX), fecha según ciudad (GDL: 15 o 16 Ago / CDMX: 22, 26 o 28 Ago), y qué zona o sección le interesa (desde económicas hasta VIP).
+- Si es Bruno Mars: pregunta qué fecha le interesa (4, 7 u 8 de diciembre) y qué zona o sección (desde General B hasta Platino).
+- Si es Baja Beach Fest o Vans Warped Tour: pregunta si prefiere General o pase premium.
+- Si no quedó claro el evento: pregunta cuál de los 4 eventos le interesa.
+
+Si etapa es 'ask_ine_frente':
+NO saludes. Di que para continuar necesitas verificar su identidad. Pide una foto de su INE por el frente (lado con foto). Sé breve.
+
+Si etapa es 'ask_ine_reverso':
+NO saludes. Confirma que recibiste el frente del INE. Ahora pide la foto del reverso (lado con código de barras o QR).
+
+Si etapa es 'documentos':
+NO saludes. Confirma que recibiste el reverso del INE. Pide opcionalmente un comprobante de ingresos (nómina, estado de cuenta, o cualquier comprobante). Deja claro que es OPCIONAL, pero menciona que enviarlo aumenta significativamente las probabilidades de que su solicitud sea aprobada. Di que cuando esté listo — con o sin comprobante — escriba LISTO para continuar.
+
+Si etapa es 'listo':
+NO saludes. Di que recibiste todo y que Yunus está analizando su perfil y revisando viabilidad. Simula que hay un proceso en curso con bullets de pasos que está ejecutando (verificando identidad, analizando capacidad de pago, consultando disponibilidad de boletos, evaluando opciones de financiamiento). Di que esto puede tardar varios minutos y que puede salir de la conversación tranquilamente. Termina diciendo que un agente de Yunus se pondrá en contacto con él en cuanto tenga su resultado.
+
+ETAPA ACTUAL: ${etapa}`
+      },
+      {
+        role: "user",
+        content: `Mensaje: ${mensajeUsuario}`
+      }
+    ],
+    max_tokens: 800,
+    temperature: 0.3
+  });
+
+  const respuesta = completion.choices[0].message.content;
+
+  let nuevaEtapa = etapa;
+  if (mensaje && mensaje.toUpperCase().includes("LISTO")) {
+    nuevaEtapa = "listo";
+  } else if (imagen) {
+    if (etapa === "ask_ine_frente") nuevaEtapa = "ask_ine_reverso";
+    else if (etapa === "ask_ine_reverso") nuevaEtapa = "documentos";
+    else if (etapa === "documentos") nuevaEtapa = "documentos";
+  } else if (etapa === "bienvenida") {
+    nuevaEtapa = "ask_specs";
+  } else if (etapa === "ask_specs") {
+    nuevaEtapa = "ask_ine_frente";
+  }
+
+  const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
+  const entradaHistorial = imagen
+    ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuesta}\n`
+    : `[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuesta}\n`;
+  const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
+
+  await notion.pages.update({
+    page_id: pageId,
+    properties: {
+      Etapa: {
+        rich_text: [{ text: { content: nuevaEtapa } }]
+      },
+      Historial: {
+        rich_text: [{ text: { content: nuevoHistorial } }]
+      },
+      ...(imagenUrl && {
+        Documentos: {
+          rich_text: [{ text: { content: imagenUrl } }]  // ← único cambio
+        }
+      })
     }
-}
+  });
 
-async function enviar() {
-    const input = document.getElementById('inputMsg');
-    const mensaje = input.value.trim();
-    if (!mensaje) return;
-    input.value = '';
-    agregarMensaje(mensaje, 'usuario');
-    try {
-        const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mensaje, celular })
-        });
-        const data = await res.json();
-        agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
-    } catch {
-        agregarMensaje('Error de conexión.', 'yunus');
-    }
+  res.status(200).json({ respuesta, imagenUrl });
 }
-</script>
-
-</body>
-</html>
