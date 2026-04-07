@@ -15,7 +15,6 @@
 
 <div class="max-w-lg mx-auto flex flex-col h-screen">
 
-    <!-- Header -->
     <div class="bg-slate-900 text-white px-6 py-4 flex items-center gap-3">
         <img src="logo.jpeg" class="h-10 w-auto" onerror="this.style.display='none'">
         <div>
@@ -24,7 +23,6 @@
         </div>
     </div>
 
-    <!-- Identificación -->
     <div id="loginBox" class="flex-1 flex items-center justify-center p-6">
         <div class="w-full max-w-sm">
             <h2 class="text-xl font-semibold text-slate-900 mb-2">Ingresa tu número</h2>
@@ -40,14 +38,20 @@
         </div>
     </div>
 
-    <!-- Chat -->
     <div id="chatBox" class="hidden flex-1 flex flex-col">
         <div id="mensajes" class="flex-1 p-4 flex flex-col gap-3"></div>
-        <div class="bg-white border-t border-slate-200 px-4 py-3 flex gap-2">
+        <div class="bg-white border-t border-slate-200 px-4 py-3 flex gap-2 items-center">
+            <label for="inputFoto" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center cursor-pointer hover:bg-slate-200 transition flex-shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                </svg>
+            </label>
+            <input id="inputFoto" type="file" accept="image/*" class="hidden" onchange="enviarFoto(this)">
             <input id="inputMsg" type="text" placeholder="Escribe un mensaje..."
                 class="flex-1 bg-slate-100 rounded-full px-4 py-2.5 text-sm outline-none"
                 onkeydown="if(event.key==='Enter') enviar()">
-            <button onclick="enviar()" class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center">
+            <button onclick="enviar()" class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center flex-shrink-0">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
                 </svg>
@@ -69,14 +73,51 @@ function iniciarChat() {
     agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
 }
 
-function agregarMensaje(texto, tipo) {
+function agregarMensaje(texto, tipo, esImagen = false) {
     const div = document.createElement('div');
     div.className = tipo === 'yunus'
         ? 'self-start max-w-[80%] bg-white border border-slate-200 rounded-2xl rounded-tl-none px-4 py-2.5 text-sm text-slate-800'
         : 'self-end max-w-[80%] bg-slate-900 rounded-2xl rounded-tr-none px-4 py-2.5 text-sm text-white';
-    div.textContent = texto;
+    if (esImagen) {
+        const img = document.createElement('img');
+        img.src = texto;
+        img.className = 'rounded-lg max-w-full max-h-48 object-cover';
+        div.appendChild(img);
+    } else {
+        div.textContent = texto;
+    }
     document.getElementById('mensajes').appendChild(div);
     document.getElementById('mensajes').scrollTop = document.getElementById('mensajes').scrollHeight;
+}
+
+function toBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+async function enviarFoto(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const base64 = await toBase64(file);
+    agregarMensaje(base64, 'usuario', true);
+    input.value = '';
+
+    try {
+        const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
+        });
+        const data = await res.json();
+        if (data.respuesta) agregarMensaje(data.respuesta, 'yunus');
+        else agregarMensaje('Error al procesar tu imagen.', 'yunus');
+    } catch {
+        agregarMensaje('Error de conexión.', 'yunus');
+    }
 }
 
 async function enviar() {
