@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yunus — Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Geist', sans-serif; }
+        #mensajes { height: calc(100vh - 200px); overflow-y: auto; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+<div class="max-w-lg mx-auto flex flex-col h-screen">
+
+    <!-- Header -->
+    <div class="bg-slate-900 text-white px-6 py-4 flex items-center gap-3">
+        <img src="logo.jpeg" class="h-10 w-auto" onerror="this.style.display='none'">
+        <div>
+            <div class="font-semibold">Yunus</div>
+            <div class="text-xs text-slate-400">Agente financiero</div>
+        </div>
+    </div>
+
+    <!-- Identificación -->
+    <div id="loginBox" class="flex-1 flex items-center justify-center p-6">
+        <div class="w-full max-w-sm">
+            <h2 class="text-xl font-semibold text-slate-900 mb-2">Ingresa tu número</h2>
+            <p class="text-sm text-slate-500 mb-6">El mismo con el que te registraste.</p>
+            <div class="flex gap-2">
+                <span class="px-3 py-3 bg-white border border-slate-300 rounded-lg text-sm text-slate-500">+52</span>
+                <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10"
+                    class="flex-1 px-4 py-3 border border-slate-300 rounded-lg text-sm outline-none focus:border-slate-900">
+            </div>
+            <button onclick="iniciarChat()" class="w-full mt-4 bg-slate-900 text-white py-3 rounded-lg text-sm font-medium">
+                Entrar →
+            </button>
+        </div>
+    </div>
+
+    <!-- Chat -->
+    <div id="chatBox" class="hidden flex-1 flex flex-col">
+        <div id="mensajes" class="flex-1 p-4 flex flex-col gap-3"></div>
+        <div class="bg-white border-t border-slate-200 px-4 py-3 flex gap-2">
+            <input id="inputMsg" type="text" placeholder="Escribe un mensaje..."
+                class="flex-1 bg-slate-100 rounded-full px-4 py-2.5 text-sm outline-none"
+                onkeydown="if(event.key==='Enter') enviar()">
+            <button onclick="enviar()" class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+let celular = '';
+
+function iniciarChat() {
+    const input = document.getElementById('celularInput').value.trim();
+    if (input.length !== 10) { alert('Ingresa 10 dígitos'); return; }
+    celular = '+52' + input;
+    document.getElementById('loginBox').classList.add('hidden');
+    document.getElementById('chatBox').classList.remove('hidden');
+    agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+}
+
+function agregarMensaje(texto, tipo) {
+    const div = document.createElement('div');
+    div.className = tipo === 'yunus'
+        ? 'self-start max-w-[80%] bg-white border border-slate-200 rounded-2xl rounded-tl-none px-4 py-2.5 text-sm text-slate-800'
+        : 'self-end max-w-[80%] bg-slate-900 rounded-2xl rounded-tr-none px-4 py-2.5 text-sm text-white';
+    div.textContent = texto;
+    document.getElementById('mensajes').appendChild(div);
+    document.getElementById('mensajes').scrollTop = document.getElementById('mensajes').scrollHeight;
+}
+
+async function enviar() {
+    const input = document.getElementById('inputMsg');
+    const mensaje = input.value.trim();
+    if (!mensaje) return;
+    input.value = '';
+    agregarMensaje(mensaje, 'usuario');
+
+    try {
+        const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mensaje, celular })
+        });
+        const data = await res.json();
+        if (data.respuesta) agregarMensaje(data.respuesta, 'yunus');
+        else agregarMensaje('Error al procesar tu mensaje.', 'yunus');
+    } catch {
+        agregarMensaje('Error de conexión.', 'yunus');
+    }
+}
+</script>
+
+</body>
+</html>
