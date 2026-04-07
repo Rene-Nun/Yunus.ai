@@ -135,7 +135,7 @@ ETAPA ACTUAL: ${etapa}`
       },
       ...(imagenUrl && {
         Documentos: {
-          url: imagenUrl
+          rich_text: [{ text: { content: imagenUrl } }]  // ← único cambio
         }
       })
     }
