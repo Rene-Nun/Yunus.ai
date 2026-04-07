@@ -3,7 +3,7 @@ import { Client } from "@notionhq/client";
 import { v2 as cloudinary } from "cloudinary";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-const notion = new Client({ auth: process.env.NOTION_DATABASE_ID });
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 
 cloudinary.config({
@@ -135,7 +135,7 @@ ETAPA ACTUAL: ${etapa}`
       },
       ...(imagenUrl && {
         Documentos: {
-          rich_text: [{ text: { content: imagenUrl.slice(0, 500) } }]
+          url: imagenUrl
         }
       })
     }
