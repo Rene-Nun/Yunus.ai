@@ -45,23 +45,15 @@ export default async function handler(req, res) {
     imagenUrl = upload.secure_url;
   }
 
-  // ← CAMBIO: calcular nuevaEtapa ANTES de llamar a Groq
-  let nuevaEtapa = etapa;
-  if (mensaje && mensaje.toUpperCase().includes("LISTO")) {
-    nuevaEtapa = "listo";
-  } else if (imagen) {
-    if (etapa === "ask_ine_frente") nuevaEtapa = "ask_ine_reverso";
-    else if (etapa === "ask_ine_reverso") nuevaEtapa = "documentos";
-    else if (etapa === "documentos") nuevaEtapa = "documentos";
-  } else if (etapa === "bienvenida") {
-    nuevaEtapa = "ask_specs";
-  } else if (etapa === "ask_specs") {
-    nuevaEtapa = "ask_ine_frente";
+  // Etapa que ve Groq: si hay imagen, ya avanzamos para que responda correctamente
+  let etapaParaGroq = etapa;
+  if (imagen) {
+    if (etapa === "ask_ine_frente") etapaParaGroq = "ask_ine_reverso";
+    else if (etapa === "ask_ine_reverso") etapaParaGroq = "documentos";
   }
 
   const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
 
-  // ← CAMBIO: Groq ahora recibe nuevaEtapa en lugar de etapa
   const completion = await groq.chat.completions.create({
     model: "llama-3.3-70b-versatile",
     messages: [
@@ -107,7 +99,7 @@ NO saludes. Confirma que recibiste el reverso del INE. Pide opcionalmente un com
 Si etapa es 'listo':
 NO saludes. Di que recibiste todo y que Yunus está analizando su perfil y revisando viabilidad. Simula que hay un proceso en curso con bullets de pasos que está ejecutando (verificando identidad, analizando capacidad de pago, consultando disponibilidad de boletos, evaluando opciones de financiamiento). Di que esto puede tardar varios minutos y que puede salir de la conversación tranquilamente. Termina diciendo que un agente de Yunus se pondrá en contacto con él en cuanto tenga su resultado.
 
-ETAPA ACTUAL: ${nuevaEtapa}`
+ETAPA ACTUAL: ${etapaParaGroq}`
       },
       {
         role: "user",
@@ -119,6 +111,20 @@ ETAPA ACTUAL: ${nuevaEtapa}`
   });
 
   const respuesta = completion.choices[0].message.content;
+
+  // nuevaEtapa para guardar en Notion
+  let nuevaEtapa = etapa;
+  if (mensaje && mensaje.toUpperCase().includes("LISTO")) {
+    nuevaEtapa = "listo";
+  } else if (imagen) {
+    if (etapa === "ask_ine_frente") nuevaEtapa = "ask_ine_reverso";
+    else if (etapa === "ask_ine_reverso") nuevaEtapa = "documentos";
+    else if (etapa === "documentos") nuevaEtapa = "documentos";
+  } else if (etapa === "bienvenida") {
+    nuevaEtapa = "ask_specs";
+  } else if (etapa === "ask_specs") {
+    nuevaEtapa = "ask_ine_frente";
+  }
 
   const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
   const entradaHistorial = imagen
