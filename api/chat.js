@@ -36,7 +36,6 @@ export default async function handler(req, res) {
   const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
   const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
 
-  // Subir imagen a Cloudinary si viene una
   let imagenUrl = null;
   if (imagen) {
     const upload = await cloudinary.uploader.upload(imagen, {
@@ -66,7 +65,7 @@ DINÁMICA DE FINANCIAMIENTO (para cuando la expliques):
 - Resto en pagos quincenales hasta el evento
 - Sin buró, sin tarjeta
 - CAT 36% anual / 3% mensual ya incluido en las cuotas
-- En cuanto se aparta el boleto queda guardado en la Bóveda personal del usuario dentro de Yunusia, donde puede verlo en todo momento mientras termina de pagarlo
+- En cuanto se aparta el boleto queda guardado en la Bóveda personal del usuario dentro de Yunus IA, donde puede verlo en todo momento mientras termina de pagarlo
 - Si no puede seguir pagando: Yunus revende el boleto, liquida la deuda y devuelve el sobrante (comisión 6%)
 
 INSTRUCCIONES POR ETAPA — sigue SOLO la etapa actual, no te adelantes:
@@ -106,7 +105,6 @@ ETAPA ACTUAL: ${etapa}`
 
   const respuesta = completion.choices[0].message.content;
 
-  // Actualizar etapa
   let nuevaEtapa = etapa;
   if (mensaje && mensaje.toUpperCase().includes("LISTO")) {
     nuevaEtapa = "listo";
@@ -120,7 +118,6 @@ ETAPA ACTUAL: ${etapa}`
     nuevaEtapa = "ask_ine_frente";
   }
 
-  // Actualizar historial
   const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
   const entradaHistorial = imagen
     ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuesta}\n`
@@ -138,7 +135,7 @@ ETAPA ACTUAL: ${etapa}`
       },
       ...(imagenUrl && {
         Documentos: {
-          rich_text: [{ text: { content: imagenUrl } }]
+          url: imagenUrl
         }
       })
     }
