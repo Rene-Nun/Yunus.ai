@@ -1,14 +1,21 @@
 import Groq from "groq-sdk";
 import { Client } from "@notionhq/client";
+import { v2 as cloudinary } from "cloudinary";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const { mensaje, celular } = req.body;
+  const { mensaje, celular, imagen } = req.body;
   const celularNotion = `whatsapp:+521${celular.replace('+52', '')}`;
 
   const search = await notion.databases.query({
@@ -27,6 +34,19 @@ export default async function handler(req, res) {
   const pageId = page.id;
   const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || "Usuario";
   const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
+  const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
+
+  // Subir imagen a Cloudinary si viene una
+  let imagenUrl = null;
+  if (imagen) {
+    const upload = await cloudinary.uploader.upload(imagen, {
+      folder: `yunus/${celular}`,
+      resource_type: "image"
+    });
+    imagenUrl = upload.secure_url;
+  }
+
+  const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
 
   const completion = await groq.chat.completions.create({
     model: "llama-3.3-70b-versatile",
@@ -77,7 +97,7 @@ ETAPA ACTUAL: ${etapa}`
       },
       {
         role: "user",
-        content: `Mensaje: ${mensaje}`
+        content: `Mensaje: ${mensajeUsuario}`
       }
     ],
     max_tokens: 800,
@@ -86,27 +106,43 @@ ETAPA ACTUAL: ${etapa}`
 
   const respuesta = completion.choices[0].message.content;
 
+  // Actualizar etapa
   let nuevaEtapa = etapa;
-  if (mensaje.toUpperCase().includes("LISTO")) {
+  if (mensaje && mensaje.toUpperCase().includes("LISTO")) {
     nuevaEtapa = "listo";
+  } else if (imagen) {
+    if (etapa === "ask_ine_frente") nuevaEtapa = "ask_ine_reverso";
+    else if (etapa === "ask_ine_reverso") nuevaEtapa = "documentos";
+    else if (etapa === "documentos") nuevaEtapa = "documentos";
   } else if (etapa === "bienvenida") {
     nuevaEtapa = "ask_specs";
   } else if (etapa === "ask_specs") {
     nuevaEtapa = "ask_ine_frente";
-  } else if (etapa === "ask_ine_frente") {
-    nuevaEtapa = "ask_ine_reverso";
-  } else if (etapa === "ask_ine_reverso") {
-    nuevaEtapa = "documentos";
   }
+
+  // Actualizar historial
+  const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
+  const entradaHistorial = imagen
+    ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuesta}\n`
+    : `[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuesta}\n`;
+  const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
 
   await notion.pages.update({
     page_id: pageId,
     properties: {
       Etapa: {
         rich_text: [{ text: { content: nuevaEtapa } }]
-      }
+      },
+      Historial: {
+        rich_text: [{ text: { content: nuevoHistorial } }]
+      },
+      ...(imagenUrl && {
+        Documentos: {
+          rich_text: [{ text: { content: imagenUrl } }]
+        }
+      })
     }
   });
 
-  res.status(200).json({ respuesta });
+  res.status(200).json({ respuesta, imagenUrl });
 }
