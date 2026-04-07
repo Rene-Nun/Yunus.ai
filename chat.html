@@ -7,52 +7,60 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Geist', sans-serif; }
-        #mensajes { height: calc(100vh - 200px); overflow-y: auto; }
+        * { box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; margin: 0; padding: 0; font-family: 'Geist', sans-serif; }
+        #app { display: flex; flex-direction: column; height: 100vh; max-width: 480px; margin: 0 auto; }
+        #mensajes { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        #mensajes::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen">
+<body class="bg-slate-50">
 
-<div class="max-w-lg mx-auto flex flex-col h-screen">
+<div id="app">
 
-    <div class="bg-slate-900 text-white px-6 py-4 flex items-center gap-3">
-        <img src="logo.jpeg" class="h-10 w-auto" onerror="this.style.display='none'">
-        <div>
-            <div class="font-semibold">Yunus</div>
-            <div class="text-xs text-slate-400">Agente financiero</div>
+    <!-- HEADER -->
+    <div style="border-bottom: 1px solid #e2e8f0; background: #fff; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="logo.jpeg" style="height: 28px; width: auto;" onerror="this.style.display='none'">
+            <span style="font-size: 15px; font-weight: 600; color: #0f172a; letter-spacing: -0.01em;">Yunus</span>
+            <span style="font-size: 12px; color: #94a3b8; font-weight: 400;">1.0 BETA</span>
         </div>
     </div>
 
-    <div id="loginBox" class="flex-1 flex items-center justify-center p-6">
-        <div class="w-full max-w-sm">
-            <h2 class="text-xl font-semibold text-slate-900 mb-2">Ingresa tu número</h2>
-            <p class="text-sm text-slate-500 mb-6">El mismo con el que te registraste.</p>
-            <div class="flex gap-2">
-                <span class="px-3 py-3 bg-white border border-slate-300 rounded-lg text-sm text-slate-500">+52</span>
+    <!-- LOGIN -->
+    <div id="loginBox" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px;">
+        <div style="width: 100%; max-width: 320px;">
+            <h2 style="font-size: 18px; font-weight: 600; color: #0f172a; margin-bottom: 6px;">Ingresa tu número</h2>
+            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">El mismo con el que te registraste.</p>
+            <div style="display: flex; gap: 8px;">
+                <span style="padding: 10px 12px; background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; color: #64748b;">+52</span>
                 <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10"
-                    class="flex-1 px-4 py-3 border border-slate-300 rounded-lg text-sm outline-none focus:border-slate-900">
+                    style="flex: 1; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; outline: none; font-family: inherit;"
+                    onfocus="this.style.borderColor='#0f172a'" onblur="this.style.borderColor='#cbd5e1'">
             </div>
-            <button onclick="iniciarChat()" class="w-full mt-4 bg-slate-900 text-white py-3 rounded-lg text-sm font-medium">
+            <button onclick="iniciarChat()"
+                style="width: 100%; margin-top: 12px; background: #0f172a; color: #fff; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 500; border: none; cursor: pointer; font-family: inherit;">
                 Entrar →
             </button>
         </div>
     </div>
 
-    <div id="chatBox" class="hidden flex-1 flex flex-col">
-        <div id="mensajes" class="flex-1 p-4 flex flex-col gap-3"></div>
-        <div class="bg-white border-t border-slate-200 px-4 py-3 flex gap-2 items-center">
-            <label for="inputFoto" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center cursor-pointer hover:bg-slate-200 transition flex-shrink-0">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
+    <!-- CHAT -->
+    <div id="chatBox" style="display: none; flex-direction: column; flex: 1; overflow: hidden;">
+        <div id="mensajes"></div>
+        <div style="background: #fff; border-top: 1px solid #e2e8f0; padding: 10px 14px; display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
+            <label for="inputFoto" style="width: 38px; height: 38px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
                     <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                     <circle cx="12" cy="13" r="4"/>
                 </svg>
             </label>
-            <input id="inputFoto" type="file" accept="image/*" class="hidden" onchange="enviarFoto(this)">
+            <input id="inputFoto" type="file" accept="image/*" style="display:none;" onchange="enviarFoto(this)">
             <input id="inputMsg" type="text" placeholder="Escribe un mensaje..."
-                class="flex-1 bg-slate-100 rounded-full px-4 py-2.5 text-sm outline-none"
+                style="flex: 1; background: #f1f5f9; border: none; border-radius: 999px; padding: 10px 16px; font-size: 13px; outline: none; font-family: inherit;"
                 onkeydown="if(event.key==='Enter') enviar()">
-            <button onclick="enviar()" class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center flex-shrink-0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button onclick="enviar()" style="width: 38px; height: 38px; border-radius: 50%; background: #0f172a; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                     <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
                 </svg>
             </button>
@@ -63,31 +71,59 @@
 
 <script>
 let celular = '';
+let primerMensajeYunus = true;
 
 function iniciarChat() {
     const input = document.getElementById('celularInput').value.trim();
     if (input.length !== 10) { alert('Ingresa 10 dígitos'); return; }
     celular = '+52' + input;
-    document.getElementById('loginBox').classList.add('hidden');
-    document.getElementById('chatBox').classList.remove('hidden');
+    document.getElementById('loginBox').style.display = 'none';
+    const chatBox = document.getElementById('chatBox');
+    chatBox.style.display = 'flex';
     agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
 }
 
 function agregarMensaje(texto, tipo, esImagen = false) {
-    const div = document.createElement('div');
-    div.className = tipo === 'yunus'
-        ? 'self-start max-w-[80%] bg-white border border-slate-200 rounded-2xl rounded-tl-none px-4 py-2.5 text-sm text-slate-800'
-        : 'self-end max-w-[80%] bg-slate-900 rounded-2xl rounded-tr-none px-4 py-2.5 text-sm text-white';
+    const contenedor = document.getElementById('mensajes');
+    const esYunus = tipo === 'yunus';
+
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = `display: flex; align-items: flex-end; gap: 8px; justify-content: ${esYunus ? 'flex-start' : 'flex-end'};`;
+
+    // Avatar solo en primer mensaje de Yunus
+    if (esYunus && primerMensajeYunus) {
+        const avatar = document.createElement('img');
+        avatar.src = 'Vector.png';
+        avatar.style.cssText = 'width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid #e2e8f0;';
+        avatar.onerror = function() { this.style.display = 'none'; };
+        wrapper.appendChild(avatar);
+        primerMensajeYunus = false;
+    } else if (esYunus) {
+        // Spacer para alinear sin avatar
+        const spacer = document.createElement('div');
+        spacer.style.cssText = 'width: 28px; flex-shrink: 0;';
+        wrapper.appendChild(spacer);
+    }
+
+    const burbuja = document.createElement('div');
+    if (esYunus) {
+        burbuja.style.cssText = 'max-width: 78%; background: #fff; border: 1px solid #e2e8f0; border-radius: 18px; border-bottom-left-radius: 4px; padding: 10px 14px; font-size: 13px; color: #1e293b;';
+    } else {
+        burbuja.style.cssText = 'max-width: 78%; background: #0f172a; border-radius: 18px; border-bottom-right-radius: 4px; padding: 10px 14px; font-size: 13px; color: #fff;';
+    }
+
     if (esImagen) {
         const img = document.createElement('img');
         img.src = texto;
-        img.className = 'rounded-lg max-w-full max-h-48 object-cover';
-        div.appendChild(img);
+        img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 180px; object-fit: cover; display: block;';
+        burbuja.appendChild(img);
     } else {
-        div.textContent = texto;
+        burbuja.textContent = texto;
     }
-    document.getElementById('mensajes').appendChild(div);
-    document.getElementById('mensajes').scrollTop = document.getElementById('mensajes').scrollHeight;
+
+    wrapper.appendChild(burbuja);
+    contenedor.appendChild(wrapper);
+    contenedor.scrollTop = contenedor.scrollHeight;
 }
 
 function toBase64(file) {
@@ -105,7 +141,6 @@ async function enviarFoto(input) {
     const base64 = await toBase64(file);
     agregarMensaje(base64, 'usuario', true);
     input.value = '';
-
     try {
         const res = await fetch('/api/chat', {
             method: 'POST',
@@ -113,8 +148,7 @@ async function enviarFoto(input) {
             body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
         });
         const data = await res.json();
-        if (data.respuesta) agregarMensaje(data.respuesta, 'yunus');
-        else agregarMensaje('Error al procesar tu imagen.', 'yunus');
+        agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
     } catch {
         agregarMensaje('Error de conexión.', 'yunus');
     }
@@ -126,7 +160,6 @@ async function enviar() {
     if (!mensaje) return;
     input.value = '';
     agregarMensaje(mensaje, 'usuario');
-
     try {
         const res = await fetch('/api/chat', {
             method: 'POST',
@@ -134,8 +167,7 @@ async function enviar() {
             body: JSON.stringify({ mensaje, celular })
         });
         const data = await res.json();
-        if (data.respuesta) agregarMensaje(data.respuesta, 'yunus');
-        else agregarMensaje('Error al procesar tu mensaje.', 'yunus');
+        agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
     } catch {
         agregarMensaje('Error de conexión.', 'yunus');
     }
