@@ -140,18 +140,8 @@ rich_text: [{ text: { content: nuevaEtapa } }]
 Historial: {
 rich_text: [{ text: { content: nuevoHistorial } }]
 },
-…(imagenUrl && etapa === “ask_ine_frente” && {
-INE_frente: {
-rich_text: [{ text: { content: imagenUrl } }]
-}
-}),
-…(imagenUrl && etapa === “ask_ine_reverso” && {
-INE_detras: {
-rich_text: [{ text: { content: imagenUrl } }]
-}
-}),
-…(imagenUrl && etapa === “documentos” && {
-Comprobante: {
+…(imagenUrl && {
+Documentos: {
 rich_text: [{ text: { content: imagenUrl } }]
 }
 })
