@@ -7,28 +7,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; }
-        html, body { height: 100%; overflow: hidden; margin: 0; padding: 0; font-family: 'Geist', sans-serif; }
-        #app { display: flex; flex-direction: column; height: 100vh; max-width: 480px; margin: 0 auto; }
-        #mensajes { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; overflow: hidden; font-family: 'Geist', sans-serif; background: #f8fafc; }
+        #app { display: flex; flex-direction: column; height: 100dvh; max-width: 480px; margin: 0 auto; background: #f8fafc; }
+        #mensajes { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
         #mensajes::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="bg-slate-50">
+<body>
 
 <div id="app">
 
     <!-- HEADER -->
-    <div style="border-bottom: 1px solid #e2e8f0; background: #fff; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <img src="logo.jpeg" style="height: 28px; width: auto;" onerror="this.style.display='none'">
-            <span style="font-size: 15px; font-weight: 600; color: #0f172a; letter-spacing: -0.01em;">Yunus</span>
-            <span style="font-size: 12px; color: #94a3b8; font-weight: 400;">1.0 BETA</span>
-        </div>
+    <div style="background: #fff; border-bottom: 1px solid #e2e8f0; padding: 14px 20px; flex-shrink: 0; display: flex; align-items: center;">
+        <span style="font-size: 15px; font-weight: 500; color: #0f172a; letter-spacing: -0.01em;">Yunus 1.0 BETA</span>
     </div>
 
     <!-- LOGIN -->
-    <div id="loginBox" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px;">
+    <div id="loginBox" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px; min-height: 0;">
         <div style="width: 100%; max-width: 320px;">
             <h2 style="font-size: 18px; font-weight: 600; color: #0f172a; margin-bottom: 6px;">Ingresa tu número</h2>
             <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">El mismo con el que te registraste.</p>
@@ -46,7 +42,7 @@
     </div>
 
     <!-- CHAT -->
-    <div id="chatBox" style="display: none; flex-direction: column; flex: 1; overflow: hidden;">
+    <div id="chatBox" style="display: none; flex-direction: column; flex: 1; min-height: 0;">
         <div id="mensajes"></div>
         <div style="background: #fff; border-top: 1px solid #e2e8f0; padding: 10px 14px; display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
             <label for="inputFoto" style="width: 38px; height: 38px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
@@ -90,7 +86,6 @@ function agregarMensaje(texto, tipo, esImagen = false) {
     const wrapper = document.createElement('div');
     wrapper.style.cssText = `display: flex; align-items: flex-end; gap: 8px; justify-content: ${esYunus ? 'flex-start' : 'flex-end'};`;
 
-    // Avatar solo en primer mensaje de Yunus
     if (esYunus && primerMensajeYunus) {
         const avatar = document.createElement('img');
         avatar.src = 'Vector.png';
@@ -99,7 +94,6 @@ function agregarMensaje(texto, tipo, esImagen = false) {
         wrapper.appendChild(avatar);
         primerMensajeYunus = false;
     } else if (esYunus) {
-        // Spacer para alinear sin avatar
         const spacer = document.createElement('div');
         spacer.style.cssText = 'width: 28px; flex-shrink: 0;';
         wrapper.appendChild(spacer);
