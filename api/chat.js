@@ -9,13 +9,14 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
   const { mensaje, celular } = req.body;
+  const celularNotion = `whatsapp:+521${celular.replace('+52', '')}`;
 
   // Buscar usuario en Notion
   const search = await notion.databases.query({
     database_id: DATABASE_ID,
     filter: {
       property: "Teléfono",
-      title: { equals: celular }
+      title: { equals: celularNotion }
     }
   });
 
