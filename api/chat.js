@@ -142,7 +142,7 @@ ETAPA ACTUAL: ${etapaParaGroq}`
         rich_text: [{ text: { content: nuevoHistorial } }]
       },
       ...(imagenUrl && {
-        Documentos: {
+        Docs: {
           rich_text: [{ text: { content: imagenUrl } }]
         }
       })
