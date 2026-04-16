@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revox — Tesis de Inversión</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050505;
+    --white: #f5f5f0;
+    --blue-1: #1a4fd6;
+    --blue-2: #2d8bef;
+    --accent: #3b9eff;
+    --muted: #6b6b6b;
+    --border: rgba(255,255,255,0.08);
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–black);
+color: var(–white);
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 300;
+line-height: 1.6;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* Ambient background */
+body::before {
+content: ‘’;
+position: fixed;
+top: -20%;
+right: -10%;
+width: 600px;
+height: 600px;
+background: radial-gradient(circle, rgba(29,79,214,0.12) 0%, transparent 65%);
+pointer-events: none;
+z-index: 0;
+}
+body::after {
+content: ‘’;
+position: fixed;
+bottom: -20%;
+left: -10%;
+width: 500px;
+height: 500px;
+background: radial-gradient(circle, rgba(45,139,239,0.07) 0%, transparent 65%);
+pointer-events: none;
+z-index: 0;
+}
+
+.container {
+max-width: 860px;
+margin: 0 auto;
+padding: 0 32px;
+position: relative;
+z-index: 1;
+}
+
+/* HEADER */
+header {
+padding: 52px 0 64px;
+border-bottom: 1px solid var(–border);
+display: flex;
+align-items: center;
+justify-content: space-between;
+animation: fadeUp 0.8s ease both;
+}
+
+.logo {
+display: flex;
+align-items: center;
+gap: 14px;
+}
+
+.logo-mark {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+border: 3px solid transparent;
+background: linear-gradient(var(–black), var(–black)) padding-box,
+linear-gradient(135deg, var(–blue-1), var(–blue-2)) border-box;
+position: relative;
+}
+.logo-mark::after {
+content: ‘’;
+position: absolute;
+inset: 4px;
+border-radius: 50%;
+background: linear-gradient(135deg, var(–blue-1), var(–blue-2));
+opacity: 0.15;
+}
+
+.logo-text {
+font-family: ‘Syne’, sans-serif;
+font-weight: 800;
+font-size: 1.4rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+}
+
+.header-tag {
+font-family: ‘DM Mono’, monospace;
+font-size: 0.7rem;
+color: var(–muted);
+letter-spacing: 0.1em;
+text-transform: uppercase;
+border: 1px solid var(–border);
+padding: 6px 14px;
+border-radius: 2px;
+}
+
+/* HERO */
+.hero {
+padding: 80px 0 72px;
+animation: fadeUp 0.8s 0.1s ease both;
+}
+
+.hero-label {
+font-family: ‘DM Mono’, monospace;
+font-size: 0.68rem;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 24px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.hero-label::before {
+content: ‘’;
+width: 24px;
+height: 1px;
+background: var(–accent);
+}
+
+.hero h1 {
+font-family: ‘Syne’, sans-serif;
+font-weight: 800;
+font-size: clamp(2.2rem, 5vw, 3.4rem);
+line-height: 1.1;
+margin-bottom: 28px;
+max-width: 680px;
+}
+
+.hero h1 span {
+background: linear-gradient(90deg, var(–blue-2), var(–accent));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.hero-sub {
+font-size: 1rem;
+color: rgba(245,245,240,0.55);
+max-width: 500px;
+line-height: 1.75;
+}
+
+/* STAT ROW */
+.stat-row {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 1px;
+background: var(–border);
+border: 1px solid var(–border);
+margin: 0 0 80px;
+animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.stat {
+background: var(–black);
+padding: 32px 28px;
+position: relative;
+overflow: hidden;
+}
+.stat::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+background: linear-gradient(90deg, var(–blue-1), var(–blue-2));
+opacity: 0;
+transition: opacity 0.3s;
+}
+.stat:hover::before { opacity: 1; }
+
+.stat-num {
+font-family: ‘Syne’, sans-serif;
+font-weight: 800;
+font-size: 2.4rem;
+line-height: 1;
+margin-bottom: 6px;
+background: linear-gradient(135deg, #fff 60%, var(–accent));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.stat-label {
+font-family: ‘DM Mono’, monospace;
+font-size: 0.68rem;
+color: var(–muted);
+letter-spacing: 0.1em;
+text-transform: uppercase;
+}
+
+/* SECTIONS */
+section {
+margin-bottom: 72px;
+animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.section-label {
+font-family: ‘DM Mono’, monospace;
+font-size: 0.65rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–muted);
+margin-bottom: 28px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.section-label::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: var(–border);
+}
+
+.section-title {
+font-family: ‘Syne’, sans-serif;
+font-weight: 700;
+font-size: 1.5rem;
+margin-bottom: 16px;
+}
+
+p {
+color: rgba(245,245,240,0.6);
+font-size: 0.95rem;
+line-height: 1.8;
+max-width: 660px;
+}
+
+/* MECHANICS */
+.mechanics {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 16px;
+margin-top: 28px;
+}
+
+.mechanic-card {
+border: 1px solid var(–border);
+padding: 24px;
+position: relative;
+transition: border-color 0.3s;
+}
+.mechanic-card:hover {
+border-color: rgba(59,158,255,0.3);
+}
+
+.mechanic-num {
+font-family: ‘DM Mono’, monospace;
+font-size: 0.65rem;
+color: var(–accent);
+letter-spacing: 0.15em;
+margin-bottom: 10px;
+}
+
+.mechanic-title {
+font-family: ‘Syne’, sans-serif;
+font-weight: 700;
+font-size: 0.95rem;
+margin-bottom: 8px;
+}
+
+.mechanic-desc {
+font-size: 0.82rem;
+color: var(–muted);
+line-height: 1.65;
+max-width: 100%;
+}
+
+/* BENCHMARK TABLE */
+.bench-table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 24px;
+font-size: 0.85rem;
+}
+
+.bench-table th {
+font-family: ‘DM Mono’, monospace;
+font-size: 0.62rem;
+letter-spacing: 0.14em;
+text-transform: uppercase;
+color: var(–muted);
+text-align: left;
+padding: 10px 16px;
+border-bottom: 1px solid var(–border);
+}
+
+.bench-table td {
+padding: 14px 16px;
+border-bottom: 1px solid var(–border);
+color: rgba(245,245,240,0.6);
+}
+
+.bench-table tr.highlight {
+background: rgba(59,158,255,0.05);
+}
+.bench-table tr.highlight td {
+color: var(–white);
+}
+.bench-table tr.highlight td:first-child {
+color: var(–accent);
+font-family: ‘Syne’, sans-serif;
+font-weight: 700;
+}
+
+.badge {
+display: inline-block;
+font-family: ‘DM Mono’, monospace;
+font-size: 0.6rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+padding: 3px 8px;
+border-radius: 2px;
+margin-left: 8px;
+}
+.badge-best {
+background: rgba(59,158,255,0.15);
+color: var(–accent);
+border: 1px solid rgba(59,158,255,0.3);
+}
+
+/* COLATERAL */
+.colateral-box {
+border: 1px solid rgba(59,158,255,0.2);
+background: rgba(59,158,255,0.04);
+padding: 28px 32px;
+margin-top: 24px;
+display: flex;
+gap: 24px;
+align-items: flex-start;
+}
+
+.colateral-icon {
+width: 40px;
+height: 40px;
+flex-shrink: 0;
+border-radius: 50%;
+background: linear-gradient(135deg, var(–blue-1), var(–blue-2));
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1rem;
+}
+
+.colateral-text strong {
+display: block;
+font-family: ‘Syne’, sans-serif;
+font-weight: 700;
+font-size: 0.95rem;
+margin-bottom: 6px;
+}
+.colateral-text span {
+font-size: 0.82rem;
+color: var(–muted);
+line-height: 1.65;
+}
+
+/* EARLY ACCESS */
+.cta-block {
+border: 1px solid var(–border);
+padding: 48px 40px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 32px;
+margin-bottom: 80px;
+position: relative;
+overflow: hidden;
+animation: fadeUp 0.8s 0.4s ease both;
+}
+
+.cta-block::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 1px;
+background: linear-gradient(90deg, transparent, var(–blue-2), transparent);
+}
+
+.cta-left strong {
+display: block;
+font-family: ‘Syne’, sans-serif;
+font-weight: 800;
+font-size: 1.3rem;
+margin-bottom: 8px;
+}
+.cta-left span {
+font-size: 0.85rem;
+color: var(–muted);
+}
+
+.cta-tag {
+flex-shrink: 0;
+text-align: center;
+}
+
+.rate-display {
+font-family: ‘Syne’, sans-serif;
+font-weight: 800;
+font-size: 3rem;
+background: linear-gradient(135deg, var(–blue-2), var(–accent));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+line-height: 1;
+}
+
+.rate-label {
+font-family: ‘DM Mono’, monospace;
+font-size: 0.65rem;
+color: var(–muted);
+letter-spacing: 0.12em;
+text-transform: uppercase;
+margin-top: 6px;
+}
+
+/* FOOTER */
+footer {
+padding: 32px 0;
+border-top: 1px solid var(–border);
+display: flex;
+justify-content: space-between;
+align-items: center;
+animation: fadeUp 0.8s 0.5s ease both;
+}
+
+footer span {
+font-family: ‘DM Mono’, monospace;
+font-size: 0.65rem;
+color: var(–muted);
+letter-spacing: 0.1em;
+text-transform: uppercase;
+}
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+.mechanics { grid-template-columns: 1fr; }
+.cta-block { flex-direction: column; }
+.stat-row { grid-template-columns: 1fr; }
+header { flex-direction: column; gap: 16px; align-items: flex-start; }
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo">
+      <div class="logo-mark"></div>
+      <div class="logo-text">Revox</div>
+    </div>
+    <div class="header-tag">Tesis de Inversión · 2025</div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-label">Crédito Privado · Activos de Entretenimiento</div>
+    <h1>Tu capital trabaja.<br><span>Con colateral real.</span></h1>
+    <p class="hero-sub">Revox es el brazo financiador de Yunus — la plataforma que financia boletos de conciertos en pagos quincenales. Ponemos tu capital a trabajar en créditos de corto plazo respaldados por activos con demanda garantizada.</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num">18%</div>
+      <div class="stat-label">Rendimiento anual · Early investors</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4 m</div>
+      <div class="stat-label">Ciclo promedio por crédito</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">$44.2k</div>
+      <div class="stat-label">Entrada mínima (MXN)</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-label">Cómo funciona</div>
+    <h2 class="section-title">Simple. Revolvente. Transparente.</h2>
+    <p>No depositas y esperas. Pones capital a tu disposición. Solo cuando Yunus necesita financiar una venta, toma los recursos y comienzan a correr los intereses. Lo que no se usa, sigue siendo tuyo.</p>
+
+```
+<div class="mechanics">
+  <div class="mechanic-card">
+    <div class="mechanic-num">01</div>
+    <div class="mechanic-title">Defines tu monto disponible</div>
+    <div class="mechanic-desc">Estableces cuánto capital pones a disposición de Yunus. Mínimo equivalente a 5 financiaciones ($44,200 MXN).</div>
+  </div>
+  <div class="mechanic-card">
+    <div class="mechanic-num">02</div>
+    <div class="mechanic-title">Los intereses corren solo sobre lo desplegado</div>
+    <div class="mechanic-desc">Yunus toma los fondos que necesita por venta. Los intereses aplican únicamente sobre el monto activo, no sobre el disponible.</div>
+  </div>
+  <div class="mechanic-card">
+    <div class="mechanic-num">03</div>
+    <div class="mechanic-title">Colateral: el boleto mismo</div>
+    <div class="mechanic-desc">Cada crédito está respaldado por el boleto financiado, retenido en custodia hasta el pago total. En caso de impago, se revende.</div>
+  </div>
+  <div class="mechanic-card">
+    <div class="mechanic-num">04</div>
+    <div class="mechanic-title">Ciclos cortos, capital rotativo</div>
+    <div class="mechanic-desc">Cada crédito dura 4 meses (8 quincenas). Tu capital regresa y se redespliega. Sin plazos forzosos largos.</div>
+  </div>
+</div>
+```
+
+  </section>
+
+  <section>
+    <div class="section-label">Gestión de riesgo</div>
+    <h2 class="section-title">El colateral no es una promesa. Es un activo.</h2>
+
+```
+<div class="colateral-box">
+  <div class="colateral-icon">🎟</div>
+  <div class="colateral-text">
+    <strong>Boleto retenido en custodia</strong>
+    <span>Yunus retiene el boleto digital hasta que el usuario completa todos los pagos. En caso de impago, Revox recupera capital via reventa — prioridad total sobre el producto de la venta antes de cualquier devolución al usuario.</span>
+  </div>
+</div>
+<div class="colateral-box" style="margin-top:12px;">
+  <div class="colateral-icon">🔄</div>
+  <div class="colateral-text">
+    <strong>Ticketmaster reembolsa en caso de cancelación</strong>
+    <span>Si el evento se cancela, el reembolso oficial cubre el capital íntegro. Sin rendimientos en ese escenario, pero sin pérdida de principal.</span>
+  </div>
+</div>
+<div class="colateral-box" style="margin-top:12px;">
+  <div class="colateral-icon">📊</div>
+  <div class="colateral-text">
+    <strong>Proyección conservadora de impago: 3% sobre el monto financiado</strong>
+    <span>Estimando 20% de tasa de abandono y 85% de recuperación vía reventa. Ya descontado en la unidad económica — no afecta tu rendimiento.</span>
+  </div>
+</div>
+```
+
+  </section>
+
+  <section>
+    <div class="section-label">Benchmark de mercado</div>
+    <h2 class="section-title">¿Dónde más obtienes este rendimiento?</h2>
+    <p>Comparado contra los instrumentos más competitivos del mercado mexicano hoy.</p>
+
+```
+<table class="bench-table">
+  <thead>
+    <tr>
+      <th>Instrumento</th>
+      <th>Rendimiento anual</th>
+      <th>Colateral</th>
+      <th>Liquidez</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Cuenta bancaria</td>
+      <td>~1%</td>
+      <td>—</td>
+      <td>Total</td>
+    </tr>
+    <tr>
+      <td>CETES 28 días</td>
+      <td>~7.75%</td>
+      <td>Gobierno</td>
+      <td>Alta</td>
+    </tr>
+    <tr>
+      <td>Klar Plus</td>
+      <td>12.5%</td>
+      <td>CNBV</td>
+      <td>Alta</td>
+    </tr>
+    <tr>
+      <td>Crowdfunding / Capital privado</td>
+      <td>~19%</td>
+      <td>Proyecto</td>
+      <td>Baja</td>
+    </tr>
+    <tr class="highlight">
+      <td>Revox <span class="badge badge-best">Early Investor</span></td>
+      <td>18% anual</td>
+      <td>Boleto + TM</td>
+      <td>Media</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+  </section>
+
+  <div class="cta-block">
+    <div class="cta-left">
+      <strong>Tasa de lanzamiento para primeros inversionistas</strong>
+      <span>Disponible para los primeros compromisos de capital del piloto Yunus · 500 usuarios · 2025</span>
+    </div>
+    <div class="cta-tag">
+      <div class="rate-display">18%</div>
+      <div class="rate-label">anual garantizado</div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Revox · Paso del Norte Labs · Ciudad Juárez, México</span>
+    <span>Documento confidencial · Solo para uso interno</span>
+  </footer>
+
+</div>
+</body>
+</html>
