@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -27,747 +28,743 @@
       --shadow-glow: 0 0 40px rgba(59,130,246,0.15);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      line-height: 1.6;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* Animated Background */
-    .bg-gradient {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .bg-gradient::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 800px;
-      height: 800px;
-      background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 60%);
-      animation: float 20s ease-in-out infinite;
-    }
-
-    .bg-gradient::after {
-      content: '';
-      position: absolute;
-      bottom: -30%;
-      left: -10%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 60%);
-      animation: float 25s ease-in-out infinite reverse;
-    }
-
-    .bg-grid {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(30px, -30px) scale(1.05); }
-      66% { transform: translate(-20px, 20px) scale(0.95); }
-    }
-
-    /* Container */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Header */
-    header {
-      padding: 24px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      animation: fadeInDown 0.8s ease both;
-      position: sticky;
-      top: 0;
-      background: rgba(10,10,15,0.85);
-      backdrop-filter: blur(20px);
-      z-index: 100;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-icon {
-      width: 42px;
-      height: 42px;
-      background: var(--accent-gradient);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 1.1rem;
-      box-shadow: 0 4px 20px rgba(59,130,246,0.3);
-    }
-
-    .logo-text {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 1.4rem;
-      letter-spacing: -0.02em;
-    }
-
-    .header-tag {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 8px 16px;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      background: var(--bg-card);
-      transition: all 0.3s ease;
-    }
-
-    .header-tag:hover {
-      border-color: var(--accent-blue);
-      color: var(--accent-blue);
-    }
-
-    /* Hero Section */
-    .hero {
-      padding: 80px 0 60px;
-      animation: fadeInUp 0.8s 0.1s ease both;
-    }
-
-    .hero-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.75rem;
-      color: var(--accent-cyan);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 28px;
-      padding: 10px 20px;
-      background: rgba(6,182,212,0.08);
-      border: 1px solid rgba(6,182,212,0.2);
-      border-radius: 100px;
-    }
-
-    .hero-label::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      background: var(--accent-cyan);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
-
-    .hero h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: clamp(2.5rem, 6vw, 4.2rem);
-      line-height: 1.05;
-      margin-bottom: 28px;
-      max-width: 750px;
-      letter-spacing: -0.03em;
-    }
-
-    .hero h1 .gradient-text {
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      max-width: 540px;
-      line-height: 1.75;
-    }
-
-    /* Stats Row */
-    .stats-section {
-      margin-bottom: 80px;
-      animation: fadeInUp 0.8s 0.2s ease both;
-    }
-
-    .stat-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 32px 28px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--accent-gradient);
-      transform: scaleX(0);
-      transition: transform 0.4s ease;
-    }
-
-    .stat-card:hover {
-      background: var(--bg-hover);
-      border-color: var(--border-hover);
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-glow);
-    }
-
-    .stat-card:hover::before {
-      transform: scaleX(1);
-    }
-
-    .stat-num {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 2.8rem;
-      line-height: 1;
-      margin-bottom: 10px;
-      background: linear-gradient(135deg, #fff 30%, var(--accent-cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .stat-label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    /* Section Styling */
-    section {
-      margin-bottom: 80px;
-      animation: fadeInUp 0.8s ease both;
-    }
-
-    .section-header {
-      margin-bottom: 40px;
-    }
-
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    .section-label::after {
-      content: '';
-      width: 40px;
-      height: 1px;
-      background: var(--border-hover);
-    }
-
-    .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      margin-bottom: 16px;
-      letter-spacing: -0.02em;
-    }
-
-    .section-desc {
-      color: var(--text-secondary);
-      font-size: 1rem;
-      max-width: 600px;
-      line-height: 1.7;
-    }
-
-    /* Mechanics Grid */
-    .mechanics {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      margin-top: 32px;
-    }
-
-    .mechanic-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      position: relative;
-      transition: all 0.3s ease;
-    }
-
-    .mechanic-card:hover {
-      background: var(--bg-hover);
-      border-color: rgba(59,130,246,0.3);
-      transform: translateY(-2px);
-    }
-
-    .mechanic-num {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 0.75rem;
-      color: var(--accent-blue);
-      letter-spacing: 0.1em;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .mechanic-num::before {
-      content: '';
-      width: 20px;
-      height: 2px;
-      background: var(--accent-blue);
-    }
-
-    .mechanic-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 1.05rem;
-      margin-bottom: 10px;
-      color: var(--text-primary);
-    }
-
-    .mechanic-desc {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      line-height: 1.65;
-    }
-
-    /* Collateral Section */
-    .collateral-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-top: 28px;
-    }
-
-    .collateral-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px 32px;
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-      transition: all 0.3s ease;
-    }
-
-    .collateral-card:hover {
-      background: var(--bg-hover);
-      border-color: rgba(59,130,246,0.25);
-    }
-
-    .collateral-icon {
-      width: 52px;
-      height: 52px;
-      flex-shrink: 0;
-      border-radius: 14px;
-      background: var(--accent-gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      box-shadow: 0 4px 20px rgba(59,130,246,0.25);
-    }
-
-    .collateral-content strong {
-      display: block;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 1.05rem;
-      margin-bottom: 8px;
-      color: var(--text-primary);
-    }
-
-    .collateral-content p {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      line-height: 1.65;
-    }
-
-    /* Benchmark Table */
-    .table-container {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-      margin-top: 28px;
-    }
-
-    .bench-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-    }
-
-    .bench-table thead {
-      background: var(--bg-secondary);
-    }
-
-    .bench-table th {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      text-align: left;
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .bench-table td {
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-secondary);
-    }
-
-    .bench-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .bench-table tr:hover td {
-      background: rgba(255,255,255,0.02);
-    }
-
-    .bench-table tr.highlight {
-      background: linear-gradient(90deg, rgba(59,130,246,0.08) 0%, transparent 100%);
-    }
-
-    .bench-table tr.highlight td {
-      color: var(--text-primary);
-    }
-
-    .bench-table tr.highlight td:first-child {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      color: var(--accent-blue);
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 5px 12px;
-      border-radius: 100px;
-      margin-left: 10px;
-    }
-
-    .badge-best {
-      background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2));
-      color: var(--accent-cyan);
-      border: 1px solid rgba(59,130,246,0.3);
-    }
-
-    .badge-best::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      background: var(--success);
-      border-radius: 50%;
-    }
-
-    /* CTA Block */
-    .cta-section {
-      margin-bottom: 100px;
-    }
-
-    .cta-block {
-      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 40px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta-block::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: var(--accent-gradient);
-    }
-
-    .cta-block::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -10%;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 60%);
-      pointer-events: none;
-    }
-
-    .cta-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .cta-content strong {
-      display: block;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-    }
-
-    .cta-content p {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-    }
-
-    .cta-rate {
-      flex-shrink: 0;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    .rate-display {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 4rem;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-    }
-
-    .rate-label {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-top: 8px;
-    }
-
-    .cta-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 24px;
-      padding: 14px 32px;
-      background: var(--accent-gradient);
-      color: white;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 0.9rem;
-      text-decoration: none;
-      border-radius: 100px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 20px rgba(59,130,246,0.35);
-    }
-
-    .cta-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(59,130,246,0.5);
-    }
-
-    .cta-button::after {
-      content: '→';
-      transition: transform 0.3s ease;
-    }
-
-    .cta-button:hover::after {
-      transform: translateX(4px);
-    }
-
-    /* Footer */
-    footer {
-      padding: 32px 0 48px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    footer .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    footer .footer-right {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-    }
-
-    .footer-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--success);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    /* Animations */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Scroll Reveal */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .stat-row {
-        grid-template-columns: 1fr;
-      }
-
-      .mechanics {
-        grid-template-columns: 1fr;
-      }
-
-      .cta-block {
-        flex-direction: column;
-        text-align: center;
-        padding: 36px 28px;
-      }
-
-      .rate-display {
-        font-size: 3rem;
-      }
-
-      .collateral-card {
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      footer {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      header {
-        flex-direction: column;
-        gap: 12px;
-        padding: 16px 0;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .hero {
-        padding: 50px 0 40px;
-      }
-
-      .stat-card {
-        padding: 24px 20px;
-      }
-
-      .stat-num {
-        font-size: 2.2rem;
-      }
-
-      .bench-table {
-        font-size: 0.8rem;
-      }
-
-      .bench-table th,
-      .bench-table td {
-        padding: 14px 16px;
-      }
-    }
+```
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Animated Background */
+.bg-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-gradient::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 60%);
+  animation: float 20s ease-in-out infinite;
+}
+
+.bg-gradient::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 60%);
+  animation: float 25s ease-in-out infinite reverse;
+}
+
+.bg-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* Container */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+header {
+  padding: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: fadeInDown 0.8s ease both;
+  position: sticky;
+  top: 0;
+  background: #0a0a0f;
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  background: var(--accent-gradient);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+}
+
+.logo-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+}
+
+.header-tag {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: var(--bg-card);
+  transition: all 0.3s ease;
+}
+
+.header-tag:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+/* Hero Section */
+.hero {
+  padding: 80px 0 60px;
+  animation: fadeInUp 0.8s 0.1s ease both;
+}
+
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  padding: 10px 20px;
+  background: rgba(6,182,212,0.08);
+  border: 1px solid rgba(6,182,212,0.2);
+  border-radius: 100px;
+}
+
+.hero-label::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--accent-cyan);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 4.2rem);
+  line-height: 1.05;
+  margin-bottom: 28px;
+  max-width: 750px;
+  letter-spacing: -0.03em;
+}
+
+.hero h1 .gradient-text {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 540px;
+  line-height: 1.75;
+}
+
+/* Stats Row */
+.stats-section {
+  margin-bottom: 80px;
+  animation: fadeInUp 0.8s 0.2s ease both;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-gradient);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+.stat-card:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+}
+
+.stat-card:hover::before {
+  transform: scaleX(1);
+}
+
+.stat-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 2.8rem;
+  line-height: 1;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #fff 30%, var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Section Styling */
+section {
+  margin-bottom: 80px;
+  animation: fadeInUp 0.8s ease both;
+}
+
+.section-header {
+  margin-bottom: 40px;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.section-label::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--border-hover);
+}
+
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.section-desc {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+/* Mechanics Grid */
+.mechanics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.mechanic-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.mechanic-card:hover {
+  background: var(--bg-hover);
+  border-color: rgba(59,130,246,0.3);
+  transform: translateY(-2px);
+}
+
+.mechanic-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--accent-blue);
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mechanic-num::before {
+  content: '';
+  width: 20px;
+  height: 2px;
+  background: var(--accent-blue);
+}
+
+.mechanic-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.mechanic-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* Collateral Section */
+.collateral-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.collateral-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+
+.collateral-card:hover {
+  background: var(--bg-hover);
+  border-color: rgba(59,130,246,0.25);
+}
+
+.collateral-icon {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: var(--accent-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 4px 20px rgba(59,130,246,0.25);
+}
+
+.collateral-content strong {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.collateral-content p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* Benchmark Table */
+.table-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 28px;
+}
+
+.bench-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.bench-table thead {
+  background: var(--bg-secondary);
+}
+
+.bench-table th {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: left;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.bench-table td {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.bench-table tr:last-child td {
+  border-bottom: none;
+}
+
+.bench-table tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+.bench-table tr.highlight {
+  background: linear-gradient(90deg, rgba(59,130,246,0.08) 0%, transparent 100%);
+}
+
+.bench-table tr.highlight td {
+  color: var(--text-primary);
+}
+
+.bench-table tr.highlight td:first-child {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  color: var(--accent-blue);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 100px;
+  margin-left: 10px;
+}
+
+.badge-best {
+  background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2));
+  color: var(--accent-cyan);
+  border: 1px solid rgba(59,130,246,0.3);
+}
+
+.badge-best::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--success);
+  border-radius: 50%;
+}
+
+/* CTA Block */
+.cta-section {
+  margin-bottom: 100px;
+}
+
+.cta-block {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+}
+
+.cta-block::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-content strong {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.cta-content p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.cta-rate {
+  flex-shrink: 0;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.rate-display {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 4rem;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.rate-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  padding: 14px 32px;
+  background: var(--accent-gradient);
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(59,130,246,0.35);
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(59,130,246,0.5);
+}
+
+.cta-button::after {
+  content: '→';
+  transition: transform 0.3s ease;
+}
+
+.cta-button:hover::after {
+  transform: translateX(4px);
+}
+
+/* Footer */
+footer {
+  padding: 32px 0 48px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+footer .footer-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+footer .footer-right {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.footer-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll Reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stat-row {
+    grid-template-columns: 1fr;
+  }
+
+  .mechanics {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-block {
+    flex-direction: column;
+    text-align: center;
+    padding: 36px 28px;
+  }
+
+  .rate-display {
+    font-size: 3rem;
+  }
+
+  .collateral-card {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  footer {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 50px 0 40px;
+  }
+
+  .stat-card {
+    padding: 24px 20px;
+  }
+
+  .stat-num {
+    font-size: 2.2rem;
+  }
+
+  .bench-table {
+    font-size: 0.8rem;
+  }
+
+  .bench-table th,
+  .bench-table td {
+    padding: 14px 16px;
+  }
+}
+```
+
   </style>
 </head>
 <body>
@@ -780,165 +777,168 @@
       <div class="header-tag">Tesis de Inversión · 2026</div>
     </header>
 
-    <section class="hero">
-      <div class="hero-label">Crédito Privado · Activos de Entretenimiento</div>
-      <h1>Tu capital trabaja.<br><span class="gradient-text">Con colateral real.</span></h1>
-      <p class="hero-sub">Revox es el brazo financiero de Yunus — la plataforma que financia boletos de conciertos en pagos quincenales. Ponemos tu capital a trabajar en créditos de corto plazo respaldados por activos con demanda garantizada.</p>
-    </section>
+```
+<section class="hero">
+  <div class="hero-label">Crédito Privado · Activos de Entretenimiento</div>
+  <h1>Tu capital trabaja.<br><span class="gradient-text">Con colateral real.</span></h1>
+  <p class="hero-sub">Revox es el brazo financiero de Yunus — la plataforma que financia boletos de conciertos en pagos quincenales. Ponemos tu capital a trabajar en créditos de corto plazo respaldados por activos con demanda garantizada.</p>
+</section>
 
-    <section class="stats-section">
-      <div class="stat-row">
-        <div class="stat-card">
-          <div class="stat-num">18%</div>
-          <div class="stat-label">Rendimiento anual · Early investors</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">4 meses</div>
-          <div class="stat-label">Ciclo promedio por crédito</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">$23.9k</div>
-          <div class="stat-label">Entrada mínima (MXN)</div>
-        </div>
-      </div>
-    </section>
+<section class="stats-section">
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-num">18%</div>
+      <div class="stat-label">Rendimiento anual · Early investors</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">4 meses</div>
+      <div class="stat-label">Ciclo promedio por crédito</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">$23.9k</div>
+      <div class="stat-label">Entrada mínima (MXN)</div>
+    </div>
+  </div>
+</section>
 
-    <section class="reveal">
-      <div class="section-header">
-        <div class="section-label">Cómo funciona</div>
-        <h2 class="section-title">Simple. Revolvente. Transparente.</h2>
-        <p class="section-desc">No depositas y esperas. Pones capital a disposición. Solo cuando Yunus necesita financiar una venta, toma los recursos y comienzan a correr los intereses. Lo que no se usa, sigue siendo tuyo.</p>
-      </div>
+<section class="reveal">
+  <div class="section-header">
+    <div class="section-label">Cómo funciona</div>
+    <h2 class="section-title">Simple. Revolvente. Transparente.</h2>
+    <p class="section-desc">No depositas y esperas. Pones capital a disposición. Solo cuando Yunus necesita financiar una venta, toma los recursos y comienzan a correr los intereses. Lo que no se usa, sigue siendo tuyo.</p>
+  </div>
 
-      <div class="mechanics">
-        <div class="mechanic-card">
-          <div class="mechanic-num">01</div>
-          <div class="mechanic-title">Defines tu monto disponible</div>
-          <div class="mechanic-desc">Estableces cuánto capital pones a disposición de Yunus. Mínimo equivalente a 5 financiaciones promedio ($23,905 MXN).</div>
-        </div>
-        <div class="mechanic-card">
-          <div class="mechanic-num">02</div>
-          <div class="mechanic-title">Los intereses corren solo sobre lo desplegado</div>
-          <div class="mechanic-desc">Yunus toma los fondos que necesita por venta. Los intereses aplican únicamente sobre el monto activo, no sobre el disponible.</div>
-        </div>
-        <div class="mechanic-card">
-          <div class="mechanic-num">03</div>
-          <div class="mechanic-title">Colateral: el boleto mismo</div>
-          <div class="mechanic-desc">Cada crédito está respaldado por el boleto financiado, retenido en custodia hasta el pago total. En caso de impago, se revende.</div>
-        </div>
-        <div class="mechanic-card">
-          <div class="mechanic-num">04</div>
-          <div class="mechanic-title">Ciclos cortos, capital rotativo</div>
-          <div class="mechanic-desc">Cada crédito dura de 3 a 5 meses (6 - 10 quincenas). Tu capital regresa y se redespliega. Sin plazos forzosos largos.</div>
-        </div>
-      </div>
-    </section>
+  <div class="mechanics">
+    <div class="mechanic-card">
+      <div class="mechanic-num">01</div>
+      <div class="mechanic-title">Defines tu monto disponible</div>
+      <div class="mechanic-desc">Estableces cuánto capital pones a disposición de Yunus. Mínimo equivalente a 5 financiaciones promedio ($23,905 MXN).</div>
+    </div>
+    <div class="mechanic-card">
+      <div class="mechanic-num">02</div>
+      <div class="mechanic-title">Los intereses corren solo sobre lo desplegado</div>
+      <div class="mechanic-desc">Yunus toma los fondos que necesita por venta. Los intereses aplican únicamente sobre el monto activo, no sobre el disponible.</div>
+    </div>
+    <div class="mechanic-card">
+      <div class="mechanic-num">03</div>
+      <div class="mechanic-title">Colateral: el boleto mismo</div>
+      <div class="mechanic-desc">Cada crédito está respaldado por el boleto financiado, retenido en custodia hasta el pago total. En caso de impago, se revende.</div>
+    </div>
+    <div class="mechanic-card">
+      <div class="mechanic-num">04</div>
+      <div class="mechanic-title">Ciclos cortos, capital rotativo</div>
+      <div class="mechanic-desc">Cada crédito dura de 3 a 5 meses (6 - 10 quincenas). Tu capital regresa y se redespliega. Sin plazos forzosos largos.</div>
+    </div>
+  </div>
+</section>
 
-    <section class="reveal">
-      <div class="section-header">
-        <div class="section-label">Gestión de riesgo</div>
-        <h2 class="section-title">El colateral no es una promesa. Es un activo.</h2>
-      </div>
+<section class="reveal">
+  <div class="section-header">
+    <div class="section-label">Gestión de riesgo</div>
+    <h2 class="section-title">El colateral no es una promesa. Es un activo.</h2>
+  </div>
 
-      <div class="collateral-grid">
-        <div class="collateral-card">
-          <div class="collateral-icon">🎟</div>
-          <div class="collateral-content">
-            <strong>Boleto retenido en custodia</strong>
-            <p>Yunus retiene el boleto digital hasta que el usuario completa todos los pagos. En caso de impago, Revox recupera capital via reventa — prioridad total sobre el producto de la venta antes de cualquier devolución al usuario.</p>
-          </div>
-        </div>
-        <div class="collateral-card">
-          <div class="collateral-icon">🔄</div>
-          <div class="collateral-content">
-            <strong>Emisores reembolsan en caso de cancelación</strong>
-            <p>Si el evento se cancela, el reembolso oficial cubre el capital íntegro. Sin rendimientos en ese escenario, pero sin pérdida de principal.</p>
-          </div>
-        </div>
-        <div class="collateral-card">
-          <div class="collateral-icon">📊</div>
-          <div class="collateral-content">
-            <strong>Proyección conservadora de impago: 3% sobre el monto financiado</strong>
-            <p>Estimando 20% de tasa de abandono y 85% de recuperación vía reventa. Ya descontado en la unidad económica — no afecta tu rendimiento.</p>
-          </div>
-        </div>
+  <div class="collateral-grid">
+    <div class="collateral-card">
+      <div class="collateral-icon">🎟</div>
+      <div class="collateral-content">
+        <strong>Boleto retenido en custodia</strong>
+        <p>Yunus retiene el boleto digital hasta que el usuario completa todos los pagos. En caso de impago, Revox recupera capital via reventa — prioridad total sobre el producto de la venta antes de cualquier devolución al usuario.</p>
       </div>
-    </section>
+    </div>
+    <div class="collateral-card">
+      <div class="collateral-icon">🔄</div>
+      <div class="collateral-content">
+        <strong>Emisores reembolsan en caso de cancelación</strong>
+        <p>Si el evento se cancela, el reembolso oficial cubre el capital íntegro. Sin rendimientos en ese escenario, pero sin pérdida de principal.</p>
+      </div>
+    </div>
+    <div class="collateral-card">
+      <div class="collateral-icon">📊</div>
+      <div class="collateral-content">
+        <strong>Proyección conservadora de impago: 3% sobre el monto financiado</strong>
+        <p>Estimando 20% de tasa de abandono y 85% de recuperación vía reventa. Ya descontado en la unidad económica — no afecta tu rendimiento.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <section class="reveal">
-      <div class="section-header">
-        <div class="section-label">Benchmark de mercado</div>
-        <h2 class="section-title">¿Dónde más obtienes este rendimiento?</h2>
-        <p class="section-desc">Comparado contra los instrumentos más competitivos del mercado mexicano hoy.</p>
-      </div>
+<section class="reveal">
+  <div class="section-header">
+    <div class="section-label">Benchmark de mercado</div>
+    <h2 class="section-title">¿Dónde más obtienes este rendimiento?</h2>
+    <p class="section-desc">Comparado contra los instrumentos más competitivos del mercado mexicano hoy.</p>
+  </div>
 
-      <div class="table-container">
-        <table class="bench-table">
-          <thead>
-            <tr>
-              <th>Instrumento</th>
-              <th>Rendimiento anual</th>
-              <th>Colateral</th>
-              <th>Liquidez</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Cuenta bancaria</td>
-              <td>~1%</td>
-              <td>—</td>
-              <td>Total</td>
-            </tr>
-            <tr>
-              <td>CETES 28 días</td>
-              <td>~7.75%</td>
-              <td>Gobierno</td>
-              <td>Alta</td>
-            </tr>
-            <tr>
-              <td>Klar Plus</td>
-              <td>12.5%</td>
-              <td>CNBV</td>
-              <td>Alta</td>
-            </tr>
-            <tr>
-              <td>Crowdfunding / Capital privado</td>
-              <td>~19%</td>
-              <td>Proyecto</td>
-              <td>Baja</td>
-            </tr>
-            <tr class="highlight">
-              <td>Revox <span class="badge badge-best">Early Investor</span></td>
-              <td>18% anual</td>
-              <td>Boleto + TM</td>
-              <td>Media</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+  <div class="table-container">
+    <table class="bench-table">
+      <thead>
+        <tr>
+          <th>Instrumento</th>
+          <th>Rendimiento anual</th>
+          <th>Colateral</th>
+          <th>Liquidez</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cuenta bancaria</td>
+          <td>~1%</td>
+          <td>—</td>
+          <td>Total</td>
+        </tr>
+        <tr>
+          <td>CETES 28 días</td>
+          <td>~7.75%</td>
+          <td>Gobierno</td>
+          <td>Alta</td>
+        </tr>
+        <tr>
+          <td>Klar Plus</td>
+          <td>12.5%</td>
+          <td>CNBV</td>
+          <td>Alta</td>
+        </tr>
+        <tr>
+          <td>Crowdfunding / Capital privado</td>
+          <td>~19%</td>
+          <td>Proyecto</td>
+          <td>Baja</td>
+        </tr>
+        <tr class="highlight">
+          <td>Revox <span class="badge badge-best">Early Investor</span></td>
+          <td>18% anual</td>
+          <td>Boleto + TM</td>
+          <td>Media</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 
-    <section class="cta-section reveal">
-      <div class="cta-block">
-        <div class="cta-content">
-          <strong>Tasa de lanzamiento para primeros inversionistas</strong>
-          <p>Disponible para los primeros compromisos de capital del piloto Yunus · 500 usuarios · 2026</p>
-          <a href="#" class="cta-button">Quiero invertir</a>
-        </div>
-        <div class="cta-rate">
-          <div class="rate-display">18%</div>
-          <div class="rate-label">anual garantizado</div>
-        </div>
-      </div>
-    </section>
+<section class="cta-section reveal">
+  <div class="cta-block">
+    <div class="cta-content">
+      <strong>Tasa de lanzamiento para primeros inversionistas</strong>
+      <p>Disponible para los primeros compromisos de capital del piloto Yunus · 500 usuarios · 2026</p>
+      <a href="#" class="cta-button">Quiero invertir</a>
+    </div>
+    <div class="cta-rate">
+      <div class="rate-display">18%</div>
+      <div class="rate-label">anual garantizado</div>
+    </div>
+  </div>
+</section>
 
-    <footer>
-      <div class="footer-left">
-        <div class="footer-dot"></div>
-        <span>Revox · Paso del Norte Labs · Ciudad Juárez, México</span>
-      </div>
-      <div class="footer-right">Documento confidencial · Solo para uso interno</div>
-    </footer>
+<footer>
+  <div class="footer-left">
+    <div class="footer-dot"></div>
+    <span>Revox · Paso del Norte Labs · Ciudad Juárez, México</span>
+  </div>
+  <div class="footer-right">Documento confidencial · Solo para uso interno</div>
+</footer>
+```
+
   </div>
 
   <script>
@@ -1016,5 +1016,6 @@
       statsObserver.observe(statsSection);
     }
   </script>
+
 </body>
 </html>
