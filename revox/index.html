@@ -29,7 +29,6 @@ min-height: 100vh;
 overflow-x: hidden;
 }
 
-/* Ambient background */
 body::before {
 content: ‘’;
 position: fixed;
@@ -63,44 +62,18 @@ z-index: 1;
 
 /* HEADER */
 header {
-padding: 52px 0 64px;
+padding: 28px 0;
 border-bottom: 1px solid var(–border);
 display: flex;
 align-items: center;
 justify-content: space-between;
 animation: fadeUp 0.8s ease both;
+background: #050505;
 }
 
-.logo {
-display: flex;
-align-items: center;
-gap: 14px;
-}
-
-.logo-mark {
-width: 36px;
-height: 36px;
-border-radius: 50%;
-border: 3px solid transparent;
-background: linear-gradient(var(–black), var(–black)) padding-box,
-linear-gradient(135deg, var(–blue-1), var(–blue-2)) border-box;
-position: relative;
-}
-.logo-mark::after {
-content: ‘’;
-position: absolute;
-inset: 4px;
-border-radius: 50%;
-background: linear-gradient(135deg, var(–blue-1), var(–blue-2));
-opacity: 0.15;
-}
-
-.logo-text {
-font-family: ‘Syne’, sans-serif;
-font-weight: 800;
-font-size: 1.4rem;
-letter-spacing: 0.12em;
-text-transform: uppercase;
+.logo img {
+height: 40px;
+display: block;
 }
 
 .header-tag {
@@ -376,7 +349,7 @@ color: var(–muted);
 line-height: 1.65;
 }
 
-/* EARLY ACCESS */
+/* CTA */
 .cta-block {
 border: 1px solid var(–border);
 padding: 48px 40px;
@@ -472,8 +445,7 @@ header { flex-direction: column; gap: 16px; align-items: flex-start; }
 
   <header>
     <div class="logo">
-      <div class="logo-mark"></div>
-      <div class="logo-text">Revox</div>
+      <img src="Revox.jpeg" alt="Revox">
     </div>
     <div class="header-tag">Tesis de Inversión · 2025</div>
   </header>
