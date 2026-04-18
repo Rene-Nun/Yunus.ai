@@ -291,11 +291,22 @@ function agregarMensaje(texto, tipo, esImagen = false) {
     contenedor.scrollTop = contenedor.scrollHeight;
 }
 
-function toBase64(file) {
-    return new Promise((resolve, reject) => {
+function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
+    return new Promise((resolve) => {
         const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const scale = Math.min(1, maxWidth / img.width);
+                canvas.width = img.width * scale;
+                canvas.height = img.height * scale;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                resolve(canvas.toDataURL('image/jpeg', calidad));
+            };
+            img.src = e.target.result;
+        };
         reader.readAsDataURL(file);
     });
 }
@@ -303,7 +314,7 @@ function toBase64(file) {
 async function enviarFoto(input) {
     const file = input.files[0];
     if (!file) return;
-    const base64 = await toBase64(file);
+    const base64 = await comprimirImagen(file);
     agregarMensaje(base64, 'usuario', true);
     input.value = '';
     try {
