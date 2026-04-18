@@ -206,7 +206,7 @@
 
 <div id="appHeader">
     <span>Yunus 1.0 BETA</span>
-    <button id="btnCerrarSesion" onclick="cerrarSesion()" style="display:none;">Salir</button>
+    <button type="button" id="btnCerrarSesion" onclick="cerrarSesion()" style="display:none;">Salir</button>
 </div>
 
 <!-- LOGIN -->
@@ -276,9 +276,19 @@ function iniciarChat() {
 
 function cerrarSesion() {
     if (!confirm('¿Seguro que quieres cerrar sesión?')) return;
-    localStorage.removeItem('yunus_celular');
-    localStorage.removeItem('yunus_historial');
-    location.reload();
+    try {
+        localStorage.removeItem('yunus_celular');
+        localStorage.removeItem('yunus_historial');
+    } catch (e) {
+        console.warn('No se pudo limpiar localStorage:', e);
+    }
+    celular = '';
+    document.getElementById('chatBox').style.display = 'none';
+    document.getElementById('loginBox').style.display = 'flex';
+    document.getElementById('btnCerrarSesion').style.display = 'none';
+    document.getElementById('mensajes').innerHTML = '';
+    document.getElementById('celularInput').value = '';
+    primerMensajeYunus = true;
 }
 
 function renderMensaje(texto, tipo, esImagen = false) {
