@@ -206,7 +206,7 @@
 
 <div id="appHeader">
     <span>Yunus 1.0 BETA</span>
-    <button type="button" id="btnCerrarSesion" onclick="cerrarSesion()" style="display:none;">Salir</button>
+    <button type="button" id="btnCerrarSesion" style="display:none;">Salir</button>
 </div>
 
 <!-- LOGIN -->
@@ -398,6 +398,8 @@ async function enviar() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('btnCerrarSesion').addEventListener('click', cerrarSesion);
+
     const celularGuardado = localStorage.getItem('yunus_celular');
     if (celularGuardado) {
         celular = celularGuardado;
