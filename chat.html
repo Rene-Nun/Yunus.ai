@@ -3,66 +3,240 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Yunus — Chat</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { height: 100%; overflow: hidden; font-family: 'Geist', sans-serif; background: #f8fafc; }
-        #app { display: flex; flex-direction: column; height: 100dvh; max-width: 480px; margin: 0 auto; background: #f8fafc; }
-        #mensajes { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
-        #mensajes::-webkit-scrollbar { display: none; }
-    </style>
+
+```
+    html { height: 100%; }
+
+    body {
+        height: 100%;
+        font-family: 'Geist', sans-serif;
+        background: #f8fafc;
+        /* Prevents bounce/overscroll on iOS */
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
+
+    #app {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        max-width: 480px;
+        margin: 0 auto;
+        background: #f8fafc;
+    }
+
+    /* HEADER */
+    #appHeader {
+        background: #fff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 14px 20px;
+        flex-shrink: 0;
+    }
+
+    #appHeader span {
+        font-size: 15px;
+        font-weight: 500;
+        color: #0f172a;
+        letter-spacing: -0.01em;
+    }
+
+    /* LOGIN */
+    #loginBox {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        overflow-y: auto;
+    }
+
+    #loginBox .inner {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    #loginBox h2 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 6px;
+    }
+
+    #loginBox p {
+        font-size: 14px;
+        color: #94a3b8;
+        margin-bottom: 24px;
+    }
+
+    .input-row {
+        display: flex;
+        gap: 8px;
+    }
+
+    .prefix {
+        padding: 12px;
+        background: #fff;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        font-size: 16px; /* 16px prevents iOS zoom */
+        color: #64748b;
+        flex-shrink: 0;
+    }
+
+    #celularInput {
+        flex: 1;
+        padding: 12px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        font-size: 16px; /* 16px prevents iOS zoom */
+        outline: none;
+        font-family: inherit;
+        background: #fff;
+        -webkit-appearance: none;
+        transition: border-color 0.2s;
+    }
+
+    #celularInput:focus { border-color: #0f172a; }
+
+    #btnEntrar {
+        width: 100%;
+        margin-top: 14px;
+        background: #0f172a;
+        color: #fff;
+        padding: 14px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        -webkit-appearance: none;
+    }
+
+    /* CHAT */
+    #chatBox {
+        display: none;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+    }
+
+    #mensajes {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #mensajes::-webkit-scrollbar { display: none; }
+
+    /* INPUT BAR */
+    #inputBar {
+        background: #fff;
+        border-top: 1px solid #e2e8f0;
+        padding: 10px 14px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    #cameraBtn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        border: none;
+    }
+
+    #inputMsg {
+        flex: 1;
+        background: #f1f5f9;
+        border: none;
+        border-radius: 999px;
+        padding: 11px 16px;
+        font-size: 16px; /* 16px prevents iOS zoom */
+        outline: none;
+        font-family: inherit;
+        -webkit-appearance: none;
+        color: #0f172a;
+    }
+
+    #sendBtn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #0f172a;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+</style>
+```
+
 </head>
 <body>
 
 <div id="app">
 
-<!-- HEADER -->
-<div style="background: #fff; border-bottom: 1px solid #e2e8f0; padding: 14px 20px; flex-shrink: 0; display: flex; align-items: center;">
-    <span style="font-size: 15px; font-weight: 500; color: #0f172a; letter-spacing: -0.01em;">Yunus 1.0 BETA</span>
+```
+<div id="appHeader">
+    <span>Yunus 1.0 BETA</span>
 </div>
 
 <!-- LOGIN -->
-<div id="loginBox" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px; min-height: 0;">
-    <div style="width: 100%; max-width: 320px;">
-        <h2 style="font-size: 18px; font-weight: 600; color: #0f172a; margin-bottom: 6px;">Ingresa tu número</h2>
-        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">El mismo con el que te registraste.</p>
-        <div style="display: flex; gap: 8px;">
-            <span style="padding: 10px 12px; background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; color: #64748b;">+52</span>
+<div id="loginBox">
+    <div class="inner">
+        <h2>Ingresa tu número</h2>
+        <p>El mismo con el que te registraste.</p>
+        <div class="input-row">
+            <span class="prefix">+52</span>
             <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10"
-                style="flex: 1; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; outline: none; font-family: inherit;"
-                onfocus="this.style.borderColor='#0f172a'" onblur="this.style.borderColor='#cbd5e1'">
+                inputmode="numeric" pattern="[0-9]*">
         </div>
-        <button onclick="iniciarChat()"
-            style="width: 100%; margin-top: 12px; background: #0f172a; color: #fff; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 500; border: none; cursor: pointer; font-family: inherit;">
-            Entrar →
-        </button>
+        <button id="btnEntrar" onclick="iniciarChat()">Entrar →</button>
     </div>
 </div>
 
 <!-- CHAT -->
-<div id="chatBox" style="display: none; flex-direction: column; flex: 1; min-height: 0;">
+<div id="chatBox">
     <div id="mensajes"></div>
-    <div style="background: #fff; border-top: 1px solid #e2e8f0; padding: 10px 14px; display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
-        <label for="inputFoto" style="width: 38px; height: 38px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
+    <div id="inputBar">
+        <label for="inputFoto" id="cameraBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                 <circle cx="12" cy="13" r="4"/>
             </svg>
         </label>
         <input id="inputFoto" type="file" accept="image/*" style="display:none;" onchange="enviarFoto(this)">
         <input id="inputMsg" type="text" placeholder="Escribe un mensaje..."
-            style="flex: 1; background: #f1f5f9; border: none; border-radius: 999px; padding: 10px 16px; font-size: 13px; outline: none; font-family: inherit;"
             onkeydown="if(event.key==='Enter') enviar()">
-        <button onclick="enviar()" style="width: 38px; height: 38px; border-radius: 50%; background: #0f172a; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <button id="sendBtn" onclick="enviar()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
             </svg>
         </button>
     </div>
 </div>
+```
 
 </div>
 
@@ -102,9 +276,9 @@ function agregarMensaje(texto, tipo, esImagen = false) {
 
     const burbuja = document.createElement('div');
     if (esYunus) {
-        burbuja.style.cssText = 'max-width: 78%; background: #fff; border: 1px solid #e2e8f0; border-radius: 18px; border-bottom-left-radius: 4px; padding: 10px 14px; font-size: 13px; color: #1e293b;';
+        burbuja.style.cssText = 'max-width: 78%; background: #fff; border: 1px solid #e2e8f0; border-radius: 18px; border-bottom-left-radius: 4px; padding: 10px 14px; font-size: 14px; color: #1e293b; line-height: 1.5;';
     } else {
-        burbuja.style.cssText = 'max-width: 78%; background: #0f172a; border-radius: 18px; border-bottom-right-radius: 4px; padding: 10px 14px; font-size: 13px; color: #fff;';
+        burbuja.style.cssText = 'max-width: 78%; background: #0f172a; border-radius: 18px; border-bottom-right-radius: 4px; padding: 10px 14px; font-size: 14px; color: #fff; line-height: 1.5;';
     }
 
     if (esImagen) {
