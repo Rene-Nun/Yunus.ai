@@ -251,12 +251,25 @@
 let celular = '';
 let primerMensajeYunus = true;
 
-function mostrarChat() {
+async function mostrarChat() {
     document.getElementById('loginBox').style.display = 'none';
     const chatBox = document.getElementById('chatBox');
     chatBox.style.display = 'flex';
     document.getElementById('btnCerrarSesion').style.display = 'inline-block';
     primerMensajeYunus = true;
+
+    // Try to load historial from server (cross-device)
+    try {
+        const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
+        if (res.ok) {
+            const data = await res.json();
+            if (data.historial && data.historial.length > 0) {
+                localStorage.setItem('yunus_historial', JSON.stringify(data.historial));
+            }
+        }
+    } catch {
+        // Server unavailable, fall through to localStorage
+    }
 
     const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
     if (historial.length === 0) {
@@ -371,6 +384,17 @@ async function enviarFoto(input) {
             body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
         });
         const data = await res.json();
+        // Replace base64 in localStorage with Cloudinary URL for cross-device compatibility
+        if (data.imagenUrl) {
+            const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+            for (let i = historial.length - 1; i >= 0; i--) {
+                if (historial[i].tipo === 'usuario' && historial[i].esImagen) {
+                    historial[i].texto = data.imagenUrl;
+                    break;
+                }
+            }
+            localStorage.setItem('yunus_historial', JSON.stringify(historial));
+        }
         agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
     } catch {
         agregarMensaje('Error de conexión.', 'yunus');
