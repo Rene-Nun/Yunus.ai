@@ -12,56 +12,10 @@ api_key: process.env.CLOUDINARY_API_KEY,
 api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Rate limiting: max 20 requests per IP per minute
-const rateLimit = new Map();
-
-function checkRateLimit(ip) {
-const now = Date.now();
-const windowMs = 60 * 1000; // 1 minute
-const max = 20;
-
-if (!rateLimit.has(ip)) {
-rateLimit.set(ip, { count: 1, start: now });
-return true;
-}
-
-const entry = rateLimit.get(ip);
-
-if (now - entry.start > windowMs) {
-rateLimit.set(ip, { count: 1, start: now });
-return true;
-}
-
-if (entry.count >= max) return false;
-
-entry.count++;
-return true;
-}
-
-// Clean up old entries every 5 minutes to avoid memory leak
-setInterval(() => {
-const now = Date.now();
-for (const [ip, entry] of rateLimit.entries()) {
-if (now - entry.start > 60 * 1000) rateLimit.delete(ip);
-}
-}, 5 * 60 * 1000);
-
 export default async function handler(req, res) {
 if (req.method !== “POST”) return res.status(405).end();
 
-// Rate limit check
-const ip = req.headers[“x-forwarded-for”]?.split(”,”)[0]?.trim() || req.socket?.remoteAddress || “unknown”;
-if (!checkRateLimit(ip)) {
-return res.status(429).json({ error: “Demasiadas solicitudes. Espera un momento.” });
-}
-
 const { mensaje, celular, imagen } = req.body;
-
-// Basic input validation
-if (!celular || typeof celular !== “string”) {
-return res.status(400).json({ error: “Celular inválido” });
-}
-
 const celularNotion = `whatsapp:+521${celular.replace('+52', '')}`;
 
 const search = await notion.databases.query({
