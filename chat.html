@@ -15,7 +15,6 @@
         height: 100%;
         font-family: 'Geist', sans-serif;
         background: #f8fafc;
-        /* Prevents bounce/overscroll on iOS */
         overflow: hidden;
         position: fixed;
         width: 100%;
@@ -30,7 +29,6 @@
         background: #f8fafc;
     }
 
-    /* HEADER */
     #appHeader {
         background: #fff;
         border-bottom: 1px solid #e2e8f0;
@@ -45,7 +43,6 @@
         letter-spacing: -0.01em;
     }
 
-    /* LOGIN */
     #loginBox {
         flex: 1;
         display: flex;
@@ -83,7 +80,7 @@
         background: #fff;
         border: 1px solid #cbd5e1;
         border-radius: 12px;
-        font-size: 16px; /* 16px prevents iOS zoom */
+        font-size: 16px;
         color: #64748b;
         flex-shrink: 0;
     }
@@ -93,7 +90,7 @@
         padding: 12px 14px;
         border: 1px solid #cbd5e1;
         border-radius: 12px;
-        font-size: 16px; /* 16px prevents iOS zoom */
+        font-size: 16px;
         outline: none;
         font-family: inherit;
         background: #fff;
@@ -118,7 +115,6 @@
         -webkit-appearance: none;
     }
 
-    /* CHAT */
     #chatBox {
         display: none;
         flex-direction: column;
@@ -138,7 +134,6 @@
 
     #mensajes::-webkit-scrollbar { display: none; }
 
-    /* INPUT BAR */
     #inputBar {
         background: #fff;
         border-top: 1px solid #e2e8f0;
@@ -168,7 +163,7 @@
         border: none;
         border-radius: 999px;
         padding: 11px 16px;
-        font-size: 16px; /* 16px prevents iOS zoom */
+        font-size: 16px;
         outline: none;
         font-family: inherit;
         -webkit-appearance: none;
@@ -240,17 +235,29 @@
 let celular = '';
 let primerMensajeYunus = true;
 
+function mostrarChat() {
+    document.getElementById('loginBox').style.display = 'none';
+    const chatBox = document.getElementById('chatBox');
+    chatBox.style.display = 'flex';
+    primerMensajeYunus = true;
+
+    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+    if (historial.length === 0) {
+        agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+    } else {
+        historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+    }
+}
+
 function iniciarChat() {
     const input = document.getElementById('celularInput').value.trim();
     if (input.length !== 10) { alert('Ingresa 10 dígitos'); return; }
     celular = '+52' + input;
-    document.getElementById('loginBox').style.display = 'none';
-    const chatBox = document.getElementById('chatBox');
-    chatBox.style.display = 'flex';
-    agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+    localStorage.setItem('yunus_celular', celular);
+    mostrarChat();
 }
 
-function agregarMensaje(texto, tipo, esImagen = false) {
+function renderMensaje(texto, tipo, esImagen = false) {
     const contenedor = document.getElementById('mensajes');
     const esYunus = tipo === 'yunus';
 
@@ -289,6 +296,13 @@ function agregarMensaje(texto, tipo, esImagen = false) {
     wrapper.appendChild(burbuja);
     contenedor.appendChild(wrapper);
     contenedor.scrollTop = contenedor.scrollHeight;
+}
+
+function agregarMensaje(texto, tipo, esImagen = false) {
+    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+    historial.push({ texto, tipo, esImagen });
+    localStorage.setItem('yunus_historial', JSON.stringify(historial));
+    renderMensaje(texto, tipo, esImagen);
 }
 
 function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
@@ -348,6 +362,14 @@ async function enviar() {
         agregarMensaje('Error de conexión.', 'yunus');
     }
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    const celularGuardado = localStorage.getItem('yunus_celular');
+    if (celularGuardado) {
+        celular = celularGuardado;
+        mostrarChat();
+    }
+});
 </script>
 
 </body>
