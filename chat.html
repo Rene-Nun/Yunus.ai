@@ -206,7 +206,7 @@
 
 <div id="appHeader">
     <span>Yunus 1.0 BETA</span>
-    <button type="button" id="btnCerrarSesion" style="display:none;">Salir</button>
+    <button type="button" id="btnCerrarSesion" data-action="salir" style="display:none;">Salir</button>
 </div>
 
 <!-- LOGIN -->
@@ -275,7 +275,6 @@ function iniciarChat() {
 }
 
 function cerrarSesion() {
-    if (!confirm('¿Seguro que quieres cerrar sesión?')) return;
     try {
         localStorage.removeItem('yunus_celular');
         localStorage.removeItem('yunus_historial');
@@ -397,9 +396,16 @@ async function enviar() {
     }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('btnCerrarSesion').addEventListener('click', cerrarSesion);
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('#btnCerrarSesion');
+    if (btn) {
+        e.preventDefault();
+        e.stopPropagation();
+        cerrarSesion();
+    }
+});
 
+window.addEventListener('DOMContentLoaded', () => {
     const celularGuardado = localStorage.getItem('yunus_celular');
     if (celularGuardado) {
         celular = celularGuardado;
