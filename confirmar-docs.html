@@ -132,18 +132,45 @@
     let docSeleccionado = null;
     let panelPassword = '';
 
-    function verificarPassword() {
-        const input = document.getElementById('passwordInput').value.trim();
-        const errEl = document.getElementById('passwordError');
-        if (!input) {
-            errEl.textContent = 'Ingresa la contraseña.';
+    async function verificarPassword() {
+    const input = document.getElementById('passwordInput').value.trim();
+    const errEl = document.getElementById('passwordError');
+    if (!input) {
+        errEl.textContent = 'Ingresa la contraseña.';
+        errEl.classList.remove('hidden');
+        return;
+    }
+
+    const btn = document.querySelector('#passwordView button');
+    btn.textContent = 'Verificando...';
+    btn.disabled = true;
+
+    try {
+        const res = await fetch('/api/confirmar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: input, celular: '0000000000', documentos: 'no' })
+        });
+
+        if (res.status === 401) {
+            errEl.textContent = 'Contraseña incorrecta.';
             errEl.classList.remove('hidden');
+            btn.textContent = 'Entrar →';
+            btn.disabled = false;
             return;
         }
+
         panelPassword = input;
         document.getElementById('passwordView').classList.add('hidden');
         document.getElementById('formView').classList.remove('hidden');
+    } catch {
+        errEl.textContent = 'Error de conexión. Intenta de nuevo.';
+        errEl.classList.remove('hidden');
     }
+
+    btn.textContent = 'Entrar →';
+    btn.disabled = false;
+}
 
     function selectDoc(val) {
         docSeleccionado = val;
