@@ -220,6 +220,7 @@
                 inputmode="numeric" pattern="[0-9]*">
         </div>
         <button id="btnEntrar" onclick="iniciarChat()">Entrar →</button>
+        <div id="loginError" style="display:none; margin-top:12px; padding:10px 14px; background:#fef2f2; border:1px solid #fecaca; border-radius:10px; font-size:13px; color:#dc2626; text-align:center;"></div>
     </div>
 </div>
 
@@ -279,12 +280,58 @@ async function mostrarChat() {
     }
 }
 
-function iniciarChat() {
+async function iniciarChat() {
     const input = document.getElementById('celularInput').value.trim();
-    if (input.length !== 10) { alert('Ingresa 10 dígitos'); return; }
-    celular = '+52' + input;
-    localStorage.setItem('yunus_celular', celular);
-    mostrarChat();
+    if (input.length !== 10) { mostrarError('Ingresa 10 dígitos válidos.'); return; }
+
+    ocultarError();
+    const btn = document.getElementById('btnEntrar');
+    btn.disabled = true;
+    btn.textContent = 'Verificando...';
+
+    const numeroCelular = '+52' + input;
+
+    try {
+        const res = await fetch('/api/historial?celular=' + encodeURIComponent(numeroCelular));
+
+        if (res.status === 404) {
+            mostrarError('Este número no está registrado. Regístrate primero en yunusia.com');
+            btn.disabled = false;
+            btn.textContent = 'Entrar →';
+            return;
+        }
+
+        celular = numeroCelular;
+        localStorage.setItem('yunus_celular', celular);
+
+        if (res.ok) {
+            const data = await res.json();
+            if (data.historial && data.historial.length > 0) {
+                localStorage.setItem('yunus_historial', JSON.stringify(data.historial));
+            }
+        }
+
+        btn.disabled = false;
+        btn.textContent = 'Entrar →';
+        mostrarChatDirecto();
+
+    } catch {
+        celular = numeroCelular;
+        localStorage.setItem('yunus_celular', celular);
+        btn.disabled = false;
+        btn.textContent = 'Entrar →';
+        mostrarChatDirecto();
+    }
+}
+
+function mostrarError(msg) {
+    const el = document.getElementById('loginError');
+    el.textContent = msg;
+    el.style.display = 'block';
+}
+
+function ocultarError() {
+    document.getElementById('loginError').style.display = 'none';
 }
 
 function cerrarSesion() {
