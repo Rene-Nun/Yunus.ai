@@ -19,7 +19,7 @@
 ::selection { background: var(--volt); color: var(--ink); }
 
 html, body {
-  min-height: 100%;
+  min-height: 100dvh;
   background: var(--ink);
   color: var(--paper);
   font-family: 'DM Sans', sans-serif;
@@ -90,7 +90,7 @@ main {
 /* LOGIN VIEW */
 #loginView {
   display: flex; align-items: center; justify-content: center;
-  min-height: calc(100vh - 60px); padding: 32px 24px;
+  min-height: calc(100dvh - 60px); padding: 32px 24px;
 }
 .login-inner { width: 100%; max-width: 320px; }
 .login-eyebrow {
@@ -359,7 +359,7 @@ main {
 /* LOADING */
 #loadingView {
   display: none; align-items: center; justify-content: center;
-  min-height: calc(100vh - 60px);
+  min-height: calc(100dvh - 60px);
   flex-direction: column; gap: 20px;
 }
 .spinner {
@@ -371,6 +371,27 @@ main {
 .loading-text {
   font-family: 'DM Mono', monospace; font-size: 10px;
   letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+}
+
+/* BOTÓN SALIR BOTTOM */
+.btn-salir-bottom {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+  margin-top: 32px;
+}
+.btn-salir-bottom:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
 }
 
 /* FADE IN */
@@ -396,7 +417,6 @@ main {
     </div>
     <div class="header-actions">
       <button class="btn-header primary" onclick="window.location.href='/chat'" id="btnChat" style="display:none;">Chat →</button>
-      <button class="btn-header" onclick="cerrarSesion()" id="btnSalir" style="display:none;">Salir</button>
     </div>
   </div>
 </header>
@@ -435,6 +455,8 @@ main {
     <div class="section-label">Mis boletos</div>
 
     <div id="ticketsContainer"></div>
+
+    <button class="btn-salir-bottom" id="btnSalirBottom" onclick="cerrarSesion()" style="display:none;">Salir</button>
 
   </div>
 
@@ -517,7 +539,7 @@ async function cargarBoveda() {
   document.getElementById('loginView').style.display = 'none';
   document.getElementById('loadingView').style.display = 'flex';
   document.getElementById('btnChat').style.display = 'inline-block';
-  document.getElementById('btnSalir').style.display = 'inline-block';
+  document.getElementById('btnSalirBottom').style.display = 'block';
 
   // Header: ocultar logo, mostrar "Mi Bóveda"
   document.getElementById('headerLogo').style.display = 'none';
@@ -662,7 +684,7 @@ function cerrarSesion() {
   document.getElementById('bovedaView').style.display = 'none';
   document.getElementById('loginView').style.display = 'flex';
   document.getElementById('btnChat').style.display = 'none';
-  document.getElementById('btnSalir').style.display = 'none';
+  document.getElementById('btnSalirBottom').style.display = 'none';
   document.getElementById('celularInput').value = '';
 }
 
