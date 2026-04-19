@@ -14,101 +14,136 @@
 </head>
 <body class="bg-slate-950 min-h-screen flex items-center justify-center p-6">
 
-```
 <div class="w-full max-w-sm">
 
-    <!-- Header -->
-    <div class="text-center mb-8">
-        <div class="mono text-xs text-slate-500 tracking-widest uppercase mb-2">Paso del Norte Labs</div>
-        <div class="text-white text-xl font-semibold">Panel Interno · Yunus</div>
-        <div class="mono text-xs text-slate-500 mt-1">Confirmación de documentos</div>
-    </div>
-
-    <!-- Card -->
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
-
-        <div id="formView">
-            <div class="mb-5">
-                <label class="block mono text-xs text-slate-400 mb-2 uppercase tracking-wide">Celular del usuario</label>
-                <div class="flex">
-                    <span class="bg-slate-800 border border-r-0 border-slate-700 rounded-l-lg px-3 flex items-center mono text-sm text-slate-400">+52</span>
-                    <input
-                        id="celular"
-                        type="tel"
-                        inputmode="numeric"
-                        pattern="[0-9]{10}"
-                        maxlength="10"
-                        placeholder="10 dígitos"
-                        class="flex-1 bg-slate-800 border border-slate-700 rounded-r-lg px-4 py-3 text-white mono text-sm outline-none focus:border-slate-500 transition-colors"
-                    >
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <label class="block mono text-xs text-slate-400 mb-3 uppercase tracking-wide">¿Mandó comprobante de ingresos?</label>
-                <div class="grid grid-cols-2 gap-3">
-                    <button
-                        id="btnSi"
-                        onclick="selectDoc('si')"
-                        class="py-4 rounded-lg border-2 border-slate-700 text-slate-300 font-semibold text-sm transition-all hover:border-green-500 hover:text-green-400"
-                    >
-                        ✓ &nbsp;Sí mandó
-                    </button>
-                    <button
-                        id="btnNo"
-                        onclick="selectDoc('no')"
-                        class="py-4 rounded-lg border-2 border-slate-700 text-slate-300 font-semibold text-sm transition-all hover:border-red-500 hover:text-red-400"
-                    >
-                        ✗ &nbsp;No mandó
-                    </button>
-                </div>
-            </div>
-
-            <div id="errorMsg" class="hidden mb-4 bg-red-950 border border-red-800 rounded-lg px-4 py-3 mono text-xs text-red-400"></div>
-
-            <button
-                id="btnEnviar"
-                onclick="enviar()"
-                class="w-full bg-white text-slate-900 py-3 rounded-lg font-semibold text-sm hover:bg-slate-100 transition-colors disabled:opacity-40"
-            >
-                Confirmar y correr Risk Engine →
-            </button>
-        </div>
-
-        <!-- Success -->
-        <div id="successView" class="hidden text-center py-4">
-            <div class="w-14 h-14 bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            </div>
-            <div class="text-white font-semibold mb-1">Risk Engine activado</div>
-            <div id="successDetail" class="mono text-xs text-slate-400 mb-6"></div>
-            <button onclick="reset()" class="mono text-xs text-slate-500 hover:text-slate-300 underline underline-offset-2 transition-colors">
-                Confirmar otro usuario
-            </button>
-        </div>
-
-        <!-- Error fatal -->
-        <div id="errorView" class="hidden text-center py-4">
-            <div class="w-14 h-14 bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-7 h-7 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            </div>
-            <div class="text-white font-semibold mb-1">Error al enviar</div>
-            <div class="mono text-xs text-slate-400 mb-6">Verifica tu conexión e intenta de nuevo.</div>
-            <button onclick="reset()" class="mono text-xs text-slate-500 hover:text-slate-300 underline underline-offset-2 transition-colors">
-                Intentar de nuevo
-            </button>
-        </div>
-
-    </div>
-
-    <div class="mono text-center text-xs text-slate-700 mt-6">USO INTERNO · NO COMPARTIR</div>
+```
+<!-- Header -->
+<div class="text-center mb-8">
+    <div class="mono text-xs text-slate-500 tracking-widest uppercase mb-2">Paso del Norte Labs</div>
+    <div class="text-white text-xl font-semibold">Panel Interno · Yunus</div>
+    <div class="mono text-xs text-slate-500 mt-1">Confirmación de documentos</div>
 </div>
+
+<!-- Card -->
+<div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
+
+    <!-- Password gate -->
+    <div id="passwordView">
+        <div class="mb-5">
+            <label class="block mono text-xs text-slate-400 mb-2 uppercase tracking-wide">Contraseña del panel</label>
+            <input
+                id="passwordInput"
+                type="password"
+                placeholder="••••••••"
+                class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white mono text-sm outline-none focus:border-slate-500 transition-colors"
+                onkeydown="if(event.key==='Enter') verificarPassword()"
+            >
+        </div>
+        <div id="passwordError" class="hidden mb-4 bg-red-950 border border-red-800 rounded-lg px-4 py-3 mono text-xs text-red-400"></div>
+        <button
+            onclick="verificarPassword()"
+            class="w-full bg-white text-slate-900 py-3 rounded-lg font-semibold text-sm hover:bg-slate-100 transition-colors"
+        >
+            Entrar →
+        </button>
+    </div>
+
+    <!-- Form -->
+    <div id="formView" class="hidden">
+        <div class="mb-5">
+            <label class="block mono text-xs text-slate-400 mb-2 uppercase tracking-wide">Celular del usuario</label>
+            <div class="flex">
+                <span class="bg-slate-800 border border-r-0 border-slate-700 rounded-l-lg px-3 flex items-center mono text-sm text-slate-400">+52</span>
+                <input
+                    id="celular"
+                    type="tel"
+                    inputmode="numeric"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    placeholder="10 dígitos"
+                    class="flex-1 bg-slate-800 border border-slate-700 rounded-r-lg px-4 py-3 text-white mono text-sm outline-none focus:border-slate-500 transition-colors"
+                >
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <label class="block mono text-xs text-slate-400 mb-3 uppercase tracking-wide">¿Mandó comprobante de ingresos?</label>
+            <div class="grid grid-cols-2 gap-3">
+                <button
+                    id="btnSi"
+                    onclick="selectDoc('si')"
+                    class="py-4 rounded-lg border-2 border-slate-700 text-slate-300 font-semibold text-sm transition-all hover:border-green-500 hover:text-green-400"
+                >
+                    ✓ &nbsp;Sí mandó
+                </button>
+                <button
+                    id="btnNo"
+                    onclick="selectDoc('no')"
+                    class="py-4 rounded-lg border-2 border-slate-700 text-slate-300 font-semibold text-sm transition-all hover:border-red-500 hover:text-red-400"
+                >
+                    ✗ &nbsp;No mandó
+                </button>
+            </div>
+        </div>
+
+        <div id="errorMsg" class="hidden mb-4 bg-red-950 border border-red-800 rounded-lg px-4 py-3 mono text-xs text-red-400"></div>
+
+        <button
+            id="btnEnviar"
+            onclick="enviar()"
+            class="w-full bg-white text-slate-900 py-3 rounded-lg font-semibold text-sm hover:bg-slate-100 transition-colors disabled:opacity-40"
+        >
+            Confirmar y correr Risk Engine →
+        </button>
+    </div>
+
+    <!-- Success -->
+    <div id="successView" class="hidden text-center py-4">
+        <div class="w-14 h-14 bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <div class="text-white font-semibold mb-1">Risk Engine activado</div>
+        <div id="successDetail" class="mono text-xs text-slate-400 mb-6"></div>
+        <button onclick="resetForm()" class="mono text-xs text-slate-500 hover:text-slate-300 underline underline-offset-2 transition-colors">
+            Confirmar otro usuario
+        </button>
+    </div>
+
+    <!-- Error fatal -->
+    <div id="errorView" class="hidden text-center py-4">
+        <div class="w-14 h-14 bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-7 h-7 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </div>
+        <div class="text-white font-semibold mb-1">Error al enviar</div>
+        <div class="mono text-xs text-slate-400 mb-6">Verifica tu conexión e intenta de nuevo.</div>
+        <button onclick="resetForm()" class="mono text-xs text-slate-500 hover:text-slate-300 underline underline-offset-2 transition-colors">
+            Intentar de nuevo
+        </button>
+    </div>
+
+</div>
+
+<div class="mono text-center text-xs text-slate-700 mt-6">USO INTERNO · NO COMPARTIR</div>
 ```
 
-<script>
-    const WEBHOOK = 'https://hook.us2.make.com/xxdbhuqw3rv3klrq0kewfipr8hsiogwe';
+</div>
 
+<script>
     let docSeleccionado = null;
+    let panelPassword = '';
+
+    function verificarPassword() {
+        const input = document.getElementById('passwordInput').value.trim();
+        const errEl = document.getElementById('passwordError');
+        if (!input) {
+            errEl.textContent = 'Ingresa la contraseña.';
+            errEl.classList.remove('hidden');
+            return;
+        }
+        panelPassword = input;
+        document.getElementById('passwordView').classList.add('hidden');
+        document.getElementById('formView').classList.remove('hidden');
+    }
 
     function selectDoc(val) {
         docSeleccionado = val;
@@ -147,20 +182,28 @@
         btn.disabled = true;
         btn.textContent = 'Enviando...';
 
-        const payload = {
-            tipo: 'confirmar_docs',
-            celular: celular,
-            documentos: docSeleccionado
-        };
-
         try {
-            const res = await fetch(WEBHOOK, {
+            const res = await fetch('/api/confirmar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({
+                    password: panelPassword,
+                    celular,
+                    documentos: docSeleccionado
+                })
             });
 
-            if (res.ok || res.status === 200) {
+            if (res.status === 401) {
+                document.getElementById('formView').classList.add('hidden');
+                document.getElementById('passwordView').classList.remove('hidden');
+                document.getElementById('passwordError').textContent = 'Contraseña incorrecta.';
+                document.getElementById('passwordError').classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Confirmar y correr Risk Engine →';
+                return;
+            }
+
+            if (res.ok) {
                 document.getElementById('formView').classList.add('hidden');
                 document.getElementById('successView').classList.remove('hidden');
                 document.getElementById('successDetail').textContent =
@@ -174,7 +217,7 @@
         }
     }
 
-    function reset() {
+    function resetForm() {
         docSeleccionado = null;
         document.getElementById('celular').value = '';
         document.getElementById('errorMsg').classList.add('hidden');
