@@ -324,6 +324,21 @@ async function iniciarChat() {
     }
 }
 
+function mostrarChatDirecto() {
+    document.getElementById('loginBox').style.display = 'none';
+    const chatBox = document.getElementById('chatBox');
+    chatBox.style.display = 'flex';
+    document.getElementById('btnCerrarSesion').style.display = 'inline-block';
+    primerMensajeYunus = true;
+
+    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+    if (historial.length === 0) {
+        agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+    } else {
+        historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+    }
+}
+
 function mostrarError(msg) {
     const el = document.getElementById('loginError');
     el.textContent = msg;
