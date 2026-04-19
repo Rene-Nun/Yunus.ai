@@ -19,7 +19,7 @@
 ::selection { background: var(--volt); color: var(--ink); }
 
 html, body {
-  height: 100%;
+  min-height: 100%;
   background: var(--ink);
   color: var(--paper);
   font-family: 'DM Sans', sans-serif;
@@ -53,6 +53,13 @@ header {
   display: flex; align-items: center; gap: 8px;
 }
 .header-logo img { height: 64px; width: auto; object-fit: contain; }
+.header-boveda-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 0.08em; color: var(--paper);
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
 .header-title {
   font-family: 'DM Mono', monospace;
   font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
@@ -76,7 +83,6 @@ header {
 /* MAIN */
 main {
   padding-top: 60px;
-  min-height: 100vh;
   max-width: 480px;
   margin: 0 auto;
 }
@@ -382,8 +388,11 @@ main {
 
 <header>
   <div class="header-inner">
-    <div class="header-logo">
+    <div class="header-logo" id="headerLogo">
       <img src="darklogo.png" alt="Yunus" onerror="this.style.display='none'">
+    </div>
+    <div class="header-boveda-title" id="headerBovedaTitle">
+      Mi Bóveda
     </div>
     <div class="header-actions">
       <button class="btn-header primary" onclick="window.location.href='/chat'" id="btnChat" style="display:none;">Chat →</button>
@@ -510,6 +519,10 @@ async function cargarBoveda() {
   document.getElementById('loadingView').style.display = 'flex';
   document.getElementById('btnChat').style.display = 'inline-block';
   document.getElementById('btnSalir').style.display = 'inline-block';
+
+  // Header: ocultar logo, mostrar "Mi Bóveda"
+  document.getElementById('headerLogo').style.display = 'none';
+  document.getElementById('headerBovedaTitle').style.display = 'flex';
 
   try {
     const res = await fetch('/api/boveda?celular=' + encodeURIComponent(celular));
@@ -642,6 +655,11 @@ function cerrarSesion() {
   localStorage.removeItem('yunus_celular');
   localStorage.removeItem('yunus_historial');
   celular = '';
+
+  // Header: mostrar logo, ocultar "Mi Bóveda"
+  document.getElementById('headerLogo').style.display = 'flex';
+  document.getElementById('headerBovedaTitle').style.display = 'none';
+
   document.getElementById('bovedaView').style.display = 'none';
   document.getElementById('loginView').style.display = 'flex';
   document.getElementById('btnChat').style.display = 'none';
