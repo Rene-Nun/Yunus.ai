@@ -67,31 +67,27 @@ header {
 }
 .header-actions { display: flex; align-items: center; gap: 12px; }
 
-/* HAMBURGER BUTTON */
-.btn-hamburger {
-  width: 40px;
-  height: 40px;
+/* CHAT CIRCLE BUTTON */
+.btn-chat-circle {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--paper);
-  display: none;
-  align-items: center;
-  justify-content: center;
+  background: var(--volt);
+  color: var(--ink);
+  border: none;
   cursor: pointer;
-  transition: all 0.2s;
   padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 36px;
+  transition: opacity 0.2s;
+  display: none;
 }
-.btn-hamburger:hover {
-  border-color: var(--paper);
-  background: rgba(255,255,255,0.05);
+.btn-chat-circle:hover { opacity: 0.85; }
+.btn-chat-circle svg {
+  vertical-align: middle;
+  display: inline-block;
 }
-.btn-hamburger svg {
-  pointer-events: none;
-}
-.btn-hamburger .icon-close { display: none; }
-body.chat-mode .btn-hamburger .icon-menu { display: none; }
-body.chat-mode .btn-hamburger .icon-close { display: block; }
 
 /* MAIN */
 main {
@@ -150,33 +146,8 @@ main {
   letter-spacing: 0.06em; color: #ef4444;
 }
 
-/* SCREENS WRAPPER (BOVEDA + CHAT) */
-#screensWrapper {
-  display: none;
-  position: relative;
-  width: 100%;
-  height: calc(100dvh - 60px);
-  overflow: hidden;
-  background: var(--ink);
-}
-
-.app-screen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1);
-  background: var(--ink);
-}
-
 /* BOVEDA VIEW */
-#bovedaView {
-  transform: translateX(0);
-  padding: 24px 20px 40px;
-}
+#bovedaView { display: none; padding: 24px 20px 40px; }
 
 .section-label {
   font-family: 'DM Mono', monospace;
@@ -432,68 +403,6 @@ main {
   border-color: #ef4444;
 }
 
-/* CHAT VIEW */
-#chatView {
-  transform: translateX(100%);
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  background: var(--ink);
-}
-
-.chat-view-header {
-  height: 56px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  flex-shrink: 0;
-  background: rgba(10,10,10,0.95);
-  backdrop-filter: blur(16px);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-.chat-header-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px;
-  letter-spacing: 0.08em;
-  color: var(--paper);
-}
-.btn-close-chat {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--muted);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  padding: 0;
-}
-.btn-close-chat:hover {
-  border-color: var(--paper);
-  color: var(--paper);
-}
-.chat-iframe {
-  flex: 1;
-  border: none;
-  width: 100%;
-  background: var(--ink);
-}
-
-/* CARRUSEL STATES */
-body.chat-mode #bovedaView {
-  transform: translateX(-100%);
-}
-body.chat-mode #chatView {
-  transform: translateX(0);
-}
-
 /* FADE IN */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
@@ -516,15 +425,11 @@ body.chat-mode #chatView {
       Mi Bóveda
     </div>
     <div class="header-actions">
-      <button class="btn-hamburger" id="btnHamburger" onclick="toggleChat()" aria-label="Chat">
-        <svg class="icon-menu" width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <button class="btn-chat-circle" onclick="window.location.href='/chat'" id="btnChat" aria-label="Chat">
+        <svg width="16" height="12" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
           <line x1="1" y1="1" x2="17" y2="1"/>
           <line x1="1" y1="7" x2="17" y2="7"/>
           <line x1="1" y1="13" x2="17" y2="13"/>
-        </svg>
-        <svg class="icon-close" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-          <line x1="1" y1="1" x2="13" y2="13"/>
-          <line x1="13" y1="1" x2="1" y2="13"/>
         </svg>
       </button>
     </div>
@@ -556,35 +461,17 @@ body.chat-mode #chatView {
     <div class="loading-text">Cargando tu bóveda...</div>
   </div>
 
-  <!-- SCREENS: BOVEDA + CHAT -->
-  <div id="screensWrapper">
-
-    <!-- BOVEDA -->
-    <div id="bovedaView" class="app-screen">
-      <div class="welcome-bar fade-up">
-        <div class="welcome-sub" id="welcomeSub">0 boletos en bóveda</div>
-      </div>
-
-      <div class="section-label">Mis boletos</div>
-
-      <div id="ticketsContainer"></div>
-
-      <button class="btn-salir-bottom" id="btnSalirBottom" onclick="cerrarSesion()">Cerrar sesion</button>
+  <!-- BOVEDA -->
+  <div id="bovedaView">
+    <div class="welcome-bar fade-up">
+      <div class="welcome-sub" id="welcomeSub">0 boletos en bóveda</div>
     </div>
 
-    <!-- CHAT -->
-    <div id="chatView" class="app-screen">
-      <div class="chat-view-header">
-        <div class="chat-header-title">Yunus</div>
-        <button class="btn-close-chat" onclick="toggleChat()" aria-label="Cerrar chat">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <line x1="1" y1="1" x2="13" y2="13"/>
-            <line x1="13" y1="1" x2="1" y2="13"/>
-          </svg>
-        </button>
-      </div>
-      <iframe src="/chat" class="chat-iframe" title="Chat Yunus"></iframe>
-    </div>
+    <div class="section-label">Mis boletos</div>
+
+    <div id="ticketsContainer"></div>
+
+    <button class="btn-salir-bottom" id="btnSalirBottom" onclick="cerrarSesion()" style="display:none;">Cerrar sesion</button>
 
   </div>
 
@@ -662,16 +549,11 @@ async function entrar() {
   }
 }
 
-// ── TOGGLE CHAT / CARRUSEL ──
-function toggleChat() {
-  document.body.classList.toggle('chat-mode');
-}
-
 // ── CARGAR BÓVEDA ──
 async function cargarBoveda() {
   document.getElementById('loginView').style.display = 'none';
   document.getElementById('loadingView').style.display = 'flex';
-  document.getElementById('btnHamburger').style.display = 'inline-flex';
+  document.getElementById('btnChat').style.display = 'inline-block';
   document.getElementById('btnSalirBottom').style.display = 'block';
 
   // Header: ocultar logo, mostrar "Mi Bóveda"
@@ -683,7 +565,7 @@ async function cargarBoveda() {
     const data = await res.json();
 
     document.getElementById('loadingView').style.display = 'none';
-    document.getElementById('screensWrapper').style.display = 'block';
+    document.getElementById('bovedaView').style.display = 'block';
 
     const compras = data.compras || [];
     const nombre = data.nombre || celular;
@@ -698,7 +580,7 @@ async function cargarBoveda() {
 
   } catch {
     document.getElementById('loadingView').style.display = 'none';
-    document.getElementById('screensWrapper').style.display = 'block';
+    document.getElementById('bovedaView').style.display = 'block';
     renderTickets([]);
   }
 }
@@ -809,16 +691,13 @@ function cerrarSesion() {
   localStorage.removeItem('yunus_historial');
   celular = '';
 
-  // Reset carrusel
-  document.body.classList.remove('chat-mode');
-
   // Header: mostrar logo, ocultar "Mi Bóveda"
   document.getElementById('headerLogo').style.display = 'flex';
   document.getElementById('headerBovedaTitle').style.display = 'none';
 
-  document.getElementById('screensWrapper').style.display = 'none';
+  document.getElementById('bovedaView').style.display = 'none';
   document.getElementById('loginView').style.display = 'flex';
-  document.getElementById('btnHamburger').style.display = 'none';
+  document.getElementById('btnChat').style.display = 'none';
   document.getElementById('btnSalirBottom').style.display = 'none';
   document.getElementById('celularInput').value = '';
 }
