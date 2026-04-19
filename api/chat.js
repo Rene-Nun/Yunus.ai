@@ -12,8 +12,34 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const rateLimit = new Map();
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  const windowMs = 60 * 1000;
+  const max = 20;
+  if (!rateLimit.has(ip)) {
+    rateLimit.set(ip, { count: 1, start: now });
+    return true;
+  }
+  const entry = rateLimit.get(ip);
+  if (now - entry.start > windowMs) {
+    rateLimit.set(ip, { count: 1, start: now });
+    return true;
+  }
+  if (entry.count >= max) return false;
+  entry.count++;
+  return true;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
+  
+  const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || "unknown";
+if (!checkRateLimit(ip)) {
+  return res.status(429).json({ error: "Demasiadas solicitudes. Espera un momento." });
+}
+
 
   const { mensaje, celular, imagen } = req.body;
   const celularNotion = `whatsapp:+521${celular.replace('+52', '')}`;
