@@ -29,11 +29,13 @@ export default async function handler(req, res) {
   const raw = page.properties.Historial?.rich_text[0]?.plain_text || "";
 
   const historial = [];
-  const lines = raw.split('\n').filter(l => l.trim());
+  const entradas = raw.split(/(?=\[\d+\/\d+\/\d+,)/);
 
-  for (const line of lines) {
-    const usuarioMatch = line.match(/\] Usuario: (.+)/);
-    const yunusMatch = line.match(/\] Yunus: (.+)/);
+  for (const entrada of entradas) {
+    if (!entrada.trim()) continue;
+
+    const usuarioMatch = entrada.match(/\] Usuario: ([\s\S]+)/);
+    const yunusMatch = entrada.match(/\] Yunus: ([\s\S]+)/);
 
     if (usuarioMatch) {
       const contenido = usuarioMatch[1].trim();
