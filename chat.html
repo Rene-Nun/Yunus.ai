@@ -9,214 +9,194 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-```
-html { height: 100%; }
+    html { height: 100%; }
 
-body {
-    height: 100%;
-    font-family: 'Geist', sans-serif;
-    background: #f8fafc;
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-}
+    body {
+        height: 100%;
+        font-family: 'Geist', sans-serif;
+        background: #f8fafc;
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
 
-#app {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    max-width: 480px;
-    margin: 0 auto;
-    background: #f8fafc;
-}
+    #app {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        max-width: 480px;
+        margin: 0 auto;
+        background: #f8fafc;
+    }
 
-#appHeader {
-    background: #fff;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 14px 20px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+    #appHeader {
+        background: #fff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 14px 20px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-#appHeader span {
-    font-size: 15px;
-    font-weight: 500;
-    color: #0f172a;
-    letter-spacing: -0.01em;
-}
+    #appHeader span {
+        font-size: 15px;
+        font-weight: 500;
+        color: #0f172a;
+        letter-spacing: -0.01em;
+    }
 
-#btnCerrarSesion {
-    font-size: 13px;
-    font-weight: 500;
-    font-family: inherit;
-    color: #64748b;
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 6px 12px;
-    cursor: pointer;
-}
+    #btnCerrarSesion {
+        font-size: 13px;
+        font-weight: 500;
+        font-family: inherit;
+        color: #64748b;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
 
-#loginBox {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    overflow-y: auto;
-}
+    #loginBox {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        overflow-y: auto;
+    }
 
-#loginBox .inner {
-    width: 100%;
-    max-width: 320px;
-}
+    #loginBox .inner {
+        width: 100%;
+        max-width: 320px;
+    }
 
-#loginBox h2 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #0f172a;
-    margin-bottom: 6px;
-}
+    #loginBox h2 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 6px;
+    }
 
-#loginBox p {
-    font-size: 14px;
-    color: #94a3b8;
-    margin-bottom: 24px;
-}
+    #loginBox p {
+        font-size: 14px;
+        color: #94a3b8;
+        margin-bottom: 24px;
+    }
 
-.input-row {
-    display: flex;
-    gap: 8px;
-}
+    .input-row {
+        display: flex;
+        gap: 8px;
+    }
 
-.prefix {
-    padding: 12px;
-    background: #fff;
-    border: 1px solid #cbd5e1;
-    border-radius: 12px;
-    font-size: 16px;
-    color: #64748b;
-    flex-shrink: 0;
-}
+    .prefix {
+        padding: 12px;
+        background: #fff;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        font-size: 16px;
+        color: #64748b;
+        flex-shrink: 0;
+    }
 
-#celularInput {
-    flex: 1;
-    padding: 12px 14px;
-    border: 1px solid #cbd5e1;
-    border-radius: 12px;
-    font-size: 16px;
-    outline: none;
-    font-family: inherit;
-    background: #fff;
-    -webkit-appearance: none;
-    transition: border-color 0.2s;
-}
+    #celularInput {
+        flex: 1;
+        padding: 12px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        font-size: 16px;
+        outline: none;
+        font-family: inherit;
+        background: #fff;
+        -webkit-appearance: none;
+        transition: border-color 0.2s;
+    }
 
-#celularInput:focus { border-color: #0f172a; }
+    #celularInput:focus { border-color: #0f172a; }
 
-#btnEntrar {
-    width: 100%;
-    margin-top: 14px;
-    background: #0f172a;
-    color: #fff;
-    padding: 14px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    -webkit-appearance: none;
-}
+    #btnEntrar {
+        width: 100%;
+        margin-top: 14px;
+        background: #0f172a;
+        color: #fff;
+        padding: 14px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        -webkit-appearance: none;
+    }
 
-#btnEntrar:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+    #chatBox {
+        display: none;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+    }
 
-#loginError {
-    display: none;
-    margin-top: 12px;
-    padding: 10px 14px;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    border-radius: 10px;
-    font-size: 13px;
-    color: #dc2626;
-    text-align: center;
-}
+    #mensajes {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        -webkit-overflow-scrolling: touch;
+    }
 
-#chatBox {
-    display: none;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-}
+    #mensajes::-webkit-scrollbar { display: none; }
 
-#mensajes {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    -webkit-overflow-scrolling: touch;
-}
+    #inputBar {
+        background: #fff;
+        border-top: 1px solid #e2e8f0;
+        padding: 10px 14px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-shrink: 0;
+    }
 
-#mensajes::-webkit-scrollbar { display: none; }
+    #cameraBtn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        border: none;
+    }
 
-#inputBar {
-    background: #fff;
-    border-top: 1px solid #e2e8f0;
-    padding: 10px 14px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-shrink: 0;
-}
+    #inputMsg {
+        flex: 1;
+        background: #f1f5f9;
+        border: none;
+        border-radius: 999px;
+        padding: 11px 16px;
+        font-size: 16px;
+        outline: none;
+        font-family: inherit;
+        -webkit-appearance: none;
+        color: #0f172a;
+    }
 
-#cameraBtn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #f1f5f9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
-    border: none;
-}
-
-#inputMsg {
-    flex: 1;
-    background: #f1f5f9;
-    border: none;
-    border-radius: 999px;
-    padding: 11px 16px;
-    font-size: 16px;
-    outline: none;
-    font-family: inherit;
-    -webkit-appearance: none;
-    color: #0f172a;
-}
-
-#sendBtn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #0f172a;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-```
-
+    #sendBtn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #0f172a;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
 </style>
 
 </head>
@@ -230,7 +210,6 @@ body {
 </div>
 
 <!-- LOGIN -->
-
 <div id="loginBox">
     <div class="inner">
         <h2>Ingresa tu número</h2>
@@ -238,16 +217,13 @@ body {
         <div class="input-row">
             <span class="prefix">+52</span>
             <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10"
-                inputmode="numeric" pattern="[0-9]*"
-                onkeydown="if(event.key==='Enter') iniciarChat()">
+                inputmode="numeric" pattern="[0-9]*">
         </div>
         <button id="btnEntrar" onclick="iniciarChat()">Entrar →</button>
-        <div id="loginError"></div>
     </div>
 </div>
 
 <!-- CHAT -->
-
 <div id="chatBox">
     <div id="mensajes"></div>
     <div id="inputBar">
@@ -275,16 +251,6 @@ body {
 let celular = '';
 let primerMensajeYunus = true;
 
-function mostrarError(msg) {
-    const el = document.getElementById('loginError');
-    el.textContent = msg;
-    el.style.display = 'block';
-}
-
-function ocultarError() {
-    document.getElementById('loginError').style.display = 'none';
-}
-
 async function mostrarChat() {
     document.getElementById('loginBox').style.display = 'none';
     const chatBox = document.getElementById('chatBox');
@@ -292,7 +258,7 @@ async function mostrarChat() {
     document.getElementById('btnCerrarSesion').style.display = 'inline-block';
     primerMensajeYunus = true;
 
-    // Load historial from server (cross-device)
+    // Try to load historial from server (cross-device)
     try {
         const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
         if (res.ok) {
@@ -313,67 +279,12 @@ async function mostrarChat() {
     }
 }
 
-async function iniciarChat() {
+function iniciarChat() {
     const input = document.getElementById('celularInput').value.trim();
-    if (input.length !== 10) { mostrarError('Ingresa 10 dígitos válidos.'); return; }
-
-    ocultarError();
-    const btn = document.getElementById('btnEntrar');
-    btn.disabled = true;
-    btn.textContent = 'Verificando...';
-
-    const numeroCelular = '+52' + input;
-
-    try {
-        const res = await fetch(`/api/historial?celular=${encodeURIComponent(numeroCelular)}`);
-
-        if (res.status === 404) {
-            mostrarError('Este número no está registrado. Regístrate primero en yunusia.com');
-            btn.disabled = false;
-            btn.textContent = 'Entrar →';
-            return;
-        }
-
-        if (!res.ok) {
-            mostrarError('Error al verificar. Intenta de nuevo.');
-            btn.disabled = false;
-            btn.textContent = 'Entrar →';
-            return;
-        }
-
-        // Usuario verificado — continuar
-        celular = numeroCelular;
-        localStorage.setItem('yunus_celular', celular);
-
-        const data = await res.json();
-        if (data.historial && data.historial.length > 0) {
-            localStorage.setItem('yunus_historial', JSON.stringify(data.historial));
-        }
-
-        btn.disabled = false;
-        btn.textContent = 'Entrar →';
-        mostrarChatDirecto();
-
-    } catch {
-        mostrarError('Error de conexión. Intenta de nuevo.');
-        btn.disabled = false;
-        btn.textContent = 'Entrar →';
-    }
-}
-
-function mostrarChatDirecto() {
-    document.getElementById('loginBox').style.display = 'none';
-    const chatBox = document.getElementById('chatBox');
-    chatBox.style.display = 'flex';
-    document.getElementById('btnCerrarSesion').style.display = 'inline-block';
-    primerMensajeYunus = true;
-
-    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-    if (historial.length === 0) {
-        agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
-    } else {
-        historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
-    }
+    if (input.length !== 10) { alert('Ingresa 10 dígitos'); return; }
+    celular = '+52' + input;
+    localStorage.setItem('yunus_celular', celular);
+    mostrarChat();
 }
 
 function cerrarSesion() {
@@ -473,6 +384,7 @@ async function enviarFoto(input) {
             body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
         });
         const data = await res.json();
+        // Replace base64 in localStorage with Cloudinary URL for cross-device compatibility
         if (data.imagenUrl) {
             const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
             for (let i = historial.length - 1; i >= 0; i--) {
@@ -502,10 +414,6 @@ async function enviar() {
             body: JSON.stringify({ mensaje, celular })
         });
         const data = await res.json();
-        if (res.status === 429) {
-            agregarMensaje('Demasiados mensajes seguidos. Espera un momento.', 'yunus');
-            return;
-        }
         agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
     } catch {
         agregarMensaje('Error de conexión.', 'yunus');
