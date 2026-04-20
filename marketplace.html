@@ -16,23 +16,23 @@
   --card-bg: #111111;
 }
 
-- { box-sizing: border-box; margin: 0; padding: 0; }
-  ::selection { background: var(–volt); color: var(–ink); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+  ::selection { background: var(--volt); color: var(--ink); }
 
 html, body {
 min-height: 100dvh;
-background: var(–ink);
-color: var(–paper);
-font-family: ‘DM Sans’, sans-serif;
+background: var(--ink);
+color: var(--paper);
+font-family: 'DM Sans', sans-serif;
 font-weight: 300;
 overflow-x: hidden;
 }
 
 body::after {
-content: ‘’;
+content: '';
 position: fixed; inset: 0;
 pointer-events: none; z-index: 9999; opacity: 0.03;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’/%3E%3C/svg%3E”);
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 background-size: 128px;
 }
 
@@ -41,7 +41,7 @@ header {
 position: fixed; top: 0; left: 0; right: 0; z-index: 100;
 background: rgba(10,10,10,0.92);
 backdrop-filter: blur(16px);
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 }
 .header-inner {
 max-width: 480px; margin: 0 auto;
@@ -49,17 +49,17 @@ padding: 0 20px; height: 60px;
 display: flex; align-items: center; justify-content: space-between;
 }
 .header-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 20px; letter-spacing: 0.08em; color: var(–paper);
+font-family: 'Bebas Neue', sans-serif;
+font-size: 20px; letter-spacing: 0.08em; color: var(--paper);
 }
 .header-sub {
-font-family: ‘DM Mono’, monospace;
+font-family: 'DM Mono', monospace;
 font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-color: var(–volt); margin-top: 1px;
+color: var(--volt); margin-top: 1px;
 }
 .btn-nav {
 width: 36px; height: 36px; border-radius: 50%;
-background: var(–volt); color: var(–ink);
+background: var(--volt); color: var(--ink);
 border: none; cursor: pointer;
 display: flex; align-items: center; justify-content: center;
 transition: opacity 0.2s;
@@ -76,19 +76,19 @@ margin: 0 auto;
 /* HERO STRIP */
 .hero-strip {
 padding: 32px 20px 24px;
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 }
 .hero-eyebrow {
-font-family: ‘DM Mono’, monospace;
+font-family: 'DM Mono', monospace;
 font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-color: var(–muted); margin-bottom: 10px;
+color: var(--muted); margin-bottom: 10px;
 display: flex; align-items: center; gap: 10px;
 }
-.hero-eyebrow::before { content: ‘’; width: 16px; height: 1px; background: var(–volt); }
+.hero-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--volt); }
 .hero-h1 {
-font-family: ‘Bebas Neue’, sans-serif;
+font-family: 'Bebas Neue', sans-serif;
 font-size: 52px; line-height: 0.92; letter-spacing: 0.02em;
-color: var(–paper);
+color: var(--paper);
 }
 .hero-h1 em {
 color: transparent;
@@ -96,7 +96,7 @@ color: transparent;
 font-style: normal;
 }
 .hero-sub {
-font-size: 13px; color: var(–muted);
+font-size: 13px; color: var(--muted);
 line-height: 1.65; margin-top: 12px;
 }
 
@@ -104,17 +104,17 @@ line-height: 1.65; margin-top: 12px;
 .boletos-wrap { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
 
 .section-label {
-font-family: ‘DM Mono’, monospace;
+font-family: 'DM Mono', monospace;
 font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-color: var(–muted); margin-bottom: 16px;
+color: var(--muted); margin-bottom: 16px;
 display: flex; align-items: center; gap: 12px;
 }
-.section-label::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
 /* BOLETO CARD */
 .boleto-card {
-background: var(–card-bg);
-border: 1px solid var(–border);
+background: var(--card-bg);
+border: 1px solid var(--border);
 overflow: hidden;
 position: relative;
 transition: border-color 0.25s, transform 0.25s;
@@ -140,21 +140,21 @@ background: linear-gradient(135deg, #1a1a1a 0%, #1e1e1e 100%);
 display: flex; align-items: center; justify-content: center;
 }
 .boleto-img-placeholder span {
-font-family: ‘Bebas Neue’, sans-serif;
+font-family: 'Bebas Neue', sans-serif;
 font-size: 36px; color: rgba(242,239,232,0.04); letter-spacing: 0.1em;
 }
 
 .reventa-badge {
 position: absolute; top: 10px; left: 10px;
-font-family: ‘DM Mono’, monospace; font-size: 8px;
+font-family: 'DM Mono', monospace; font-size: 8px;
 letter-spacing: 0.14em; text-transform: uppercase;
-padding: 3px 8px; background: #f59e0b; color: var(–ink);
+padding: 3px 8px; background: #f59e0b; color: var(--ink);
 font-weight: 500;
 }
 .precio-badge {
 position: absolute; bottom: 10px; right: 10px;
-font-family: ‘Bebas Neue’, sans-serif; font-size: 22px;
-letter-spacing: 0.04em; color: var(–volt);
+font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+letter-spacing: 0.04em; color: var(--volt);
 background: rgba(10,10,10,0.8);
 padding: 4px 10px;
 backdrop-filter: blur(8px);
@@ -162,8 +162,8 @@ backdrop-filter: blur(8px);
 
 .boleto-body { padding: 16px 18px 18px; }
 .boleto-evento {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 24px; letter-spacing: 0.04em; color: var(–paper);
+font-family: 'Bebas Neue', sans-serif;
+font-size: 24px; letter-spacing: 0.04em; color: var(--paper);
 line-height: 1; margin-bottom: 3px;
 }
 .boleto-meta {
@@ -171,20 +171,20 @@ display: flex; align-items: center; gap: 12px;
 margin-bottom: 16px;
 }
 .boleto-zona {
-font-family: ‘DM Mono’, monospace; font-size: 9px;
-letter-spacing: 0.1em; text-transform: uppercase; color: var(–muted);
+font-family: 'DM Mono', monospace; font-size: 9px;
+letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
 }
 .boleto-fecha {
-font-family: ‘DM Mono’, monospace; font-size: 9px;
-letter-spacing: 0.08em; color: var(–muted);
+font-family: 'DM Mono', monospace; font-size: 9px;
+letter-spacing: 0.08em; color: var(--muted);
 }
-.boleto-fecha::before { content: ‘·’; margin-right: 12px; color: var(–border); }
+.boleto-fecha::before { content: '·'; margin-right: 12px; color: var(--border); }
 
 /* COMPRAR BTN */
 .btn-comprar {
 width: 100%; padding: 13px;
-background: var(–volt); color: var(–ink);
-font-family: ‘DM Mono’, monospace; font-size: 11px;
+background: var(--volt); color: var(--ink);
+font-family: 'DM Mono', monospace; font-size: 11px;
 letter-spacing: 0.1em; text-transform: uppercase;
 border: none; cursor: pointer; font-weight: 500;
 transition: opacity 0.2s;
@@ -199,36 +199,36 @@ display: flex; align-items: center;
 padding: 0 18px; position: relative; margin: 0 -1px;
 }
 .perf-divider::before {
-content: ‘’; position: absolute; left: -8px;
+content: ''; position: absolute; left: -8px;
 width: 14px; height: 14px; border-radius: 50%;
-background: var(–ink); border: 1px solid var(–border); z-index: 1;
+background: var(--ink); border: 1px solid var(--border); z-index: 1;
 }
 .perf-divider::after {
-content: ‘’; position: absolute; right: -8px;
+content: ''; position: absolute; right: -8px;
 width: 14px; height: 14px; border-radius: 50%;
-background: var(–ink); border: 1px solid var(–border); z-index: 1;
+background: var(--ink); border: 1px solid var(--border); z-index: 1;
 }
 .perf-line {
 flex: 1; height: 1px;
-background: repeating-linear-gradient(90deg, var(–border) 0, var(–border) 5px, transparent 5px, transparent 10px);
+background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 5px, transparent 5px, transparent 10px);
 }
 .perf-label {
-font-family: ‘DM Mono’, monospace; font-size: 8px;
-letter-spacing: 0.16em; text-transform: uppercase; color: var(–muted);
+font-family: 'DM Mono', monospace; font-size: 8px;
+letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
 padding: 8px 10px; flex-shrink: 0;
 }
 
 /* EMPTY STATE */
 .empty-state {
 margin: 20px; padding: 60px 24px;
-border: 1px solid var(–border); text-align: center;
+border: 1px solid var(--border); text-align: center;
 }
 .empty-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.4; }
 .empty-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 28px; letter-spacing: 0.04em; color: var(–paper); margin-bottom: 8px;
+font-family: 'Bebas Neue', sans-serif;
+font-size: 28px; letter-spacing: 0.04em; color: var(--paper); margin-bottom: 8px;
 }
-.empty-sub { font-size: 13px; color: var(–muted); line-height: 1.65; }
+.empty-sub { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
 /* LOADING */
 #loadingView {
@@ -238,21 +238,21 @@ min-height: calc(100dvh - 60px); gap: 20px;
 }
 .spinner {
 width: 28px; height: 28px; border-radius: 50%;
-border: 2px solid var(–border); border-top-color: var(–volt);
+border: 2px solid var(--border); border-top-color: var(--volt);
 animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-text {
-font-family: ‘DM Mono’, monospace; font-size: 10px;
-letter-spacing: 0.16em; text-transform: uppercase; color: var(–muted);
+font-family: 'DM Mono', monospace; font-size: 10px;
+letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
 }
 
 /* COUNT PILL */
 .count-pill {
 display: inline-block;
-font-family: ‘DM Mono’, monospace; font-size: 9px;
+font-family: 'DM Mono', monospace; font-size: 9px;
 letter-spacing: 0.1em; padding: 3px 10px;
-background: rgba(212,245,60,0.1); color: var(–volt);
+background: rgba(212,245,60,0.1); color: var(--volt);
 border: 1px solid rgba(212,245,60,0.2);
 margin-left: 8px;
 }
@@ -301,14 +301,12 @@ to { opacity: 1; transform: translateY(0); }
       <p class="hero-sub">Boletos puestos a reventa por usuarios Yunus. Precio al contado, transacción directa.</p>
     </div>
 
-```
-<div class="boletos-wrap">
-  <div class="section-label">
-    Disponibles <span id="countPill" class="count-pill">0</span>
-  </div>
-  <div id="boletosContainer"></div>
-</div>
-```
+    <div class="boletos-wrap">
+      <div class="section-label">
+        Disponibles <span id="countPill" class="count-pill">0</span>
+      </div>
+      <div id="boletosContainer"></div>
+    </div>
 
   </div>
 
