@@ -629,22 +629,15 @@ function cerrarSesion() {
   document.getElementById('headerBovedaTitle').style.display = 'none';
 
   document.getElementById('bovedaView').style.display = 'none';
-  document.getElementById('loginView').style.display = 'flex';
-  document.getElementById('btnChat').style.display = 'none';
-  document.getElementById('btnSalirBottom').style.display = 'none';
-  document.getElementById('celularInput').value = '';
 }
 
 // ── AUTO LOGIN ──
-window.addEventListener('DOMContentLoaded', () => {
-  const guardado = localStorage.getItem('yunus_celular');
-  if (guardado) {
-    celular = guardado;
-    cargarBoveda();
-  } else {
-    window.location.href = '/chat';
-  }
-});
+function cerrarSesion() {
+  localStorage.removeItem('yunus_celular');
+  localStorage.removeItem('yunus_historial');
+  celular = '';
+  window.location.href = '/chat';
+}
 </script>
 
 </body>
