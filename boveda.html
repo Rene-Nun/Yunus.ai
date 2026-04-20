@@ -447,41 +447,6 @@ function badgeClass(estado) {
   return 'badge-' + e;
 }
 
-// ── LOGIN ──
-function mostrarError(msg) {
-  const el = document.getElementById('loginError');
-  el.textContent = msg; el.style.display = 'block';
-}
-
-async function entrar() {
-  const input = document.getElementById('celularInput').value.trim();
-  if (input.length !== 10) { mostrarError('Ingresa exactamente 10 dígitos.'); return; }
-
-  celular = '+52' + input;
-  const btn = document.getElementById('btnEntrar');
-  btn.disabled = true; btn.textContent = 'Verificando...';
-  document.getElementById('loginError').style.display = 'none';
-
-  try {
-    const res = await fetch('/api/historial?celular=' + encodeURIComponent(celular));
-
-    if (res.status === 404) {
-      mostrarError('Este número no está registrado en Yunus.');
-      btn.disabled = false; btn.textContent = 'Entrar a mi Bóveda →';
-      return;
-    }
-
-    localStorage.setItem('yunus_celular', celular);
-    btn.disabled = false; btn.textContent = 'Entrar a mi Bóveda →';
-    cargarBoveda();
-
-  } catch {
-    localStorage.setItem('yunus_celular', celular);
-    btn.disabled = false; btn.textContent = 'Entrar a mi Bóveda →';
-    cargarBoveda();
-  }
-}
-
 // ── CARGAR BÓVEDA ──
 async function cargarBoveda() {
   document.getElementById('loadingView').style.display = 'flex';
@@ -637,6 +602,16 @@ function cerrarSesion() {
   celular = '';
   window.location.href = '/chat';
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  const guardado = localStorage.getItem('yunus_celular');
+  if (guardado) {
+    celular = guardado;
+    cargarBoveda();
+  } else {
+    window.location.href = '/chat';
+  }
+});
 </script>
 
 </body>
