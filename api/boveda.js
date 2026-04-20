@@ -11,7 +11,8 @@ export default async function handler(req, res) {
   const celular = req.query.celular;
   if (!celular) return res.status(400).json({ error: "Falta celular" });
 
-  const celularFormato = celular.startsWith('+52') ? celular : '+52' + celular;
+  const digits = celular.replace(/\D/g, '').slice(-10);
+  const celularFormato = digits;
 
   const search = await notion.databases.query({
     database_id: DATABASE_ID,
