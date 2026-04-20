@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Yunus — Chat</title>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --ink: #0a0a0a;
@@ -21,7 +21,7 @@
 
         body {
             height: 100%;
-            font-family: 'Geist', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             background: var(--ink);
             overflow: hidden;
             position: fixed;
@@ -46,14 +46,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-        }
-
-        #appHeader span {
-            font-family: 'DM Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--paper);
+            height: 60px;
         }
 
         #btnMenu {
@@ -96,6 +89,7 @@
             color: var(--ink);
         }
 
+        /* LOGIN SCREEN */
         #loginBox {
             flex: 1;
             display: flex;
@@ -108,24 +102,96 @@
         #loginBox .inner {
             width: 100%;
             max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        #loginBox h2 {
-            font-size: 20px;
-            font-weight: 600;
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fadeUp 0.6s ease 0.1s both;
+        }
+
+        .login-h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 42px;
+            line-height: 0.95;
+            letter-spacing: 0.02em;
             color: var(--paper);
-            margin-bottom: 6px;
+            text-align: center;
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.2s both;
         }
 
-        #loginBox p {
-            font-size: 14px;
+        .login-sub {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
             color: var(--muted);
-            margin-bottom: 24px;
+            line-height: 1.65;
+            text-align: center;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.3s both;
+        }
+
+        .btn-registro {
+            width: 100%;
+            padding: 14px;
+            background: var(--volt);
+            color: var(--ink);
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.4s both;
+        }
+        .btn-registro:hover { opacity: 0.85; }
+
+        .divider-wrap {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.45s both;
+        }
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .divider-text {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+            flex-shrink: 0;
         }
 
         .input-row {
             display: flex;
             gap: 8px;
+            width: 100%;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.5s both;
         }
 
         .prefix {
@@ -133,7 +199,8 @@
             background: rgba(255,255,255,0.04);
             border: 1px solid var(--border);
             border-radius: 12px;
-            font-size: 16px;
+            font-family: 'DM Mono', monospace;
+            font-size: 14px;
             color: var(--muted);
             flex-shrink: 0;
         }
@@ -156,18 +223,21 @@
 
         #btnEntrar {
             width: 100%;
-            margin-top: 14px;
+            margin-top: 12px;
             background: var(--volt);
             color: var(--ink);
             padding: 14px;
             border-radius: 12px;
-            font-size: 16px;
-            font-weight: 500;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
             border: none;
             cursor: pointer;
-            font-family: inherit;
-            -webkit-appearance: none;
+            font-weight: 500;
             transition: opacity 0.2s;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.55s both;
         }
         #btnEntrar:hover { opacity: 0.85; }
 
@@ -181,8 +251,25 @@
             font-size: 13px;
             color: #ef4444;
             text-align: center;
+            width: 100%;
         }
 
+        .login-footer {
+            margin-top: auto;
+            padding-top: 32px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.6s both;
+        }
+        .login-footer span {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* CHAT */
         #chatBox {
             display: none;
             flex-direction: column;
@@ -255,6 +342,11 @@
             transition: opacity 0.2s;
         }
         #sendBtn:hover { opacity: 0.85; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -269,7 +361,6 @@
                 <line x1="1" y1="13" x2="17" y2="13"/>
             </svg>
         </button>
-        <span>Yunus 1.0 BETA</span>
         <button type="button" id="btnMarketplace" onclick="window.location.href='marketplace.html'" aria-label="Marketplace">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
@@ -280,15 +371,39 @@
     <!-- LOGIN -->
     <div id="loginBox">
         <div class="inner">
-            <h2>Ingresa tu número</h2>
-            <p>El mismo con el que te registraste.</p>
+            <img src="darklogo.png" alt="Yunus" class="login-logo" onerror="this.src='darklogo.jpeg'">
+            
+            <h1 class="login-h1">Accede a los<br>mejores eventos<br>del año</h1>
+            
+            <p class="login-sub">Financia boletos para los eventos que no te puedes perder. Sin tarjeta, sin buró.</p>
+            
+            <a href="https://yunusia.com/?modal=onboarding" class="btn-registro">
+                Registrarse
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                </svg>
+            </a>
+            
+            <div class="divider-wrap">
+                <div class="divider-line"></div>
+                <span class="divider-text">¿Ya tienes cuenta?</span>
+                <div class="divider-line"></div>
+            </div>
+            
             <div class="input-row">
                 <span class="prefix">+52</span>
                 <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10"
                     inputmode="numeric" pattern="[0-9]*">
             </div>
+            
             <button id="btnEntrar" onclick="iniciarChat()">Entrar →</button>
+            
             <div id="loginError"></div>
+            
+            <div class="login-footer">
+                <span>Yunus 1.0 BETA · Privado. Solo invitados.</span>
+            </div>
         </div>
     </div>
 
