@@ -96,56 +96,6 @@ main {
   margin: 0 auto;
 }
 
-/* LOGIN VIEW */
-#loginView {
-  display: flex; align-items: center; justify-content: center;
-  min-height: calc(100dvh - 60px); padding: 32px 24px;
-}
-.login-inner { width: 100%; max-width: 320px; }
-.login-eyebrow {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--volt); margin-bottom: 20px;
-  display: flex; align-items: center; gap: 10px;
-}
-.login-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--volt); }
-.login-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 48px; line-height: 0.95; letter-spacing: 0.02em;
-  color: var(--paper); margin-bottom: 8px;
-}
-.login-sub { font-size: 13px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
-.input-row { display: flex; gap: 0; margin-bottom: 12px; }
-.prefix {
-  padding: 13px 14px;
-  background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-right: none;
-  font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted);
-  flex-shrink: 0;
-}
-#celularInput {
-  flex: 1; padding: 13px 16px;
-  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-  color: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 16px;
-  outline: none; transition: border-color 0.2s; -webkit-appearance: none;
-}
-#celularInput:focus { border-color: var(--volt); }
-#btnEntrar {
-  width: 100%; padding: 14px;
-  background: var(--volt); color: var(--ink);
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  border: none; cursor: pointer; transition: opacity 0.2s;
-  font-weight: 500;
-}
-#btnEntrar:hover { opacity: 0.85; }
-#btnEntrar:disabled { opacity: 0.5; cursor: not-allowed; }
-#loginError {
-  display: none; margin-top: 10px; padding: 10px 14px;
-  background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.06em; color: #ef4444;
-}
-
 /* BOVEDA VIEW */
 #bovedaView { display: none; padding: 24px 20px 40px; }
 
@@ -438,23 +388,6 @@ main {
 
 <main>
 
-  <!-- LOGIN -->
-  <div id="loginView">
-    <div class="login-inner">
-      <div class="login-eyebrow">Acceso Seguro</div>
-      <div class="login-title">Tu<br>Bóveda.</div>
-      <p class="login-sub">Ingresa el número con el que te registraste para ver tus boletos.</p>
-      <div class="input-row">
-        <span class="prefix">+52</span>
-        <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10"
-          inputmode="numeric" pattern="[0-9]*"
-          onkeydown="if(event.key==='Enter') entrar()">
-      </div>
-      <button id="btnEntrar" onclick="entrar()">Entrar a mi Bóveda →</button>
-      <div id="loginError"></div>
-    </div>
-  </div>
-
   <!-- LOADING -->
   <div id="loadingView">
     <div class="spinner"></div>
@@ -708,6 +641,8 @@ window.addEventListener('DOMContentLoaded', () => {
   if (guardado) {
     celular = guardado;
     cargarBoveda();
+  } else {
+    window.location.href = '/chat';
   }
 });
 </script>
