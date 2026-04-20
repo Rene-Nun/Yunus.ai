@@ -48,14 +48,9 @@ max-width: 480px; margin: 0 auto;
 padding: 0 20px; height: 60px;
 display: flex; align-items: center; justify-content: space-between;
 }
-.header-title {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 20px; letter-spacing: 0.08em; color: var(--paper);
-}
-.header-sub {
-font-family: 'DM Mono', monospace;
-font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-color: var(--volt); margin-top: 1px;
+.header-logo {
+height: 28px;
+display: block;
 }
 .btn-nav {
 width: 36px; height: 36px; border-radius: 50%;
@@ -273,17 +268,13 @@ to { opacity: 1; transform: translateY(0); }
 
 <header>
   <div class="header-inner">
-    <div>
-      <div class="header-title">Marketplace</div>
-      <div class="header-sub">Boletos en reventa</div>
-    </div>
-    <button class="btn-nav" onclick="window.location.href='/chat'" aria-label="Chat">
-      <svg width="16" height="12" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-        <line x1="1" y1="1" x2="17" y2="1"/>
-        <line x1="1" y1="7" x2="17" y2="7"/>
-        <line x1="1" y1="13" x2="17" y2="13"/>
+    <button class="btn-nav" onclick="window.location.href='/marketplace'" aria-label="Marketplace">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
       </svg>
     </button>
+    <img src="marketplacelogo.png" alt="Yunus Marketplace" class="header-logo">
+    <div style="width:36px;"></div>
   </div>
 </header>
 
