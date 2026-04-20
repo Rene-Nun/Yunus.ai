@@ -76,6 +76,26 @@
             color: var(--ink);
         }
 
+        #btnMarketplace {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid rgba(242,239,232,0.15);
+            color: var(--paper);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            padding: 0;
+        }
+        #btnMarketplace:active {
+            background: var(--volt);
+            border-color: var(--volt);
+            color: var(--ink);
+        }
+
         #loginBox {
             flex: 1;
             display: flex;
@@ -250,7 +270,11 @@
             </svg>
         </button>
         <span>Yunus 1.0 BETA</span>
-        <div style="width:36px;"></div>
+        <button type="button" id="btnMarketplace" onclick="window.location.href='marketplace.html'" aria-label="Marketplace">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+        </button>
     </div>
 
     <!-- LOGIN -->
@@ -301,6 +325,7 @@ async function mostrarChat() {
     const chatBox = document.getElementById('chatBox');
     chatBox.style.display = 'flex';
     document.getElementById('btnMenu').style.display = 'inline-flex';
+    document.getElementById('btnMarketplace').style.display = 'inline-flex';
     primerMensajeYunus = true;
 
     try {
@@ -372,6 +397,7 @@ function mostrarChatDirecto() {
     const chatBox = document.getElementById('chatBox');
     chatBox.style.display = 'flex';
     document.getElementById('btnMenu').style.display = 'inline-flex';
+    document.getElementById('btnMarketplace').style.display = 'inline-flex';
     primerMensajeYunus = true;
 
     const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
@@ -403,6 +429,7 @@ function cerrarSesion() {
     document.getElementById('chatBox').style.display = 'none';
     document.getElementById('loginBox').style.display = 'flex';
     document.getElementById('btnMenu').style.display = 'none';
+    document.getElementById('btnMarketplace').style.display = 'none';
     document.getElementById('mensajes').innerHTML = '';
     document.getElementById('celularInput').value = '';
     primerMensajeYunus = true;
