@@ -1170,6 +1170,17 @@ function toggleMenu() {
   function check(){ if(window.innerWidth<=900){h.style.display='block';}else{h.style.display='none';document.getElementById('mobileMenu').classList.remove('open');} }
   window.addEventListener('resize',check); check();
 })();
+// Auto-abrir modal de onboarding si viene desde chat.html
+(function() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('modal') === 'onboarding') {
+        // Limpiar el parametro de la URL para no repetir al recargar
+        const newUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, document.title, newUrl);
+        // Abrir el modal
+        openOnboardingModal();
+    }
+})();
 </script>
 
 </body>
