@@ -1,768 +1,671 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Yunus — Marketplace</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --ink: #0a0a0a;
-  --paper: #F2EFE8;
-  --volt: #D4F53C;
-  --muted: #5C5C5C;
-  --border: rgba(242,239,232,0.1);
-  --card-bg: #111111;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yunus — Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0a0a0a;
+            --paper: #F2EFE8;
+            --volt: #D4F53C;
+            --muted: #5C5C5C;
+            --border: rgba(242,239,232,0.1);
+            --card-bg: #111111;
+        }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-::selection { background: var(--volt); color: var(--ink); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body {
-min-height: 100dvh;
-background: var(--ink);
-color: var(--paper);
-font-family: 'DM Sans', sans-serif;
-font-weight: 300;
-overflow-x: hidden;
-}
+        html { height: 100%; }
 
-body::after {
-content: '';
-position: fixed; inset: 0;
-pointer-events: none; z-index: 9999; opacity: 0.03;
-background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-background-size: 128px;
-}
+        body {
+            height: 100%;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--ink);
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            color: var(--paper);
+        }
 
-/* HEADER */
-header {
-position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-background: rgba(10,10,10,0.92);
-backdrop-filter: blur(16px);
-border-bottom: 1px solid var(--border);
-}
-.header-inner {
-max-width: 480px; margin: 0 auto;
-padding: 0 20px; height: 60px;
-display: flex; align-items: center; justify-content: space-between;
-}
-.header-logo {
-height: 120px;
-display: block;
-}
-.btn-nav {
-width: 36px; height: 36px; border-radius: 50%;
-background: var(--volt); color: var(--ink);
-border: none; cursor: pointer;
-display: flex; align-items: center; justify-content: center;
-transition: opacity 0.2s;
-}
-.btn-nav:hover { opacity: 0.85; }
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--ink);
+        }
 
-/* TOGGLE TABS */
-.toggle-wrap {
-padding: 80px 20px 0;
-max-width: 480px; margin: 0 auto;
-}
-.toggle-pill {
-display: flex;
-background: rgba(255,255,255,0.04);
-border: 1px solid var(--border);
-border-radius: 999px;
-padding: 4px;
-gap: 4px;
-}
-.toggle-btn {
-flex: 1;
-padding: 12px 20px;
-border: none;
-border-radius: 999px;
-background: transparent;
-color: var(--muted);
-font-family: 'DM Mono', monospace;
-font-size: 11px;
-letter-spacing: 0.1em;
-text-transform: uppercase;
-cursor: pointer;
-transition: all 0.3s ease;
-font-weight: 500;
-}
-.toggle-btn.active {
-background: var(--volt);
-color: var(--ink);
-}
+        #appHeader {
+            background: rgba(10,10,10,0.95);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 20px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+        }
 
-/* MAIN */
-main {
-padding-top: 16px;
-max-width: 480px;
-margin: 0 auto;
-}
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-/* TIENDA — BOLETERA */
-#tiendaView { display: none; }
-#tiendaView.active { display: block; }
+        #chatLogo {
+            display: none;
+            height: 150px;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
-.tienda-hero {
-padding: 32px 20px 24px;
-border-bottom: 1px solid var(--border);
-}
-.tienda-h1 {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 48px; line-height: 0.92; letter-spacing: 0.02em;
-color: var(--paper); margin-bottom: 12px;
-}
-.tienda-sub {
-font-size: 13px; color: var(--muted);
-line-height: 1.65;
-}
+        #chatVersion {
+            display: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 15px;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
-.boletos-grid {
-padding: 20px;
-display: flex;
-flex-direction: column;
-gap: 16px;
-}
+        /* LOGIN SCREEN */
+        #loginBox {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow-y: auto;
+        }
 
-.boleto-tienda {
-background: var(--card-bg);
-border: 1px solid var(--border);
-overflow: hidden;
-position: relative;
-transition: border-color 0.25s, transform 0.25s;
-}
-.boleto-tienda:hover {
-border-color: rgba(212,245,60,0.35);
-transform: translateY(-2px);
-}
+        #loginBox .inner {
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-.boleto-tienda-img {
-position: relative; width: 100%; height: 160px; overflow: hidden;
-}
-.boleto-tienda-img img {
-width: 100%; height: 100%;
-object-fit: cover; display: block;
-filter: brightness(0.6) saturate(0.8);
-transition: filter 0.3s;
-}
-.boleto-tienda:hover .boleto-tienda-img img {
-filter: brightness(0.75) saturate(1);
-}
+        .login-logo {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fadeUp 0.6s ease 0.1s both;
+        }
 
-.boleto-tienda-badge {
-position: absolute; top: 12px; left: 12px;
-font-family: 'DM Mono', monospace; font-size: 8px;
-letter-spacing: 0.14em; text-transform: uppercase;
-padding: 4px 10px; background: var(--volt); color: var(--ink);
-font-weight: 500;
-}
-.boleto-tienda-precio {
-position: absolute; bottom: 12px; right: 12px;
-font-family: 'Bebas Neue', sans-serif; font-size: 24px;
-letter-spacing: 0.04em; color: var(--volt);
-background: rgba(10,10,10,0.8);
-padding: 6px 12px;
-backdrop-filter: blur(8px);
-}
+        .login-h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 42px;
+            line-height: 0.95;
+            letter-spacing: 0.02em;
+            color: var(--paper);
+            text-align: center;
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.2s both;
+        }
 
-.boleto-tienda-body { padding: 18px 20px 20px; }
-.boleto-tienda-evento {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 28px; letter-spacing: 0.04em; color: var(--paper);
-line-height: 1; margin-bottom: 6px;
-}
-.boleto-tienda-meta {
-display: flex; align-items: center; gap: 12px;
-margin-bottom: 8px;
-}
-.boleto-tienda-tag {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-}
-.boleto-tienda-fecha {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.08em; color: var(--muted);
-}
-.boleto-tienda-fecha::before { content: '·'; margin-right: 12px; color: var(--border); }
+        .login-sub {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.65;
+            text-align: center;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.3s both;
+        }
 
-.boleto-tienda-info {
-font-size: 13px; color: var(--muted);
-line-height: 1.65; margin-bottom: 16px;
-}
+        .btn-registro {
+            width: 100%;
+            padding: 14px;
+            background: var(--volt);
+            color: var(--ink);
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.4s both;
+        }
+        .btn-registro:hover { opacity: 0.85; }
 
-.btn-comprar-tienda {
-width: 100%; padding: 14px;
-background: var(--volt); color: var(--ink);
-font-family: 'DM Mono', monospace; font-size: 11px;
-letter-spacing: 0.1em; text-transform: uppercase;
-border: none; cursor: pointer; font-weight: 500;
-transition: opacity 0.2s;
-display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.btn-comprar-tienda:hover { opacity: 0.85; }
+        .divider-wrap {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.45s both;
+        }
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .divider-text {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
 
-/* MARKETPLACE — ORIGINAL */
-#marketplaceView { display: none; }
-#marketplaceView.active { display: block; }
+        .input-row {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.5s both;
+        }
 
-.hero-strip {
-padding: 32px 20px 24px;
-border-bottom: 1px solid var(--border);
-}
-.hero-sub {
-font-size: 13px; color: var(--muted);
-line-height: 1.65;
-}
+        .prefix {
+            padding: 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: 'DM Mono', monospace;
+            font-size: 14px;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
 
-.boletos-wrap { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        #celularInput {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            font-family: inherit;
+            background: rgba(255,255,255,0.04);
+            -webkit-appearance: none;
+            transition: border-color 0.2s;
+            color: var(--paper);
+        }
+        #celularInput::placeholder { color: var(--muted); }
+        #celularInput:focus { border-color: var(--volt); }
 
-.section-label {
-font-family: 'DM Mono', monospace;
-font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-color: var(--muted); margin-bottom: 16px;
-display: flex; align-items: center; gap: 12px;
-}
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        #btnEntrar {
+            width: 100%;
+            margin-top: 12px;
+            background: var(--volt);
+            color: var(--ink);
+            padding: 14px;
+            border-radius: 12px;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.55s both;
+        }
+        #btnEntrar:hover { opacity: 0.85; }
 
-/* BOLETO CARD */
-.boleto-card {
-background: var(--card-bg);
-border: 1px solid var(--border);
-overflow: hidden;
-position: relative;
-transition: border-color 0.25s, transform 0.25s;
-}
-.boleto-card:hover {
-border-color: rgba(212,245,60,0.35);
-transform: translateY(-2px);
-}
+        #loginError {
+            display: none;
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #ef4444;
+            text-align: center;
+            width: 100%;
+        }
 
-.boleto-img-wrap {
-position: relative; width: 100%; height: 120px; overflow: hidden;
-}
-.boleto-img {
-width: 100%; height: 100%;
-object-fit: cover; display: block;
-filter: brightness(0.6) saturate(0.8);
-transition: filter 0.3s;
-}
-.boleto-card:hover .boleto-img { filter: brightness(0.75) saturate(1); }
-.boleto-img-placeholder {
-width: 100%; height: 120px;
-background: linear-gradient(135deg, #1a1a1a 0%, #1e1e1e 100%);
-display: flex; align-items: center; justify-content: center;
-}
-.boleto-img-placeholder span {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 36px; color: rgba(242,239,232,0.04); letter-spacing: 0.1em;
-}
+        .login-footer {
+            margin-top: auto;
+            padding-top: 32px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.6s both;
+        }
+        .login-footer span {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
 
-.reventa-badge {
-position: absolute; top: 10px; left: 10px;
-font-family: 'DM Mono', monospace; font-size: 8px;
-letter-spacing: 0.14em; text-transform: uppercase;
-padding: 3px 8px; background: #f59e0b; color: var(--ink);
-font-weight: 500;
-}
-.precio-badge {
-position: absolute; bottom: 10px; right: 10px;
-font-family: 'Bebas Neue', sans-serif; font-size: 22px;
-letter-spacing: 0.04em; color: var(--volt);
-background: rgba(10,10,10,0.8);
-padding: 4px 10px;
-backdrop-filter: blur(8px);
-}
+        /* CHAT */
+        #chatBox {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+        }
 
-.boleto-body { padding: 16px 18px 18px; }
-.boleto-evento {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 24px; letter-spacing: 0.04em; color: var(--paper);
-line-height: 1; margin-bottom: 3px;
-}
-.boleto-meta {
-display: flex; align-items: center; gap: 12px;
-margin-bottom: 16px;
-}
-.boleto-zona {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-}
-.boleto-fecha {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.08em; color: var(--muted);
-}
-.boleto-fecha::before { content: '·'; margin-right: 12px; color: var(--border); }
+        #mensajes {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            -webkit-overflow-scrolling: touch;
+            background: #0d0d0d;
+        }
 
-.btn-comprar {
-width: 100%; padding: 13px;
-background: var(--volt); color: var(--ink);
-font-family: 'DM Mono', monospace; font-size: 11px;
-letter-spacing: 0.1em; text-transform: uppercase;
-border: none; cursor: pointer; font-weight: 500;
-transition: opacity 0.2s;
-display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.btn-comprar:hover { opacity: 0.85; }
-.btn-comprar svg { flex-shrink: 0; }
+        #mensajes::-webkit-scrollbar { display: none; }
 
-.perf-divider {
-display: flex; align-items: center;
-padding: 0 18px; position: relative; margin: 0 -1px;
-}
-.perf-divider::before {
-content: ''; position: absolute; left: -8px;
-width: 14px; height: 14px; border-radius: 50%;
-background: var(--ink); border: 1px solid var(--border); z-index: 1;
-}
-.perf-divider::after {
-content: ''; position: absolute; right: -8px;
-width: 14px; height: 14px; border-radius: 50%;
-background: var(--ink); border: 1px solid var(--border); z-index: 1;
-}
-.perf-line {
-flex: 1; height: 1px;
-background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 5px, transparent 5px, transparent 10px);
-}
-.perf-label {
-font-family: 'DM Mono', monospace; font-size: 8px;
-letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-padding: 8px 10px; flex-shrink: 0;
-}
+        #inputBar {
+            background: #111;
+            border-top: 1px solid var(--border);
+            padding: 10px 14px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
 
-.empty-state {
-margin: 20px; padding: 60px 24px;
-border: 1px solid var(--border); text-align: center;
-}
-.empty-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.4; }
-.empty-title {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 28px; letter-spacing: 0.04em; color: var(--paper); margin-bottom: 8px;
-}
-.empty-sub { font-size: 13px; color: var(--muted); line-height: 1.65; }
+        #cameraBtn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        #cameraBtn svg { stroke: var(--muted); }
 
-#loadingView {
-display: none; flex-direction: column;
-align-items: center; justify-content: center;
-min-height: calc(100dvh - 60px); gap: 20px;
-}
-.spinner {
-width: 28px; height: 28px; border-radius: 50%;
-border: 2px solid var(--border); border-top-color: var(--volt);
-animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-text {
-font-family: 'DM Mono', monospace; font-size: 10px;
-letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-}
+        #inputMsg {
+            flex: 1;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-size: 14px;
+            outline: none;
+            font-family: inherit;
+            -webkit-appearance: none;
+            color: var(--paper);
+        }
+        #inputMsg::placeholder { color: var(--muted); }
 
-.count-pill {
-display: inline-block;
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.1em; padding: 3px 10px;
-background: rgba(212,245,60,0.1); color: var(--volt);
-border: 1px solid rgba(212,245,60,0.2);
-margin-left: 8px;
-}
+        #sendBtn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--volt);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: opacity 0.2s;
+        }
+        #sendBtn:hover { opacity: 0.85; }
 
-/* CHAT POPUP */
-.chat-popup-bg {
-position: fixed; inset: 0;
-background: rgba(0,0,0,0.8);
-backdrop-filter: blur(8px);
-z-index: 1000;
-display: none;
-align-items: center;
-justify-content: center;
-padding: 20px;
-}
-.chat-popup-bg.open { display: flex; }
-.chat-popup-panel {
-width: 100%; max-width: 480px; height: 85vh;
-max-height: 700px;
-background: var(--ink);
-border: 1px solid var(--border);
-border-radius: 16px;
-overflow: hidden;
-position: relative;
-display: flex;
-flex-direction: column;
-}
-.chat-popup-header {
-padding: 10px 16px;
-border-bottom: 1px solid var(--border);
-display: flex;
-align-items: center;
-justify-content: space-between;
-background: rgba(10,10,10,0.95);
-flex-shrink: 0;
-}
-.chat-popup-logo {
-height: 40px;
-object-fit: contain;
-display: block;
-}
-.chat-popup-version {
-font-family: 'DM Mono', monospace;
-font-size: 10px;
-letter-spacing: 0.08em;
-color: var(--muted);
-margin-left: 6px;
-}
-.chat-popup-close {
-background: none; border: none; cursor: pointer;
-color: var(--muted); font-size: 24px;
-line-height: 1; padding: 4px;
-transition: color 0.2s;
-}
-.chat-popup-close:hover { color: var(--paper); }
-.chat-popup-iframe {
-flex: 1;
-width: 100%;
-border: none;
-background: var(--ink);
-}
-
-/* BURBUJA FLOTANTE CHAT */
-.chat-bubble {
-position: fixed;
-bottom: 24px;
-right: 24px;
-width: 56px;
-height: 56px;
-border-radius: 50%;
-background: var(--volt);
-color: var(--ink);
-border: none;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-z-index: 999;
-box-shadow: 0 4px 20px rgba(212,245,60,0.3);
-transition: transform 0.2s, box-shadow 0.2s;
-}
-.chat-bubble:hover {
-transform: scale(1.05);
-box-shadow: 0 6px 24px rgba(212,245,60,0.4);
-}
-.chat-bubble svg {
-width: 24px;
-height: 24px;
-}
-
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(10px); }
-to { opacity: 1; transform: translateY(0); }
-}
-.fade-up { animation: fadeUp 0.4s ease both; }
-.d1 { animation-delay: 0.05s; }
-.d2 { animation-delay: 0.1s; }
-.d3 { animation-delay: 0.15s; }
-</style>
-
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <button class="btn-nav" onclick="window.location.href='boveda.html'" aria-label="Bóveda">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="12" x2="21" y2="12"/>
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-    </button>
-    <img id="headerLogo" src="logomarketplace.png" alt="Yunus Marketplace" class="header-logo">
-    <div style="width:36px;"></div>
-  </div>
-</header>
+<div id="app">
 
-<div class="toggle-wrap">
-  <div class="toggle-pill">
-    <button class="toggle-btn active" id="tabTienda" onclick="switchTab('tienda')">Tienda</button>
-    <button class="toggle-btn" id="tabMarketplace" onclick="switchTab('marketplace')">Marketplace</button>
-  </div>
-</div>
-
-<main>
-
-  <!-- TIENDA VIEW -->
-  <div id="tiendaView" class="active">
-    <div class="tienda-hero">
-      <h1 class="tienda-h1">Tu boletera<br>de eventos.</h1>
-      <p class="tienda-sub">Financia boletos para los conciertos y festivales que no te puedes perder. Sin tarjeta, sin buró. Paga un 15% de enganche y divide el resto en quincenas.</p>
-    </div>
-
-    <div class="boletos-grid" id="tiendaGrid"></div>
-  </div>
-
-  <!-- MARKETPLACE VIEW -->
-  <div id="marketplaceView">
-    <div id="loadingView">
-      <div class="spinner"></div>
-      <div class="loading-text">Cargando boletos...</div>
-    </div>
-
-    <div id="mainView" style="display:none;">
-      <div class="hero-strip fade-up">
-        <p class="hero-sub">Boletos puestos a reventa por usuarios Yunus. Precio al contado, transacción directa.</p>
-      </div>
-
-      <div class="boletos-wrap">
-        <div class="section-label">
-          Disponibles <span id="countPill" class="count-pill">0</span>
+    <div id="appHeader">
+        <div class="header-left">
+            <img id="chatLogo" src="ialogo.png" alt="Yunus">
+            <span id="chatVersion">1.0.0</span>
         </div>
-        <div id="boletosContainer"></div>
-      </div>
     </div>
-  </div>
 
-</main>
-
-<!-- CHAT POPUP -->
-<div id="chatPopup" class="chat-popup-bg" onclick="if(event.target===this)closeChatPopup()">
-  <div class="chat-popup-panel" onclick="event.stopPropagation()">
-    <div class="chat-popup-header">
-      <div style="display:flex;align-items:center;">
-        <img src="ialogo.png" alt="Yunus" class="chat-popup-logo">
-        <span class="chat-popup-version">1.0.0</span>
-      </div>
-      <button class="chat-popup-close" onclick="closeChatPopup()">×</button>
+    <!-- LOGIN -->
+    <div id="loginBox">
+        <div class="inner">
+            <img src="darklogo.png" alt="Yunus" class="login-logo" onerror="this.src='darklogo.jpeg'">
+            
+            <h1 class="login-h1">Accede a los<br>mejores eventos<br>del año</h1>
+            
+            <p class="login-sub">Financia boletos para los conciertos y festivales que no te puedes perder. Sin tarjeta, sin buró.</p>
+            
+            <a href="index.html?modal=onboarding" class="btn-registro">
+                Registrarse
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                </svg>
+            </a>
+            
+            <div class="divider-wrap">
+                <div class="divider-line"></div>
+                <span class="divider-text">¿Ya tienes cuenta?</span>
+                <div class="divider-line"></div>
+            </div>
+            
+            <div class="input-row">
+                <span class="prefix">+52</span>
+                <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10"
+                    inputmode="numeric" pattern="[0-9]*">
+            </div>
+            
+            <button id="btnEntrar" onclick="iniciarChat()">Entrar →</button>
+            
+            <div id="loginError"></div>
+            
+            <div class="login-footer">
+                <span>Yunus 1.0.1 BETA</span>
+            </div>
+        </div>
     </div>
-    <iframe id="chatIframe" class="chat-popup-iframe" src=""></iframe>
-  </div>
+
+    <!-- CHAT -->
+    <div id="chatBox">
+        <div id="mensajes"></div>
+        <div id="inputBar">
+            <label for="inputFoto" id="cameraBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                </svg>
+            </label>
+            <input id="inputFoto" type="file" accept="image/*" style="display:none;" onchange="enviarFoto(this)">
+            <input id="inputMsg" type="text" placeholder="Escribe un mensaje..."
+                onkeydown="if(event.key==='Enter') enviar()">
+            <button id="sendBtn" onclick="enviar()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
 </div>
-
-<!-- BURBUJA FLOTANTE -->
-<button class="chat-bubble" onclick="openChatPopup()" aria-label="Abrir chat">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-  </svg>
-</button>
 
 <script>
-const eventosTienda = [
-  {
-    name: 'Baja Beach Fest',
-    tag: 'Festival · Rosarito',
-    fecha: '7-9 Ago 2026',
-    precio: 'Desde $49 USD × quincena',
-    img: 'BajaB.jpeg',
-    accent: '#2563eb',
-    descripcion: 'El festival de reggaetón más grande de Baja California. 3 días de música, playa y energía sin igual. Arena, mar y los mejores artistas del género urbano.'
-  },
-  {
-    name: 'Rosalía: Lux Tour',
-    tag: 'Concierto · CDMX / GDL',
-    fecha: 'Ago 2026',
-    precio: 'Desde $208 MXN × quincena',
-    img: 'Rosalia.jpeg',
-    accent: '#be185d',
-    descripcion: 'La artista española más innovadora del momento llega a México con su nuevo tour. Flamenco futurista, pop experimental y una puesta en escena inolvidable.'
-  },
-  {
-    name: 'Vans Warped Tour',
-    tag: 'Festival · CDMX',
-    fecha: '12-13 Sep 2026',
-    precio: 'Desde $380 MXN × quincena',
-    img: 'VansW.webp',
-    accent: '#ea580c',
-    descripcion: 'El festival de punk rock y metal más icónico del mundo regresa a la Ciudad de México. 2 días de mosh pits, skate y la cultura alternativa en su máxima expresión.'
-  },
-  {
-    name: 'Bruno Mars',
-    tag: 'Concierto · CDMX',
-    fecha: '4-7-8 Dic 2026',
-    precio: 'Desde $144 MXN × quincena',
-    img: 'BrunoM.jpeg',
-    accent: '#16a34a',
-    descripcion: 'El showman del pop y R&B moderno aterriza en el Foro Sol. Música, baile y una producción espectacular que no te puedes perder.'
-  }
-];
+let celular = '';
+let primerMensajeYunus = true;
 
-const eventoImgs = {
-  'Baja Beach Fest': 'BajaB.jpeg',
-  'Rosalía Lux Tour': 'Rosalia.jpeg',
-  'Vans Warped Tour': 'VansW.webp',
-  'Bruno Mars': 'BrunoM.jpeg',
-};
+async function mostrarChat() {
+    document.getElementById('loginBox').style.display = 'none';
+    const chatBox = document.getElementById('chatBox');
+    chatBox.style.display = 'flex';
+    const chatLogo = document.getElementById('chatLogo');
+    chatLogo.style.display = 'block';
+    setTimeout(() => chatLogo.style.opacity = '1', 10);
+    const chatVersion = document.getElementById('chatVersion');
+    chatVersion.style.display = 'inline';
+    setTimeout(() => chatVersion.style.opacity = '1', 10);
+    primerMensajeYunus = true;
 
-function fmtMXN(n) {
-  if (!n) return '—';
-  return '$' + n.toLocaleString('es-MX', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' MXN';
-}
-
-function fmtFecha(str) {
-  if (!str) return null;
-  const d = new Date(str + 'T12:00:00');
-  return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
-}
-
-function buildWALink(evento) {
-  const msg = encodeURIComponent(`¡Hola! Me interesa adquirir el boleto para *${evento || 'el evento'}* listado en el Marketplace de Yunus. ¿Podría darme más información?`);
-  return `https://wa.me/526563161314?text=${msg}`;
-}
-
-function buildTiendaCard(evento, i) {
-  return `
-  <div class="boleto-tienda fade-up d${Math.min(i+1,3)}">
-    <div class="boleto-tienda-img">
-      <img src="${evento.img}" alt="${evento.name}" onerror="this.parentElement.style.background='${evento.accent}20'">
-      <div class="boleto-tienda-badge">Financiamiento Yunus</div>
-      <div class="boleto-tienda-precio">${evento.precio}</div>
-    </div>
-    <div class="boleto-tienda-body">
-      <div class="boleto-tienda-evento">${evento.name}</div>
-      <div class="boleto-tienda-meta">
-        <span class="boleto-tienda-tag">${evento.tag}</span>
-        <span class="boleto-tienda-fecha">${evento.fecha}</span>
-      </div>
-      <p class="boleto-tienda-info">${evento.descripcion}</p>
-      <button class="btn-comprar-tienda" onclick="comprarEvento('${evento.name.replace(/'/g, "\\'")}')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
-        Comprar boleto
-      </button>
-    </div>
-  </div>`;
-}
-
-function comprarEvento(nombreEvento) {
-  const mensaje = encodeURIComponent(`Hola Yunus, quiero comprar un boleto para ${nombreEvento}. ¿Me puedes dar más información sobre disponibilidad y el plan de pagos?`);
-  openChatPopup(mensaje);
-}
-
-function buildCard(b, i) {
-  const img = eventoImgs[b.evento] || null;
-  const fecha = fmtFecha(b.fechaEvento);
-
-  return `
-  <div class="boleto-card fade-up d${Math.min(i+1,3)}">
-    <div class="boleto-img-wrap">
-      ${img
-        ? `<img src="${img}" alt="${b.evento}" class="boleto-img">`
-        : `<div class="boleto-img-placeholder"><span>${b.evento || 'YUNUS'}</span></div>`
-      }
-      <div class="reventa-badge">Reventa</div>
-      ${b.precioReventa ? `<div class="precio-badge">${fmtMXN(b.precioReventa)}</div>` : ''}
-    </div>
-
-    <div class="boleto-body">
-      <div class="boleto-evento">${b.evento || '—'}</div>
-      <div class="boleto-meta">
-        ${b.zona ? `<span class="boleto-zona">${b.zona}</span>` : ''}
-        ${fecha ? `<span class="boleto-fecha">${fecha}</span>` : ''}
-      </div>
-      <a href="${buildWALink(b.evento)}" target="_blank" rel="noopener" class="btn-comprar">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Comprar boleto
-      </a>
-    </div>
-
-    <div class="perf-divider">
-      <div class="perf-line"></div>
-      <span class="perf-label">Marketplace Yunus</span>
-      <div class="perf-line"></div>
-    </div>
-  </div>`;
-}
-
-function switchTab(tab) {
-  const tienda = document.getElementById('tiendaView');
-  const marketplace = document.getElementById('marketplaceView');
-  const tabTienda = document.getElementById('tabTienda');
-  const tabMarketplace = document.getElementById('tabMarketplace');
-  const headerLogo = document.getElementById('headerLogo');
-
-  if (tab === 'tienda') {
-    tienda.classList.add('active');
-    marketplace.classList.remove('active');
-    tabTienda.classList.add('active');
-    tabMarketplace.classList.remove('active');
-    headerLogo.src = 'darklogo.png';
-  } else {
-    tienda.classList.remove('active');
-    marketplace.classList.add('active');
-    tabTienda.classList.remove('active');
-    tabMarketplace.classList.add('active');
-    headerLogo.src = 'logomarketplace.png';
-  }
-}
-
-function openChatPopup(prefillMsg) {
-  const popup = document.getElementById('chatPopup');
-  const iframe = document.getElementById('chatIframe');
-  const url = prefillMsg 
-    ? `/chat?modo=chat&msg=${prefillMsg}` 
-    : '/chat?modo=chat';
-  iframe.src = url;
-  popup.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeChatPopup() {
-  const popup = document.getElementById('chatPopup');
-  const iframe = document.getElementById('chatIframe');
-  popup.classList.remove('open');
-  iframe.src = '';
-  document.body.style.overflow = '';
-}
-
-async function cargarMarketplace() {
-  document.getElementById('loadingView').style.display = 'flex';
-
-  try {
-    const res = await fetch('/api/marketplace');
-    const data = await res.json();
-    const boletos = data.boletos || [];
-
-    document.getElementById('loadingView').style.display = 'none';
-    document.getElementById('mainView').style.display = 'block';
-    document.getElementById('countPill').textContent = boletos.length;
-
-    const container = document.getElementById('boletosContainer');
-
-    if (boletos.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state fade-up">
-          <div class="empty-icon">🎟</div>
-          <div class="empty-title">Sin boletos por ahora</div>
-          <p class="empty-sub">No hay boletos en reventa en este momento. Vuelve pronto o activa tu propio plan de financiamiento.</p>
-        </div>`;
-      return;
+    try {
+        const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
+        if (res.ok) {
+            const data = await res.json();
+            if (data.historial && data.historial.length > 0) {
+                localStorage.setItem('yunus_historial', JSON.stringify(data.historial));
+            }
+        }
+    } catch {
+        // Server unavailable, fall through to localStorage
     }
 
-    container.innerHTML = boletos.map((b, i) => buildCard(b, i)).join('');
+    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+    if (historial.length === 0) {
+        agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+    } else {
+        historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+    }
+}
 
-  } catch {
-    document.getElementById('loadingView').style.display = 'none';
-    document.getElementById('mainView').style.display = 'block';
-    document.getElementById('boletosContainer').innerHTML = `
-      <div class="empty-state fade-up">
-        <div class="empty-icon">⚠️</div>
-        <div class="empty-title">Error al cargar</div>
-        <p class="empty-sub">No pudimos cargar los boletos. Intenta de nuevo.</p>
-      </div>`;
-  }
+async function iniciarChat() {
+    const input = document.getElementById('celularInput').value.trim();
+    if (input.length !== 10) { mostrarError('Ingresa 10 dígitos válidos.'); return; }
+
+    ocultarError();
+    const btn = document.getElementById('btnEntrar');
+    btn.disabled = true;
+    btn.textContent = 'Verificando...';
+
+    const numeroCelular = '+52' + input;
+
+    try {
+        const res = await fetch('/api/historial?celular=' + encodeURIComponent(numeroCelular));
+
+        if (res.status === 404) {
+            mostrarError('Este número no está registrado. Regístrate primero en yunusia.com');
+            btn.disabled = false;
+            btn.textContent = 'Entrar →';
+            return;
+        }
+
+        celular = numeroCelular;
+        localStorage.setItem('yunus_celular', celular);
+
+        if (res.ok) {
+            const data = await res.json();
+            if (data.historial && data.historial.length > 0) {
+                localStorage.setItem('yunus_historial', JSON.stringify(data.historial));
+            }
+        }
+
+        btn.disabled = false;
+        btn.textContent = 'Entrar →';
+        mostrarChatDirecto();
+
+    } catch {
+        celular = numeroCelular;
+        localStorage.setItem('yunus_celular', celular);
+        btn.disabled = false;
+        btn.textContent = 'Entrar →';
+        mostrarChatDirecto();
+    }
+}
+
+function mostrarChatDirecto() {
+    document.getElementById('loginBox').style.display = 'none';
+    const chatBox = document.getElementById('chatBox');
+    chatBox.style.display = 'flex';
+    const chatLogo = document.getElementById('chatLogo');
+    chatLogo.style.display = 'block';
+    setTimeout(() => chatLogo.style.opacity = '1', 10);
+    const chatVersion = document.getElementById('chatVersion');
+    chatVersion.style.display = 'inline';
+    setTimeout(() => chatVersion.style.opacity = '1', 10);
+    primerMensajeYunus = true;
+
+    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+    if (historial.length === 0) {
+        agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+    } else {
+        historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+    }
+}
+
+function mostrarError(msg) {
+    const el = document.getElementById('loginError');
+    el.textContent = msg;
+    el.style.display = 'block';
+}
+
+function ocultarError() {
+    document.getElementById('loginError').style.display = 'none';
+}
+
+function cerrarSesion() {
+    try {
+        localStorage.removeItem('yunus_celular');
+        localStorage.removeItem('yunus_historial');
+    } catch (e) {
+        console.warn('No se pudo limpiar localStorage:', e);
+    }
+    celular = '';
+    const chatLogo = document.getElementById('chatLogo');
+    chatLogo.style.opacity = '0';
+    setTimeout(() => chatLogo.style.display = 'none', 300);
+    const chatVersion = document.getElementById('chatVersion');
+    chatVersion.style.opacity = '0';
+    setTimeout(() => chatVersion.style.display = 'none', 300);
+    document.getElementById('chatBox').style.display = 'none';
+    document.getElementById('loginBox').style.display = 'flex';
+    document.getElementById('mensajes').innerHTML = '';
+    document.getElementById('celularInput').value = '';
+    primerMensajeYunus = true;
+}
+
+function renderMensaje(texto, tipo, esImagen = false) {
+    const contenedor = document.getElementById('mensajes');
+    const esYunus = tipo === 'yunus';
+
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = `display: flex; align-items: flex-end; gap: 8px; justify-content: ${esYunus ? 'flex-start' : 'flex-end'};`;
+
+    if (esYunus && primerMensajeYunus) {
+        const avatar = document.createElement('img');
+        avatar.src = 'Vector.png';
+        avatar.style.cssText = 'width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid var(--border); background: #1a1a1a;';
+        avatar.onerror = function() { this.style.display = 'none'; };
+        wrapper.appendChild(avatar);
+        primerMensajeYunus = false;
+    } else if (esYunus) {
+        const spacer = document.createElement('div');
+        spacer.style.cssText = 'width: 26px; flex-shrink: 0;';
+        wrapper.appendChild(spacer);
+    }
+
+    const burbuja = document.createElement('div');
+    if (esYunus) {
+        burbuja.style.cssText = 'max-width: 80%; background: #1a1a1a; border: 1px solid var(--border); border-radius: 16px; border-bottom-left-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--paper); line-height: 1.5;';
+    } else {
+        burbuja.style.cssText = 'max-width: 80%; background: var(--volt); border-radius: 16px; border-bottom-right-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--ink); line-height: 1.5; font-weight: 500;';
+    }
+
+    if (esImagen) {
+        const img = document.createElement('img');
+        img.src = texto;
+        img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 180px; object-fit: cover; display: block;';
+        burbuja.appendChild(img);
+    } else {
+        burbuja.textContent = texto;
+    }
+
+    wrapper.appendChild(burbuja);
+    contenedor.appendChild(wrapper);
+    contenedor.scrollTop = contenedor.scrollHeight;
+}
+
+function agregarMensaje(texto, tipo, esImagen = false) {
+    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+    historial.push({ texto, tipo, esImagen });
+    localStorage.setItem('yunus_historial', JSON.stringify(historial));
+    renderMensaje(texto, tipo, esImagen);
+}
+
+function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const scale = Math.min(1, maxWidth / img.width);
+                canvas.width = img.width * scale;
+                canvas.height = img.height * scale;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                resolve(canvas.toDataURL('image/jpeg', calidad));
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+async function enviarFoto(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const base64 = await comprimirImagen(file);
+    agregarMensaje(base64, 'usuario', true);
+    input.value = '';
+    try {
+        const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
+        });
+        const data = await res.json();
+        if (data.imagenUrl) {
+            const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+            for (let i = historial.length - 1; i >= 0; i--) {
+                if (historial[i].tipo === 'usuario' && historial[i].esImagen) {
+                    historial[i].texto = data.imagenUrl;
+                    break;
+                }
+            }
+            localStorage.setItem('yunus_historial', JSON.stringify(historial));
+        }
+        agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
+    } catch {
+        agregarMensaje('Error de conexión.', 'yunus');
+    }
+}
+
+async function enviar() {
+    const input = document.getElementById('inputMsg');
+    const mensaje = input.value.trim();
+    if (!mensaje) return;
+    input.value = '';
+    agregarMensaje(mensaje, 'usuario');
+    try {
+        const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mensaje, celular })
+        });
+        const data = await res.json();
+        agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
+    } catch {
+        agregarMensaje('Error de conexión.', 'yunus');
+    }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  const celular = localStorage.getItem('yunus_celular');
-  if (!celular) {
-    window.location.href = '/chat';
-    return;
-  }
-  
-  // Renderizar tienda
-  const tiendaGrid = document.getElementById('tiendaGrid');
-  tiendaGrid.innerHTML = eventosTienda.map((e, i) => buildTiendaCard(e, i)).join('');
-  
-  // Por defecto mostrar tienda
-  switchTab('tienda');
+    const params = new URLSearchParams(window.location.search);
+    const modoChat = params.get('modo') === 'chat';
+    
+    const celularGuardado = localStorage.getItem('yunus_celular');
+    if (celularGuardado) {
+        celular = celularGuardado;
+        mostrarChat();
+    } else if (modoChat) {
+        // Modo chat desde popup: mostrar login pero sin redirigir
+        // El usuario ya está en chat.html, solo mostramos normal
+    }
 });
 </script>
 
