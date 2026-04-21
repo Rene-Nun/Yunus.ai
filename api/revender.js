@@ -1,7 +1,6 @@
 import { Client } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
-const DATABASE_ID = process.env.NOTION_COMPRAS_DATABASE_ID;
 
 export default async function handler(req, res) {
 if (req.method !== "POST") return res.status(405).end();
