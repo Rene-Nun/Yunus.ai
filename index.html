@@ -927,6 +927,10 @@ body::after {
   <div class="modal-footer">
     <button class="btn-primary" style="width:100%;padding:14px;font-size:12px;" onclick="goToCard(2)">Siguiente →</button>
     <p style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center;font-family:'DM Mono',monospace;">Al continuar aceptas nuestros <span onclick="openLegalModal('terms')" style="color:var(--paper);cursor:pointer;text-decoration:underline;">Terminos</span> y <span onclick="openLegalModal('privacy')" style="color:var(--paper);cursor:pointer;text-decoration:underline;">Politica de privacidad</span>.</p>
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;">
+  <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">¿Ya tienes cuenta?</p>
+  <button onclick="closeOnboardingModal();window.location.href='/chat';" style="width:100%;padding:12px;background:transparent;border:1px solid var(--border);color:var(--paper);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--paper)'" onmouseout="this.style.borderColor='var(--border)'">Iniciar sesión →</button>
+  </div>
   </div>
 </div>
 
