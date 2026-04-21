@@ -390,19 +390,25 @@ display: flex;
 flex-direction: column;
 }
 .chat-popup-header {
-padding: 14px 20px;
+padding: 10px 16px;
 border-bottom: 1px solid var(--border);
 display: flex;
 align-items: center;
 justify-content: space-between;
 background: rgba(10,10,10,0.95);
+flex-shrink: 0;
 }
-.chat-popup-title {
+.chat-popup-logo {
+height: 40px;
+object-fit: contain;
+display: block;
+}
+.chat-popup-version {
 font-family: 'DM Mono', monospace;
-font-size: 11px;
-letter-spacing: 0.1em;
-text-transform: uppercase;
-color: var(--paper);
+font-size: 10px;
+letter-spacing: 0.08em;
+color: var(--muted);
+margin-left: 6px;
 }
 .chat-popup-close {
 background: none; border: none; cursor: pointer;
@@ -468,7 +474,7 @@ to { opacity: 1; transform: translateY(0); }
         <line x1="3" y1="18" x2="21" y2="18"/>
       </svg>
     </button>
-    <img id="headerLogo" src="darklogo.png" alt="Yunus" class="header-logo">
+    <img id="headerLogo" src="logomarketplace.png" alt="Yunus Marketplace" class="header-logo">
     <div style="width:36px;"></div>
   </div>
 </header>
@@ -519,7 +525,10 @@ to { opacity: 1; transform: translateY(0); }
 <div id="chatPopup" class="chat-popup-bg" onclick="if(event.target===this)closeChatPopup()">
   <div class="chat-popup-panel" onclick="event.stopPropagation()">
     <div class="chat-popup-header">
-      <span class="chat-popup-title">Yunus Chat</span>
+      <div style="display:flex;align-items:center;">
+        <img src="ialogo.png" alt="Yunus" class="chat-popup-logo">
+        <span class="chat-popup-version">1.0.0</span>
+      </div>
       <button class="chat-popup-close" onclick="closeChatPopup()">×</button>
     </div>
     <iframe id="chatIframe" class="chat-popup-iframe" src=""></iframe>
@@ -680,8 +689,7 @@ function switchTab(tab) {
     marketplace.classList.add('active');
     tabTienda.classList.remove('active');
     tabMarketplace.classList.add('active');
-    headerLogo.src = 'ialogo.png';
-    cargarMarketplace();
+    headerLogo.src = 'logomarketplace.png';
   }
 }
 
