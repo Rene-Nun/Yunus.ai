@@ -38,41 +38,6 @@
             background: var(--ink);
         }
 
-        #appHeader {
-            background: rgba(10,10,10,0.95);
-            border-bottom: 1px solid var(--border);
-            padding: 14px 20px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            height: 60px;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #chatLogo {
-            display: none;
-            height: 150px;
-            object-fit: contain;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        #chatVersion {
-            display: none;
-            font-family: 'DM Mono', monospace;
-            font-size: 15px;
-            letter-spacing: 0.08em;
-            color: var(--muted);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
         /* LOGIN SCREEN */
         #loginBox {
             flex: 1;
@@ -337,13 +302,6 @@
 
 <div id="app">
 
-    <div id="appHeader">
-        <div class="header-left">
-            <img id="chatLogo" src="ialogo.png" alt="Yunus">
-            <span id="chatVersion">1.0.0</span>
-        </div>
-    </div>
-
     <!-- LOGIN -->
     <div id="loginBox">
         <div class="inner">
@@ -415,12 +373,6 @@ async function mostrarChat() {
     document.getElementById('loginBox').style.display = 'none';
     const chatBox = document.getElementById('chatBox');
     chatBox.style.display = 'flex';
-    const chatLogo = document.getElementById('chatLogo');
-    chatLogo.style.display = 'block';
-    setTimeout(() => chatLogo.style.opacity = '1', 10);
-    const chatVersion = document.getElementById('chatVersion');
-    chatVersion.style.display = 'inline';
-    setTimeout(() => chatVersion.style.opacity = '1', 10);
     primerMensajeYunus = true;
 
     try {
@@ -491,12 +443,6 @@ function mostrarChatDirecto() {
     document.getElementById('loginBox').style.display = 'none';
     const chatBox = document.getElementById('chatBox');
     chatBox.style.display = 'flex';
-    const chatLogo = document.getElementById('chatLogo');
-    chatLogo.style.display = 'block';
-    setTimeout(() => chatLogo.style.opacity = '1', 10);
-    const chatVersion = document.getElementById('chatVersion');
-    chatVersion.style.display = 'inline';
-    setTimeout(() => chatVersion.style.opacity = '1', 10);
     primerMensajeYunus = true;
 
     const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
@@ -525,12 +471,6 @@ function cerrarSesion() {
         console.warn('No se pudo limpiar localStorage:', e);
     }
     celular = '';
-    const chatLogo = document.getElementById('chatLogo');
-    chatLogo.style.opacity = '0';
-    setTimeout(() => chatLogo.style.display = 'none', 300);
-    const chatVersion = document.getElementById('chatVersion');
-    chatVersion.style.opacity = '0';
-    setTimeout(() => chatVersion.style.display = 'none', 300);
     document.getElementById('chatBox').style.display = 'none';
     document.getElementById('loginBox').style.display = 'flex';
     document.getElementById('mensajes').innerHTML = '';
