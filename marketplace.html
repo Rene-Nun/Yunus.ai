@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -17,7 +16,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-  ::selection { background: var(--volt); color: var(--ink); }
+::selection { background: var(--volt); color: var(--ink); }
 
 html, body {
 min-height: 100dvh;
@@ -61,41 +60,161 @@ transition: opacity 0.2s;
 }
 .btn-nav:hover { opacity: 0.85; }
 
+/* TOGGLE TABS */
+.toggle-wrap {
+padding: 80px 20px 0;
+max-width: 480px; margin: 0 auto;
+}
+.toggle-pill {
+display: flex;
+background: rgba(255,255,255,0.04);
+border: 1px solid var(--border);
+border-radius: 999px;
+padding: 4px;
+gap: 4px;
+}
+.toggle-btn {
+flex: 1;
+padding: 12px 20px;
+border: none;
+border-radius: 999px;
+background: transparent;
+color: var(--muted);
+font-family: 'DM Mono', monospace;
+font-size: 11px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+cursor: pointer;
+transition: all 0.3s ease;
+font-weight: 500;
+}
+.toggle-btn.active {
+background: var(--volt);
+color: var(--ink);
+}
+
 /* MAIN */
 main {
-padding-top: 60px;
+padding-top: 16px;
 max-width: 480px;
 margin: 0 auto;
 }
 
-/* HERO STRIP */
+/* TIENDA — BOLETERA */
+#tiendaView { display: none; }
+#tiendaView.active { display: block; }
+
+.tienda-hero {
+padding: 32px 20px 24px;
+border-bottom: 1px solid var(--border);
+}
+.tienda-h1 {
+font-family: 'Bebas Neue', sans-serif;
+font-size: 48px; line-height: 0.92; letter-spacing: 0.02em;
+color: var(--paper); margin-bottom: 12px;
+}
+.tienda-sub {
+font-size: 13px; color: var(--muted);
+line-height: 1.65;
+}
+
+.boletos-grid {
+padding: 20px;
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+
+.boleto-tienda {
+background: var(--card-bg);
+border: 1px solid var(--border);
+overflow: hidden;
+position: relative;
+transition: border-color 0.25s, transform 0.25s;
+}
+.boleto-tienda:hover {
+border-color: rgba(212,245,60,0.35);
+transform: translateY(-2px);
+}
+
+.boleto-tienda-img {
+position: relative; width: 100%; height: 160px; overflow: hidden;
+}
+.boleto-tienda-img img {
+width: 100%; height: 100%;
+object-fit: cover; display: block;
+filter: brightness(0.6) saturate(0.8);
+transition: filter 0.3s;
+}
+.boleto-tienda:hover .boleto-tienda-img img {
+filter: brightness(0.75) saturate(1);
+}
+
+.boleto-tienda-badge {
+position: absolute; top: 12px; left: 12px;
+font-family: 'DM Mono', monospace; font-size: 8px;
+letter-spacing: 0.14em; text-transform: uppercase;
+padding: 4px 10px; background: var(--volt); color: var(--ink);
+font-weight: 500;
+}
+.boleto-tienda-precio {
+position: absolute; bottom: 12px; right: 12px;
+font-family: 'Bebas Neue', sans-serif; font-size: 24px;
+letter-spacing: 0.04em; color: var(--volt);
+background: rgba(10,10,10,0.8);
+padding: 6px 12px;
+backdrop-filter: blur(8px);
+}
+
+.boleto-tienda-body { padding: 18px 20px 20px; }
+.boleto-tienda-evento {
+font-family: 'Bebas Neue', sans-serif;
+font-size: 28px; letter-spacing: 0.04em; color: var(--paper);
+line-height: 1; margin-bottom: 6px;
+}
+.boleto-tienda-meta {
+display: flex; align-items: center; gap: 12px;
+margin-bottom: 8px;
+}
+.boleto-tienda-tag {
+font-family: 'DM Mono', monospace; font-size: 9px;
+letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+}
+.boleto-tienda-fecha {
+font-family: 'DM Mono', monospace; font-size: 9px;
+letter-spacing: 0.08em; color: var(--muted);
+}
+.boleto-tienda-fecha::before { content: '·'; margin-right: 12px; color: var(--border); }
+
+.boleto-tienda-info {
+font-size: 13px; color: var(--muted);
+line-height: 1.65; margin-bottom: 16px;
+}
+
+.btn-comprar-tienda {
+width: 100%; padding: 14px;
+background: var(--volt); color: var(--ink);
+font-family: 'DM Mono', monospace; font-size: 11px;
+letter-spacing: 0.1em; text-transform: uppercase;
+border: none; cursor: pointer; font-weight: 500;
+transition: opacity 0.2s;
+display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-comprar-tienda:hover { opacity: 0.85; }
+
+/* MARKETPLACE — ORIGINAL */
+#marketplaceView { display: none; }
+#marketplaceView.active { display: block; }
+
 .hero-strip {
 padding: 32px 20px 24px;
 border-bottom: 1px solid var(--border);
 }
-.hero-eyebrow {
-font-family: 'DM Mono', monospace;
-font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-color: var(--muted); margin-bottom: 10px;
-display: flex; align-items: center; gap: 10px;
-}
-.hero-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--volt); }
-.hero-h1 {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 52px; line-height: 0.92; letter-spacing: 0.02em;
-color: var(--paper);
-}
-.hero-h1 em {
-color: transparent;
--webkit-text-stroke: 1px rgba(242,239,232,0.25);
-font-style: normal;
-}
 .hero-sub {
 font-size: 13px; color: var(--muted);
-line-height: 1.65; margin-top: 12px;
+line-height: 1.65;
 }
 
-/* BOLETOS GRID */
 .boletos-wrap { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
 
 .section-label {
@@ -175,7 +294,6 @@ letter-spacing: 0.08em; color: var(--muted);
 }
 .boleto-fecha::before { content: '·'; margin-right: 12px; color: var(--border); }
 
-/* COMPRAR BTN */
 .btn-comprar {
 width: 100%; padding: 13px;
 background: var(--volt); color: var(--ink);
@@ -188,7 +306,6 @@ display: flex; align-items: center; justify-content: center; gap: 8px;
 .btn-comprar:hover { opacity: 0.85; }
 .btn-comprar svg { flex-shrink: 0; }
 
-/* PERFORATED DIVIDER */
 .perf-divider {
 display: flex; align-items: center;
 padding: 0 18px; position: relative; margin: 0 -1px;
@@ -213,7 +330,6 @@ letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
 padding: 8px 10px; flex-shrink: 0;
 }
 
-/* EMPTY STATE */
 .empty-state {
 margin: 20px; padding: 60px 24px;
 border: 1px solid var(--border); text-align: center;
@@ -225,7 +341,6 @@ font-size: 28px; letter-spacing: 0.04em; color: var(--paper); margin-bottom: 8px
 }
 .empty-sub { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
-/* LOADING */
 #loadingView {
 display: none; flex-direction: column;
 align-items: center; justify-content: center;
@@ -242,7 +357,6 @@ font-family: 'DM Mono', monospace; font-size: 10px;
 letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
 }
 
-/* COUNT PILL */
 .count-pill {
 display: inline-block;
 font-family: 'DM Mono', monospace; font-size: 9px;
@@ -252,7 +366,86 @@ border: 1px solid rgba(212,245,60,0.2);
 margin-left: 8px;
 }
 
-/* ANIMATIONS */
+/* CHAT POPUP */
+.chat-popup-bg {
+position: fixed; inset: 0;
+background: rgba(0,0,0,0.8);
+backdrop-filter: blur(8px);
+z-index: 1000;
+display: none;
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
+.chat-popup-bg.open { display: flex; }
+.chat-popup-panel {
+width: 100%; max-width: 480px; height: 85vh;
+max-height: 700px;
+background: var(--ink);
+border: 1px solid var(--border);
+border-radius: 16px;
+overflow: hidden;
+position: relative;
+display: flex;
+flex-direction: column;
+}
+.chat-popup-header {
+padding: 14px 20px;
+border-bottom: 1px solid var(--border);
+display: flex;
+align-items: center;
+justify-content: space-between;
+background: rgba(10,10,10,0.95);
+}
+.chat-popup-title {
+font-family: 'DM Mono', monospace;
+font-size: 11px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--paper);
+}
+.chat-popup-close {
+background: none; border: none; cursor: pointer;
+color: var(--muted); font-size: 24px;
+line-height: 1; padding: 4px;
+transition: color 0.2s;
+}
+.chat-popup-close:hover { color: var(--paper); }
+.chat-popup-iframe {
+flex: 1;
+width: 100%;
+border: none;
+background: var(--ink);
+}
+
+/* BURBUJA FLOTANTE CHAT */
+.chat-bubble {
+position: fixed;
+bottom: 24px;
+right: 24px;
+width: 56px;
+height: 56px;
+border-radius: 50%;
+background: var(--volt);
+color: var(--ink);
+border: none;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 999;
+box-shadow: 0 4px 20px rgba(212,245,60,0.3);
+transition: transform 0.2s, box-shadow 0.2s;
+}
+.chat-bubble:hover {
+transform: scale(1.05);
+box-shadow: 0 6px 24px rgba(212,245,60,0.4);
+}
+.chat-bubble svg {
+width: 24px;
+height: 24px;
+}
+
 @keyframes fadeUp {
 from { opacity: 0; transform: translateY(10px); }
 to { opacity: 1; transform: translateY(0); }
@@ -268,40 +461,118 @@ to { opacity: 1; transform: translateY(0); }
 
 <header>
   <div class="header-inner">
-    <button class="btn-nav" onclick="window.location.href='/chat'" aria-label="Marketplace">
+    <button class="btn-nav" onclick="window.location.href='boveda.html'" aria-label="Bóveda">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
       </svg>
     </button>
-    <img src="logomarketplace.png" alt="Yunus Marketplace" class="header-logo">
+    <img id="headerLogo" src="darklogo.png" alt="Yunus" class="header-logo">
     <div style="width:36px;"></div>
   </div>
 </header>
 
+<div class="toggle-wrap">
+  <div class="toggle-pill">
+    <button class="toggle-btn active" id="tabTienda" onclick="switchTab('tienda')">Tienda</button>
+    <button class="toggle-btn" id="tabMarketplace" onclick="switchTab('marketplace')">Marketplace</button>
+  </div>
+</div>
+
 <main>
 
-  <div id="loadingView">
-    <div class="spinner"></div>
-    <div class="loading-text">Cargando boletos...</div>
+  <!-- TIENDA VIEW -->
+  <div id="tiendaView" class="active">
+    <div class="tienda-hero">
+      <h1 class="tienda-h1">Tu boletera<br>de eventos.</h1>
+      <p class="tienda-sub">Financia boletos para los conciertos y festivales que no te puedes perder. Sin tarjeta, sin buró. Paga un 15% de enganche y divide el resto en quincenas.</p>
+    </div>
+
+    <div class="boletos-grid" id="tiendaGrid"></div>
   </div>
 
-  <div id="mainView" style="display:none;">
-    <div class="hero-strip fade-up">
-      <p class="hero-sub">Boletos puestos a reventa por usuarios Yunus. Precio al contado, transacción directa.</p>
+  <!-- MARKETPLACE VIEW -->
+  <div id="marketplaceView">
+    <div id="loadingView">
+      <div class="spinner"></div>
+      <div class="loading-text">Cargando boletos...</div>
     </div>
 
-    <div class="boletos-wrap">
-      <div class="section-label">
-        Disponibles <span id="countPill" class="count-pill">0</span>
+    <div id="mainView" style="display:none;">
+      <div class="hero-strip fade-up">
+        <p class="hero-sub">Boletos puestos a reventa por usuarios Yunus. Precio al contado, transacción directa.</p>
       </div>
-      <div id="boletosContainer"></div>
-    </div>
 
+      <div class="boletos-wrap">
+        <div class="section-label">
+          Disponibles <span id="countPill" class="count-pill">0</span>
+        </div>
+        <div id="boletosContainer"></div>
+      </div>
+    </div>
   </div>
 
 </main>
 
+<!-- CHAT POPUP -->
+<div id="chatPopup" class="chat-popup-bg" onclick="if(event.target===this)closeChatPopup()">
+  <div class="chat-popup-panel" onclick="event.stopPropagation()">
+    <div class="chat-popup-header">
+      <span class="chat-popup-title">Yunus Chat</span>
+      <button class="chat-popup-close" onclick="closeChatPopup()">×</button>
+    </div>
+    <iframe id="chatIframe" class="chat-popup-iframe" src=""></iframe>
+  </div>
+</div>
+
+<!-- BURBUJA FLOTANTE -->
+<button class="chat-bubble" onclick="openChatPopup()" aria-label="Abrir chat">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+</button>
+
 <script>
+const eventosTienda = [
+  {
+    name: 'Baja Beach Fest',
+    tag: 'Festival · Rosarito',
+    fecha: '7-9 Ago 2026',
+    precio: 'Desde $49 USD × quincena',
+    img: 'BajaB.jpeg',
+    accent: '#2563eb',
+    descripcion: 'El festival de reggaetón más grande de Baja California. 3 días de música, playa y energía sin igual. Arena, mar y los mejores artistas del género urbano.'
+  },
+  {
+    name: 'Rosalía: Lux Tour',
+    tag: 'Concierto · CDMX / GDL',
+    fecha: 'Ago 2026',
+    precio: 'Desde $208 MXN × quincena',
+    img: 'Rosalia.jpeg',
+    accent: '#be185d',
+    descripcion: 'La artista española más innovadora del momento llega a México con su nuevo tour. Flamenco futurista, pop experimental y una puesta en escena inolvidable.'
+  },
+  {
+    name: 'Vans Warped Tour',
+    tag: 'Festival · CDMX',
+    fecha: '12-13 Sep 2026',
+    precio: 'Desde $380 MXN × quincena',
+    img: 'VansW.webp',
+    accent: '#ea580c',
+    descripcion: 'El festival de punk rock y metal más icónico del mundo regresa a la Ciudad de México. 2 días de mosh pits, skate y la cultura alternativa en su máxima expresión.'
+  },
+  {
+    name: 'Bruno Mars',
+    tag: 'Concierto · CDMX',
+    fecha: '4-7-8 Dic 2026',
+    precio: 'Desde $144 MXN × quincena',
+    img: 'BrunoM.jpeg',
+    accent: '#16a34a',
+    descripcion: 'El showman del pop y R&B moderno aterriza en el Foro Sol. Música, baile y una producción espectacular que no te puedes perder.'
+  }
+];
+
 const eventoImgs = {
   'Baja Beach Fest': 'BajaB.jpeg',
   'Rosalía Lux Tour': 'Rosalia.jpeg',
@@ -323,6 +594,37 @@ function fmtFecha(str) {
 function buildWALink(evento) {
   const msg = encodeURIComponent(`¡Hola! Me interesa adquirir el boleto para *${evento || 'el evento'}* listado en el Marketplace de Yunus. ¿Podría darme más información?`);
   return `https://wa.me/526563161314?text=${msg}`;
+}
+
+function buildTiendaCard(evento, i) {
+  return `
+  <div class="boleto-tienda fade-up d${Math.min(i+1,3)}">
+    <div class="boleto-tienda-img">
+      <img src="${evento.img}" alt="${evento.name}" onerror="this.parentElement.style.background='${evento.accent}20'">
+      <div class="boleto-tienda-badge">Financiamiento Yunus</div>
+      <div class="boleto-tienda-precio">${evento.precio}</div>
+    </div>
+    <div class="boleto-tienda-body">
+      <div class="boleto-tienda-evento">${evento.name}</div>
+      <div class="boleto-tienda-meta">
+        <span class="boleto-tienda-tag">${evento.tag}</span>
+        <span class="boleto-tienda-fecha">${evento.fecha}</span>
+      </div>
+      <p class="boleto-tienda-info">${evento.descripcion}</p>
+      <button class="btn-comprar-tienda" onclick="comprarEvento('${evento.name.replace(/'/g, "\\'")}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+        Comprar boleto
+      </button>
+    </div>
+  </div>`;
+}
+
+function comprarEvento(nombreEvento) {
+  const mensaje = encodeURIComponent(`Hola Yunus, quiero comprar un boleto para ${nombreEvento}. ¿Me puedes dar más información sobre disponibilidad y el plan de pagos?`);
+  openChatPopup(mensaje);
 }
 
 function buildCard(b, i) {
@@ -358,6 +660,48 @@ function buildCard(b, i) {
       <div class="perf-line"></div>
     </div>
   </div>`;
+}
+
+function switchTab(tab) {
+  const tienda = document.getElementById('tiendaView');
+  const marketplace = document.getElementById('marketplaceView');
+  const tabTienda = document.getElementById('tabTienda');
+  const tabMarketplace = document.getElementById('tabMarketplace');
+  const headerLogo = document.getElementById('headerLogo');
+
+  if (tab === 'tienda') {
+    tienda.classList.add('active');
+    marketplace.classList.remove('active');
+    tabTienda.classList.add('active');
+    tabMarketplace.classList.remove('active');
+    headerLogo.src = 'darklogo.png';
+  } else {
+    tienda.classList.remove('active');
+    marketplace.classList.add('active');
+    tabTienda.classList.remove('active');
+    tabMarketplace.classList.add('active');
+    headerLogo.src = 'ialogo.png';
+    cargarMarketplace();
+  }
+}
+
+function openChatPopup(prefillMsg) {
+  const popup = document.getElementById('chatPopup');
+  const iframe = document.getElementById('chatIframe');
+  const url = prefillMsg 
+    ? `/chat?modo=chat&msg=${prefillMsg}` 
+    : '/chat?modo=chat';
+  iframe.src = url;
+  popup.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeChatPopup() {
+  const popup = document.getElementById('chatPopup');
+  const iframe = document.getElementById('chatIframe');
+  popup.classList.remove('open');
+  iframe.src = '';
+  document.body.style.overflow = '';
 }
 
 async function cargarMarketplace() {
@@ -404,7 +748,13 @@ window.addEventListener('DOMContentLoaded', () => {
     window.location.href = '/chat';
     return;
   }
-  cargarMarketplace();
+  
+  // Renderizar tienda
+  const tiendaGrid = document.getElementById('tiendaGrid');
+  tiendaGrid.innerHTML = eventosTienda.map((e, i) => buildTiendaCard(e, i)).join('');
+  
+  // Por defecto mostrar tienda
+  switchTab('tienda');
 });
 </script>
 
