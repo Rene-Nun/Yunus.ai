@@ -1085,24 +1085,40 @@ function goToCard(n) {
 
 // ── SUBMIT ──
 async function submitAllDataAndGoToCard3() {
-  const cb = document.getElementById('acceptTerms');
-  const err = document.getElementById('error-terms');
-  if (!cb.checked) { err.style.display='block'; cb.scrollIntoView({behavior:'smooth',block:'center'}); return; }
-  err.style.display='none';
-  const combined = {};
-  for (let [k,v] of new FormData(document.getElementById('form1')).entries()) combined[k]=v;
-  for (let [k,v] of new FormData(document.getElementById('form2')).entries()) combined[k]=v;
-  const btn = document.querySelector('#card2 .modal-footer button');
-  const orig = btn.innerHTML;
-  btn.innerHTML='Enviando...'; btn.disabled=true;
-  try {
-    const res = await fetch('https://hook.us2.make.com/xxdbhuqw3rv3klrq0kewfipr8hsiogwe', {
-      method:'POST', body:JSON.stringify(combined),
-      headers:{'Accept':'application/json','Content-Type':'application/json'}
-    });
-    if (res.ok || res.status===200) { setTimeout(()=>{goToCard(3);btn.innerHTML=orig;btn.disabled=false;},800); }
-    else throw new Error();
-  } catch { alert('❌ Error al enviar. Por favor, intentalo de nuevo.'); btn.innerHTML=orig; btn.disabled=false; }
+    const cb = document.getElementById('acceptTerms');
+    const err = document.getElementById('error-terms');
+    if (!cb.checked) { err.classList.remove('hidden'); cb.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+    err.classList.add('hidden');
+    const combined = {};
+    for (let [k,v] of new FormData(document.getElementById('form1')).entries()) combined[k] = v;
+    for (let [k,v] of new FormData(document.getElementById('form2')).entries()) combined[k] = v;
+    const btn = document.querySelector('#card2 .card-footer button');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle;"></span>Enviando...';
+    btn.disabled = true;
+
+    // Verificar si el número ya está registrado
+    const celularIngresado = '+52' + combined['Celular'];
+    try {
+        const check = await fetch('/api/historial?celular=' + encodeURIComponent(celularIngresado));
+        if (check.ok) {
+            btn.innerHTML = orig;
+            btn.disabled = false;
+            alert('Este número ya está registrado en Yunus. Entra directo al chat con tu número.');
+            return;
+        }
+    } catch {}
+
+    try {
+        const res = await fetch('https://hook.us2.make.com/xxdbhuqw3rv3klrq0kewfipr8hsiogwe', {
+            method: 'POST',
+            body: JSON.stringify(combined),
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        });
+        if (res.ok || res.status === 200) {
+            setTimeout(() => { goToCard(3); btn.innerHTML=orig; btn.disabled=false; }, 800);
+        } else throw new Error();
+    } catch { alert('❌ Hubo un error. Por favor, inténtalo de nuevo.'); btn.innerHTML=orig; btn.disabled=false; }
 }
 
 function irAlChat() { window.open('https://yunusia.com/chat','_blank'); closeOnboardingModal(); }
