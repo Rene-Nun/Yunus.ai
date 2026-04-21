@@ -45,7 +45,7 @@
             flex-shrink: 0;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             height: 60px;
         }
 
@@ -476,14 +476,14 @@ async function iniciarChat() {
 
         btn.disabled = false;
         btn.textContent = 'Entrar →';
-        mostrarChatDirecto();
+        window.location.href = 'marketplace.html';
 
     } catch {
         celular = numeroCelular;
         localStorage.setItem('yunus_celular', celular);
         btn.disabled = false;
         btn.textContent = 'Entrar →';
-        mostrarChatDirecto();
+        window.location.href = 'marketplace.html';
     }
 }
 
