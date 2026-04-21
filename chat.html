@@ -45,7 +45,7 @@
             flex-shrink: 0;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             height: 60px;
         }
 
@@ -71,46 +71,6 @@
             color: var(--muted);
             opacity: 0;
             transition: opacity 0.3s ease;
-        }
-
-        #btnMenu {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: transparent;
-            border: 1px solid rgba(242,239,232,0.15);
-            color: var(--paper);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            padding: 0;
-        }
-        #btnMenu:active {
-            background: var(--volt);
-            border-color: var(--volt);
-            color: var(--ink);
-        }
-
-        #btnMarketplace {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: transparent;
-            border: 1px solid rgba(242,239,232,0.15);
-            color: var(--paper);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            padding: 0;
-        }
-        #btnMarketplace:active {
-            background: var(--volt);
-            border-color: var(--volt);
-            color: var(--ink);
         }
 
         /* LOGIN SCREEN */
@@ -379,21 +339,9 @@
 
     <div id="appHeader">
         <div class="header-left">
-            <button type="button" id="btnMenu" onclick="window.location.href='boveda.html'" aria-label="Menú">
-                <svg width="16" height="12" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                    <line x1="1" y1="1" x2="17" y2="1"/>
-                    <line x1="1" y1="7" x2="17" y2="7"/>
-                    <line x1="1" y1="13" x2="17" y2="13"/>
-                </svg>
-            </button>
             <img id="chatLogo" src="ialogo.png" alt="Yunus">
             <span id="chatVersion">1.0.0</span>
         </div>
-        <button type="button" id="btnMarketplace" onclick="window.location.href='marketplace.html'" aria-label="Marketplace">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-            </svg>
-        </button>
     </div>
 
     <!-- LOGIN -->
@@ -467,8 +415,6 @@ async function mostrarChat() {
     document.getElementById('loginBox').style.display = 'none';
     const chatBox = document.getElementById('chatBox');
     chatBox.style.display = 'flex';
-    document.getElementById('btnMenu').style.display = 'inline-flex';
-    document.getElementById('btnMarketplace').style.display = 'inline-flex';
     const chatLogo = document.getElementById('chatLogo');
     chatLogo.style.display = 'block';
     setTimeout(() => chatLogo.style.opacity = '1', 10);
@@ -545,8 +491,6 @@ function mostrarChatDirecto() {
     document.getElementById('loginBox').style.display = 'none';
     const chatBox = document.getElementById('chatBox');
     chatBox.style.display = 'flex';
-    document.getElementById('btnMenu').style.display = 'inline-flex';
-    document.getElementById('btnMarketplace').style.display = 'inline-flex';
     const chatLogo = document.getElementById('chatLogo');
     chatLogo.style.display = 'block';
     setTimeout(() => chatLogo.style.opacity = '1', 10);
@@ -589,8 +533,6 @@ function cerrarSesion() {
     setTimeout(() => chatVersion.style.display = 'none', 300);
     document.getElementById('chatBox').style.display = 'none';
     document.getElementById('loginBox').style.display = 'flex';
-    document.getElementById('btnMenu').style.display = 'none';
-    document.getElementById('btnMarketplace').style.display = 'none';
     document.getElementById('mensajes').innerHTML = '';
     document.getElementById('celularInput').value = '';
     primerMensajeYunus = true;
@@ -713,10 +655,16 @@ async function enviar() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const modoChat = params.get('modo') === 'chat';
+    
     const celularGuardado = localStorage.getItem('yunus_celular');
     if (celularGuardado) {
         celular = celularGuardado;
         mostrarChat();
+    } else if (modoChat) {
+        // Modo chat desde popup: mostrar login pero sin redirigir
+        // El usuario ya está en chat.html, solo mostramos normal
     }
 });
 </script>
