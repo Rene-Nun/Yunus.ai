@@ -1092,7 +1092,7 @@ async function submitAllDataAndGoToCard3() {
     const combined = {};
     for (let [k,v] of new FormData(document.getElementById('form1')).entries()) combined[k] = v;
     for (let [k,v] of new FormData(document.getElementById('form2')).entries()) combined[k] = v;
-    const btn = document.querySelector('#card2 .card-footer button');
+    const btn = document.querySelector('#card2 .modal-footer button');
     const orig = btn.innerHTML;
     btn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle;"></span>Enviando...';
     btn.disabled = true;
