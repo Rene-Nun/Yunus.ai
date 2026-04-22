@@ -394,18 +394,23 @@ main {
   </div>
 
   <div id="bovedaView">
-    <div class="welcome-bar fade-up">
+
+    <div id="revoxPromoCard" class="fade-up" style="background: rgba(212,245,60,0.03); border: 1px solid rgba(212,245,60,0.1); border-left: 3px solid var(--volt); padding: 14px 16px; margin-bottom: 20px; position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+      <div style="flex: 1;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--volt); margin-bottom: 4px;">Revox · 18% Anual</div>
+        <div style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--paper); line-height: 1.2; margin-bottom: 4px;"><span id="revoxNombreUsuario">Hola</span>, pon tu dinero a trabajar.</div>
+        <div style="font-size: 11px; color: var(--muted); line-height: 1.4;">Fondea boletos con colateral real.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; height: 100%; gap: 10px;">
+        <button onclick="this.parentElement.parentElement.style.display='none'" style="background: transparent; border: none; color: var(--muted); font-size: 15px; cursor: pointer; padding: 0; line-height: 1; opacity: 0.7;" aria-label="Cerrar">✕</button>
+        <button onclick="window.location.href='revox/index.html'" style="background: var(--volt); color: var(--ink); border: none; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; padding: 8px 12px; cursor: pointer; transition: opacity 0.2s; white-space: nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Invertir →</button>
+      </div>
+    </div>
+    <div class="welcome-bar fade-up d1">
       <div class="welcome-sub" id="welcomeSub">0 boletos en bóveda</div>
     </div>
 
-    <div id="revoxPromoCard" class="fade-up d1" style="background: var(--card-bg); border: 1px solid rgba(212,245,60,0.3); border-left: 4px solid var(--volt); padding: 20px; margin-bottom: 24px; position: relative;">
-      <button onclick="this.parentElement.style.display='none'" style="position: absolute; top: 12px; right: 12px; background: transparent; border: none; color: var(--muted); font-size: 14px; cursor: pointer; padding: 4px; line-height: 1;" aria-label="Cerrar">✕</button>
-      <div style="font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--volt); margin-bottom: 8px;">Revox · Capital Privado</div>
-      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 0.04em; color: var(--paper); line-height: 1.1; margin-bottom: 8px;"><span id="revoxNombreUsuario">Hola</span>, genera 18% de rendimiento anual.</div>
-      <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 16px;">Conviértete en Early Investor del brazo financiero de Yunus. Pon tu dinero a trabajar fondeando boletos respaldados por colateral real en ciclos cortos.</p>
-      <button onclick="window.location.href='revox/index.html'" style="background: var(--volt); color: var(--ink); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; padding: 10px 16px; border: none; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Descubrir cómo funciona →</button>
-    </div>
-    <div class="section-label">Mis boletos</div>
+    <div class="section-label fade-up d2">Mis boletos</div>
 
     <div id="ticketsContainer"></div>
 
