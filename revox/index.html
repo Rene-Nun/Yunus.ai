@@ -1026,27 +1026,20 @@
       // Recolectar datos
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
-      
-      // Opcional: Si quieres que el estado inicial de inversor sea "Onboarding" por defecto
-      data["Estado"] = "Onboarding";
-      data["Tipo_de_solicitud"] = "NUEVO INVERSOR REVOX";
 
       try {
-        // AQUÍ DEBES PONER EL WEBHOOK DE MAKE.COM O LA RUTA A TU API PARA GUARDARLO EN NOTION
-        // Ejemplo genérico:
-        /*
-        const res = await fetch('TU_WEBHOOK_URL_AQUI', {
+        // Conexión a tu Webhook general de Yunus en Make.com
+        const res = await fetch('https://hook.us2.make.com/xxdbhuqw3rv3klrq0kewfipr8hsiogwe', {
             method: 'POST',
             body: JSON.stringify(data),
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
         });
-        if (!res.ok) throw new Error('Error al guardar');
-        */
         
-        // Simulamos un retraso para el efecto visual
-        await new Promise(r => setTimeout(r, 1000));
+        if (!res.ok && res.status !== 200) {
+            throw new Error('Error al guardar');
+        }
         
-        // Guardamos el celular en localStorage para que el login sea automático si quieres
+        // Guardamos el celular para el autologin en el dashboard
         localStorage.setItem('revox_celular', '+52' + data.Celular);
 
         // Mostrar pantalla de éxito
