@@ -62,7 +62,6 @@ html, body {
   width: 200px;
   height: auto;
   object-fit: contain;
-  /* Márgenes negativos para absorber el espacio transparente del PNG cuadrado */
   margin-top: -30px;
   margin-bottom: -10px;
   opacity: 0;
@@ -240,17 +239,17 @@ html, body {
 .dash-header-top {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Empuja la versión a la derecha porque el logo ahora es absoluto */
+  justify-content: flex-end; 
   margin-bottom: 16px;
   position: relative;
-  min-height: 24px; /* Obliga al header a mantener su grosor mínimo original */
+  min-height: 24px;
 }
 .dash-logo {
   width: 150px;
   position: absolute;
-  left: 0;
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%); /* Centrado vertical exacto sin afectar el tamaño del contenedor */
+  transform: translate(-50%, -50%); 
 }
 .dash-version {
   font-family: 'DM Mono', monospace;
