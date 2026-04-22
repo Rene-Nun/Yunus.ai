@@ -3,6 +3,7 @@ import { Client } from "@notionhq/client";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const USERS_DATABASE_ID = process.env.NOTION_DATABASE_ID;
 const INVERSORES_DATABASE_ID = process.env.NOTION_INVERSORES_DATABASE_ID;
+const CREDITOS_DATABASE_ID = process.env.NOTION_CREDITOS_DATABASE_ID; // Añade esta variable en Vercel
 
 export default async function handler(req, res) {
   if (req.method !== "GET") return res.status(405).end();
@@ -31,12 +32,12 @@ export default async function handler(req, res) {
 
     const nombreUsuario = searchUser.results[0].properties.Nombre?.rich_text[0]?.plain_text || "Inversor";
 
-    // 2. Buscar en Revox
+    // 2. Buscar totales en Revox
     const searchInversor = await notion.databases.query({
       database_id: INVERSORES_DATABASE_ID,
       filter: {
         property: "Celular",
-        title: { equals: celularNotion }
+        title: { equals: digits } // Corregido: busca solo los 10 dígitos en la BD de inversores
       }
     });
 
@@ -51,7 +52,30 @@ export default async function handler(req, res) {
         tasa: page.properties['Tasa Anual']?.number || 18,
         estado: page.properties.Estado?.select?.name || 'En onboarding',
         fechaIngreso: page.properties['Fecha de Ingreso']?.date?.start || null,
+        inversionesActivas: []
       };
+
+      // 3. Buscar el detalle de cada crédito desplegado
+      if (CREDITOS_DATABASE_ID) {
+        const searchCreditos = await notion.databases.query({
+          database_id: CREDITOS_DATABASE_ID,
+          filter: {
+            and: [
+              { property: "Celular", rich_text: { equals: digits } },
+              { property: "Estado", select: { equals: "Activo" } }
+            ]
+          }
+        });
+
+        inversorData.inversionesActivas = searchCreditos.results.map(cred => ({
+          id: cred.properties['ID']?.title[0]?.plain_text || "ID-N/A",
+          monto: cred.properties['Capital Desplegado']?.number || 0,
+          rendimiento: cred.properties['Rendimiento Esperado']?.formula?.number || 0,
+          evento: cred.properties['Evento']?.rich_text[0]?.plain_text || "Crédito revolvente",
+          plazo: cred.properties['Plazo']?.number || 0,
+          disponibleEn: cred.properties['Disponible en']?.date?.start || null
+        }));
+      }
     }
 
     res.status(200).json({
