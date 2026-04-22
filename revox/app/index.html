@@ -652,7 +652,6 @@ function mostrarDashboard(data) {
   const content = document.getElementById('dashContent');
 
   if (!data.esInversor) {
-    // No es inversor aún — mostrar onboarding
     content.innerHTML = `
       <div class="card-onboarding fade-up">
         <div class="card-onboarding-icon">💼</div>
@@ -669,12 +668,60 @@ function mostrarDashboard(data) {
     return;
   }
 
-  // Es inversor — mostrar dashboard completo
   const inv = data.inversor;
   const disponible = inv.capitalDisponible || 0;
   const enUso = inv.capitalEnUso || 0;
   const rendimientos = inv.rendimientos || 0;
   const total = inv.capitalTotal || 0;
+
+  // Lógica dinámica para imprimir múltiples créditos
+  let htmlCreditos = '';
+  if (inv.inversionesActivas && inv.inversionesActivas.length > 0) {
+    let listaTarjetas = inv.inversionesActivas.map(credito => {
+      // Formateo de fecha de disponibilidad (Si existe en Notion)
+      let fechaTexto = 'Pendiente';
+      if (credito.disponibleEn) {
+        const [yyyy, mm, dd] = credito.disponibleEn.split('-');
+        fechaTexto = `${dd}/${mm}/${yyyy}`;
+      }
+
+      return `
+        <div class="inversion-card">
+          <div class="inversion-header">
+            <span class="inversion-title">${credito.evento} • ${credito.id}</span>
+            <span class="inversion-badge">Activo</span>
+          </div>
+          <div class="inversion-details">
+            <div class="inversion-detail">
+              <span class="inversion-detail-label">Desplegado</span>
+              <span class="inversion-detail-value">${fmtMXN(credito.monto)}</span>
+            </div>
+            <div class="inversion-detail">
+              <span class="inversion-detail-label">Rend. Esperado</span>
+              <span class="inversion-detail-value" style="color:var(--success);">+${fmtMXN(credito.rendimiento)}</span>
+            </div>
+            <div class="inversion-detail" style="margin-top: 8px;">
+              <span class="inversion-detail-label">Plazo</span>
+              <span class="inversion-detail-value">${credito.plazo} meses</span>
+            </div>
+            <div class="inversion-detail" style="margin-top: 8px;">
+              <span class="inversion-detail-label">Disponible en</span>
+              <span class="inversion-detail-value">${fechaTexto}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    htmlCreditos = `
+      <div class="fade-up d3">
+        <div class="section-header">
+          <span class="section-title">Inversiones activas</span>
+        </div>
+        ${listaTarjetas}
+      </div>
+    `;
+  }
 
   content.innerHTML = `
     <div class="card card-main fade-up">
@@ -703,29 +750,7 @@ function mostrarDashboard(data) {
       <div style="font-size:24px;">📈</div>
     </div>
 
-    ${enUso > 0 ? `
-    <div class="fade-up d3">
-      <div class="section-header">
-        <span class="section-title">Inversiones activas</span>
-      </div>
-      <div class="inversion-card">
-        <div class="inversion-header">
-          <span class="inversion-title">Crédito revolvente</span>
-          <span class="inversion-badge">Activo</span>
-        </div>
-        <div class="inversion-details">
-          <div class="inversion-detail">
-            <span class="inversion-detail-label">Capital desplegado</span>
-            <span class="inversion-detail-value">${fmtMXN(enUso)}</span>
-          </div>
-          <div class="inversion-detail">
-            <span class="inversion-detail-label">Rendimiento esperado</span>
-            <span class="inversion-detail-value" style="color:var(--success);">${fmtMXN(Math.round(enUso * (inv.tasa || 18) / 100))}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    ` : ''}
+    ${htmlCreditos}
 
     <button class="btn-salir fade-up" onclick="cerrarSesion()">Cerrar sesión</button>
   `;
