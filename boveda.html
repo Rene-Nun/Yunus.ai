@@ -388,19 +388,30 @@ main {
 
 <main>
 
-  <!-- LOADING -->
   <div id="loadingView">
     <div class="spinner"></div>
     <div class="loading-text">Cargando tu bóveda...</div>
   </div>
 
-  <!-- BOVEDA -->
   <div id="bovedaView">
-    <div class="welcome-bar fade-up">
+
+    <div id="revoxPromoCard" class="fade-up" style="background: linear-gradient(90deg, rgba(16,28,189,0.05) 0%, rgba(72,168,224,0.05) 100%); border: 1px solid rgba(72,168,224,0.15); border-left: 3px solid #48A8E0; padding: 14px 16px; margin-bottom: 20px; position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+      <div style="flex: 1;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #48A8E0; margin-bottom: 4px;">Revox · 18% Anual</div>
+        <div style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--paper); line-height: 1.2; margin-bottom: 4px;"><span id="revoxNombreUsuario">Hola</span>, pon tu dinero a trabajar.</div>
+        <div style="font-size: 11px; color: var(--muted); line-height: 1.4;">Fondea boletos con colateral real.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; height: 100%; gap: 10px;">
+        <button onclick="this.parentElement.parentElement.style.display='none'" style="background: transparent; border: none; color: var(--muted); font-size: 15px; cursor: pointer; padding: 0; line-height: 1; opacity: 0.7;" aria-label="Cerrar">✕</button>
+        <button onclick="window.location.href='revox/index.html'" style="background: linear-gradient(90deg, #101CBD 0%, #48A8E0 100%); color: #fff; border: none; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; padding: 8px 12px; cursor: pointer; transition: opacity 0.2s; white-space: nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Invertir →</button>
+      </div>
+    </div>
+    
+    <div class="welcome-bar fade-up d1">
       <div class="welcome-sub" id="welcomeSub">0 boletos en bóveda</div>
     </div>
 
-    <div class="section-label">Mis boletos</div>
+    <div class="section-label fade-up d2">Mis boletos</div>
 
     <div id="ticketsContainer"></div>
 
@@ -467,6 +478,10 @@ async function cargarBoveda() {
     const compras = data.compras || [];
     const nombre = data.nombre || celular;
     nombreUsuario = nombre;
+
+    if (document.getElementById('revoxNombreUsuario')) {
+      document.getElementById('revoxNombreUsuario').textContent = nombreUsuario.split(' ')[0];
+    }
 
     document.getElementById('welcomeSub').textContent =
       compras.length === 0 ? 'Sin boletos activos' :
@@ -655,7 +670,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
-<!-- BOTTOM SHEET REVENTA -->
 <div id="reventaOverlay" onclick="cerrarReventa()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;backdrop-filter:blur(4px);"></div>
 
 <div id="reventaSheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:201;max-width:480px;margin:0 auto;background:#111;border-top:1px solid rgba(242,239,232,0.1);padding:28px 24px 40px;transform:translateY(100%);transition:transform 0.3s ease;">
