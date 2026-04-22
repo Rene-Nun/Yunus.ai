@@ -362,6 +362,28 @@ html, body {
   color: var(--warning);
 }
 
+/* BOTON RETIRAR */
+.btn-retirar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: rgba(16, 28, 189, 0.06);
+  color: var(--revox-blue);
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.btn-retirar:hover {
+  background: rgba(16, 28, 189, 0.12);
+}
+
 /* ONBOARDING CARD */
 .card-onboarding {
   background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
@@ -665,6 +687,7 @@ function mostrarDashboard(data) {
       <div class="card-small">
         <div class="card-label">Disponible</div>
         <div class="card-amount">${fmtMXN(disponible)}</div>
+        <a href="https://wa.me/526563161314?text=${encodeURIComponent('Hola, quiero retirar mis fondos disponibles de Revox.')}" class="btn-retirar" target="_blank" rel="noopener">Retirar ↗</a>
       </div>
       <div class="card-small">
         <div class="card-label">En uso</div>
