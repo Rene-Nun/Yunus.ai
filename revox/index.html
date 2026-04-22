@@ -931,30 +931,30 @@
       <div id="card1" class="onboarding-card active">
         <div class="modal-body">
           <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:24px; line-height:1.6;">Ingresa tus datos de contacto para acceder al dashboard y fondear tu primer crédito.</p>
-          <form id="revoxForm">
-            <div class="form-group">
-              <label class="form-label">Nombre completo</label>
-              <input type="text" name="Nombre" required class="form-input" placeholder="Ej. Christian Nuñez">
-            </div>
-            
-            <div class="form-group">
-              <label class="form-label">Celular (Tu llave de acceso)</label>
-              <div class="prefix-wrap">
-                <span class="prefix-tag">+52</span>
-                <input type="tel" name="Celular" pattern="[0-9]{10}" maxlength="10" required class="form-input" placeholder="10 dígitos" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-              </div>
-            </div>
+        <form id="revoxForm">
+  <div class="form-group">
+    <label class="form-label">Nombre completo</label>
+    <input type="text" name="Nombre_completo" required class="form-input" placeholder="Ej. Christian Nuñez">
+  </div>
+  
+  <div class="form-group">
+    <label class="form-label">Celular (Tu llave de acceso)</label>
+    <div class="prefix-wrap">
+      <span class="prefix-tag">+52</span>
+      <input type="tel" name="Celular" pattern="[0-9]{10}" maxlength="10" required class="form-input" placeholder="10 dígitos" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+    </div>
+  </div>
 
-            <div class="form-group">
-              <label class="form-label">Correo electrónico</label>
-              <input type="email" name="Email" required class="form-input" placeholder="tu@correo.com">
-            </div>
+  <div class="form-group">
+    <label class="form-label">Correo electrónico</label>
+    <input type="email" name="Email" required class="form-input" placeholder="tu@correo.com">
+  </div>
 
-            <div class="form-group" style="margin-bottom: 0;">
-              <label class="form-label">Código de referido (Opcional)</label>
-              <input type="text" name="Codigo_referido" class="form-input" placeholder="Si alguien te invitó">
-            </div>
-          </form>
+  <div class="form-group" style="margin-bottom: 0;">
+    <label class="form-label">Código de referido (Opcional)</label>
+    <input type="text" name="Codigo_referido" class="form-input" placeholder="Si alguien te invitó">
+  </div>
+</form>
         </div>
         <div class="modal-footer">
           <button class="btn-submit" onclick="submitRevoxData()">Crear mi cuenta →</button>
