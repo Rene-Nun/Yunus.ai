@@ -16,23 +16,23 @@
   --card-bg: #111111;
 }
 
-- { box-sizing: border-box; margin: 0; padding: 0; }
-  ::selection { background: var(–volt); color: var(–ink); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+  ::selection { background: var(--volt); color: var(--ink); }
 
 html, body {
 min-height: 100dvh;
-background: var(–ink);
-color: var(–paper);
-font-family: ‘DM Sans’, sans-serif;
+background: var(--ink);
+color: var(--paper);
+font-family: 'DM Sans', sans-serif;
 font-weight: 300;
 overflow-x: hidden;
 }
 
 body::after {
-content: ‘’;
+content: '';
 position: fixed; inset: 0;
 pointer-events: none; z-index: 9999; opacity: 0.03;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’/%3E%3C/svg%3E”);
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 background-size: 128px;
 }
 
@@ -40,7 +40,7 @@ background-size: 128px;
 header {
 position: relative;
 background: #0a0a0a;
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 overflow: hidden;
 }
 .header-inner {
@@ -54,7 +54,7 @@ display: block;
 }
 .btn-nav {
 width: 36px; height: 36px; border-radius: 50%;
-background: var(–volt); color: var(–ink);
+background: var(--volt); color: var(--ink);
 border: none; cursor: pointer;
 display: flex; align-items: center; justify-content: center;
 transition: opacity 0.2s;
@@ -69,7 +69,7 @@ max-width: 480px; margin: 0 auto;
 .toggle-pill {
 display: flex;
 background: rgba(255,255,255,0.04);
-border: 1px solid var(–border);
+border: 1px solid var(--border);
 border-radius: 999px;
 padding: 4px;
 gap: 4px;
@@ -80,8 +80,8 @@ padding: 12px 20px;
 border: none;
 border-radius: 999px;
 background: transparent;
-color: var(–muted);
-font-family: ‘DM Mono’, monospace;
+color: var(--muted);
+font-family: 'DM Mono', monospace;
 font-size: 11px;
 letter-spacing: 0.1em;
 text-transform: uppercase;
@@ -90,8 +90,8 @@ transition: all 0.3s ease;
 font-weight: 500;
 }
 .toggle-btn.active {
-background: var(–volt);
-color: var(–ink);
+background: var(--volt);
+color: var(--ink);
 }
 
 /* MAIN */
@@ -107,15 +107,15 @@ margin: 0 auto;
 
 .tienda-hero {
 padding: 32px 20px 24px;
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 }
 .tienda-h1 {
-font-family: ‘Bebas Neue’, sans-serif;
+font-family: 'Bebas Neue', sans-serif;
 font-size: 24px; line-height: 0.92; letter-spacing: 0.02em;
-color: var(–paper); margin-bottom: 12px;
+color: var(--paper); margin-bottom: 12px;
 }
 .tienda-sub {
-font-size: 18px; color: var(–muted);
+font-size: 18px; color: var(--muted);
 line-height: 1.65;
 }
 
@@ -127,8 +127,8 @@ gap: 16px;
 }
 
 .boleto-tienda {
-background: var(–card-bg);
-border: 1px solid var(–border);
+background: var(--card-bg);
+border: 1px solid var(--border);
 overflow: hidden;
 position: relative;
 transition: border-color 0.25s, transform 0.25s;
@@ -153,15 +153,15 @@ filter: brightness(0.75) saturate(1);
 
 .boleto-tienda-badge {
 position: absolute; top: 12px; left: 12px;
-font-family: ‘DM Mono’, monospace; font-size: 8px;
+font-family: 'DM Mono', monospace; font-size: 8px;
 letter-spacing: 0.14em; text-transform: uppercase;
-padding: 4px 10px; background: var(–volt); color: var(–ink);
+padding: 4px 10px; background: var(--volt); color: var(--ink);
 font-weight: 500;
 }
 .boleto-tienda-precio {
 position: absolute; bottom: 12px; right: 12px;
-font-family: ‘Bebas Neue’, sans-serif; font-size: 24px;
-letter-spacing: 0.04em; color: var(–volt);
+font-family: 'Bebas Neue', sans-serif; font-size: 24px;
+letter-spacing: 0.04em; color: var(--volt);
 background: rgba(10,10,10,0.8);
 padding: 6px 12px;
 backdrop-filter: blur(8px);
@@ -169,8 +169,8 @@ backdrop-filter: blur(8px);
 
 .boleto-tienda-body { padding: 18px 20px 20px; }
 .boleto-tienda-evento {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 28px; letter-spacing: 0.04em; color: var(–paper);
+font-family: 'Bebas Neue', sans-serif;
+font-size: 28px; letter-spacing: 0.04em; color: var(--paper);
 line-height: 1; margin-bottom: 6px;
 }
 .boleto-tienda-meta {
@@ -178,24 +178,24 @@ display: flex; align-items: center; gap: 12px;
 margin-bottom: 8px;
 }
 .boleto-tienda-tag {
-font-family: ‘DM Mono’, monospace; font-size: 9px;
-letter-spacing: 0.1em; text-transform: uppercase; color: var(–muted);
+font-family: 'DM Mono', monospace; font-size: 9px;
+letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
 }
 .boleto-tienda-fecha {
-font-family: ‘DM Mono’, monospace; font-size: 9px;
-letter-spacing: 0.08em; color: var(–muted);
+font-family: 'DM Mono', monospace; font-size: 9px;
+letter-spacing: 0.08em; color: var(--muted);
 }
-.boleto-tienda-fecha::before { content: ‘\00B7’; margin-right: 12px; color: var(–border); }
+.boleto-tienda-fecha::before { content: '\00B7'; margin-right: 12px; color: var(--border); }
 
 .boleto-tienda-info {
-font-size: 13px; color: var(–muted);
+font-size: 13px; color: var(--muted);
 line-height: 1.65; margin-bottom: 16px;
 }
 
 .btn-comprar-tienda {
 width: 100%; padding: 14px;
-background: var(–volt); color: var(–ink);
-font-family: ‘DM Mono’, monospace; font-size: 11px;
+background: var(--volt); color: var(--ink);
+font-family: 'DM Mono', monospace; font-size: 11px;
 letter-spacing: 0.1em; text-transform: uppercase;
 border: none; cursor: pointer; font-weight: 500;
 transition: opacity 0.2s;
@@ -209,27 +209,27 @@ display: flex; align-items: center; justify-content: center; gap: 8px;
 
 .hero-strip {
 padding: 32px 20px 24px;
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 }
 .hero-sub {
-font-size: 13px; color: var(–muted);
+font-size: 13px; color: var(--muted);
 line-height: 1.65;
 }
 
 .boletos-wrap { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
 
 .section-label {
-font-family: ‘DM Mono’, monospace;
+font-family: 'DM Mono', monospace;
 font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-color: var(–muted); margin-bottom: 16px;
+color: var(--muted); margin-bottom: 16px;
 display: flex; align-items: center; gap: 12px;
 }
-.section-label::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
 /* BOLETO CARD */
 .boleto-card {
-background: var(–card-bg);
-border: 1px solid var(–border);
+background: var(--card-bg);
+border: 1px solid var(--border);
 overflow: hidden;
 position: relative;
 transition: border-color 0.25s, transform 0.25s;
@@ -255,21 +255,21 @@ background: linear-gradient(135deg, #1a1a1a 0%, #1e1e1e 100%);
 display: flex; align-items: center; justify-content: center;
 }
 .boleto-img-placeholder span {
-font-family: ‘Bebas Neue’, sans-serif;
+font-family: 'Bebas Neue', sans-serif;
 font-size: 36px; color: rgba(242,239,232,0.04); letter-spacing: 0.1em;
 }
 
 .reventa-badge {
 position: absolute; top: 10px; left: 10px;
-font-family: ‘DM Mono’, monospace; font-size: 8px;
+font-family: 'DM Mono', monospace; font-size: 8px;
 letter-spacing: 0.14em; text-transform: uppercase;
-padding: 3px 8px; background: #f59e0b; color: var(–ink);
+padding: 3px 8px; background: #f59e0b; color: var(--ink);
 font-weight: 500;
 }
 .precio-badge {
 position: absolute; bottom: 10px; right: 10px;
-font-family: ‘Bebas Neue’, sans-serif; font-size: 22px;
-letter-spacing: 0.04em; color: var(–volt);
+font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+letter-spacing: 0.04em; color: var(--volt);
 background: rgba(10,10,10,0.8);
 padding: 4px 10px;
 backdrop-filter: blur(8px);
@@ -277,8 +277,8 @@ backdrop-filter: blur(8px);
 
 .boleto-body { padding: 16px 18px 18px; }
 .boleto-evento {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 24px; letter-spacing: 0.04em; color: var(–paper);
+font-family: 'Bebas Neue', sans-serif;
+font-size: 24px; letter-spacing: 0.04em; color: var(--paper);
 line-height: 1; margin-bottom: 3px;
 }
 .boleto-meta {
@@ -286,19 +286,19 @@ display: flex; align-items: center; gap: 12px;
 margin-bottom: 16px;
 }
 .boleto-zona {
-font-family: ‘DM Mono’, monospace; font-size: 9px;
-letter-spacing: 0.1em; text-transform: uppercase; color: var(–muted);
+font-family: 'DM Mono', monospace; font-size: 9px;
+letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
 }
 .boleto-fecha {
-font-family: ‘DM Mono’, monospace; font-size: 9px;
-letter-spacing: 0.08em; color: var(–muted);
+font-family: 'DM Mono', monospace; font-size: 9px;
+letter-spacing: 0.08em; color: var(--muted);
 }
-.boleto-fecha::before { content: ‘\00B7’; margin-right: 12px; color: var(–border); }
+.boleto-fecha::before { content: '\00B7'; margin-right: 12px; color: var(--border); }
 
 .btn-comprar {
 width: 100%; padding: 13px;
-background: var(–volt); color: var(–ink);
-font-family: ‘DM Mono’, monospace; font-size: 11px;
+background: var(--volt); color: var(--ink);
+font-family: 'DM Mono', monospace; font-size: 11px;
 letter-spacing: 0.1em; text-transform: uppercase;
 border: none; cursor: pointer; font-weight: 500;
 transition: opacity 0.2s;
@@ -312,35 +312,35 @@ display: flex; align-items: center;
 padding: 0 18px; position: relative; margin: 0 -1px;
 }
 .perf-divider::before {
-content: ‘’; position: absolute; left: -8px;
+content: ''; position: absolute; left: -8px;
 width: 14px; height: 14px; border-radius: 50%;
-background: var(–ink); border: 1px solid var(–border); z-index: 1;
+background: var(--ink); border: 1px solid var(--border); z-index: 1;
 }
 .perf-divider::after {
-content: ‘’; position: absolute; right: -8px;
+content: ''; position: absolute; right: -8px;
 width: 14px; height: 14px; border-radius: 50%;
-background: var(–ink); border: 1px solid var(–border); z-index: 1;
+background: var(--ink); border: 1px solid var(--border); z-index: 1;
 }
 .perf-line {
 flex: 1; height: 1px;
-background: repeating-linear-gradient(90deg, var(–border) 0, var(–border) 5px, transparent 5px, transparent 10px);
+background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 5px, transparent 5px, transparent 10px);
 }
 .perf-label {
-font-family: ‘DM Mono’, monospace; font-size: 8px;
-letter-spacing: 0.16em; text-transform: uppercase; color: var(–muted);
+font-family: 'DM Mono', monospace; font-size: 8px;
+letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
 padding: 8px 10px; flex-shrink: 0;
 }
 
 .empty-state {
 margin: 20px; padding: 60px 24px;
-border: 1px solid var(–border); text-align: center;
+border: 1px solid var(--border); text-align: center;
 }
 .empty-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.4; }
 .empty-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 28px; letter-spacing: 0.04em; color: var(–paper); margin-bottom: 8px;
+font-family: 'Bebas Neue', sans-serif;
+font-size: 28px; letter-spacing: 0.04em; color: var(--paper); margin-bottom: 8px;
 }
-.empty-sub { font-size: 13px; color: var(–muted); line-height: 1.65; }
+.empty-sub { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
 #loadingView {
 display: none; flex-direction: column;
@@ -349,20 +349,20 @@ min-height: calc(100dvh - 60px); gap: 20px;
 }
 .spinner {
 width: 28px; height: 28px; border-radius: 50%;
-border: 2px solid var(–border); border-top-color: var(–volt);
+border: 2px solid var(--border); border-top-color: var(--volt);
 animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-text {
-font-family: ‘DM Mono’, monospace; font-size: 10px;
-letter-spacing: 0.16em; text-transform: uppercase; color: var(–muted);
+font-family: 'DM Mono', monospace; font-size: 10px;
+letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
 }
 
 .count-pill {
 display: inline-block;
-font-family: ‘DM Mono’, monospace; font-size: 9px;
+font-family: 'DM Mono', monospace; font-size: 9px;
 letter-spacing: 0.1em; padding: 3px 10px;
-background: rgba(212,245,60,0.1); color: var(–volt);
+background: rgba(212,245,60,0.1); color: var(--volt);
 border: 1px solid rgba(212,245,60,0.2);
 margin-left: 8px;
 }
@@ -382,8 +382,8 @@ padding: 20px;
 .chat-popup-panel {
 width: 100%; max-width: 480px; height: 85vh;
 max-height: 700px;
-background: var(–ink);
-border: 1px solid var(–border);
+background: var(--ink);
+border: 1px solid var(--border);
 border-radius: 16px;
 overflow: hidden;
 position: relative;
@@ -393,7 +393,7 @@ flex-direction: column;
 .chat-popup-header {
 padding: 0 20px;
 height: 60px;
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 display: flex;
 align-items: center;
 justify-content: flex-start;
@@ -407,24 +407,24 @@ object-fit: contain;
 display: block;
 }
 .chat-popup-version {
-font-family: ‘DM Mono’, monospace;
+font-family: 'DM Mono', monospace;
 font-size: 15px;
 letter-spacing: 0.08em;
-color: var(–muted);
+color: var(--muted);
 }
 .chat-popup-close {
 background: none; border: none; cursor: pointer;
-color: var(–muted); font-size: 24px;
+color: var(--muted); font-size: 24px;
 line-height: 1; padding: 4px;
 transition: color 0.2s;
 margin-left: auto;
 }
-.chat-popup-close:hover { color: var(–paper); }
+.chat-popup-close:hover { color: var(--paper); }
 .chat-popup-iframe {
 flex: 1;
 width: 100%;
 border: none;
-background: var(–ink);
+background: var(--ink);
 }
 
 /* BURBUJA FLOTANTE CHAT */
@@ -435,8 +435,8 @@ right: 24px;
 width: 56px;
 height: 56px;
 border-radius: 50%;
-background: var(–volt);
-color: var(–ink);
+background: var(--volt);
+color: var(--ink);
 border: none;
 cursor: pointer;
 display: flex;
