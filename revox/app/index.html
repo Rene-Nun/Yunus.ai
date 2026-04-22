@@ -59,8 +59,8 @@ html, body {
 }
 
 .login-logo {
-  width: 140px;
-  height: 140px;
+  width: 200px;
+  height: auto;
   object-fit: contain;
   margin-bottom: 32px;
   opacity: 0;
@@ -242,12 +242,11 @@ html, body {
   margin-bottom: 16px;
 }
 .dash-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 24px;
-  letter-spacing: 0.04em;
-  background: linear-gradient(90deg, var(--revox-blue), var(--revox-cyan));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  width: 150px;
+  height: auto;
+  max-height: 24px;
+  object-fit: contain;
+  object-position: left center;
 }
 .dash-version {
   font-family: 'DM Mono', monospace;
@@ -518,10 +517,9 @@ html, body {
 
 <div id="app">
 
-  <!-- LOGIN -->
   <div id="loginBox">
     <div class="inner">
-      <img src="revoxlogo.png" alt="Revox" class="login-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+      <img src="darkrevoxlogo.png" alt="Revox" class="login-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
       <div style="display:none; font-family:'Bebas Neue',sans-serif; font-size:48px; letter-spacing:0.04em; background:linear-gradient(90deg,#101CBD,#48A8E0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:32px;">REVOX</div>
       
       <h1 class="login-h1">Tu capital,<br>tu rendimiento.</h1>
@@ -558,12 +556,11 @@ html, body {
     </div>
   </div>
 
-  <!-- DASHBOARD -->
   <div id="dashboardBox">
     
     <div class="dash-header">
       <div class="dash-header-top">
-        <div class="dash-logo">REVOX</div>
+        <img src="darkrevoxlogo.png" alt="Revox" class="dash-logo">
         <span class="dash-version">1.0.0</span>
       </div>
       <div class="dash-welcome">
@@ -572,8 +569,7 @@ html, body {
     </div>
 
     <div class="dash-content" id="dashContent">
-      <!-- Se llena dinámicamente -->
-    </div>
+      </div>
 
   </div>
 
