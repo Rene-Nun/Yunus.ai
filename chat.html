@@ -471,6 +471,9 @@ function cerrarSesion() {
         console.warn('No se pudo limpiar localStorage:', e);
     }
     celular = '';
+    const chatLogo = document.getElementById('chatLogo');
+    chatLogo.style.opacity = '0';
+    setTimeout(() => chatLogo.style.display = 'none', 300);
     document.getElementById('chatBox').style.display = 'none';
     document.getElementById('loginBox').style.display = 'flex';
     document.getElementById('mensajes').innerHTML = '';
