@@ -657,13 +657,25 @@ async function enviar() {
 window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const modoChat = params.get('modo') === 'chat';
+    const prefillMsg = params.get('msg'); // Capturamos el mensaje de la URL
 
     const celularGuardado = localStorage.getItem('yunus_celular');
     if (celularGuardado) {
         celular = celularGuardado;
         if (modoChat) {
             // Dentro del popup de marketplace → mostrar chat normal
-            mostrarChat();
+            mostrarChat().then(() => {
+                // Si la URL trae un mensaje, lo enviamos automáticamente
+                if (prefillMsg) {
+                    const input = document.getElementById('inputMsg');
+                    input.value = prefillMsg;
+                    enviar(); // Dispara la misma función como si el usuario diera "Enter"
+                    
+                    // Limpia la URL para que no se reenvíe si recarga la página
+                    const newUrl = window.location.pathname + '?modo=chat';
+                    window.history.replaceState({}, document.title, newUrl);
+                }
+            });
         } else {
             // Acceso directo con sesión activa → ir a marketplace
             window.location.href = 'marketplace.html';
