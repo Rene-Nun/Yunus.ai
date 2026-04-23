@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yunus — Escalando Servidores</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0a0a0a;
+            --paper: #F2EFE8;
+            --volt: #D4F53C;
+            --muted: #5C5C5C;
+            --border: rgba(242,239,232,0.12);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        ::selection { background: var(--volt); color: var(--ink); }
+
+        html, body {
+            height: 100%;
+            background: var(--ink);
+            color: var(--paper);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* GRAIN OVERLAY (Mantiene tu estética de la landing) */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 128px;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 48px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--volt);
+            background: rgba(212, 245, 60, 0.05);
+            border: 1px solid rgba(212, 245, 60, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            margin-bottom: 24px;
+        }
+
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--volt);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(212, 245, 60, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(212, 245, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 245, 60, 0); }
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(64px, 12vw, 120px);
+            line-height: 0.9;
+            letter-spacing: 0.02em;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+        }
+
+        h1 em {
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--muted);
+            font-style: normal;
+        }
+
+        p {
+            font-size: 16px;
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 40px;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-refresh {
+            background: transparent;
+            color: var(--paper);
+            border: 1px solid var(--border);
+            padding: 14px 32px;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 12px;
+        }
+
+        .btn-refresh:hover {
+            border-color: var(--paper);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .footer-note {
+            position: absolute;
+            bottom: 32px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="darklogo.png" alt="Yunus" class="logo" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+        <div id="logoFallback" style="display:none; font-family:'Bebas Neue', sans-serif; font-size:40px; margin-bottom:48px; letter-spacing:0.04em;">YUNUS</div>
+
+        <div class="status-badge">
+            <div class="pulse-dot"></div>
+            Escalando infraestructura
+        </div>
+
+        <h1>A foro<br><em>lleno.</em></h1>
+
+        <p>
+            Rompieron la taquilla. El volumen de solicitudes en nuestro lanzamiento ha superado todas las proyecciones. Estamos inyectando más capacidad a nuestros servidores para procesar tu solicitud.
+        </p>
+
+        <button class="btn-refresh" onclick="window.location.reload()">
+            Reintentar conexión ↻
+        </button>
+    </div>
+
+    <div class="footer-note">
+        Esta página se actualizará automáticamente en <span id="countdown">60</span>s
+    </div>
+
+    <script>
+        // Recarga automática para que los usuarios entren solos cuando levantes el sistema
+        let timeLeft = 60;
+        const countdownEl = document.getElementById('countdown');
+        
+        setInterval(() => {
+            timeLeft--;
+            countdownEl.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                window.location.reload();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
