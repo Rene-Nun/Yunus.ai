@@ -426,10 +426,8 @@ async function mostrarChat() {
     try {
         const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
         if (res.ok) {
-            const data = await res.json();
-            if (data.historial && data.historial.length > 0) {
-                localStorage.setItem('yunus_historial', JSON.stringify(data.historial));
-            }
+    const data = await res.json();
+    localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
         }
     } catch {
         // Server unavailable, fall through to localStorage
@@ -468,10 +466,8 @@ async function iniciarChat() {
         localStorage.setItem('yunus_celular', celular);
 
         if (res.ok) {
-            const data = await res.json();
-            if (data.historial && data.historial.length > 0) {
-                localStorage.setItem('yunus_historial', JSON.stringify(data.historial));
-            }
+    const data = await res.json();
+    localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
         }
 
         btn.disabled = false;
