@@ -557,8 +557,25 @@ function renderMensaje(texto, tipo, esImagen = false) {
         img.src = texto;
         img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 180px; object-fit: cover; display: block;';
         burbuja.appendChild(img);
-    } else {
-        burbuja.textContent = texto;
+        } else {
+        // Analizar si Yunus mandó la etiqueta secreta de un mapa
+        const partes = texto.split(/(\[MAPA:.*?\])/);
+        partes.forEach(parte => {
+            if (parte.startsWith('[MAPA:') && parte.endsWith(']')) {
+                const url = parte.slice(6, -1).trim();
+                const img = document.createElement('img');
+                img.src = url;
+                // Le damos diseño para que parezca una tarjeta dentro del chat
+                img.style.cssText = 'border-radius: 8px; max-width: 100%; margin-top: 8px; display: block; border: 1px solid rgba(255,255,255,0.1);';
+                img.onerror = function() { this.style.display = 'none'; }; // Si la URL falla, se oculta
+                burbuja.appendChild(img);
+            } else if (parte) {
+                const span = document.createElement('span');
+                span.textContent = parte;
+                span.style.whiteSpace = 'pre-wrap'; // Respeta los saltos de línea de Yunus
+                burbuja.appendChild(span);
+            }
+        });
     }
 
     wrapper.appendChild(burbuja);
