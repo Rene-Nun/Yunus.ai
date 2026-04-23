@@ -1,5 +1,5 @@
 import Groq from "groq-sdk";
-import { Client } from "@hq/client";
+import { Client } from "@notionhq/client";
 import { v2 as cloudinary } from "cloudinary";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
