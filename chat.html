@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -240,6 +239,25 @@
 
     #mensajes::-webkit-scrollbar { display: none; }
 
+    /* INDICADOR DE ESCRITURA ESTILO CONSOLA */
+    #typingIndicator {
+        display: none;
+        padding: 8px 16px;
+        font-family: 'DM Mono', monospace;
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--volt);
+        background: #0d0d0d;
+        animation: pulseText 1.5s infinite;
+        flex-shrink: 0;
+    }
+
+    @keyframes pulseText {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
+
     #inputBar {
         background: #111;
         border-top: 1px solid var(--border);
@@ -304,7 +322,6 @@
 
 <div id="app">
 
-<!-- LOGIN -->
 <div id="loginBox">
     <div class="inner">
         <img src="darklogo.png" alt="Yunus" class="login-logo" onerror="this.src='darklogo.jpeg'">
@@ -343,9 +360,9 @@
     </div>
 </div>
 
-<!-- CHAT -->
 <div id="chatBox">
     <div id="mensajes"></div>
+    <div id="typingIndicator">Procesando...</div>
     <div id="inputBar">
         <label for="inputFoto" id="cameraBtn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -370,6 +387,35 @@
 <script>
 let celular = '';
 let primerMensajeYunus = true;
+let typingInterval;
+
+// Lógica del Indicador de Carga
+function mostrarCargando(esImagen) {
+    const indicator = document.getElementById('typingIndicator');
+    indicator.style.display = 'block';
+    
+    const pasosTexto = ["Pensando...", "Evaluando viabilidad...", "Preparando respuesta..."];
+    const pasosImagen = ["Subiendo imagen...", "Analizando documento...", "Validando identidad..."];
+    
+    const pasos = esImagen ? pasosImagen : pasosTexto;
+    let i = 0;
+    indicator.textContent = pasos[i];
+    
+    clearInterval(typingInterval);
+    typingInterval = setInterval(() => {
+        i = (i + 1) % pasos.length;
+        indicator.textContent = pasos[i];
+    }, 1500); // Cambia el texto cada 1.5 segundos
+    
+    // Scrollear hacia abajo para que el usuario vea el indicador
+    const contenedor = document.getElementById('mensajes');
+    contenedor.scrollTop = contenedor.scrollHeight;
+}
+
+function ocultarCargando() {
+    clearInterval(typingInterval);
+    document.getElementById('typingIndicator').style.display = 'none';
+}
 
 async function mostrarChat() {
     document.getElementById('loginBox').style.display = 'none';
@@ -557,6 +603,9 @@ async function enviarFoto(input) {
     const base64 = await comprimirImagen(file);
     agregarMensaje(base64, 'usuario', true);
     input.value = '';
+    
+    mostrarCargando(true); // Activar indicador para imagen
+
     try {
         const res = await fetch('/api/chat', {
             method: 'POST',
@@ -564,6 +613,7 @@ async function enviarFoto(input) {
             body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
         });
         const data = await res.json();
+        
         if (data.imagenUrl) {
             const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
             for (let i = historial.length - 1; i >= 0; i--) {
@@ -574,8 +624,11 @@ async function enviarFoto(input) {
             }
             localStorage.setItem('yunus_historial', JSON.stringify(historial));
         }
+        
+        ocultarCargando(); // Ocultar indicador justo antes de responder
         agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
     } catch {
+        ocultarCargando();
         agregarMensaje('Error de conexión.', 'yunus');
     }
 }
@@ -586,6 +639,9 @@ async function enviar() {
     if (!mensaje) return;
     input.value = '';
     agregarMensaje(mensaje, 'usuario');
+    
+    mostrarCargando(false); // Activar indicador para texto
+
     try {
         const res = await fetch('/api/chat', {
             method: 'POST',
@@ -593,8 +649,11 @@ async function enviar() {
             body: JSON.stringify({ mensaje, celular })
         });
         const data = await res.json();
+        
+        ocultarCargando(); // Ocultar indicador justo antes de responder
         agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
     } catch {
+        ocultarCargando();
         agregarMensaje('Error de conexión.', 'yunus');
     }
 }
