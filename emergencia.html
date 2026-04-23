@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Yunus — Escalando Servidores</title>
+    <title>Yunus — A Foro Lleno</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
@@ -27,11 +27,9 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
 
-        /* GRAIN OVERLAY (Mantiene tu estética de la landing) */
+        /* GRAIN OVERLAY */
         body::after {
             content: '';
             position: fixed;
@@ -44,54 +42,91 @@
             background-size: 128px;
         }
 
-        .container {
-            max-width: 600px;
+        /* HEADER FIJO CON LOGO DESBORDADO */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 72px; /* Header delgado */
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-logo {
+            width: 260px; /* Tamaño grande para compensar el padding transparente */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .logo-fallback {
+            display: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            color: var(--paper);
+            letter-spacing: 0.04em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* CONTENIDO PRINCIPAL */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             padding: 40px;
             text-align: center;
             position: relative;
             z-index: 1;
+            margin-top: 72px; /* Compensa el header */
         }
 
-        .logo {
-            height: 48px;
-            width: auto;
-            object-fit: contain;
-            margin-bottom: 48px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+        /* ESTILO TERMINAL / CONSOLA (Reemplazo del badge genérico) */
+        .terminal-status {
             font-family: 'DM Mono', monospace;
             font-size: 11px;
             letter-spacing: 0.15em;
             text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .terminal-status span {
             color: var(--volt);
-            background: rgba(212, 245, 60, 0.05);
-            border: 1px solid rgba(212, 245, 60, 0.2);
-            padding: 8px 16px;
-            border-radius: 100px;
-            margin-bottom: 24px;
         }
 
-        .pulse-dot {
-            width: 6px;
-            height: 6px;
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
             background-color: var(--volt);
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
+            animation: blink 1s step-end infinite;
+            margin-bottom: -2px;
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(212, 245, 60, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(212, 245, 60, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(212, 245, 60, 0); }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         h1 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(64px, 12vw, 120px);
+            font-size: clamp(72px, 14vw, 140px);
             line-height: 0.9;
             letter-spacing: 0.02em;
             margin-bottom: 24px;
@@ -108,7 +143,7 @@
             font-size: 16px;
             color: var(--muted);
             line-height: 1.7;
-            margin-bottom: 40px;
+            margin-bottom: 48px;
             max-width: 480px;
             margin-left: auto;
             margin-right: auto;
@@ -149,13 +184,15 @@
 </head>
 <body>
 
-    <div class="container">
-        <img src="darklogo.png" alt="Yunus" class="logo" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
-        <div id="logoFallback" style="display:none; font-family:'Bebas Neue', sans-serif; font-size:40px; margin-bottom:48px; letter-spacing:0.04em;">YUNUS</div>
+    <header>
+        <img src="darklogo.png" alt="Yunus" class="header-logo" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+        <div id="logoFallback" class="logo-fallback">YUNUS</div>
+    </header>
 
-        <div class="status-badge">
-            <div class="pulse-dot"></div>
-            Escalando infraestructura
+    <div class="main-content">
+        
+        <div class="terminal-status">
+            > SYS_OVERLOAD: <span>AMPLIANDO_AFORO</span><div class="cursor"></div>
         </div>
 
         <h1>A foro<br><em>lleno.</em></h1>
@@ -174,7 +211,6 @@
     </div>
 
     <script>
-        // Recarga automática para que los usuarios entren solos cuando levantes el sistema
         let timeLeft = 60;
         const countdownEl = document.getElementById('countdown');
         
