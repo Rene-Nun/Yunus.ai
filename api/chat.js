@@ -59,7 +59,9 @@ export default async function handler(req, res) {
   const pageId = page.id;
   const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || "Usuario";
   const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
-  const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
+  
+  // SOLUCIÓN AMNESIA: Leer TODOS los bloques de texto de Notion (no solo los primeros 2000 caracteres)
+  const historialActual = page.properties.Historial?.rich_text?.map(rt => rt.plain_text).join("") || "";
 
   let imagenUrl = null;
   if (imagen) {
@@ -70,7 +72,7 @@ export default async function handler(req, res) {
     imagenUrl = upload.secure_url;
   }
 
-  // Etapa que ve Groq: si hay imagen, avanzamos
+  // Etapa que ve Groq
   let etapaParaGroq = etapa;
   if (imagen) {
     if (etapa === "ask_ine_frente") etapaParaGroq = "ask_ine_reverso";
@@ -85,18 +87,21 @@ export default async function handler(req, res) {
   if (etapaParaGroq === "listo") {
     const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
     const entradaHistorial = imagen
-      ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n`
-      : `[${timestamp}] Usuario: ${mensaje}\n`;
-    const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
+      ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]`
+      : `[${timestamp}] Usuario: ${mensaje}`;
+    
+    // Guardamos un historial más largo (8000 caracteres) para no perder contexto
+    const nuevoHistorial = (historialActual + "\n" + entradaHistorial).trim().slice(-8000);
+    // Lo dividimos en "chunks" de 2000 caracteres para que Notion no marque error
+    const chunks = nuevoHistorial.match(/[\s\S]{1,2000}/g) || [];
 
     await notion.pages.update({
       page_id: pageId,
       properties: {
-        Historial: { rich_text: [{ text: { content: nuevoHistorial } }] }
+        Historial: { rich_text: chunks.map(chunk => ({ text: { content: chunk } })) }
       }
     });
 
-    // Retorna la señal de silencio y corta la ejecución para no gastar en Groq
     return res.status(200).json({ respuesta: "_SILENCIO_", imagenUrl });
   }
   // ==========================================
@@ -194,7 +199,7 @@ RESPONDE EXACTAMENTE: "¡Todo recibido, ${nombre}! En este momento estoy analiza
 • Consultando disponibilidad de boletos...
 • Evaluando opciones de financiamiento...
 
-Este proceso puede tardar un par de minutos. Un agente de Yunus te escribirá por aquí en cuanto tengamos tu resultado. 🚀"
+Este proceso puede tardar un par de minutos. Te escribiré por aquí en cuanto tenga tu resultado. 🚀"
 
 ETAPA ACTUAL DEL USUARIO: ${etapaParaGroq}
 
@@ -231,11 +236,14 @@ ${historialActual}`
     }
   }
 
+  // SOLUCIÓN LÍMITE NOTION: Guardamos el historial fragmentado para evitar errores
   const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
   const entradaHistorial = imagen
-    ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuestaFinal}\n`
-    : `[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaFinal}\n`;
-  const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
+    ? `\n[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuestaFinal}`
+    : `\n[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaFinal}`;
+  
+  const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
+  const chunks = nuevoHistorial.match(/[\s\S]{1,2000}/g) || [];
 
   await notion.pages.update({
     page_id: pageId,
@@ -244,7 +252,7 @@ ${historialActual}`
         rich_text: [{ text: { content: nuevaEtapa } }]
       },
       Historial: {
-        rich_text: [{ text: { content: nuevoHistorial } }]
+        rich_text: chunks.map(chunk => ({ text: { content: chunk } }))
       },
       ...(imagenUrl && {
         Docs: {
