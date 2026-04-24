@@ -32,26 +32,6 @@ function checkRateLimit(ip) {
   return true;
 }
 
-// ==========================================
-// FRAGMENTADOR ANTI-CRASH PARA NOTION
-// Corta el historial limpiamente sin romper emojis
-// ==========================================
-function fragmentarHistorialSeguro(texto) {
-  const chunks = [];
-  let actual = "";
-  const lineas = texto.split("\n");
-  for (const linea of lineas) {
-    if ((actual + "\n" + linea).length > 1800) {
-      if (actual) chunks.push(actual);
-      actual = linea;
-    } else {
-      actual = actual ? actual + "\n" + linea : linea;
-    }
-  }
-  if (actual) chunks.push(actual);
-  return chunks.length > 0 ? chunks : [""];
-}
-
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
   
@@ -79,8 +59,7 @@ export default async function handler(req, res) {
   const pageId = page.id;
   const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || "Usuario";
   const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
-  
-  const historialActual = page.properties.Historial?.rich_text?.map(rt => rt.plain_text).join("") || "";
+  const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
 
   let imagenUrl = null;
   if (imagen) {
@@ -91,79 +70,15 @@ export default async function handler(req, res) {
     imagenUrl = upload.secure_url;
   }
 
-  // APAGADOR TOTAL EN ETAPA LISTO
-  if (etapa === "listo") {
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
-    const entradaHistorial = imagen
-      ? `\n[${timestamp}] Usuario: [imagen: ${imagenUrl}]`
-      : `\n[${timestamp}] Usuario: ${mensaje}`;
-    
-    const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
-    const chunks = fragmentarHistorialSeguro(nuevoHistorial);
-
-    await notion.pages.update({
-      page_id: pageId,
-      properties: {
-        Historial: { rich_text: chunks.map(chunk => ({ text: { content: chunk } })) }
-      }
-    });
-    return res.status(200).json({ respuesta: "_SILENCIO_", imagenUrl });
-  }
-
-  // FLUJO DE DOCUMENTOS "HARDCODEADO" (BYPASS A GROQ)
+  // Etapa que ve Groq: si hay imagen, avanzamos
+  let etapaParaGroq = etapa;
   if (imagen) {
-    let respuestaDirecta = "";
-    let nuevaEtapa = etapa;
-
-    if (etapa === "ask_ine_frente" || etapa === "ask_specs" || etapa === "bienvenida") {
-      nuevaEtapa = "ask_ine_reverso";
-      respuestaDirecta = "¡Recibido! ✅ Ahora necesito la foto del reverso (el lado con el código de barras o QR) para continuar con el proceso.";
-    } else if (etapa === "ask_ine_reverso") {
-      nuevaEtapa = "documentos";
-      respuestaDirecta = "¡Listo, INE confirmada! Como paso final, puedes enviarme un comprobante de ingresos (nómina o estado de cuenta). Esto es **100% OPCIONAL**, pero enviarlo aumenta muchísimo las probabilidades de ser aprobado. Si prefieres no enviarlo, simplemente escribe **'LISTO'**.";
-    } else {
-      nuevaEtapa = "documentos";
-      respuestaDirecta = "¡Documento recibido! Si ya no vas a enviar nada más, simplemente escribe **'LISTO'**.";
-    }
-
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
-    const entradaHistorial = `\n[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuestaDirecta}`;
-    const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
-    const chunks = fragmentarHistorialSeguro(nuevoHistorial);
-
-    await notion.pages.update({
-      page_id: pageId,
-      properties: {
-        Etapa: { rich_text: [{ text: { content: nuevaEtapa } }] },
-        Historial: { rich_text: chunks.map(chunk => ({ text: { content: chunk } })) },
-        Docs: { rich_text: [{ text: { content: imagenUrl } }] }
-      }
-    });
-
-    return res.status(200).json({ respuesta: respuestaDirecta, imagenUrl });
+    if (etapa === "ask_ine_frente") etapaParaGroq = "ask_ine_reverso";
+    else if (etapa === "ask_ine_reverso") etapaParaGroq = "documentos";
   }
 
-  // Si escriben "Listo", cerramos el flujo de Groq
-  if (mensaje && mensaje.toUpperCase().includes("LISTO") && (etapa === "documentos" || etapa === "ask_ine_reverso")) {
-    const respuestaDirecta = `¡Todo recibido, ${nombre}! En este momento estoy analizando tu perfil y revisando viabilidad.\n• Verificando identidad...\n• Analizando capacidad de pago...\n• Consultando disponibilidad de boletos...\n• Evaluando opciones de financiamiento...\n\nEste proceso puede tardar un par de minutos. Te escribiré por aquí en cuanto tenga tu resultado. 🚀`;
-    
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
-    const entradaHistorial = `\n[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaDirecta}`;
-    const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
-    const chunks = fragmentarHistorialSeguro(nuevoHistorial);
+  const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
 
-    await notion.pages.update({
-      page_id: pageId,
-      properties: {
-        Etapa: { rich_text: [{ text: { content: "listo" } }] },
-        Historial: { rich_text: chunks.map(chunk => ({ text: { content: chunk } })) }
-      }
-    });
-
-    return res.status(200).json({ respuesta: respuestaDirecta, imagenUrl: null });
-  }
-
-  // LLAMADA A GROQ
   const completion = await groq.chat.completions.create({
     model: "llama-3.3-70b-versatile",
     messages: [
@@ -241,7 +156,27 @@ NO saludes. Tu objetivo es definir el evento, la fecha (si aplica) y la zona. Us
 
 REGLA DE AVANCE: Cuando el usuario YA TE HAYA DEFINIDO evento, fecha (si aplica) y zona, confirma que tienes la zona elegida y dile que para continuar necesitas verificar su identidad pidiendo una foto de su INE por el frente, Y agrega obligatoriamente al puro final de tu mensaje la palabra: [AVANZAR]. (NO desgloses el plan de pagos aquí a menos que el usuario te lo haya pedido explícitamente en el mensaje anterior).
 
-HISTORIAL DE LA CONVERSACIÓN (Revísalo TODO para recordar el evento y la zona que el usuario ya eligió. NUNCA vuelvas a preguntar el evento si ya te lo dijeron):
+Si etapa es 'ask_ine_frente':
+RESPONDE EXACTAMENTE: "¡Excelente elección! Para poder armar tu plan de pagos, necesito verificar tu identidad. Por favor, envíame una foto clara de tu INE por el frente (el lado con tu foto). 📸"
+
+Si etapa es 'ask_ine_reverso':
+RESPONDE EXACTAMENTE: "¡Recibido! ✅ Ahora necesito la foto del reverso (el lado con el código de barras o QR) para continuar con el proceso."
+
+Si etapa es 'documentos':
+RESPONDE EXACTAMENTE: "¡Listo, INE confirmada! Como paso final, puedes enviarme un comprobante de ingresos (nómina o estado de cuenta). Esto es **100% OPCIONAL**, pero enviarlo aumenta muchísimo las probabilidades de ser aprobado. Si prefieres no enviarlo, simplemente escribe **'LISTO'**."
+
+Si etapa es 'listo':
+RESPONDE EXACTAMENTE: "¡Todo recibido, ${nombre}! En este momento estoy analizando tu perfil y revisando viabilidad.
+• Verificando identidad...
+• Analizando capacidad de pago...
+• Consultando disponibilidad de boletos...
+• Evaluando opciones de financiamiento...
+
+Este proceso puede tardar un par de minutos. Un agente de Yunus te escribirá por aquí en cuanto tengamos tu resultado. 🚀"
+
+ETAPA ACTUAL DEL USUARIO: ${etapaParaGroq}
+
+HISTORIAL DE LA CONVERSACIÓN (Úsalo para recordar de qué evento, fecha y zona están hablando, y si ya les diste precios):
 ${historialActual}`
       },
       {
@@ -256,28 +191,46 @@ ${historialActual}`
   let respuestaOriginal = completion.choices[0].message.content;
   let respuestaFinal = respuestaOriginal;
 
-  // CORRECCIÓN AMNESIA: Habilitamos el salto de bienvenida a ask_specs
+  // Lógica de avance de etapas inteligente
   let nuevaEtapa = etapa;
-  if (etapa === "bienvenida") {
+  if (mensaje && mensaje.toUpperCase().includes("LISTO")) {
+    nuevaEtapa = "listo";
+  } else if (imagen) {
+    if (etapa === "ask_ine_frente") nuevaEtapa = "ask_ine_reverso";
+    else if (etapa === "ask_ine_reverso") nuevaEtapa = "documentos";
+    else if (etapa === "documentos") nuevaEtapa = "documentos";
+  } else if (etapa === "bienvenida") {
     nuevaEtapa = "ask_specs";
-  } else if (etapa === "ask_specs" && respuestaOriginal.includes("[AVANZAR]")) {
-    nuevaEtapa = "ask_ine_frente";
-    respuestaFinal = respuestaOriginal.replace("[AVANZAR]", "").trim();
+  } else if (etapa === "ask_specs") {
+    // Solo si Groq determinó que ya tiene todos los datos, avanzamos la BD
+    if (respuestaOriginal.includes("[AVANZAR]")) {
+      nuevaEtapa = "ask_ine_frente";
+      respuestaFinal = respuestaOriginal.replace("[AVANZAR]", "").trim();
+    }
   }
 
   const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
-  const entradaHistorial = `\n[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaFinal}`;
-  
-  const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
-  const chunks = fragmentarHistorialSeguro(nuevoHistorial);
+  const entradaHistorial = imagen
+    ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuestaFinal}\n`
+    : `[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaFinal}\n`;
+  const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
 
   await notion.pages.update({
     page_id: pageId,
     properties: {
-      Etapa: { rich_text: [{ text: { content: nuevaEtapa } }] },
-      Historial: { rich_text: chunks.map(chunk => ({ text: { content: chunk } })) }
+      Etapa: {
+        rich_text: [{ text: { content: nuevaEtapa } }]
+      },
+      Historial: {
+        rich_text: [{ text: { content: nuevoHistorial } }]
+      },
+      ...(imagenUrl && {
+        Docs: {
+          rich_text: [{ text: { content: imagenUrl } }]
+        }
+      })
     }
   });
 
-  res.status(200).json({ respuesta: respuestaFinal, imagenUrl: null });
+  res.status(200).json({ respuesta: respuestaFinal, imagenUrl });
 }
