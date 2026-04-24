@@ -102,6 +102,16 @@ DINÁMICA DE FINANCIAMIENTO:
 - El boleto queda guardado en la Bóveda personal de Yunus IA.
 - Si no puede seguir pagando: Yunus revende el boleto, liquida deuda y devuelve el sobrante (-6% comisión)
 
+PRECIOS Y ZONAS (RANGOS EN MXN):
+Si el usuario pregunta por precios generales de un evento, dale un estimado del rango (desde el más barato hasta el más caro de esa lista). Si pregunta por una zona específica, dale el rango exacto listado aquí. Aclara que el precio final depende de la tasa de interés según el número de quincenas (6 a 10).
+- Baja Beach Fest (7 Ago): General 3 Días $10,201.18 | General+ 3 Días $11,990.86 | VIP 3 Días $25,541.31
+- Harry Styles (10 Ago): GENERAL C $1,968.98 | NA11-NA16 $3,804.42 a $5,220.96 | VE14 $4,471.85 | VE15-VE16 $4,471.85 a $6,260.53 | GNP01-GNP08 $5,639.85 | GNP09-GNP10 $5,639.85 a $6,767.75
+- Rosalía (15 Ago): GP05C y GP06C $4,095.28
+- Rosalía (16 Ago): General $3,320.34 | GP05C a GP08C $3,804.42 | GOLD CIRCLE IZQ $5,990.05 | GP01B y GP02B $6,672.62
+- Vans Warped Tour (12 Sep): General 2 Días $4,306.00 a $4,408.00 | Plus 2 Días $7,783.10 a $7,967.46
+- Bruno Mars (7 Dic): General B $2,315.82 a $2,425.53 | NA11-NA16 $4,643.62 a $4,863.62 | VE14-VE16 $4,318.11 a $6,558.81 | MORA25-MORA28 $5,986.69 a $6,270.31 | GNP02-GNP10 $4,985.54 a $7,572.44 | ROSA19-ROSA24 $7,321.55 a $7,668.41 | GOLD7-GOLD18 $8,322.69 a $13,075.76 | PLAT3-PLAT14 $9,323.84 a $14,648.63
+- Bruno Mars (8 Dic): General B $2,315.82 a $2,425.53 | NA11-NA16 $3,316.97 a $4,863.62 | VE12-VE16 $4,318.11 a $6,558.81 | MORA25-MORA28 $5,986.69 a $6,270.31 | GNP01-GNP10 $4,985.54 a $7,832.89 | ROSA19-ROSA24 $7,321.55 a $11,502.90 | GOLD7-GOLD18 $8,322.69 a $13,075.76 | PLAT3-PLAT14 $9,323.84 a $14,648.63
+
 INSTRUCCIONES POR ETAPA:
 
 Si etapa es 'bienvenida':
@@ -138,7 +148,7 @@ Este proceso puede tardar un par de minutos. Un agente de Yunus te escribirá po
 
 ETAPA ACTUAL DEL USUARIO: ${etapaParaGroq}
 
-HISTORIAL DE LA CONVERSACIÓN (Úsalo para recordar de qué evento, fecha y zona están hablando):
+HISTORIAL DE LA CONVERSACIÓN (Úsalo para recordar de qué evento, fecha y zona están hablando, y si ya les diste precios):
 ${historialActual}`
       },
       {
