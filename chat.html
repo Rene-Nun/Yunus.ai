@@ -239,8 +239,8 @@
 
     #mensajes::-webkit-scrollbar { display: none; }
 
-    /* INDICADOR DE ESCRITURA ESTILO CONSOLA */
-    #typingIndicator {
+    /* INDICADOR DE REVISIÓN FINAL */
+    #reviewingIndicator {
         display: none;
         padding: 8px 16px;
         font-family: 'DM Mono', monospace;
@@ -249,13 +249,28 @@
         text-transform: uppercase;
         color: var(--volt);
         background: #0d0d0d;
+        animation: pulseText 2s infinite ease-in-out;
+        flex-shrink: 0;
+        text-align: center;
+    }
+
+    /* INDICADOR DE ESCRITURA ESTILO CONSOLA */
+    #typingIndicator {
+        display: none;
+        padding: 8px 16px;
+        font-family: 'DM Mono', monospace;
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--paper);
+        background: #0d0d0d;
         animation: pulseText 1.5s infinite;
         flex-shrink: 0;
     }
 
     @keyframes pulseText {
         0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
+        50% { opacity: 0.3; }
     }
 
     #inputBar {
@@ -281,6 +296,7 @@
         flex-shrink: 0;
     }
     #cameraBtn svg { stroke: var(--muted); }
+    #cameraBtn[disabled] { opacity: 0.4; cursor: not-allowed; }
 
     #inputMsg {
         flex: 1;
@@ -295,6 +311,7 @@
         color: var(--paper);
     }
     #inputMsg::placeholder { color: var(--muted); }
+    #inputMsg[disabled] { opacity: 0.6; cursor: not-allowed; }
 
     #sendBtn {
         width: 36px;
@@ -310,6 +327,8 @@
         transition: opacity 0.2s;
     }
     #sendBtn:hover { opacity: 0.85; }
+    #sendBtn[disabled] { background: rgba(255,255,255,0.05); cursor: not-allowed; opacity: 1; }
+    #sendBtn[disabled] svg { stroke: var(--muted) !important; }
 
     @keyframes fadeUp {
         from { opacity: 0; transform: translateY(10px); }
@@ -362,6 +381,7 @@
 
 <div id="chatBox">
     <div id="mensajes"></div>
+    <div id="reviewingIndicator">REVISANDO PERFIL...⏳</div>
     <div id="typingIndicator">Procesando...</div>
     <div id="inputBar">
         <label for="inputFoto" id="cameraBtn">
@@ -388,8 +408,32 @@
 let celular = '';
 let primerMensajeYunus = true;
 let typingInterval;
+let chatBloqueadoPermanente = false; // Nueva variable para controlar el estado final
 
+// Nueva Función para Bloquear el Chat Permanentemente y Mostrar Status Verde
+function activarEstadoRevisionFinal() {
+    chatBloqueadoPermanente = true;
+    
+    // Ocultar indicador normal y mostrar el verde parpadeante de "REVISANDO PERFIL"
+    document.getElementById('typingIndicator').style.display = 'none';
+    document.getElementById('reviewingIndicator').style.display = 'block';
+    
+    // Desactivar inputs y botones
+    document.getElementById('inputMsg').disabled = true;
+    document.getElementById('inputMsg').placeholder = "Revisión en proceso...";
+    document.getElementById('sendBtn').disabled = true;
+    document.getElementById('cameraBtn').disabled = true;
+    document.getElementById('cameraBtn').setAttribute('disabled', 'true'); // Forzar visual
+
+    // Scrollear al final
+    const contenedor = document.getElementById('mensajes');
+    contenedor.scrollTop = contenedor.scrollHeight;
+}
+
+// Lógica del Indicador de Carga Normal
 function mostrarCargando(esImagen) {
+    if (chatBloqueadoPermanente) return; // No hacer nada si ya está bloqueado
+
     const indicator = document.getElementById('typingIndicator');
     indicator.style.display = 'block';
     
@@ -406,11 +450,13 @@ function mostrarCargando(esImagen) {
         indicator.textContent = pasos[i];
     }, 1500); 
     
+    // Scrollear hacia abajo
     const contenedor = document.getElementById('mensajes');
     contenedor.scrollTop = contenedor.scrollHeight;
 }
 
 function ocultarCargando() {
+    if (chatBloqueadoPermanente) return; // Mantener el status verde activado
     clearInterval(typingInterval);
     document.getElementById('typingIndicator').style.display = 'none';
 }
@@ -422,10 +468,13 @@ async function mostrarChat() {
     primerMensajeYunus = true;
 
     try {
+        // SOLUCIÓN CACHÉ: Rompedor de caché Vercel activo
         const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}&t=${Date.now()}`);
         if (res.ok) {
             const data = await res.json();
             localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+            // Revisar si la etapa final ya está activa para bloquear
+            if (data.etapa === 'listo') activarEstadoRevisionFinal();
         }
     } catch {
         // Fall through
@@ -451,6 +500,7 @@ async function iniciarChat() {
     const numeroCelular = '+52' + input;
 
     try {
+        // SOLUCIÓN CACHÉ: Rompedor de caché Vercel activo
         const res = await fetch(`/api/historial?celular=${encodeURIComponent(numeroCelular)}&t=${Date.now()}`);
 
         if (res.status === 404) {
@@ -505,30 +555,12 @@ function ocultarError() {
     document.getElementById('loginError').style.display = 'none';
 }
 
-function cerrarSesion() {
-    try {
-        localStorage.removeItem('yunus_celular');
-        localStorage.removeItem('yunus_historial');
-    } catch (e) {}
-    celular = '';
-    const chatLogo = document.getElementById('chatLogo');
-    if (chatLogo) {
-        chatLogo.style.opacity = '0';
-        setTimeout(() => chatLogo.style.display = 'none', 300);
-    }
-    document.getElementById('chatBox').style.display = 'none';
-    document.getElementById('loginBox').style.display = 'flex';
-    document.getElementById('mensajes').innerHTML = '';
-    document.getElementById('celularInput').value = '';
-    primerMensajeYunus = true;
-}
-
 function renderMensaje(texto, tipo, esImagen = false) {
     const contenedor = document.getElementById('mensajes');
     const esYunus = tipo === 'yunus';
 
     const wrapper = document.createElement('div');
-    wrapper.style.cssText = `display: flex; align-items: flex-end; gap: 8px; justify-content: ${esYunus ? 'flex-start' : 'flex-end'};`;
+    wrapper.style.cssText = `display: flex; align-items: flex-end; gap: 8px; justify-content: ${esYunus ? 'flex-start' : 'flex-end'}; margin-bottom: 10px;`;
 
     if (esYunus && primerMensajeYunus) {
         const avatar = document.createElement('img');
@@ -553,16 +585,18 @@ function renderMensaje(texto, tipo, esImagen = false) {
     if (esImagen) {
         const img = document.createElement('img');
         img.src = texto;
-        img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 180px; object-fit: cover; display: block;';
+        img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 250px; object-fit: cover; display: block;';
         burbuja.appendChild(img);
-        } else {
-        const partes = texto.split(/(\[MAPA:.*?\])/);
+    } else {
+        // SOLUCIÓN IMAGEN: Regex más robusta para interceptar [MAPA: url] incluso de Notion
+        const partes = texto.split(/(\[MAPA:\s*.*?\])/i);
         partes.forEach(parte => {
-            if (parte.startsWith('[MAPA:') && parte.endsWith(']')) {
-                const url = parte.slice(6, -1).trim();
+            if (/\[MAPA:\s*.*?\]/i.test(parte)) {
+                // Extraer la URL limpiando corchetes, espacios y la etiqueta MAPA
+                const url = parte.replace(/\[MAPA:\s*/i, '').replace(']', '').trim();
                 const img = document.createElement('img');
                 img.src = url;
-                img.style.cssText = 'border-radius: 8px; max-width: 100%; margin-top: 8px; display: block; border: 1px solid rgba(255,255,255,0.1);';
+                img.style.cssText = 'border-radius: 8px; max-width: 100%; margin-top: 8px; display: block; border: 1px solid rgba(255,255,255,0.1); max-height: 250px; object-fit: cover;';
                 img.onerror = function() { this.style.display = 'none'; };
                 burbuja.appendChild(img);
             } else if (parte) {
@@ -607,6 +641,7 @@ function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
 }
 
 async function enviarFoto(input) {
+    if (chatBloqueadoPermanente) return; // Cierre de seguridad
     const file = input.files[0];
     if (!file) return;
     const base64 = await comprimirImagen(file);
@@ -635,7 +670,15 @@ async function enviarFoto(input) {
         }
         
         ocultarCargando();
-        if (data.respuesta !== "_SILENCIO_") agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
+        
+        // Interceptar si la IA dice '_SILENCIO_', significa que ya estamos bloqueados
+        if (data.respuesta === "_SILENCIO_") {
+            activarEstadoRevisionFinal();
+            return;
+        }
+
+        if (data.respuesta) agregarMensaje(data.respuesta, 'yunus');
+
     } catch {
         ocultarCargando();
         agregarMensaje('Error de conexión.', 'yunus');
@@ -643,6 +686,7 @@ async function enviarFoto(input) {
 }
 
 async function enviar() {
+    if (chatBloqueadoPermanente) return; // Cierre de seguridad
     const input = document.getElementById('inputMsg');
     const mensaje = input.value.trim();
     if (!mensaje) return;
@@ -660,7 +704,20 @@ async function enviar() {
         const data = await res.json();
         
         ocultarCargando();
-        if (data.respuesta !== "_SILENCIO_") agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
+
+        // Interceptar si la IA dice '_SILENCIO_', significa que ya estamos bloqueados
+        if (data.respuesta === "_SILENCIO_") {
+            activarEstadoRevisionFinal();
+            return;
+        }
+
+        if (data.respuesta) {
+            agregarMensaje(data.respuesta, 'yunus');
+            // Interceptar si este fue el mensaje de 'listo' (contiene la palabra viabilidad y tokens de parpadeo)
+            if (data.respuesta.includes("viabilidad...") && data.respuesta.includes("Revision")) {
+                activarEstadoRevisionFinal();
+            }
+        }
     } catch {
         ocultarCargando();
         agregarMensaje('Error de conexión.', 'yunus');
@@ -676,11 +733,15 @@ async function sincronizarChatEnVivo() {
     if (!celular) return;
     
     try {
+        // SOLUCIÓN CACHÉ: Rompedor de caché Vercel activo
         const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}&t=${Date.now()}`);
         if (res.ok) {
             const data = await res.json();
             const historialNube = data.historial || [];
             
+            // Si la nube ya está en etapa listo, bloquear localmente
+            if (data.etapa === 'listo' && !chatBloqueadoPermanente) activarEstadoRevisionFinal();
+
             const historialLocalActual = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
             longitudHistorialLocal = historialLocalActual.length;
             
@@ -691,7 +752,13 @@ async function sincronizarChatEnVivo() {
                 primerMensajeYunus = true;
                 historialNube.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
                 
-                ocultarCargando();
+                // Mantener status verde si está bloqueado
+                if (chatBloqueadoPermanente) {
+                    document.getElementById('typingIndicator').style.display = 'none';
+                    document.getElementById('reviewingIndicator').style.display = 'block';
+                } else {
+                    ocultarCargando();
+                }
                 longitudHistorialLocal = historialNube.length;
             }
         }
@@ -716,7 +783,7 @@ window.addEventListener('DOMContentLoaded', () => {
         celular = celularGuardado;
         if (modoChat) {
             mostrarChat().then(() => {
-                if (prefillMsg) {
+                if (prefillMsg && !chatBloqueadoPermanente) {
                     const input = document.getElementById('inputMsg');
                     input.value = prefillMsg;
                     enviar();
