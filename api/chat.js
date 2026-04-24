@@ -136,7 +136,10 @@ RESPONDE EXACTAMENTE: "¡Todo recibido, ${nombre}! En este momento estoy analiza
 
 Este proceso puede tardar un par de minutos. Un agente de Yunus te escribirá por aquí en cuanto tengamos tu resultado. 🚀"
 
-ETAPA ACTUAL DEL USUARIO: ${etapaParaGroq}`
+ETAPA ACTUAL DEL USUARIO: ${etapaParaGroq}
+
+HISTORIAL DE LA CONVERSACIÓN (Úsalo para recordar de qué evento, fecha y zona están hablando):
+${historialActual}`
       },
       {
         role: "user",
