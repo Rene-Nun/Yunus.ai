@@ -6,10 +6,7 @@ const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 export default async function handler(req, res) {
   if (req.method !== "GET") return res.status(405).end();
 
-  // 1. Destruimos el caché de Vercel con fuerza bruta
-  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
+  res.setHeader("Cache-Control", "no-store");
 
   const celular = req.query.celular;
   if (!celular) return res.status(400).json({ error: "Falta celular" });
@@ -29,12 +26,7 @@ export default async function handler(req, res) {
   }
 
   const page = search.results[0];
-  
-  // 2. Extraemos la Etapa para avisarle al frontend y bloquear el chat
-  const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
-
-  // 3. Leemos TODO el texto sin límite de 2000 caracteres
-  const raw = page.properties.Historial?.rich_text?.map(rt => rt.plain_text).join("") || "";
+  const raw = page.properties.Historial?.rich_text[0]?.plain_text || "";
 
   const historial = [];
   const entradas = raw.split(/(?=\[\d+\/\d+\/\d+,)/);
@@ -58,6 +50,5 @@ export default async function handler(req, res) {
     }
   }
 
-  // Ahora sí enviamos la "etapa" para que tu chat.html accione la luz verde
-  res.status(200).json({ historial, etapa });
+  res.status(200).json({ historial });
 }
