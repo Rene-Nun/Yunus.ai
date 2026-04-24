@@ -32,6 +32,26 @@ function checkRateLimit(ip) {
   return true;
 }
 
+// ==========================================
+// FRAGMENTADOR ANTI-CRASH PARA NOTION
+// Corta el historial limpiamente sin romper emojis
+// ==========================================
+function fragmentarHistorialSeguro(texto) {
+  const chunks = [];
+  let actual = "";
+  const lineas = texto.split("\n");
+  for (const linea of lineas) {
+    if ((actual + "\n" + linea).length > 1800) {
+      if (actual) chunks.push(actual);
+      actual = linea;
+    } else {
+      actual = actual ? actual + "\n" + linea : linea;
+    }
+  }
+  if (actual) chunks.push(actual);
+  return chunks.length > 0 ? chunks : [""];
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
   
@@ -60,9 +80,7 @@ export default async function handler(req, res) {
   const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || "Usuario";
   const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
   
-  // SOLUCIÓN AL ERROR 500: Extracción segura del historial (evita crasheo si la celda está vacía)
-  const richTextArray = page.properties.Historial?.rich_text || [];
-  const historialActual = richTextArray.map(rt => rt.plain_text).join("");
+  const historialActual = page.properties.Historial?.rich_text?.map(rt => rt.plain_text).join("") || "";
 
   let imagenUrl = null;
   if (imagen) {
@@ -73,17 +91,15 @@ export default async function handler(req, res) {
     imagenUrl = upload.secure_url;
   }
 
-  // ==========================================
   // APAGADOR TOTAL EN ETAPA LISTO
-  // ==========================================
   if (etapa === "listo") {
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Chihuahua" });
+    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
     const entradaHistorial = imagen
       ? `\n[${timestamp}] Usuario: [imagen: ${imagenUrl}]`
       : `\n[${timestamp}] Usuario: ${mensaje}`;
     
     const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
-    const chunks = nuevoHistorial.match(/[\s\S]{1,2000}/g) || [];
+    const chunks = fragmentarHistorialSeguro(nuevoHistorial);
 
     await notion.pages.update({
       page_id: pageId,
@@ -94,9 +110,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ respuesta: "_SILENCIO_", imagenUrl });
   }
 
-  // ==========================================
   // FLUJO DE DOCUMENTOS "HARDCODEADO" (BYPASS A GROQ)
-  // ==========================================
   if (imagen) {
     let respuestaDirecta = "";
     let nuevaEtapa = etapa;
@@ -112,10 +126,10 @@ export default async function handler(req, res) {
       respuestaDirecta = "¡Documento recibido! Si ya no vas a enviar nada más, simplemente escribe **'LISTO'**.";
     }
 
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Chihuahua" });
+    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
     const entradaHistorial = `\n[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuestaDirecta}`;
     const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
-    const chunks = nuevoHistorial.match(/[\s\S]{1,2000}/g) || [];
+    const chunks = fragmentarHistorialSeguro(nuevoHistorial);
 
     await notion.pages.update({
       page_id: pageId,
@@ -129,14 +143,14 @@ export default async function handler(req, res) {
     return res.status(200).json({ respuesta: respuestaDirecta, imagenUrl });
   }
 
-  // Si escriben "Listo", avanzamos a la etapa de cierre final automáticamente
+  // Si escriben "Listo", cerramos el flujo de Groq
   if (mensaje && mensaje.toUpperCase().includes("LISTO") && (etapa === "documentos" || etapa === "ask_ine_reverso")) {
     const respuestaDirecta = `¡Todo recibido, ${nombre}! En este momento estoy analizando tu perfil y revisando viabilidad.\n• Verificando identidad...\n• Analizando capacidad de pago...\n• Consultando disponibilidad de boletos...\n• Evaluando opciones de financiamiento...\n\nEste proceso puede tardar un par de minutos. Te escribiré por aquí en cuanto tenga tu resultado. 🚀`;
     
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Chihuahua" });
+    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
     const entradaHistorial = `\n[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaDirecta}`;
     const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
-    const chunks = nuevoHistorial.match(/[\s\S]{1,2000}/g) || [];
+    const chunks = fragmentarHistorialSeguro(nuevoHistorial);
 
     await notion.pages.update({
       page_id: pageId,
@@ -148,12 +162,8 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ respuesta: respuestaDirecta, imagenUrl: null });
   }
-  // ==========================================
 
-
-  // Si llegamos hasta aquí, es porque apenas estamos en la venta y SÍ necesitamos la labia de la IA.
-  const mensajeUsuario = mensaje;
-
+  // LLAMADA A GROQ
   const completion = await groq.chat.completions.create({
     model: "llama-3.3-70b-versatile",
     messages: [
@@ -229,7 +239,7 @@ NO saludes. Tu objetivo es definir el evento, la fecha (si aplica) y la zona. Us
 - Si es Baja Beach o Vans Warped Tour: pregunta si quiere boleto General o premium (NO llevan mapa).
 - Si no quedó claro el evento: pregúntale cuál quiere.
 
-REGLA DE AVANCE: Cuando el usuario YA TE HAYA DEFINIDO evento, fecha (si aplica) y zona, confirma que tienes la zona elegida y dile que para continuar necesitas verificar tu identidad pidiendo una foto de tu INE por el frente, Y agrega obligatoriamente al puro final de tu mensaje la palabra: [AVANZAR]. (NO desgloses el plan de pagos aquí a menos que el usuario te lo haya pedido explícitamente en el mensaje anterior).
+REGLA DE AVANCE: Cuando el usuario YA TE HAYA DEFINIDO evento, fecha (si aplica) y zona, confirma que tienes la zona elegida y dile que para continuar necesitas verificar su identidad pidiendo una foto de su INE por el frente, Y agrega obligatoriamente al puro final de tu mensaje la palabra: [AVANZAR]. (NO desgloses el plan de pagos aquí a menos que el usuario te lo haya pedido explícitamente en el mensaje anterior).
 
 HISTORIAL DE LA CONVERSACIÓN (Revísalo TODO para recordar el evento y la zona que el usuario ya eligió. NUNCA vuelvas a preguntar el evento si ya te lo dijeron):
 ${historialActual}`
@@ -246,6 +256,7 @@ ${historialActual}`
   let respuestaOriginal = completion.choices[0].message.content;
   let respuestaFinal = respuestaOriginal;
 
+  // CORRECCIÓN AMNESIA: Habilitamos el salto de bienvenida a ask_specs
   let nuevaEtapa = etapa;
   if (etapa === "bienvenida") {
     nuevaEtapa = "ask_specs";
@@ -254,11 +265,11 @@ ${historialActual}`
     respuestaFinal = respuestaOriginal.replace("[AVANZAR]", "").trim();
   }
 
-  const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Chihuahua" });
+  const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
   const entradaHistorial = `\n[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaFinal}`;
   
   const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
-  const chunks = nuevoHistorial.match(/[\s\S]{1,2000}/g) || [];
+  const chunks = fragmentarHistorialSeguro(nuevoHistorial);
 
   await notion.pages.update({
     page_id: pageId,
