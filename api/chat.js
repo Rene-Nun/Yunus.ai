@@ -79,6 +79,28 @@ export default async function handler(req, res) {
 
   const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
 
+  // ==========================================
+  // APAGADOR DE YUNUS (SILENCIO TOTAL)
+  // ==========================================
+  if (etapaParaGroq === "listo") {
+    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
+    const entradaHistorial = imagen
+      ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n`
+      : `[${timestamp}] Usuario: ${mensaje}\n`;
+    const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
+
+    await notion.pages.update({
+      page_id: pageId,
+      properties: {
+        Historial: { rich_text: [{ text: { content: nuevoHistorial } }] }
+      }
+    });
+
+    // Retorna la señal de silencio y corta la ejecución para no gastar en Groq
+    return res.status(200).json({ respuesta: "_SILENCIO_", imagenUrl });
+  }
+  // ==========================================
+
   const completion = await groq.chat.completions.create({
     model: "llama-3.3-70b-versatile",
     messages: [
