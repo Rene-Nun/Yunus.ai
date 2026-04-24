@@ -60,8 +60,9 @@ export default async function handler(req, res) {
   const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || "Usuario";
   const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
   
-  // Memoria completa: Extraemos todo el historial para que Groq no olvide de qué evento hablaban
-  const historialActual = page.properties.Historial?.rich_text?.map(rt => rt.plain_text).join("") || "";
+  // SOLUCIÓN AL ERROR 500: Extracción segura del historial (evita crasheo si la celda está vacía)
+  const richTextArray = page.properties.Historial?.rich_text || [];
+  const historialActual = richTextArray.map(rt => rt.plain_text).join("");
 
   let imagenUrl = null;
   if (imagen) {
@@ -76,7 +77,7 @@ export default async function handler(req, res) {
   // APAGADOR TOTAL EN ETAPA LISTO
   // ==========================================
   if (etapa === "listo") {
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
+    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Chihuahua" });
     const entradaHistorial = imagen
       ? `\n[${timestamp}] Usuario: [imagen: ${imagenUrl}]`
       : `\n[${timestamp}] Usuario: ${mensaje}`;
@@ -96,7 +97,6 @@ export default async function handler(req, res) {
   // ==========================================
   // FLUJO DE DOCUMENTOS "HARDCODEADO" (BYPASS A GROQ)
   // ==========================================
-  // Si envían una imagen, el backend contesta directo. ¡0 errores, 0 tokens gastados!
   if (imagen) {
     let respuestaDirecta = "";
     let nuevaEtapa = etapa;
@@ -112,7 +112,7 @@ export default async function handler(req, res) {
       respuestaDirecta = "¡Documento recibido! Si ya no vas a enviar nada más, simplemente escribe **'LISTO'**.";
     }
 
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
+    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Chihuahua" });
     const entradaHistorial = `\n[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuestaDirecta}`;
     const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
     const chunks = nuevoHistorial.match(/[\s\S]{1,2000}/g) || [];
@@ -133,7 +133,7 @@ export default async function handler(req, res) {
   if (mensaje && mensaje.toUpperCase().includes("LISTO") && (etapa === "documentos" || etapa === "ask_ine_reverso")) {
     const respuestaDirecta = `¡Todo recibido, ${nombre}! En este momento estoy analizando tu perfil y revisando viabilidad.\n• Verificando identidad...\n• Analizando capacidad de pago...\n• Consultando disponibilidad de boletos...\n• Evaluando opciones de financiamiento...\n\nEste proceso puede tardar un par de minutos. Te escribiré por aquí en cuanto tenga tu resultado. 🚀`;
     
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
+    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Chihuahua" });
     const entradaHistorial = `\n[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaDirecta}`;
     const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
     const chunks = nuevoHistorial.match(/[\s\S]{1,2000}/g) || [];
@@ -152,6 +152,8 @@ export default async function handler(req, res) {
 
 
   // Si llegamos hasta aquí, es porque apenas estamos en la venta y SÍ necesitamos la labia de la IA.
+  const mensajeUsuario = mensaje;
+
   const completion = await groq.chat.completions.create({
     model: "llama-3.3-70b-versatile",
     messages: [
@@ -245,12 +247,14 @@ ${historialActual}`
   let respuestaFinal = respuestaOriginal;
 
   let nuevaEtapa = etapa;
-  if (etapa === "ask_specs" && respuestaOriginal.includes("[AVANZAR]")) {
+  if (etapa === "bienvenida") {
+    nuevaEtapa = "ask_specs";
+  } else if (etapa === "ask_specs" && respuestaOriginal.includes("[AVANZAR]")) {
     nuevaEtapa = "ask_ine_frente";
     respuestaFinal = respuestaOriginal.replace("[AVANZAR]", "").trim();
   }
 
-  const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
+  const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Chihuahua" });
   const entradaHistorial = `\n[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaFinal}`;
   
   const nuevoHistorial = (historialActual + entradaHistorial).trim().slice(-8000);
