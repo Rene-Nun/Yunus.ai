@@ -26,7 +26,7 @@ export default async function handler(req, res) {
   }
 
   const page = search.results[0];
-  const raw = page.properties.Historial?.rich_text[0]?.plain_text || "";
+  const raw = (page.properties.Historial?.rich_text || []).map(b => b.plain_text).join('') || "";
   console.log("RAW NOTION:", JSON.stringify(raw));
   const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
 
