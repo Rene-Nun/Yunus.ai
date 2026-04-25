@@ -500,7 +500,9 @@ function iniciarPolling() {
         localStorage.setItem('yunus_historial', JSON.stringify(historialRemoto));
         conteoMensajesConocidos = historialRemoto.length;
       }
-    } catch { }
+    } catch (e) {
+      agregarMensaje('Error polling: ' + e.message, 'yunus');
+    }
   }, 4000);
 }
 
