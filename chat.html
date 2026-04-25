@@ -241,7 +241,7 @@
 
     #mensajes::-webkit-scrollbar { display: none; }
 
-    /* INDICADOR NORMAL (procesando texto/imagen) */
+    /* INDICADOR DE ESCRITURA ESTILO CONSOLA */
     #typingIndicator {
         display: none;
         padding: 8px 16px;
@@ -255,27 +255,11 @@
         flex-shrink: 0;
     }
 
-    /* INDICADOR PERMANENTE — etapa listo */
-    #revistandoIndicator {
-        display: none;
-        padding: 10px 16px;
-        font-family: 'DM Mono', monospace;
-        font-size: 10px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--volt);
-        background: #0d0d0d;
-        border-top: 1px solid rgba(212,245,60,0.12);
-        flex-shrink: 0;
-        animation: pulseText 2s infinite;
-    }
-
     @keyframes pulseText {
         0%, 100% { opacity: 1; }
-        50% { opacity: 0.35; }
+        50% { opacity: 0.4; }
     }
 
-    /* INPUT BAR */
     #inputBar {
         background: #111;
         border-top: 1px solid var(--border);
@@ -284,13 +268,6 @@
         gap: 8px;
         align-items: center;
         flex-shrink: 0;
-        transition: opacity 0.3s;
-    }
-
-    /* Estado bloqueado del inputBar */
-    #inputBar.bloqueado {
-        opacity: 0.3;
-        pointer-events: none;
     }
 
     #cameraBtn {
@@ -392,7 +369,6 @@
 <div id="chatBox">
     <div id="mensajes"></div>
     <div id="typingIndicator">Procesando...</div>
-    <div id="revistandoIndicator">⬤ Revisando perfil...</div>
     <div id="inputBar">
         <label for="inputFoto" id="cameraBtn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -419,62 +395,6 @@ let celular = '';
 let primerMensajeYunus = true;
 let typingInterval;
 
-// ─── POLLING ──────────────────────────────────────────────────────────────────
-// Cuando el usuario está en etapa "listo", hacemos polling cada 5s a /api/historial
-// para detectar respuestas manuales que el agente humano escribió en Notion.
-let pollingInterval = null;
-let ultimoMensajeContado = 0; // cuántos mensajes tenía el historial cuando activamos el polling
-
-function activarPolling() {
-    if (pollingInterval) return; // no duplicar
-    pollingInterval = setInterval(async () => {
-        try {
-            const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
-            if (!res.ok) return;
-            const data = await res.json();
-            const historialServidor = data.historial || [];
-
-            // Si el servidor tiene más mensajes que los que tenemos localmente, renderizar los nuevos
-            if (historialServidor.length > ultimoMensajeContado) {
-                const nuevos = historialServidor.slice(ultimoMensajeContado);
-                nuevos.forEach(m => {
-                    // Solo agregar mensajes de Yunus (los del usuario ya están renderizados)
-                    if (m.tipo === 'yunus') {
-                        agregarMensaje(m.texto, 'yunus', m.esImagen || false);
-                    }
-                });
-                ultimoMensajeContado = historialServidor.length;
-
-                // Actualizar localStorage con el historial completo
-                localStorage.setItem('yunus_historial', JSON.stringify(historialServidor));
-            }
-        } catch {
-            // Fallo silencioso, el polling reintentará en 5s
-        }
-    }, 5000);
-}
-
-function detenerPolling() {
-    if (pollingInterval) {
-        clearInterval(pollingInterval);
-        pollingInterval = null;
-    }
-}
-// ─────────────────────────────────────────────────────────────────────────────
-
-// ─── BLOQUEO DE UI ────────────────────────────────────────────────────────────
-function bloquearInterfaz() {
-    document.getElementById('inputBar').classList.add('bloqueado');
-    document.getElementById('typingIndicator').style.display = 'none';
-    document.getElementById('revistandoIndicator').style.display = 'block';
-}
-
-function desbloquearInterfaz() {
-    document.getElementById('inputBar').classList.remove('bloqueado');
-    document.getElementById('revistandoIndicator').style.display = 'none';
-}
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Lógica del Indicador de Carga
 function mostrarCargando(esImagen) {
     const indicator = document.getElementById('typingIndicator');
@@ -491,8 +411,9 @@ function mostrarCargando(esImagen) {
     typingInterval = setInterval(() => {
         i = (i + 1) % pasos.length;
         indicator.textContent = pasos[i];
-    }, 1500);
+    }, 1500); // Cambia el texto cada 1.5 segundos
     
+    // Scrollear hacia abajo para que el usuario vea el indicador
     const contenedor = document.getElementById('mensajes');
     contenedor.scrollTop = contenedor.scrollHeight;
 }
@@ -508,43 +429,22 @@ async function mostrarChat() {
     chatBox.style.display = 'flex';
     primerMensajeYunus = true;
 
-    let historialServidor = [];
     try {
         const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
         if (res.ok) {
             const data = await res.json();
-            historialServidor = data.historial || [];
-            localStorage.setItem('yunus_historial', JSON.stringify(historialServidor));
+            localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
         }
     } catch {
         // Server unavailable, fall through to localStorage
     }
 
-    const historial = historialServidor.length > 0
-        ? historialServidor
-        : JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-
+    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
     if (historial.length === 0) {
         agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
     } else {
         historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
     }
-
-    // Registrar cuántos mensajes hay para que el polling sepa desde dónde buscar nuevos
-    ultimoMensajeContado = historial.length;
-
-    // Si el último mensaje de Yunus corresponde a la etapa listo, bloquear y activar polling
-    const ultimoYunus = [...historial].reverse().find(m => m.tipo === 'yunus');
-    if (ultimoYunus && esMensajeListo(ultimoYunus.texto)) {
-        bloquearInterfaz();
-        activarPolling();
-    }
-}
-
-// Detectar si un mensaje corresponde a la pantalla de "listo"
-// (lo identificamos por frases únicas del mensaje de despedida de Groq)
-function esMensajeListo(texto) {
-    return texto.includes('Verificando identidad') || texto.includes('Revisando perfil') || texto.includes('Evaluando opciones de financiamiento');
 }
 
 async function iniciarChat() {
@@ -601,14 +501,6 @@ function mostrarChatDirecto() {
     } else {
         historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
     }
-
-    ultimoMensajeContado = historial.length;
-
-    const ultimoYunus = [...historial].reverse().find(m => m.tipo === 'yunus');
-    if (ultimoYunus && esMensajeListo(ultimoYunus.texto)) {
-        bloquearInterfaz();
-        activarPolling();
-    }
 }
 
 function mostrarError(msg) {
@@ -622,7 +514,6 @@ function ocultarError() {
 }
 
 function cerrarSesion() {
-    detenerPolling();
     try {
         localStorage.removeItem('yunus_celular');
         localStorage.removeItem('yunus_historial');
@@ -631,16 +522,13 @@ function cerrarSesion() {
     }
     celular = '';
     const chatLogo = document.getElementById('chatLogo');
-    if (chatLogo) {
-        chatLogo.style.opacity = '0';
-        setTimeout(() => chatLogo.style.display = 'none', 300);
-    }
+    chatLogo.style.opacity = '0';
+    setTimeout(() => chatLogo.style.display = 'none', 300);
     document.getElementById('chatBox').style.display = 'none';
     document.getElementById('loginBox').style.display = 'flex';
     document.getElementById('mensajes').innerHTML = '';
     document.getElementById('celularInput').value = '';
     primerMensajeYunus = true;
-    desbloquearInterfaz();
 }
 
 function renderMensaje(texto, tipo, esImagen = false) {
@@ -676,19 +564,21 @@ function renderMensaje(texto, tipo, esImagen = false) {
         img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 180px; object-fit: cover; display: block;';
         burbuja.appendChild(img);
     } else {
+        // Analizar si Yunus mandó la etiqueta secreta de un mapa
         const partes = texto.split(/(\[MAPA:.*?\])/);
         partes.forEach(parte => {
             if (parte.startsWith('[MAPA:') && parte.endsWith(']')) {
                 const url = parte.slice(6, -1).trim();
                 const img = document.createElement('img');
                 img.src = url;
+                // Le damos diseño para que parezca una tarjeta dentro del chat
                 img.style.cssText = 'border-radius: 8px; max-width: 100%; margin-top: 8px; display: block; border: 1px solid rgba(255,255,255,0.1);';
-                img.onerror = function() { this.style.display = 'none'; };
+                img.onerror = function() { this.style.display = 'none'; }; // Si la URL falla, se oculta
                 burbuja.appendChild(img);
             } else if (parte) {
                 const span = document.createElement('span');
                 span.textContent = parte;
-                span.style.whiteSpace = 'pre-wrap';
+                span.style.whiteSpace = 'pre-wrap'; // Respeta los saltos de línea de Yunus
                 burbuja.appendChild(span);
             }
         });
@@ -704,7 +594,6 @@ function agregarMensaje(texto, tipo, esImagen = false) {
     historial.push({ texto, tipo, esImagen });
     localStorage.setItem('yunus_historial', JSON.stringify(historial));
     renderMensaje(texto, tipo, esImagen);
-    ultimoMensajeContado = historial.length;
 }
 
 function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
@@ -734,7 +623,7 @@ async function enviarFoto(input) {
     agregarMensaje(base64, 'usuario', true);
     input.value = '';
     
-    mostrarCargando(true);
+    mostrarCargando(true); // Activar indicador para imagen
 
     try {
         const res = await fetch('/api/chat', {
@@ -755,18 +644,8 @@ async function enviarFoto(input) {
             localStorage.setItem('yunus_historial', JSON.stringify(historial));
         }
         
-        ocultarCargando();
-
-        // Si el backend devuelve silencio:true, la imagen fue recibida pero no hay respuesta de Groq
-        if (data.silencio) return;
-
+        ocultarCargando(); // Ocultar indicador justo antes de responder
         agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
-
-        // Si el backend indica que hay que bloquear (etapa listo recién alcanzada)
-        if (data.bloquear) {
-            bloquearInterfaz();
-            activarPolling();
-        }
     } catch {
         ocultarCargando();
         agregarMensaje('Error de conexión.', 'yunus');
@@ -780,7 +659,7 @@ async function enviar() {
     input.value = '';
     agregarMensaje(mensaje, 'usuario');
     
-    mostrarCargando(false);
+    mostrarCargando(false); // Activar indicador para texto
 
     try {
         const res = await fetch('/api/chat', {
@@ -790,18 +669,8 @@ async function enviar() {
         });
         const data = await res.json();
         
-        ocultarCargando();
-
-        // Modo silencio: el mensaje fue guardado en Notion pero Groq no responde
-        if (data.silencio) return;
-
+        ocultarCargando(); // Ocultar indicador justo antes de responder
         agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
-
-        // Bloquear al llegar a etapa listo
-        if (data.bloquear) {
-            bloquearInterfaz();
-            activarPolling();
-        }
     } catch {
         ocultarCargando();
         agregarMensaje('Error de conexión.', 'yunus');
@@ -811,25 +680,31 @@ async function enviar() {
 window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const modoChat = params.get('modo') === 'chat';
-    const prefillMsg = params.get('msg');
+    const prefillMsg = params.get('msg'); // Capturamos el mensaje de la URL
 
     const celularGuardado = localStorage.getItem('yunus_celular');
     if (celularGuardado) {
         celular = celularGuardado;
         if (modoChat) {
+            // Dentro del popup de marketplace → mostrar chat normal
             mostrarChat().then(() => {
+                // Si la URL trae un mensaje, lo enviamos automáticamente
                 if (prefillMsg) {
                     const input = document.getElementById('inputMsg');
                     input.value = prefillMsg;
-                    enviar();
+                    enviar(); // Dispara la misma función como si el usuario diera "Enter"
+                    
+                    // Limpia la URL para que no se reenvíe si recarga la página
                     const newUrl = window.location.pathname + '?modo=chat';
                     window.history.replaceState({}, document.title, newUrl);
                 }
             });
         } else {
+            // Acceso directo con sesión activa → ir a marketplace
             window.location.href = 'marketplace.html';
         }
     }
+    // Sin sesión → mostrar pantalla de login (no hacer nada más)
 });
 </script>
 
