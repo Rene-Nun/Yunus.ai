@@ -477,7 +477,6 @@ function desactivarModoListo() {
 
 // ── POLLING ──
 function iniciarPolling() {
-  if (!celular) return;
   if (pollingInterval) return;
   pollingInterval = setInterval(async () => {
     try {
