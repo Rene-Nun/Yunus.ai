@@ -430,6 +430,11 @@ function ocultarCargando() {
 function activarModoListo() {
   if (enModoListo) return;
   enModoListo = true;
+  fetch(`/api/historial?celular=${encodeURIComponent(celular)}`)
+    .then(r => r.json())
+    .then(data => {
+      localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+    });
 
   // Bloquear interfaz
   const inputMsg = document.getElementById('inputMsg');
