@@ -64,7 +64,7 @@ export default async function handler(req, res) {
   const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
 
   // ── MODO SILENCIO: etapa listo → solo guardar mensaje, no llamar a Groq ──
-  if (etapa === "listo") {
+  if (etapa === "listo" || etapa === "respondido") {
     if (mensaje || imagen) {
       const entradaExtra = imagen
         ? `[${timestamp}] Usuario: [imagen enviada después de listo]\n`
