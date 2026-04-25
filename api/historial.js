@@ -32,8 +32,7 @@ export default async function handler(req, res) {
   const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
 
   const historial = [];
-  // ✅ CORREGIDO: corchete escapado \[ y barras escapadas \/
-  const entradas = raw.split(/(?=\[\d+\/\d+\/\d+,)/);
+  const entradas = raw.split(/(?=[\d+\/\d+\/\d+,)/);
 
   for (const entrada of entradas) {
     if (!entrada.trim()) continue;
