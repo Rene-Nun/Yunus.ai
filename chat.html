@@ -480,20 +480,36 @@ function iniciarPolling() {
       if (!res.ok) return;
       const data = await res.json();
 
-      // Si el agente cambió la etapa a algo distinto de listo, desbloquear
       if (data.etapa && data.etapa !== 'listo') {
         desactivarModoListo();
       }
 
       const historialRemoto = data.historial || [];
+
       if (historialRemoto.length > conteoMensajesConocidos) {
         const nuevos = historialRemoto.slice(conteoMensajesConocidos);
         nuevos.forEach(m => {
-          // Solo renderizar mensajes de Yunus nuevos (los del usuario ya están en pantalla)
           if (m.tipo === 'yunus') {
+            // FIX 3: apagar el indicador antes de mostrar cada mensaje nuevo
+            clearInterval(typingInterval);
+            document.getElementById('typingIndicator').style.display = 'none';
+            enModoListo = false;
+
+            // FIX 2: renderMensaje ya tiene el parser de [MAPA:], 
+            // solo hay que asegurarse de llamarlo con esImagen=false
             renderMensaje(m.texto, 'yunus', false);
+
+            // Re-activar el indicador si aún no hay más mensajes
+            // (el agente puede mandar varios seguidos)
           }
         });
+
+        // Si el agente mandó mensajes, apagarmos el indicador definitivamente
+        clearInterval(typingInterval);
+        document.getElementById('typingIndicator').style.display = 'none';
+        enModoListo = false;
+        detenerPolling();
+
         conteoMensajesConocidos = historialRemoto.length;
         localStorage.setItem('yunus_historial', JSON.stringify(historialRemoto));
       }
