@@ -461,6 +461,7 @@ function activarModoListo() {
 
 function desactivarModoListo() {
   enModoListo = false;
+  detenerPolling();
 
   const inputMsg = document.getElementById('inputMsg');
   const sendBtn = document.getElementById('sendBtn');
@@ -486,6 +487,7 @@ function iniciarPolling() {
 
       if (data.etapa === 'respondido') {
         desactivarModoListo();
+        return;
       }
 
       const historialRemoto = data.historial || [];
@@ -533,11 +535,9 @@ async function mostrarChat() {
       }
 
       if (data.etapa === 'listo') activarModoListo();
-      else if (data.etapa === 'respondido') {
-       desactivarModoListo();
-       iniciarPolling();
-      }
-
+      else if (data.etapa === 'respondido') desactivarModoListo();
+      return;
+    }
   } catch { /* caer a localStorage */ }
 
   const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
@@ -776,12 +776,9 @@ async function enviar() {
     ocultarCargando();
 
     if (data.silencio) {
-  const sync = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
-  const syncData = await sync.json();
-  localStorage.setItem('yunus_historial', JSON.stringify(syncData.historial || []));
-  return;
-  }
-
+      activarModoListo();
+      return;
+    }
 
     agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
 
