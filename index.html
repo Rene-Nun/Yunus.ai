@@ -285,6 +285,7 @@
             const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
             if (!res.ok) return;
             const data = await res.json();
+            if (data.etapa === 'respondido') { desactivarModoListo(); return; }
             const historialLocal    = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
             const historialServidor = data.historial || [];
             if (historialServidor.length > historialLocal.length) {
@@ -331,6 +332,8 @@
         }
 
         if (etapaServidor === 'listo') activarModoRevision();
+        else if (etapaServidor === 'respondido') desactivarModoListo();
+
     }
 
     // ─────────────────────────────────────────
