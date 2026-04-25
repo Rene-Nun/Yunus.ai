@@ -27,6 +27,7 @@ export default async function handler(req, res) {
 
   const page = search.results[0];
   const raw = page.properties.Historial?.rich_text[0]?.plain_text || "";
+  const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
 
   const historial = [];
   const entradas = raw.split(/(?=\[\d+\/\d+\/\d+,)/);
@@ -50,5 +51,5 @@ export default async function handler(req, res) {
     }
   }
 
-  res.status(200).json({ historial });
+  res.status(200).json({ historial, etapa });
 }
