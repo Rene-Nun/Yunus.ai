@@ -526,7 +526,7 @@ async function mostrarChat() {
       conteoMensajesConocidos = historial.length;
 
       if (historial.length === 0) {
-        agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+        renderMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
       } else {
         historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
       }
@@ -539,7 +539,7 @@ async function mostrarChat() {
   const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
   conteoMensajesConocidos = historial.length;
   if (historial.length === 0) {
-    agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+    renderMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
   } else {
     historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
   }
@@ -596,7 +596,7 @@ function mostrarChatDirecto() {
   const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
   conteoMensajesConocidos = historial.length;
   if (historial.length === 0) {
-    agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+    renderMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
   } else {
     historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
   }
