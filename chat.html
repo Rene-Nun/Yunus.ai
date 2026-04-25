@@ -533,11 +533,9 @@ async function mostrarChat() {
       }
 
       if (data.etapa === 'listo') activarModoListo();
-      else if (data.etapa === 'respondido') {
-       desactivarModoListo();
-       iniciarPolling();
-      }
-
+      else if (data.etapa === 'respondido') desactivarModoListo();
+      return;
+    }
   } catch { /* caer a localStorage */ }
 
   const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
