@@ -30,22 +30,29 @@ export default async function handler(req, res) {
   const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
 
   const historial = [];
-  const entradas = raw.split(/(?=\[)/);
 
-  for (const entrada of entradas) {
-  if (!entrada.trim()) continue;
+  // Partir por líneas y reconstruir bloques
+  const lineas = raw.split('\n');
+  let bloqueActual = '';
 
-  // Formato automático: [timestamp] Usuario: texto
-  const usuarioInline = entrada.match(/\] Usuario: ([\s\S]+)/);
-  // Formato manual: [timestamp]\nUsuario: texto
-  const usuarioNewline = entrada.match(/\]\s*\nUsuario: ([\s\S]+)/);
-  // Formato automático: [timestamp] Yunus: texto
-  const yunusInline = entrada.match(/\] Yunus: ([\s\S]+)/);
-  // Formato manual: [timestamp]\nYunus: texto
-  const yunusNewline = entrada.match(/\]\s*\nYunus: ([\s\S]+)/);
+  for (const linea of lineas) {
+    const esTimestamp = /^\[\d+\/\d+\/\d+,/.test(linea);
+    if (esTimestamp && bloqueActual) {
+      procesarBloque(bloqueActual.trim(), historial);
+      bloqueActual = linea;
+    } else {
+      bloqueActual += '\n' + linea;
+    }
+  }
+  if (bloqueActual.trim()) procesarBloque(bloqueActual.trim(), historial);
 
-  const usuarioMatch = usuarioInline || usuarioNewline;
-  const yunusMatch = yunusInline || yunusNewline;
+  res.status(200).json({ historial, etapa });
+}
+
+function procesarBloque(bloque, historial) {
+  // Extraer todo el contenido después de "] Usuario:" o "] Yunus:" o "\nUsuario:" o "\nYunus:"
+  const usuarioMatch = bloque.match(/\] Usuario:\s*([\s\S]+)/) || bloque.match(/\nUsuario:\s*([\s\S]+)/);
+  const yunusMatch = bloque.match(/\] Yunus:\s*([\s\S]+)/) || bloque.match(/\nYunus:\s*([\s\S]+)/);
 
   if (usuarioMatch) {
     const contenido = usuarioMatch[1].trim();
@@ -58,7 +65,4 @@ export default async function handler(req, res) {
   } else if (yunusMatch) {
     historial.push({ tipo: 'yunus', texto: yunusMatch[1].trim(), esImagen: false });
   }
-}
-
-  res.status(200).json({ historial, etapa });
 }
