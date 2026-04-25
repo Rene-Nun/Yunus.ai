@@ -36,7 +36,7 @@ export default async function handler(req, res) {
   let bloqueActual = '';
 
   for (const linea of lineas) {
-    const esTimestamp = /^\[\d+\/\d+\/\d+,/.test(linea);
+    const esTimestamp = /^\[\d{1,2}\/\d{1,2}\/\d{4},\s*\d/.test(linea);
     if (esTimestamp && bloqueActual) {
       procesarBloque(bloqueActual.trim(), historial);
       bloqueActual = linea;
