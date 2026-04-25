@@ -485,7 +485,7 @@ function iniciarPolling() {
       const data = await res.json();
 
       if (data.etapa === 'respondido') {
-  desactivarModoListo();
+        desactivarModoListo();
       }
 
       const historialRemoto = data.historial || [];
