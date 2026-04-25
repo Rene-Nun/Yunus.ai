@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -16,379 +15,331 @@
             --card-bg: #111111;
         }
 
-```
-* { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { height: 100%; }
+        body {
+            height: 100%;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--ink);
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            color: var(--paper);
+        }
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--ink);
+        }
 
-html { height: 100%; }
+        /* LOGIN SCREEN */
+        #loginBox {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        #loginBox .inner {
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .login-logo {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fadeUp 0.6s ease 0.1s both;
+        }
+        .login-h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 42px;
+            line-height: 0.95;
+            letter-spacing: 0.02em;
+            color: var(--paper);
+            text-align: center;
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.2s both;
+        }
+        .login-sub {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.65;
+            text-align: center;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.3s both;
+        }
+        .btn-registro {
+            width: 100%;
+            padding: 14px;
+            background: var(--volt);
+            color: var(--ink);
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.4s both;
+        }
+        .btn-registro:hover { opacity: 0.85; }
+        .divider-wrap {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.45s both;
+        }
+        .divider-line { flex: 1; height: 1px; background: var(--border); }
+        .divider-text {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+        .input-row {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.5s both;
+        }
+        .prefix {
+            padding: 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: 'DM Mono', monospace;
+            font-size: 14px;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+        #celularInput {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            font-family: inherit;
+            background: rgba(255,255,255,0.04);
+            -webkit-appearance: none;
+            transition: border-color 0.2s;
+            color: var(--paper);
+        }
+        #celularInput::placeholder { color: var(--muted); }
+        #celularInput:focus { border-color: var(--volt); }
+        #btnEntrar {
+            width: 100%;
+            margin-top: 12px;
+            background: var(--volt);
+            color: var(--ink);
+            padding: 14px;
+            border-radius: 12px;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.55s both;
+        }
+        #btnEntrar:hover { opacity: 0.85; }
+        #loginError {
+            display: none;
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #ef4444;
+            text-align: center;
+            width: 100%;
+        }
+        .login-footer {
+            margin-top: auto;
+            padding-top: 32px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.6s both;
+        }
+        .login-footer span {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
 
-body {
-    height: 100%;
-    font-family: 'DM Sans', sans-serif;
-    background: var(--ink);
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-    color: var(--paper);
-}
-
-#app {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    max-width: 480px;
-    margin: 0 auto;
-    background: var(--ink);
-}
-
-/* LOGIN SCREEN */
-#loginBox {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    overflow-y: auto;
-}
-
-#loginBox .inner {
-    width: 100%;
-    max-width: 320px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.login-logo {
-    width: 180px;
-    height: 180px;
-    object-fit: contain;
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 0.1s both;
-}
-
-.login-h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 42px;
-    line-height: 0.95;
-    letter-spacing: 0.02em;
-    color: var(--paper);
-    text-align: center;
-    margin-bottom: 12px;
-    opacity: 0;
-    animation: fadeUp 0.5s ease 0.2s both;
-}
-
-.login-sub {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.65;
-    text-align: center;
-    margin-bottom: 28px;
-    opacity: 0;
-    animation: fadeUp 0.5s ease 0.3s both;
-}
-
-.btn-registro {
-    width: 100%;
-    padding: 14px;
-    background: var(--volt);
-    color: var(--ink);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: opacity 0.2s;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    opacity: 0;
-    animation: fadeUp 0.5s ease 0.4s both;
-}
-.btn-registro:hover { opacity: 0.85; }
-
-.divider-wrap {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 24px 0;
-    opacity: 0;
-    animation: fadeUp 0.5s ease 0.45s both;
-}
-.divider-line {
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-}
-.divider-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
-    flex-shrink: 0;
-}
-
-.input-row {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-    opacity: 0;
-    animation: fadeUp 0.5s ease 0.5s both;
-}
-
-.prefix {
-    padding: 12px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    color: var(--muted);
-    flex-shrink: 0;
-}
-
-#celularInput {
-    flex: 1;
-    padding: 12px 14px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    font-size: 16px;
-    outline: none;
-    font-family: inherit;
-    background: rgba(255,255,255,0.04);
-    -webkit-appearance: none;
-    transition: border-color 0.2s;
-    color: var(--paper);
-}
-#celularInput::placeholder { color: var(--muted); }
-#celularInput:focus { border-color: var(--volt); }
-
-#btnEntrar {
-    width: 100%;
-    margin-top: 12px;
-    background: var(--volt);
-    color: var(--ink);
-    padding: 14px;
-    border-radius: 12px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    font-weight: 500;
-    transition: opacity 0.2s;
-    opacity: 0;
-    animation: fadeUp 0.5s ease 0.55s both;
-}
-#btnEntrar:hover { opacity: 0.85; }
-
-#loginError {
-    display: none;
-    margin-top: 12px;
-    padding: 10px 14px;
-    background: rgba(239,68,68,0.1);
-    border: 1px solid rgba(239,68,68,0.3);
-    border-radius: 10px;
-    font-size: 13px;
-    color: #ef4444;
-    text-align: center;
-    width: 100%;
-}
-
-.login-footer {
-    margin-top: auto;
-    padding-top: 32px;
-    text-align: center;
-    opacity: 0;
-    animation: fadeUp 0.5s ease 0.6s both;
-}
-.login-footer span {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
-}
-
-/* CHAT */
-#chatBox {
-    display: none;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-}
-
-#mensajes {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    -webkit-overflow-scrolling: touch;
-    background: #0d0d0d;
-}
-
-#mensajes::-webkit-scrollbar { display: none; }
-
-/* INDICADOR DE ESCRITURA ESTILO CONSOLA */
-#typingIndicator {
-    display: none;
-    padding: 8px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--volt);
-    background: #0d0d0d;
-    animation: pulseText 1.5s infinite;
-    flex-shrink: 0;
-}
-
-@keyframes pulseText {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-}
-
-#inputBar {
-    background: #111;
-    border-top: 1px solid var(--border);
-    padding: 10px 14px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-shrink: 0;
-}
-
-#cameraBtn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-#cameraBtn svg { stroke: var(--muted); }
-
-#inputMsg {
-    flex: 1;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 10px 16px;
-    font-size: 14px;
-    outline: none;
-    font-family: inherit;
-    -webkit-appearance: none;
-    color: var(--paper);
-}
-#inputMsg::placeholder { color: var(--muted); }
-
-#sendBtn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--volt);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: opacity 0.2s;
-}
-#sendBtn:hover { opacity: 0.85; }
-
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-```
-
-</style>
-
+        /* CHAT */
+        #chatBox {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+        }
+        #mensajes {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            -webkit-overflow-scrolling: touch;
+            background: #0d0d0d;
+        }
+        #mensajes::-webkit-scrollbar { display: none; }
+        #typingIndicator {
+            display: none;
+            padding: 8px 16px;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--volt);
+            background: #0d0d0d;
+            animation: pulseText 1.5s infinite;
+            flex-shrink: 0;
+        }
+        @keyframes pulseText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        #inputBar {
+            background: #111;
+            border-top: 1px solid var(--border);
+            padding: 10px 14px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        #cameraBtn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        #cameraBtn svg { stroke: var(--muted); }
+        #inputMsg {
+            flex: 1;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-size: 14px;
+            outline: none;
+            font-family: inherit;
+            -webkit-appearance: none;
+            color: var(--paper);
+        }
+        #inputMsg::placeholder { color: var(--muted); }
+        #sendBtn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--volt);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: opacity 0.2s;
+        }
+        #sendBtn:hover { opacity: 0.85; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
 <div id="app">
-
-<div id="loginBox">
-    <div class="inner">
-        <img src="darklogo.png" alt="Yunus" class="login-logo" onerror="this.src='darklogo.jpeg'">
-
-```
-    <h1 class="login-h1">Accede a los<br>mejores eventos<br>del año</h1>
-    
-    <p class="login-sub">Financia boletos para los conciertos y festivales que no te puedes perder. Sin tarjeta, sin buró.</p>
-    
-    <a href="index.html?modal=onboarding" class="btn-registro">
-        Registrarse
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"/>
-            <polyline points="12 5 19 12 12 19"/>
-        </svg>
-    </a>
-    
-    <div class="divider-wrap">
-        <div class="divider-line"></div>
-        <span class="divider-text">¿Ya tienes cuenta?</span>
-        <div class="divider-line"></div>
+    <div id="loginBox">
+        <div class="inner">
+            <img src="darklogo.png" alt="Yunus" class="login-logo" onerror="this.src='darklogo.jpeg'">
+            <h1 class="login-h1">Accede a los<br>mejores eventos<br>del año</h1>
+            <p class="login-sub">Financia boletos para los conciertos y festivales que no te puedes perder. Sin tarjeta, sin buró.</p>
+            <a href="index.html?modal=onboarding" class="btn-registro">
+                Registrarse
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                </svg>
+            </a>
+            <div class="divider-wrap">
+                <div class="divider-line"></div>
+                <span class="divider-text">¿Ya tienes cuenta?</span>
+                <div class="divider-line"></div>
+            </div>
+            <div class="input-row">
+                <span class="prefix">+52</span>
+                <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
+            </div>
+            <button id="btnEntrar" onclick="iniciarChat()">Entrar →</button>
+            <div id="loginError"></div>
+            <div class="login-footer">
+                <span>Yunus 1.0.1 BETA</span>
+            </div>
+        </div>
     </div>
-    
-    <div class="input-row">
-        <span class="prefix">+52</span>
-        <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10"
-            inputmode="numeric" pattern="[0-9]*">
-    </div>
-    
-    <button id="btnEntrar" onclick="iniciarChat()">Entrar →</button>
-    
-    <div id="loginError"></div>
-    
-    <div class="login-footer">
-        <span>Yunus 1.0.1 BETA</span>
-    </div>
-</div>
-```
 
-</div>
-
-<div id="chatBox">
-    <div id="mensajes"></div>
-    <div id="typingIndicator">Procesando...</div>
-    <div id="inputBar">
-        <label for="inputFoto" id="cameraBtn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                <circle cx="12" cy="13" r="4"/>
-            </svg>
-        </label>
-        <input id="inputFoto" type="file" accept="image/*" style="display:none;" onchange="enviarFoto(this)">
-        <input id="inputMsg" type="text" placeholder="Escribe un mensaje..."
-            onkeydown="if(event.key==='Enter') enviar()">
-        <button id="sendBtn" onclick="enviar()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5">
-                <line x1="22" y1="2" x2="11" y2="13"/>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-            </svg>
-        </button>
+    <div id="chatBox">
+        <div id="mensajes"></div>
+        <div id="typingIndicator">Procesando...</div>
+        <div id="inputBar">
+            <label for="inputFoto" id="cameraBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                </svg>
+            </label>
+            <input id="inputFoto" type="file" accept="image/*" style="display:none;" onchange="enviarFoto(this)">
+            <input id="inputMsg" type="text" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter') enviar()">
+            <button id="sendBtn" onclick="enviar()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+            </button>
+        </div>
     </div>
-</div>
-
 </div>
 
 <script>
@@ -398,14 +349,12 @@ let typingInterval;
 let pollingInterval = null;
 let enModoListo = false;
 
-// ── INDICADOR ──
 function mostrarCargando(esImagen) {
   if (enModoListo) return;
   const indicator = document.getElementById('typingIndicator');
   indicator.style.display = 'block';
   indicator.style.color = 'var(--volt)';
   indicator.style.animation = 'pulseText 1.5s infinite';
-
   const pasosTexto = ["Pensando...", "Evaluando viabilidad...", "Preparando respuesta..."];
   const pasosImagen = ["Subiendo imagen...", "Analizando documento...", "Validando identidad..."];
   const pasos = esImagen ? pasosImagen : pasosTexto;
@@ -416,7 +365,6 @@ function mostrarCargando(esImagen) {
     i = (i + 1) % pasos.length;
     indicator.textContent = pasos[i];
   }, 1500);
-
   document.getElementById('mensajes').scrollTop = document.getElementById('mensajes').scrollHeight;
 }
 
@@ -427,18 +375,14 @@ function ocultarCargando() {
   }
 }
 
-// ── MODO LISTO ──
 function activarModoListo() {
   if (enModoListo) return;
   enModoListo = true;
-
-  // Sincronizar localStorage con Notion antes de arrancar polling
   fetch(`/api/historial?celular=${encodeURIComponent(celular)}`)
     .then(r => r.json())
     .then(data => {
       localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
     });
-
   const inputMsg = document.getElementById('inputMsg');
   const sendBtn = document.getElementById('sendBtn');
   const cameraBtn = document.getElementById('cameraBtn');
@@ -448,20 +392,17 @@ function activarModoListo() {
   sendBtn.style.pointerEvents = 'none';
   cameraBtn.style.opacity = '0.3';
   cameraBtn.style.pointerEvents = 'none';
-
   const indicator = document.getElementById('typingIndicator');
   clearInterval(typingInterval);
   indicator.style.display = 'block';
   indicator.style.color = 'var(--volt)';
   indicator.style.animation = 'pulseText 1.5s infinite';
   indicator.textContent = 'REVISANDO PERFIL...';
-
   iniciarPolling();
 }
 
 function desactivarModoListo() {
   enModoListo = false;
-
   const inputMsg = document.getElementById('inputMsg');
   const sendBtn = document.getElementById('sendBtn');
   const cameraBtn = document.getElementById('cameraBtn');
@@ -471,12 +412,11 @@ function desactivarModoListo() {
   sendBtn.style.pointerEvents = '';
   cameraBtn.style.opacity = '';
   cameraBtn.style.pointerEvents = '';
-
   document.getElementById('typingIndicator').style.display = 'none';
 }
 
-// ── POLLING ──
 function iniciarPolling() {
+  if (!celular) return;
   if (pollingInterval) return;
   pollingInterval = setInterval(async () => {
     try {
@@ -511,7 +451,6 @@ function detenerPolling() {
   pollingInterval = null;
 }
 
-// ── LOGIN / SESIÓN ──
 async function mostrarChat() {
   document.getElementById('loginBox').style.display = 'none';
   const chatBox = document.getElementById('chatBox');
@@ -523,17 +462,17 @@ async function mostrarChat() {
     if (res.ok) {
       const data = await res.json();
       localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
-
       const historial = data.historial || [];
-
       if (historial.length === 0) {
         renderMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
       } else {
         historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
       }
-
       if (data.etapa === 'listo') activarModoListo();
-      else if (data.etapa === 'respondido') desactivarModoListo();
+      else if (data.etapa === 'respondido') {
+        desactivarModoListo();
+        if (celular) iniciarPolling();
+      }
       return;
     }
   } catch { /* caer a localStorage */ }
@@ -549,36 +488,28 @@ async function mostrarChat() {
 async function iniciarChat() {
   const input = document.getElementById('celularInput').value.trim();
   if (input.length !== 10) { mostrarError('Ingresa 10 dígitos válidos.'); return; }
-
   ocultarError();
   const btn = document.getElementById('btnEntrar');
   btn.disabled = true;
   btn.textContent = 'Verificando...';
-
   const numeroCelular = '+52' + input;
-
   try {
     const res = await fetch('/api/historial?celular=' + encodeURIComponent(numeroCelular));
-
     if (res.status === 404) {
       mostrarError('Este número no está registrado. Regístrate primero en yunusia.com');
       btn.disabled = false;
       btn.textContent = 'Entrar →';
       return;
     }
-
     celular = numeroCelular;
     localStorage.setItem('yunus_celular', celular);
-
     if (res.ok) {
       const data = await res.json();
       localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
     }
-
     btn.disabled = false;
     btn.textContent = 'Entrar →';
     window.location.href = 'marketplace.html';
-
   } catch {
     celular = numeroCelular;
     localStorage.setItem('yunus_celular', celular);
@@ -593,7 +524,6 @@ function mostrarChatDirecto() {
   const chatBox = document.getElementById('chatBox');
   chatBox.style.display = 'flex';
   primerMensajeYunus = true;
-
   const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
   if (historial.length === 0) {
     renderMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
@@ -629,14 +559,11 @@ function cerrarSesion() {
   primerMensajeYunus = true;
 }
 
-// ── RENDER ──
 function renderMensaje(texto, tipo, esImagen = false) {
   const contenedor = document.getElementById('mensajes');
   const esYunus = tipo === 'yunus';
-
   const wrapper = document.createElement('div');
   wrapper.style.cssText = `display: flex; align-items: flex-end; gap: 8px; justify-content: ${esYunus ? 'flex-start' : 'flex-end'};`;
-
   if (esYunus && primerMensajeYunus) {
     const avatar = document.createElement('img');
     avatar.src = 'Vector.png';
@@ -649,14 +576,12 @@ function renderMensaje(texto, tipo, esImagen = false) {
     spacer.style.cssText = 'width: 26px; flex-shrink: 0;';
     wrapper.appendChild(spacer);
   }
-
   const burbuja = document.createElement('div');
   if (esYunus) {
     burbuja.style.cssText = 'max-width: 80%; background: #1a1a1a; border: 1px solid var(--border); border-radius: 16px; border-bottom-left-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--paper); line-height: 1.5;';
   } else {
     burbuja.style.cssText = 'max-width: 80%; background: var(--volt); border-radius: 16px; border-bottom-right-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--ink); line-height: 1.5; font-weight: 500;';
   }
-
   if (esImagen) {
     const img = document.createElement('img');
     img.src = texto;
@@ -680,7 +605,6 @@ function renderMensaje(texto, tipo, esImagen = false) {
       }
     });
   }
-
   wrapper.appendChild(burbuja);
   contenedor.appendChild(wrapper);
   contenedor.scrollTop = contenedor.scrollHeight;
@@ -693,7 +617,6 @@ function agregarMensaje(texto, tipo, esImagen = false) {
   renderMensaje(texto, tipo, esImagen);
 }
 
-// ── ENVÍO ──
 function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -721,9 +644,7 @@ async function enviarFoto(input) {
   const base64 = await comprimirImagen(file);
   agregarMensaje(base64, 'usuario', true);
   input.value = '';
-
   mostrarCargando(true);
-
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
@@ -731,7 +652,6 @@ async function enviarFoto(input) {
       body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
     });
     const data = await res.json();
-
     if (data.imagenUrl) {
       const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
       for (let i = historial.length - 1; i >= 0; i--) {
@@ -742,7 +662,6 @@ async function enviarFoto(input) {
       }
       localStorage.setItem('yunus_historial', JSON.stringify(historial));
     }
-
     ocultarCargando();
     if (!data.silencio) {
       agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
@@ -760,9 +679,7 @@ async function enviar() {
   if (!mensaje) return;
   input.value = '';
   agregarMensaje(mensaje, 'usuario');
-
   mostrarCargando(false);
-
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
@@ -770,35 +687,27 @@ async function enviar() {
       body: JSON.stringify({ mensaje, celular })
     });
     const data = await res.json();
-
     ocultarCargando();
-
     if (data.silencio) {
-  const sync = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
-  const syncData = await sync.json();
-  localStorage.setItem('yunus_historial', JSON.stringify(syncData.historial || []));
-  return;
-  }
-
-
+      const sync = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
+      const syncData = await sync.json();
+      localStorage.setItem('yunus_historial', JSON.stringify(syncData.historial || []));
+      return;
+    }
     agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
-
     if (data.respuesta && data.respuesta.includes('Quédate aquí')) {
       activarModoListo();
     }
-
   } catch {
     ocultarCargando();
     agregarMensaje('Error de conexión.', 'yunus');
   }
 }
 
-// ── INIT ──
 window.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const modoChat = params.get('modo') === 'chat';
   const prefillMsg = params.get('msg');
-
   const celularGuardado = localStorage.getItem('yunus_celular');
   if (celularGuardado) {
     celular = celularGuardado;
