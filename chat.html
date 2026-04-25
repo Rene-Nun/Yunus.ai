@@ -461,7 +461,6 @@ function activarModoListo() {
 
 function desactivarModoListo() {
   enModoListo = false;
-  detenerPolling();
 
   const inputMsg = document.getElementById('inputMsg');
   const sendBtn = document.getElementById('sendBtn');
@@ -486,8 +485,7 @@ function iniciarPolling() {
       const data = await res.json();
 
       if (data.etapa === 'respondido') {
-        desactivarModoListo();
-        return;
+  desactivarModoListo();
       }
 
       const historialRemoto = data.historial || [];
