@@ -397,10 +397,10 @@ let primerMensajeYunus = true;
 let typingInterval;
 let pollingInterval = null;
 let enModoListo = false;
-let conteoMensajesConocidos = 0;
 
 // ── INDICADOR ──
 function mostrarCargando(esImagen) {
+  if (enModoListo) return;
   const indicator = document.getElementById('typingIndicator');
   indicator.style.display = 'block';
   indicator.style.color = 'var(--volt)';
@@ -427,16 +427,18 @@ function ocultarCargando() {
   }
 }
 
+// ── MODO LISTO ──
 function activarModoListo() {
   if (enModoListo) return;
   enModoListo = true;
+
+  // Sincronizar localStorage con Notion antes de arrancar polling
   fetch(`/api/historial?celular=${encodeURIComponent(celular)}`)
     .then(r => r.json())
     .then(data => {
       localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
     });
 
-  // Bloquear interfaz
   const inputMsg = document.getElementById('inputMsg');
   const sendBtn = document.getElementById('sendBtn');
   const cameraBtn = document.getElementById('cameraBtn');
@@ -447,7 +449,6 @@ function activarModoListo() {
   cameraBtn.style.opacity = '0.3';
   cameraBtn.style.pointerEvents = 'none';
 
-  // Indicador permanente
   const indicator = document.getElementById('typingIndicator');
   clearInterval(typingInterval);
   indicator.style.display = 'block';
@@ -455,12 +456,12 @@ function activarModoListo() {
   indicator.style.animation = 'pulseText 1.5s infinite';
   indicator.textContent = 'REVISANDO PERFIL...';
 
-  // Arrancar polling
   iniciarPolling();
 }
 
 function desactivarModoListo() {
   enModoListo = false;
+  detenerPolling();
 
   const inputMsg = document.getElementById('inputMsg');
   const sendBtn = document.getElementById('sendBtn');
@@ -473,7 +474,6 @@ function desactivarModoListo() {
   cameraBtn.style.pointerEvents = '';
 
   document.getElementById('typingIndicator').style.display = 'none';
-  detenerPolling();
 }
 
 // ── POLLING ──
@@ -485,8 +485,9 @@ function iniciarPolling() {
       if (!res.ok) return;
       const data = await res.json();
 
-      if (data.etapa && data.etapa !== 'listo') {
+      if (data.etapa === 'respondido') {
         desactivarModoListo();
+        return;
       }
 
       const historialRemoto = data.historial || [];
@@ -496,17 +497,13 @@ function iniciarPolling() {
         const nuevos = historialRemoto.slice(localActual.length);
         nuevos.forEach(m => {
           if (m.tipo === 'yunus') {
-            clearInterval(typingInterval);
-            document.getElementById('typingIndicator').style.display = 'none';
-            enModoListo = false;
             renderMensaje(m.texto, 'yunus', false);
           }
         });
         localStorage.setItem('yunus_historial', JSON.stringify(historialRemoto));
-        conteoMensajesConocidos = historialRemoto.length;
       }
     } catch (e) {
-      agregarMensaje('Error polling: ' + e.message, 'yunus');
+      console.warn('Polling error:', e);
     }
   }, 4000);
 }
@@ -530,7 +527,6 @@ async function mostrarChat() {
       localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
 
       const historial = data.historial || [];
-      conteoMensajesConocidos = historial.length;
 
       if (historial.length === 0) {
         renderMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
@@ -539,12 +535,12 @@ async function mostrarChat() {
       }
 
       if (data.etapa === 'listo') activarModoListo();
+      else if (data.etapa === 'respondido') desactivarModoListo();
       return;
     }
   } catch { /* caer a localStorage */ }
 
   const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-  conteoMensajesConocidos = historial.length;
   if (historial.length === 0) {
     renderMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
   } else {
@@ -601,7 +597,6 @@ function mostrarChatDirecto() {
   primerMensajeYunus = true;
 
   const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-  conteoMensajesConocidos = historial.length;
   if (historial.length === 0) {
     renderMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
   } else {
@@ -629,9 +624,6 @@ function cerrarSesion() {
   }
   celular = '';
   enModoListo = false;
-  conteoMensajesConocidos = 0;
-  const chatLogo = document.getElementById('chatLogo');
-  if (chatLogo) { chatLogo.style.opacity = '0'; setTimeout(() => chatLogo.style.display = 'none', 300); }
   document.getElementById('chatBox').style.display = 'none';
   document.getElementById('loginBox').style.display = 'flex';
   document.getElementById('mensajes').innerHTML = '';
@@ -700,7 +692,6 @@ function agregarMensaje(texto, tipo, esImagen = false) {
   const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
   historial.push({ texto, tipo, esImagen });
   localStorage.setItem('yunus_historial', JSON.stringify(historial));
-  conteoMensajesConocidos = historial.length;
   renderMensaje(texto, tipo, esImagen);
 }
 
@@ -785,15 +776,12 @@ async function enviar() {
     ocultarCargando();
 
     if (data.silencio) {
-      // No debería llegar aquí porque enModoListo bloquea el envío,
-      // pero por si acaso activamos el modo
       activarModoListo();
       return;
     }
 
     agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
 
-    // Detectar si la respuesta de Groq corresponde a la etapa listo
     if (data.respuesta && data.respuesta.includes('Quédate aquí')) {
       activarModoListo();
     }
@@ -815,7 +803,7 @@ window.addEventListener('DOMContentLoaded', () => {
     celular = celularGuardado;
     if (modoChat) {
       mostrarChat().then(() => {
-        if (prefillMsg) {
+        if (prefillMsg && !enModoListo) {
           const input = document.getElementById('inputMsg');
           input.value = prefillMsg;
           enviar();
