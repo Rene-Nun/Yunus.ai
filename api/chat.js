@@ -100,7 +100,7 @@ export default async function handler(req, res) {
     let completion;
     try {
       completion = await groq.chat.completions.create({
-        model: "moonshotai/kimi-k2-instruct",
+        model: "qwen/qwen3-32b",
         messages: [
           {
             role: "system",
