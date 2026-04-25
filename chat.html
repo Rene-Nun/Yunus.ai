@@ -17,308 +17,309 @@
         }
 
 ```
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { height: 100%; }
+html { height: 100%; }
 
-    body {
-        height: 100%;
-        font-family: 'DM Sans', sans-serif;
-        background: var(--ink);
-        overflow: hidden;
-        position: fixed;
-        width: 100%;
-        color: var(--paper);
-    }
+body {
+    height: 100%;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ink);
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    color: var(--paper);
+}
 
-    #app {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        max-width: 480px;
-        margin: 0 auto;
-        background: var(--ink);
-    }
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--ink);
+}
 
-    /* LOGIN SCREEN */
-    #loginBox {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-        overflow-y: auto;
-    }
+/* LOGIN SCREEN */
+#loginBox {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow-y: auto;
+}
 
-    #loginBox .inner {
-        width: 100%;
-        max-width: 320px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+#loginBox .inner {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-    .login-logo {
-        width: 180px;
-        height: 180px;
-        object-fit: contain;
-        margin-bottom: 32px;
-        opacity: 0;
-        animation: fadeUp 0.6s ease 0.1s both;
-    }
+.login-logo {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.1s both;
+}
 
-    .login-h1 {
-        font-family: 'Bebas Neue', sans-serif;
-        font-size: 42px;
-        line-height: 0.95;
-        letter-spacing: 0.02em;
-        color: var(--paper);
-        text-align: center;
-        margin-bottom: 12px;
-        opacity: 0;
-        animation: fadeUp 0.5s ease 0.2s both;
-    }
+.login-h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    color: var(--paper);
+    text-align: center;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.2s both;
+}
 
-    .login-sub {
-        font-family: 'DM Sans', sans-serif;
-        font-size: 13px;
-        color: var(--muted);
-        line-height: 1.65;
-        text-align: center;
-        margin-bottom: 28px;
-        opacity: 0;
-        animation: fadeUp 0.5s ease 0.3s both;
-    }
+.login-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    text-align: center;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.3s both;
+}
 
-    .btn-registro {
-        width: 100%;
-        padding: 14px;
-        background: var(--volt);
-        color: var(--ink);
-        font-family: 'DM Mono', monospace;
-        font-size: 11px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: opacity 0.2s;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        opacity: 0;
-        animation: fadeUp 0.5s ease 0.4s both;
-    }
-    .btn-registro:hover { opacity: 0.85; }
+.btn-registro {
+    width: 100%;
+    padding: 14px;
+    background: var(--volt);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.4s both;
+}
+.btn-registro:hover { opacity: 0.85; }
 
-    .divider-wrap {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 24px 0;
-        opacity: 0;
-        animation: fadeUp 0.5s ease 0.45s both;
-    }
-    .divider-line {
-        flex: 1;
-        height: 1px;
-        background: var(--border);
-    }
-    .divider-text {
-        font-family: 'DM Mono', monospace;
-        font-size: 9px;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: var(--muted);
-        flex-shrink: 0;
-    }
+.divider-wrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.45s both;
+}
+.divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+.divider-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-shrink: 0;
+}
 
-    .input-row {
-        display: flex;
-        gap: 8px;
-        width: 100%;
-        opacity: 0;
-        animation: fadeUp 0.5s ease 0.5s both;
-    }
+.input-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.5s both;
+}
 
-    .prefix {
-        padding: 12px;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        font-family: 'DM Mono', monospace;
-        font-size: 14px;
-        color: var(--muted);
-        flex-shrink: 0;
-    }
+.prefix {
+    padding: 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--muted);
+    flex-shrink: 0;
+}
 
-    #celularInput {
-        flex: 1;
-        padding: 12px 14px;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        font-size: 16px;
-        outline: none;
-        font-family: inherit;
-        background: rgba(255,255,255,0.04);
-        -webkit-appearance: none;
-        transition: border-color 0.2s;
-        color: var(--paper);
-    }
-    #celularInput::placeholder { color: var(--muted); }
-    #celularInput:focus { border-color: var(--volt); }
+#celularInput {
+    flex: 1;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 16px;
+    outline: none;
+    font-family: inherit;
+    background: rgba(255,255,255,0.04);
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+    color: var(--paper);
+}
+#celularInput::placeholder { color: var(--muted); }
+#celularInput:focus { border-color: var(--volt); }
 
-    #btnEntrar {
-        width: 100%;
-        margin-top: 12px;
-        background: var(--volt);
-        color: var(--ink);
-        padding: 14px;
-        border-radius: 12px;
-        font-family: 'DM Mono', monospace;
-        font-size: 11px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        border: none;
-        cursor: pointer;
-        font-weight: 500;
-        transition: opacity 0.2s;
-        opacity: 0;
-        animation: fadeUp 0.5s ease 0.55s both;
-    }
-    #btnEntrar:hover { opacity: 0.85; }
+#btnEntrar {
+    width: 100%;
+    margin-top: 12px;
+    background: var(--volt);
+    color: var(--ink);
+    padding: 14px;
+    border-radius: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.55s both;
+}
+#btnEntrar:hover { opacity: 0.85; }
 
-    #loginError {
-        display: none;
-        margin-top: 12px;
-        padding: 10px 14px;
-        background: rgba(239,68,68,0.1);
-        border: 1px solid rgba(239,68,68,0.3);
-        border-radius: 10px;
-        font-size: 13px;
-        color: #ef4444;
-        text-align: center;
-        width: 100%;
-    }
+#loginError {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 10px;
+    font-size: 13px;
+    color: #ef4444;
+    text-align: center;
+    width: 100%;
+}
 
-    .login-footer {
-        margin-top: auto;
-        padding-top: 32px;
-        text-align: center;
-        opacity: 0;
-        animation: fadeUp 0.5s ease 0.6s both;
-    }
-    .login-footer span {
-        font-family: 'DM Mono', monospace;
-        font-size: 9px;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: var(--muted);
-    }
+.login-footer {
+    margin-top: auto;
+    padding-top: 32px;
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.6s both;
+}
+.login-footer span {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
 
-    /* CHAT */
-    #chatBox {
-        display: none;
-        flex-direction: column;
-        flex: 1;
-        min-height: 0;
-    }
+/* CHAT */
+#chatBox {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
 
-    #mensajes {
-        flex: 1;
-        overflow-y: auto;
-        padding: 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        -webkit-overflow-scrolling: touch;
-        background: #0d0d0d;
-    }
+#mensajes {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    -webkit-overflow-scrolling: touch;
+    background: #0d0d0d;
+}
 
-    #mensajes::-webkit-scrollbar { display: none; }
+#mensajes::-webkit-scrollbar { display: none; }
 
-    /* INDICADOR DE ESCRITURA ESTILO CONSOLA */
-    #typingIndicator {
-        display: none;
-        padding: 8px 16px;
-        font-family: 'DM Mono', monospace;
-        font-size: 10px;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: var(--volt);
-        background: #0d0d0d;
-        animation: pulseText 1.5s infinite;
-        flex-shrink: 0;
-    }
+/* INDICADOR DE ESCRITURA ESTILO CONSOLA */
+#typingIndicator {
+    display: none;
+    padding: 8px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--volt);
+    background: #0d0d0d;
+    animation: pulseText 1.5s infinite;
+    flex-shrink: 0;
+}
 
-    @keyframes pulseText {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-    }
+@keyframes pulseText {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
 
-    #inputBar {
-        background: #111;
-        border-top: 1px solid var(--border);
-        padding: 10px 14px;
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        flex-shrink: 0;
-    }
+#inputBar {
+    background: #111;
+    border-top: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
 
-    #cameraBtn {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        flex-shrink: 0;
-    }
-    #cameraBtn svg { stroke: var(--muted); }
+#cameraBtn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+#cameraBtn svg { stroke: var(--muted); }
 
-    #inputMsg {
-        flex: 1;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        padding: 10px 16px;
-        font-size: 14px;
-        outline: none;
-        font-family: inherit;
-        -webkit-appearance: none;
-        color: var(--paper);
-    }
-    #inputMsg::placeholder { color: var(--muted); }
+#inputMsg {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+    -webkit-appearance: none;
+    color: var(--paper);
+}
+#inputMsg::placeholder { color: var(--muted); }
 
-    #sendBtn {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background: var(--volt);
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        transition: opacity 0.2s;
-    }
-    #sendBtn:hover { opacity: 0.85; }
+#sendBtn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--volt);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+}
+#sendBtn:hover { opacity: 0.85; }
 
-    @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-</style>
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 ```
+
+</style>
 
 </head>
 <body>
@@ -378,7 +379,7 @@
         </label>
         <input id="inputFoto" type="file" accept="image/*" style="display:none;" onchange="enviarFoto(this)">
         <input id="inputMsg" type="text" placeholder="Escribe un mensaje..."
-            onkeydown="if(event.key=='Enter') enviar()">
+            onkeydown="if(event.key==='Enter') enviar()">
         <button id="sendBtn" onclick="enviar()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5">
                 <line x1="22" y1="2" x2="11" y2="13"/>
@@ -432,8 +433,8 @@ async function mostrarChat() {
     try {
         const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
         if (res.ok) {
-            const data = await res.json();
-            localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+    const data = await res.json();
+    localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
         }
     } catch {
         // Server unavailable, fall through to localStorage
@@ -472,8 +473,8 @@ async function iniciarChat() {
         localStorage.setItem('yunus_celular', celular);
 
         if (res.ok) {
-            const data = await res.json();
-            localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+    const data = await res.json();
+    localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
         }
 
         btn.disabled = false;
@@ -563,7 +564,7 @@ function renderMensaje(texto, tipo, esImagen = false) {
         img.src = texto;
         img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 180px; object-fit: cover; display: block;';
         burbuja.appendChild(img);
-    } else {
+        } else {
         // Analizar si Yunus mandó la etiqueta secreta de un mapa
         const partes = texto.split(/(\[MAPA:.*?\])/);
         partes.forEach(parte => {
