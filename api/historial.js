@@ -33,23 +33,32 @@ export default async function handler(req, res) {
   const entradas = raw.split(/(?=\[)/);
 
   for (const entrada of entradas) {
-    if (!entrada.trim()) continue;
+  if (!entrada.trim()) continue;
 
-    const usuarioMatch = entrada.match(/\] Usuario: ([\s\S]+)/);
-    const yunusMatch = entrada.match(/\] Yunus: ([\s\S]+)/);
+  // Formato automático: [timestamp] Usuario: texto
+  const usuarioInline = entrada.match(/\] Usuario: ([\s\S]+)/);
+  // Formato manual: [timestamp]\nUsuario: texto
+  const usuarioNewline = entrada.match(/\]\s*\nUsuario: ([\s\S]+)/);
+  // Formato automático: [timestamp] Yunus: texto
+  const yunusInline = entrada.match(/\] Yunus: ([\s\S]+)/);
+  // Formato manual: [timestamp]\nYunus: texto
+  const yunusNewline = entrada.match(/\]\s*\nYunus: ([\s\S]+)/);
 
-    if (usuarioMatch) {
-      const contenido = usuarioMatch[1].trim();
-      const imagenMatch = contenido.match(/^\[imagen: (.+)\]$/);
-      if (imagenMatch) {
-        historial.push({ tipo: 'usuario', texto: imagenMatch[1], esImagen: true });
-      } else {
-        historial.push({ tipo: 'usuario', texto: contenido, esImagen: false });
-      }
-    } else if (yunusMatch) {
-      historial.push({ tipo: 'yunus', texto: yunusMatch[1].trim(), esImagen: false });
+  const usuarioMatch = usuarioInline || usuarioNewline;
+  const yunusMatch = yunusInline || yunusNewline;
+
+  if (usuarioMatch) {
+    const contenido = usuarioMatch[1].trim();
+    const imagenMatch = contenido.match(/^\[imagen: (.+)\]$/);
+    if (imagenMatch) {
+      historial.push({ tipo: 'usuario', texto: imagenMatch[1], esImagen: true });
+    } else {
+      historial.push({ tipo: 'usuario', texto: contenido, esImagen: false });
     }
+  } else if (yunusMatch) {
+    historial.push({ tipo: 'yunus', texto: yunusMatch[1].trim(), esImagen: false });
   }
+}
 
   res.status(200).json({ historial, etapa });
 }
