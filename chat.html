@@ -774,9 +774,12 @@ async function enviar() {
     ocultarCargando();
 
     if (data.silencio) {
-      activarModoListo();
-      return;
-    }
+  const sync = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
+  const syncData = await sync.json();
+  localStorage.setItem('yunus_historial', JSON.stringify(syncData.historial || []));
+  return;
+  }
+
 
     agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
 
