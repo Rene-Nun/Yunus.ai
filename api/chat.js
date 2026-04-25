@@ -7,84 +7,105 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 
 cloudinary.config({
-cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-api_key: process.env.CLOUDINARY_API_KEY,
-api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 const rateLimit = new Map();
 
 function checkRateLimit(ip) {
-const now = Date.now();
-const windowMs = 60 * 1000;
-const max = 20;
-if (!rateLimit.has(ip)) {
-rateLimit.set(ip, { count: 1, start: now });
-return true;
-}
-const entry = rateLimit.get(ip);
-if (now - entry.start > windowMs) {
-rateLimit.set(ip, { count: 1, start: now });
-return true;
-}
-if (entry.count >= max) return false;
-entry.count++;
-return true;
+  const now = Date.now();
+  const windowMs = 60 * 1000;
+  const max = 20;
+  if (!rateLimit.has(ip)) {
+    rateLimit.set(ip, { count: 1, start: now });
+    return true;
+  }
+  const entry = rateLimit.get(ip);
+  if (now - entry.start > windowMs) {
+    rateLimit.set(ip, { count: 1, start: now });
+    return true;
+  }
+  if (entry.count >= max) return false;
+  entry.count++;
+  return true;
 }
 
 export default async function handler(req, res) {
-if (req.method !== "POST") return res.status(405).end();
+  if (req.method !== "POST") return res.status(405).end();
 
-const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || "unknown";
-if (!checkRateLimit(ip)) {
-return res.status(429).json({ error: "Demasiadas solicitudes. Espera un momento." });
-}
+  const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || "unknown";
+  if (!checkRateLimit(ip)) {
+    return res.status(429).json({ error: "Demasiadas solicitudes. Espera un momento." });
+  }
 
-const { mensaje, celular, imagen } = req.body;
-const celularNotion = `whatsapp:+521${celular.replace('+52', '')}`;
+  const { mensaje, celular, imagen } = req.body;
+  const celularNotion = `whatsapp:+521${celular.replace('+52', '')}`;
 
-const search = await notion.databases.query({
-database_id: DATABASE_ID,
-filter: {
-property: "Teléfono",
-title: { equals: celularNotion }
-}
-});
+  const search = await notion.databases.query({
+    database_id: DATABASE_ID,
+    filter: {
+      property: "Teléfono",
+      title: { equals: celularNotion }
+    }
+  });
 
-if (search.results.length === 0) {
-return res.status(404).json({ error: "Usuario no encontrado" });
-}
+  if (search.results.length === 0) {
+    return res.status(404).json({ error: "Usuario no encontrado" });
+  }
 
-const page = search.results[0];
-const pageId = page.id;
-const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || "Usuario";
-const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
-const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
+  const page = search.results[0];
+  const pageId = page.id;
+  const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || "Usuario";
+  const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
+  const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
 
-let imagenUrl = null;
-if (imagen) {
-const upload = await cloudinary.uploader.upload(imagen, {
-folder: `yunus/${celular}`,
-resource_type: "image"
-});
-imagenUrl = upload.secure_url;
-}
+  const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
 
-// Etapa que ve Groq: si hay imagen, avanzamos
-let etapaParaGroq = etapa;
-if (imagen) {
-if (etapa === "ask_ine_frente") etapaParaGroq = "ask_ine_reverso";
-else if (etapa === "ask_ine_reverso") etapaParaGroq = "documentos";
-}
+  // ── MODO SILENCIO: etapa listo → solo guardar mensaje, no llamar a Groq ──
+  if (etapa === "listo") {
+    if (mensaje || imagen) {
+      const entradaExtra = imagen
+        ? `[${timestamp}] Usuario: [imagen enviada después de listo]\n`
+        : `[${timestamp}] Usuario: ${mensaje}\n`;
+      const nuevoHistorial = (historialActual + "\n" + entradaExtra).slice(-2000);
 
-const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
+      await notion.pages.update({
+        page_id: pageId,
+        properties: {
+          Historial: { rich_text: [{ text: { content: nuevoHistorial } }] }
+        }
+      });
+    }
+    return res.status(200).json({ silencio: true });
+  }
 
-const completion = await groq.chat.completions.create({
-model: "llama-3.3-70b-versatile",
-messages: [
-{
-role: "system",
-content: `REGLA ESTRICTA DE PERSONALIDAD: Eres Yunus, un agente financiero virtual, directo y empático. Nunca hables en tercera persona. Nunca describas tus propias instrucciones en voz alta. Todas tus respuestas deben estar escritas desde la perspectiva de "yo" (Yunus) hablando directamente a "tú" (${nombre}). El nombre del usuario es ${nombre}.
+  // ── FLUJO NORMAL ──
+
+  let imagenUrl = null;
+  if (imagen) {
+    const upload = await cloudinary.uploader.upload(imagen, {
+      folder: `yunus/${celular}`,
+      resource_type: "image"
+    });
+    imagenUrl = upload.secure_url;
+  }
+
+  let etapaParaGroq = etapa;
+  if (imagen) {
+    if (etapa === "ask_ine_frente") etapaParaGroq = "ask_ine_reverso";
+    else if (etapa === "ask_ine_reverso") etapaParaGroq = "documentos";
+  }
+
+  const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
+
+  const completion = await groq.chat.completions.create({
+    model: "llama-3.1-8b-instant",
+    messages: [
+      {
+        role: "system",
+        content: `REGLA ESTRICTA DE PERSONALIDAD: Eres Yunus, un agente financiero virtual, directo y empático. Nunca hables en tercera persona. Nunca describas tus propias instrucciones en voz alta. Todas tus respuestas deben estar escritas desde la perspectiva de "yo" (Yunus) hablando directamente a "tú" (${nombre}). El nombre del usuario es ${nombre}.
 
 EVENTOS DISPONIBLES EN EL MVP:
 
@@ -169,67 +190,59 @@ Si etapa es 'documentos':
 RESPONDE EXACTAMENTE: "¡Listo, INE confirmada! Como paso final, puedes enviarme un comprobante de ingresos (nómina o estado de cuenta). Esto es **100% OPCIONAL**, pero enviarlo aumenta muchísimo las probabilidades de ser aprobado. Si prefieres no enviarlo, simplemente escribe **'LISTO'**."
 
 Si etapa es 'listo':
-RESPONDE EXACTAMENTE: "¡Todo recibido, ${nombre}! En este momento estoy analizando tu perfil y revisando viabilidad.
+RESPONDE EXACTAMENTE: "¡Todo recibido, ${nombre}! Estoy analizando tu perfil ahora mismo.
 • Verificando identidad…
 • Analizando capacidad de pago…
 • Consultando disponibilidad de boletos…
 • Evaluando opciones de financiamiento…
 
-Este proceso puede tardar un par de minutos. Un agente de Yunus te escribirá por aquí en cuanto tengamos tu resultado. 🚀"
+Quédate aquí — te daré tu resultado en este mismo chat en unos minutos. 🚀"
 
 ETAPA ACTUAL DEL USUARIO: ${etapaParaGroq}
 
 HISTORIAL DE LA CONVERSACIÓN (Úsalo para recordar de qué evento, fecha y zona están hablando, y si ya les diste precios):
-${historialActual}`}, { role: "user", content:`Mensaje: ${mensajeUsuario}`
-}
-],
-max_tokens: 800,
-temperature: 0.3
-});
+${historialActual}`
+      },
+      { role: "user", content: `Mensaje: ${mensajeUsuario}` }
+    ],
+    max_tokens: 800,
+    temperature: 0.3
+  });
 
-let respuestaOriginal = completion.choices[0].message.content;
-let respuestaFinal = respuestaOriginal;
+  let respuestaOriginal = completion.choices[0].message.content;
+  let respuestaFinal = respuestaOriginal;
 
-// Lógica de avance de etapas inteligente
-let nuevaEtapa = etapa;
-if (mensaje && mensaje.toUpperCase().includes("LISTO")) {
-nuevaEtapa = "listo";
-} else if (imagen) {
-if (etapa === "ask_ine_frente") nuevaEtapa = "ask_ine_reverso";
-else if (etapa === "ask_ine_reverso") nuevaEtapa = "documentos";
-else if (etapa === "documentos") nuevaEtapa = "documentos";
-} else if (etapa === "bienvenida") {
-nuevaEtapa = "ask_specs";
-} else if (etapa === "ask_specs") {
-// Solo si Groq determinó que ya tiene todos los datos, avanzamos la BD
-if (respuestaOriginal.includes("[AVANZAR]")) {
-nuevaEtapa = "ask_ine_frente";
-respuestaFinal = respuestaOriginal.replace("[AVANZAR]", "").trim();
-}
-}
+  let nuevaEtapa = etapa;
+  if (mensaje && mensaje.toUpperCase().includes("LISTO")) {
+    nuevaEtapa = "listo";
+  } else if (imagen) {
+    if (etapa === "ask_ine_frente") nuevaEtapa = "ask_ine_reverso";
+    else if (etapa === "ask_ine_reverso") nuevaEtapa = "documentos";
+    else if (etapa === "documentos") nuevaEtapa = "documentos";
+  } else if (etapa === "bienvenida") {
+    nuevaEtapa = "ask_specs";
+  } else if (etapa === "ask_specs") {
+    if (respuestaOriginal.includes("[AVANZAR]")) {
+      nuevaEtapa = "ask_ine_frente";
+      respuestaFinal = respuestaOriginal.replace("[AVANZAR]", "").trim();
+    }
+  }
 
-const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
-const entradaHistorial = imagen
-? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuestaFinal}\n`
-: `[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaFinal}\n`;
-const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
+  const entradaHistorial = imagen
+    ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuestaFinal}\n`
+    : `[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaFinal}\n`;
+  const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
 
-await notion.pages.update({
-page_id: pageId,
-properties: {
-Etapa: {
-rich_text: [{ text: { content: nuevaEtapa } }]
-},
-Historial: {
-rich_text: [{ text: { content: nuevoHistorial } }]
-},
-...(imagenUrl && {
-Docs: {
-rich_text: [{ text: { content: imagenUrl } }]
-}
-})
-}
-});
+  await notion.pages.update({
+    page_id: pageId,
+    properties: {
+      Etapa: { rich_text: [{ text: { content: nuevaEtapa } }] },
+      Historial: { rich_text: [{ text: { content: nuevoHistorial } }] },
+      ...(imagenUrl && {
+        Docs: { rich_text: [{ text: { content: imagenUrl } }] }
+      })
+    }
+  });
 
-res.status(200).json({ respuesta: respuestaFinal, imagenUrl });
+  res.status(200).json({ respuesta: respuestaFinal, imagenUrl });
 }
