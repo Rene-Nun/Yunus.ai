@@ -395,317 +395,428 @@ body {
 let celular = '';
 let primerMensajeYunus = true;
 let typingInterval;
+let pollingInterval = null;
+let enModoListo = false;
+let conteoMensajesConocidos = 0;
 
-// Lógica del Indicador de Carga
+// ── INDICADOR ──
 function mostrarCargando(esImagen) {
-    const indicator = document.getElementById('typingIndicator');
-    indicator.style.display = 'block';
-    
-    const pasosTexto = ["Pensando...", "Evaluando viabilidad...", "Preparando respuesta..."];
-    const pasosImagen = ["Subiendo imagen...", "Analizando documento...", "Validando identidad..."];
-    
-    const pasos = esImagen ? pasosImagen : pasosTexto;
-    let i = 0;
+  const indicator = document.getElementById('typingIndicator');
+  indicator.style.display = 'block';
+  indicator.style.color = 'var(--volt)';
+  indicator.style.animation = 'pulseText 1.5s infinite';
+
+  const pasosTexto = ["Pensando...", "Evaluando viabilidad...", "Preparando respuesta..."];
+  const pasosImagen = ["Subiendo imagen...", "Analizando documento...", "Validando identidad..."];
+  const pasos = esImagen ? pasosImagen : pasosTexto;
+  let i = 0;
+  indicator.textContent = pasos[i];
+  clearInterval(typingInterval);
+  typingInterval = setInterval(() => {
+    i = (i + 1) % pasos.length;
     indicator.textContent = pasos[i];
-    
-    clearInterval(typingInterval);
-    typingInterval = setInterval(() => {
-        i = (i + 1) % pasos.length;
-        indicator.textContent = pasos[i];
-    }, 1500); // Cambia el texto cada 1.5 segundos
-    
-    // Scrollear hacia abajo para que el usuario vea el indicador
-    const contenedor = document.getElementById('mensajes');
-    contenedor.scrollTop = contenedor.scrollHeight;
+  }, 1500);
+
+  document.getElementById('mensajes').scrollTop = document.getElementById('mensajes').scrollHeight;
 }
 
 function ocultarCargando() {
-    clearInterval(typingInterval);
+  clearInterval(typingInterval);
+  if (!enModoListo) {
     document.getElementById('typingIndicator').style.display = 'none';
+  }
 }
 
-async function mostrarChat() {
-    document.getElementById('loginBox').style.display = 'none';
-    const chatBox = document.getElementById('chatBox');
-    chatBox.style.display = 'flex';
-    primerMensajeYunus = true;
+function activarModoListo() {
+  if (enModoListo) return;
+  enModoListo = true;
 
+  // Bloquear interfaz
+  const inputMsg = document.getElementById('inputMsg');
+  const sendBtn = document.getElementById('sendBtn');
+  const cameraBtn = document.getElementById('cameraBtn');
+  inputMsg.disabled = true;
+  inputMsg.placeholder = 'Esperando resultado...';
+  sendBtn.style.opacity = '0.3';
+  sendBtn.style.pointerEvents = 'none';
+  cameraBtn.style.opacity = '0.3';
+  cameraBtn.style.pointerEvents = 'none';
+
+  // Indicador permanente
+  const indicator = document.getElementById('typingIndicator');
+  clearInterval(typingInterval);
+  indicator.style.display = 'block';
+  indicator.style.color = 'var(--volt)';
+  indicator.style.animation = 'pulseText 1.5s infinite';
+  indicator.textContent = 'REVISANDO PERFIL...';
+
+  // Arrancar polling
+  iniciarPolling();
+}
+
+function desactivarModoListo() {
+  enModoListo = false;
+
+  const inputMsg = document.getElementById('inputMsg');
+  const sendBtn = document.getElementById('sendBtn');
+  const cameraBtn = document.getElementById('cameraBtn');
+  inputMsg.disabled = false;
+  inputMsg.placeholder = 'Escribe un mensaje...';
+  sendBtn.style.opacity = '';
+  sendBtn.style.pointerEvents = '';
+  cameraBtn.style.opacity = '';
+  cameraBtn.style.pointerEvents = '';
+
+  document.getElementById('typingIndicator').style.display = 'none';
+  detenerPolling();
+}
+
+// ── POLLING ──
+function iniciarPolling() {
+  if (pollingInterval) return;
+  pollingInterval = setInterval(async () => {
     try {
-        const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
-        if (res.ok) {
-    const data = await res.json();
-    localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
-        }
-    } catch {
-        // Server unavailable, fall through to localStorage
-    }
+      const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
+      if (!res.ok) return;
+      const data = await res.json();
 
-    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-    if (historial.length === 0) {
+      // Si el agente cambió la etapa a algo distinto de listo, desbloquear
+      if (data.etapa && data.etapa !== 'listo') {
+        desactivarModoListo();
+      }
+
+      const historialRemoto = data.historial || [];
+      if (historialRemoto.length > conteoMensajesConocidos) {
+        const nuevos = historialRemoto.slice(conteoMensajesConocidos);
+        nuevos.forEach(m => {
+          // Solo renderizar mensajes de Yunus nuevos (los del usuario ya están en pantalla)
+          if (m.tipo === 'yunus') {
+            renderMensaje(m.texto, 'yunus', false);
+          }
+        });
+        conteoMensajesConocidos = historialRemoto.length;
+        localStorage.setItem('yunus_historial', JSON.stringify(historialRemoto));
+      }
+    } catch { /* silencioso */ }
+  }, 4000);
+}
+
+function detenerPolling() {
+  clearInterval(pollingInterval);
+  pollingInterval = null;
+}
+
+// ── LOGIN / SESIÓN ──
+async function mostrarChat() {
+  document.getElementById('loginBox').style.display = 'none';
+  const chatBox = document.getElementById('chatBox');
+  chatBox.style.display = 'flex';
+  primerMensajeYunus = true;
+
+  try {
+    const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
+    if (res.ok) {
+      const data = await res.json();
+      localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+
+      const historial = data.historial || [];
+      conteoMensajesConocidos = historial.length;
+
+      if (historial.length === 0) {
         agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
-    } else {
+      } else {
         historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+      }
+
+      if (data.etapa === 'listo') activarModoListo();
+      return;
     }
+  } catch { /* caer a localStorage */ }
+
+  const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+  conteoMensajesConocidos = historial.length;
+  if (historial.length === 0) {
+    agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+  } else {
+    historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+  }
 }
 
 async function iniciarChat() {
-    const input = document.getElementById('celularInput').value.trim();
-    if (input.length !== 10) { mostrarError('Ingresa 10 dígitos válidos.'); return; }
+  const input = document.getElementById('celularInput').value.trim();
+  if (input.length !== 10) { mostrarError('Ingresa 10 dígitos válidos.'); return; }
 
-    ocultarError();
-    const btn = document.getElementById('btnEntrar');
-    btn.disabled = true;
-    btn.textContent = 'Verificando...';
+  ocultarError();
+  const btn = document.getElementById('btnEntrar');
+  btn.disabled = true;
+  btn.textContent = 'Verificando...';
 
-    const numeroCelular = '+52' + input;
+  const numeroCelular = '+52' + input;
 
-    try {
-        const res = await fetch('/api/historial?celular=' + encodeURIComponent(numeroCelular));
+  try {
+    const res = await fetch('/api/historial?celular=' + encodeURIComponent(numeroCelular));
 
-        if (res.status === 404) {
-            mostrarError('Este número no está registrado. Regístrate primero en yunusia.com');
-            btn.disabled = false;
-            btn.textContent = 'Entrar →';
-            return;
-        }
-
-        celular = numeroCelular;
-        localStorage.setItem('yunus_celular', celular);
-
-        if (res.ok) {
-    const data = await res.json();
-    localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
-        }
-
-        btn.disabled = false;
-        btn.textContent = 'Entrar →';
-        window.location.href = 'marketplace.html';
-
-    } catch {
-        celular = numeroCelular;
-        localStorage.setItem('yunus_celular', celular);
-        btn.disabled = false;
-        btn.textContent = 'Entrar →';
-        window.location.href = 'marketplace.html';
+    if (res.status === 404) {
+      mostrarError('Este número no está registrado. Regístrate primero en yunusia.com');
+      btn.disabled = false;
+      btn.textContent = 'Entrar →';
+      return;
     }
+
+    celular = numeroCelular;
+    localStorage.setItem('yunus_celular', celular);
+
+    if (res.ok) {
+      const data = await res.json();
+      localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Entrar →';
+    window.location.href = 'marketplace.html';
+
+  } catch {
+    celular = numeroCelular;
+    localStorage.setItem('yunus_celular', celular);
+    btn.disabled = false;
+    btn.textContent = 'Entrar →';
+    window.location.href = 'marketplace.html';
+  }
 }
 
 function mostrarChatDirecto() {
-    document.getElementById('loginBox').style.display = 'none';
-    const chatBox = document.getElementById('chatBox');
-    chatBox.style.display = 'flex';
-    primerMensajeYunus = true;
+  document.getElementById('loginBox').style.display = 'none';
+  const chatBox = document.getElementById('chatBox');
+  chatBox.style.display = 'flex';
+  primerMensajeYunus = true;
 
-    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-    if (historial.length === 0) {
-        agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
-    } else {
-        historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
-    }
+  const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+  conteoMensajesConocidos = historial.length;
+  if (historial.length === 0) {
+    agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+  } else {
+    historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+  }
 }
 
 function mostrarError(msg) {
-    const el = document.getElementById('loginError');
-    el.textContent = msg;
-    el.style.display = 'block';
+  const el = document.getElementById('loginError');
+  el.textContent = msg;
+  el.style.display = 'block';
 }
 
 function ocultarError() {
-    document.getElementById('loginError').style.display = 'none';
+  document.getElementById('loginError').style.display = 'none';
 }
 
 function cerrarSesion() {
-    try {
-        localStorage.removeItem('yunus_celular');
-        localStorage.removeItem('yunus_historial');
-    } catch (e) {
-        console.warn('No se pudo limpiar localStorage:', e);
-    }
-    celular = '';
-    const chatLogo = document.getElementById('chatLogo');
-    chatLogo.style.opacity = '0';
-    setTimeout(() => chatLogo.style.display = 'none', 300);
-    document.getElementById('chatBox').style.display = 'none';
-    document.getElementById('loginBox').style.display = 'flex';
-    document.getElementById('mensajes').innerHTML = '';
-    document.getElementById('celularInput').value = '';
-    primerMensajeYunus = true;
+  detenerPolling();
+  try {
+    localStorage.removeItem('yunus_celular');
+    localStorage.removeItem('yunus_historial');
+  } catch (e) {
+    console.warn('No se pudo limpiar localStorage:', e);
+  }
+  celular = '';
+  enModoListo = false;
+  conteoMensajesConocidos = 0;
+  const chatLogo = document.getElementById('chatLogo');
+  if (chatLogo) { chatLogo.style.opacity = '0'; setTimeout(() => chatLogo.style.display = 'none', 300); }
+  document.getElementById('chatBox').style.display = 'none';
+  document.getElementById('loginBox').style.display = 'flex';
+  document.getElementById('mensajes').innerHTML = '';
+  document.getElementById('celularInput').value = '';
+  primerMensajeYunus = true;
 }
 
+// ── RENDER ──
 function renderMensaje(texto, tipo, esImagen = false) {
-    const contenedor = document.getElementById('mensajes');
-    const esYunus = tipo === 'yunus';
+  const contenedor = document.getElementById('mensajes');
+  const esYunus = tipo === 'yunus';
 
-    const wrapper = document.createElement('div');
-    wrapper.style.cssText = `display: flex; align-items: flex-end; gap: 8px; justify-content: ${esYunus ? 'flex-start' : 'flex-end'};`;
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = `display: flex; align-items: flex-end; gap: 8px; justify-content: ${esYunus ? 'flex-start' : 'flex-end'};`;
 
-    if (esYunus && primerMensajeYunus) {
-        const avatar = document.createElement('img');
-        avatar.src = 'Vector.png';
-        avatar.style.cssText = 'width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid var(--border); background: #1a1a1a;';
-        avatar.onerror = function() { this.style.display = 'none'; };
-        wrapper.appendChild(avatar);
-        primerMensajeYunus = false;
-    } else if (esYunus) {
-        const spacer = document.createElement('div');
-        spacer.style.cssText = 'width: 26px; flex-shrink: 0;';
-        wrapper.appendChild(spacer);
-    }
+  if (esYunus && primerMensajeYunus) {
+    const avatar = document.createElement('img');
+    avatar.src = 'Vector.png';
+    avatar.style.cssText = 'width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid var(--border); background: #1a1a1a;';
+    avatar.onerror = function() { this.style.display = 'none'; };
+    wrapper.appendChild(avatar);
+    primerMensajeYunus = false;
+  } else if (esYunus) {
+    const spacer = document.createElement('div');
+    spacer.style.cssText = 'width: 26px; flex-shrink: 0;';
+    wrapper.appendChild(spacer);
+  }
 
-    const burbuja = document.createElement('div');
-    if (esYunus) {
-        burbuja.style.cssText = 'max-width: 80%; background: #1a1a1a; border: 1px solid var(--border); border-radius: 16px; border-bottom-left-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--paper); line-height: 1.5;';
-    } else {
-        burbuja.style.cssText = 'max-width: 80%; background: var(--volt); border-radius: 16px; border-bottom-right-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--ink); line-height: 1.5; font-weight: 500;';
-    }
+  const burbuja = document.createElement('div');
+  if (esYunus) {
+    burbuja.style.cssText = 'max-width: 80%; background: #1a1a1a; border: 1px solid var(--border); border-radius: 16px; border-bottom-left-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--paper); line-height: 1.5;';
+  } else {
+    burbuja.style.cssText = 'max-width: 80%; background: var(--volt); border-radius: 16px; border-bottom-right-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--ink); line-height: 1.5; font-weight: 500;';
+  }
 
-    if (esImagen) {
+  if (esImagen) {
+    const img = document.createElement('img');
+    img.src = texto;
+    img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 180px; object-fit: cover; display: block;';
+    burbuja.appendChild(img);
+  } else {
+    const partes = texto.split(/(\[MAPA:.*?\])/);
+    partes.forEach(parte => {
+      if (parte.startsWith('[MAPA:') && parte.endsWith(']')) {
+        const url = parte.slice(6, -1).trim();
         const img = document.createElement('img');
-        img.src = texto;
-        img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 180px; object-fit: cover; display: block;';
+        img.src = url;
+        img.style.cssText = 'border-radius: 8px; max-width: 100%; margin-top: 8px; display: block; border: 1px solid rgba(255,255,255,0.1);';
+        img.onerror = function() { this.style.display = 'none'; };
         burbuja.appendChild(img);
-        } else {
-        // Analizar si Yunus mandó la etiqueta secreta de un mapa
-        const partes = texto.split(/(\[MAPA:.*?\])/);
-        partes.forEach(parte => {
-            if (parte.startsWith('[MAPA:') && parte.endsWith(']')) {
-                const url = parte.slice(6, -1).trim();
-                const img = document.createElement('img');
-                img.src = url;
-                // Le damos diseño para que parezca una tarjeta dentro del chat
-                img.style.cssText = 'border-radius: 8px; max-width: 100%; margin-top: 8px; display: block; border: 1px solid rgba(255,255,255,0.1);';
-                img.onerror = function() { this.style.display = 'none'; }; // Si la URL falla, se oculta
-                burbuja.appendChild(img);
-            } else if (parte) {
-                const span = document.createElement('span');
-                span.textContent = parte;
-                span.style.whiteSpace = 'pre-wrap'; // Respeta los saltos de línea de Yunus
-                burbuja.appendChild(span);
-            }
-        });
-    }
+      } else if (parte) {
+        const span = document.createElement('span');
+        span.textContent = parte;
+        span.style.whiteSpace = 'pre-wrap';
+        burbuja.appendChild(span);
+      }
+    });
+  }
 
-    wrapper.appendChild(burbuja);
-    contenedor.appendChild(wrapper);
-    contenedor.scrollTop = contenedor.scrollHeight;
+  wrapper.appendChild(burbuja);
+  contenedor.appendChild(wrapper);
+  contenedor.scrollTop = contenedor.scrollHeight;
 }
 
 function agregarMensaje(texto, tipo, esImagen = false) {
-    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-    historial.push({ texto, tipo, esImagen });
-    localStorage.setItem('yunus_historial', JSON.stringify(historial));
-    renderMensaje(texto, tipo, esImagen);
+  const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+  historial.push({ texto, tipo, esImagen });
+  localStorage.setItem('yunus_historial', JSON.stringify(historial));
+  conteoMensajesConocidos = historial.length;
+  renderMensaje(texto, tipo, esImagen);
 }
 
+// ── ENVÍO ──
 function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
-    return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const scale = Math.min(1, maxWidth / img.width);
-                canvas.width = img.width * scale;
-                canvas.height = img.height * scale;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                resolve(canvas.toDataURL('image/jpeg', calidad));
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const scale = Math.min(1, maxWidth / img.width);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', calidad));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 async function enviarFoto(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const base64 = await comprimirImagen(file);
-    agregarMensaje(base64, 'usuario', true);
-    input.value = '';
-    
-    mostrarCargando(true); // Activar indicador para imagen
+  if (enModoListo) return;
+  const file = input.files[0];
+  if (!file) return;
+  const base64 = await comprimirImagen(file);
+  agregarMensaje(base64, 'usuario', true);
+  input.value = '';
 
-    try {
-        const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
-        });
-        const data = await res.json();
-        
-        if (data.imagenUrl) {
-            const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-            for (let i = historial.length - 1; i >= 0; i--) {
-                if (historial[i].tipo === 'usuario' && historial[i].esImagen) {
-                    historial[i].texto = data.imagenUrl;
-                    break;
-                }
-            }
-            localStorage.setItem('yunus_historial', JSON.stringify(historial));
+  mostrarCargando(true);
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
+    });
+    const data = await res.json();
+
+    if (data.imagenUrl) {
+      const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+      for (let i = historial.length - 1; i >= 0; i--) {
+        if (historial[i].tipo === 'usuario' && historial[i].esImagen) {
+          historial[i].texto = data.imagenUrl;
+          break;
         }
-        
-        ocultarCargando(); // Ocultar indicador justo antes de responder
-        agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
-    } catch {
-        ocultarCargando();
-        agregarMensaje('Error de conexión.', 'yunus');
+      }
+      localStorage.setItem('yunus_historial', JSON.stringify(historial));
     }
+
+    ocultarCargando();
+    if (!data.silencio) {
+      agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
+    }
+  } catch {
+    ocultarCargando();
+    agregarMensaje('Error de conexión.', 'yunus');
+  }
 }
 
 async function enviar() {
-    const input = document.getElementById('inputMsg');
-    const mensaje = input.value.trim();
-    if (!mensaje) return;
-    input.value = '';
-    agregarMensaje(mensaje, 'usuario');
-    
-    mostrarCargando(false); // Activar indicador para texto
+  if (enModoListo) return;
+  const input = document.getElementById('inputMsg');
+  const mensaje = input.value.trim();
+  if (!mensaje) return;
+  input.value = '';
+  agregarMensaje(mensaje, 'usuario');
 
-    try {
-        const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mensaje, celular })
-        });
-        const data = await res.json();
-        
-        ocultarCargando(); // Ocultar indicador justo antes de responder
-        agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
-    } catch {
-        ocultarCargando();
-        agregarMensaje('Error de conexión.', 'yunus');
+  mostrarCargando(false);
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mensaje, celular })
+    });
+    const data = await res.json();
+
+    ocultarCargando();
+
+    if (data.silencio) {
+      // No debería llegar aquí porque enModoListo bloquea el envío,
+      // pero por si acaso activamos el modo
+      activarModoListo();
+      return;
     }
+
+    agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
+
+    // Detectar si la respuesta de Groq corresponde a la etapa listo
+    if (data.respuesta && data.respuesta.includes('Quédate aquí')) {
+      activarModoListo();
+    }
+
+  } catch {
+    ocultarCargando();
+    agregarMensaje('Error de conexión.', 'yunus');
+  }
 }
 
+// ── INIT ──
 window.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    const modoChat = params.get('modo') === 'chat';
-    const prefillMsg = params.get('msg'); // Capturamos el mensaje de la URL
+  const params = new URLSearchParams(window.location.search);
+  const modoChat = params.get('modo') === 'chat';
+  const prefillMsg = params.get('msg');
 
-    const celularGuardado = localStorage.getItem('yunus_celular');
-    if (celularGuardado) {
-        celular = celularGuardado;
-        if (modoChat) {
-            // Dentro del popup de marketplace → mostrar chat normal
-            mostrarChat().then(() => {
-                // Si la URL trae un mensaje, lo enviamos automáticamente
-                if (prefillMsg) {
-                    const input = document.getElementById('inputMsg');
-                    input.value = prefillMsg;
-                    enviar(); // Dispara la misma función como si el usuario diera "Enter"
-                    
-                    // Limpia la URL para que no se reenvíe si recarga la página
-                    const newUrl = window.location.pathname + '?modo=chat';
-                    window.history.replaceState({}, document.title, newUrl);
-                }
-            });
-        } else {
-            // Acceso directo con sesión activa → ir a marketplace
-            window.location.href = 'marketplace.html';
+  const celularGuardado = localStorage.getItem('yunus_celular');
+  if (celularGuardado) {
+    celular = celularGuardado;
+    if (modoChat) {
+      mostrarChat().then(() => {
+        if (prefillMsg) {
+          const input = document.getElementById('inputMsg');
+          input.value = prefillMsg;
+          enviar();
+          const newUrl = window.location.pathname + '?modo=chat';
+          window.history.replaceState({}, document.title, newUrl);
         }
+      });
+    } else {
+      window.location.href = 'marketplace.html';
     }
-    // Sin sesión → mostrar pantalla de login (no hacer nada más)
+  }
 });
 </script>
 
