@@ -61,47 +61,6 @@ export default async function handler(req, res) {
   const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
   const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
 
-  // ─── MODO SILENCIO ───────────────────────────────────────────────────────────
-  // Si el usuario ya está en etapa "listo", guardamos su mensaje pero
-  // NO disparamos Groq. El agente humano responderá desde Notion.
-  if (etapa === "listo") {
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
-    let entradaHistorial;
-
-    if (imagen) {
-      // Subir la imagen a Cloudinary igual que siempre
-      const upload = await cloudinary.uploader.upload(imagen, {
-        folder: `yunus/${celular}`,
-        resource_type: "image"
-      });
-      const imagenUrl = upload.secure_url;
-      entradaHistorial = `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n`;
-
-      const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
-      await notion.pages.update({
-        page_id: pageId,
-        properties: {
-          Historial: { rich_text: [{ text: { content: nuevoHistorial } }] },
-          Docs: { rich_text: [{ text: { content: imagenUrl } }] }
-        }
-      });
-
-      return res.status(200).json({ silencio: true, imagenUrl });
-    } else {
-      entradaHistorial = `[${timestamp}] Usuario: ${mensaje}\n`;
-      const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
-      await notion.pages.update({
-        page_id: pageId,
-        properties: {
-          Historial: { rich_text: [{ text: { content: nuevoHistorial } }] }
-        }
-      });
-
-      return res.status(200).json({ silencio: true });
-    }
-  }
-  // ─────────────────────────────────────────────────────────────────────────────
-
   let imagenUrl = null;
   if (imagen) {
     const upload = await cloudinary.uploader.upload(imagen, {
@@ -121,7 +80,7 @@ export default async function handler(req, res) {
   const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
 
   const completion = await groq.chat.completions.create({
-    model: "llama-3.1-8b-instant",
+    model: "llama-3.3-70b-versatile",
     messages: [
       {
         role: "system",
@@ -216,7 +175,7 @@ RESPONDE EXACTAMENTE: "¡Todo recibido, ${nombre}! En este momento estoy analiza
 • Consultando disponibilidad de boletos…
 • Evaluando opciones de financiamiento…
 
-Dame unos minutos. Aquí mismo te daré tu resultado en cuanto termine el análisis. 🚀"
+Este proceso puede tardar un par de minutos. Un agente de Yunus te escribirá por aquí en cuanto tengamos tu resultado. 🚀"
 
 ETAPA ACTUAL DEL USUARIO: ${etapaParaGroq}
 
@@ -246,6 +205,7 @@ ${historialActual}`
   } else if (etapa === "bienvenida") {
     nuevaEtapa = "ask_specs";
   } else if (etapa === "ask_specs") {
+    // Solo si Groq determinó que ya tiene todos los datos, avanzamos la BD
     if (respuestaOriginal.includes("[AVANZAR]")) {
       nuevaEtapa = "ask_ine_frente";
       respuestaFinal = respuestaOriginal.replace("[AVANZAR]", "").trim();
@@ -275,10 +235,5 @@ ${historialActual}`
     }
   });
 
-  // Indicar al frontend si la nueva etapa es "listo" para que bloquee la UI
-  res.status(200).json({
-    respuesta: respuestaFinal,
-    imagenUrl,
-    bloquear: nuevaEtapa === "listo"
-  });
+  res.status(200).json({ respuesta: respuestaFinal, imagenUrl });
 }
