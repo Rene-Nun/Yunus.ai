@@ -485,35 +485,22 @@ function iniciarPolling() {
       }
 
       const historialRemoto = data.historial || [];
+      const localActual = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
 
-      if (historialRemoto.length > conteoMensajesConocidos) {
-        const nuevos = historialRemoto.slice(conteoMensajesConocidos);
+      if (historialRemoto.length > localActual.length) {
+        const nuevos = historialRemoto.slice(localActual.length);
         nuevos.forEach(m => {
           if (m.tipo === 'yunus') {
-            // FIX 3: apagar el indicador antes de mostrar cada mensaje nuevo
             clearInterval(typingInterval);
             document.getElementById('typingIndicator').style.display = 'none';
             enModoListo = false;
-
-            // FIX 2: renderMensaje ya tiene el parser de [MAPA:], 
-            // solo hay que asegurarse de llamarlo con esImagen=false
             renderMensaje(m.texto, 'yunus', false);
-
-            // Re-activar el indicador si aún no hay más mensajes
-            // (el agente puede mandar varios seguidos)
           }
         });
-
-        // Si el agente mandó mensajes, apagarmos el indicador definitivamente
-        clearInterval(typingInterval);
-        document.getElementById('typingIndicator').style.display = 'none';
-        enModoListo = false;
-        detenerPolling();
-
-        conteoMensajesConocidos = historialRemoto.length;
         localStorage.setItem('yunus_historial', JSON.stringify(historialRemoto));
+        conteoMensajesConocidos = historialRemoto.length;
       }
-    } catch { /* silencioso */ }
+    } catch { }
   }, 4000);
 }
 
