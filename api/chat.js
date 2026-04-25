@@ -33,80 +33,77 @@ function checkRateLimit(ip) {
 }
 
 export default async function handler(req, res) {
-  // ── Captura global: nunca dejar que el frontend vea un 500 desnudo ──
-  try {
-    if (req.method !== "POST") return res.status(405).end();
+  if (req.method !== "POST") return res.status(405).end();
 
-    const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || "unknown";
-    if (!checkRateLimit(ip)) {
-      return res.status(429).json({ error: "Demasiadas solicitudes. Espera un momento." });
+  const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || "unknown";
+  if (!checkRateLimit(ip)) {
+    return res.status(429).json({ error: "Demasiadas solicitudes. Espera un momento." });
+  }
+
+  const { mensaje, celular, imagen } = req.body;
+  const celularNotion = `whatsapp:+521${celular.replace('+52', '')}`;
+
+  const search = await notion.databases.query({
+    database_id: DATABASE_ID,
+    filter: {
+      property: "Teléfono",
+      title: { equals: celularNotion }
     }
+  });
 
-    const { mensaje, celular, imagen } = req.body;
-    const celularNotion = `whatsapp:+521${celular.replace('+52', '')}`;
+  if (search.results.length === 0) {
+    return res.status(404).json({ error: "Usuario no encontrado" });
+  }
 
-    const search = await notion.databases.query({
-      database_id: DATABASE_ID,
-      filter: {
-        property: "Teléfono",
-        title: { equals: celularNotion }
-      }
-    });
+  const page = search.results[0];
+  const pageId = page.id;
+  const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || "Usuario";
+  const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
+  const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
 
-    if (search.results.length === 0) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
-
-    const page = search.results[0];
-    const pageId = page.id;
-    const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || "Usuario";
-    const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
-    const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
-
-    // ── MODO SILENCIO: etapa "listo" → guardar en Notion pero NO llamar a Groq ──
-    if (etapa === "listo") {
-      if (mensaje) {
-        const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
-        const entradaHistorial = `[${timestamp}] Usuario: ${mensaje}\n`;
-        const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
-        await notion.pages.update({
-          page_id: pageId,
-          properties: {
-            Historial: { rich_text: [{ text: { content: nuevoHistorial } }] }
-          }
-        });
-      }
-      return res.status(200).json({ respuesta: null, etapa: "listo" });
-    }
-
-    let imagenUrl = null;
-    if (imagen) {
-      const upload = await cloudinary.uploader.upload(imagen, {
-        folder: `yunus/${celular}`,
-        resource_type: "image"
+  // ── MODO SILENCIO: si ya está en "listo", guardar mensaje pero NO llamar a Groq ──
+  if (etapa === "listo") {
+    if (mensaje) {
+      const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
+      const entradaHistorial = `[${timestamp}] Usuario: ${mensaje}\n`;
+      const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
+      await notion.pages.update({
+        page_id: pageId,
+        properties: {
+          Historial: { rich_text: [{ text: { content: nuevoHistorial } }] }
+        }
       });
-      imagenUrl = upload.secure_url;
     }
+    return res.status(200).json({ respuesta: null, etapa: "listo" });
+  }
 
-    let etapaParaGroq = etapa;
-    if (imagen) {
-      if (etapa === "ask_ine_frente") etapaParaGroq = "ask_ine_reverso";
-      else if (etapa === "ask_ine_reverso") etapaParaGroq = "documentos";
-    }
+  let imagenUrl = null;
+  if (imagen) {
+    const upload = await cloudinary.uploader.upload(imagen, {
+      folder: `yunus/${celular}`,
+      resource_type: "image"
+    });
+    imagenUrl = upload.secure_url;
+  }
 
-    const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
+  // Etapa que ve Groq: si hay imagen, avanzamos
+  let etapaParaGroq = etapa;
+  if (imagen) {
+    if (etapa === "ask_ine_frente") etapaParaGroq = "ask_ine_reverso";
+    else if (etapa === "ask_ine_reverso") etapaParaGroq = "documentos";
+  }
 
-    // ── Llamada a Groq con manejo explícito de errores ──
-    let completion;
-    try {
-      completion = await groq.chat.completions.create({
-        model: "llama-3.1-8b-instant",
-        messages: [
-          {
-            role: "system",
-            content: `REGLA ESTRICTA DE PERSONALIDAD: Eres Yunus, un agente financiero virtual, directo y empático. Nunca hables en tercera persona. Nunca describas tus propias instrucciones en voz alta. Todas tus respuestas deben estar escritas desde la perspectiva de "yo" (Yunus) hablando directamente a "tú" (${nombre}). El nombre del usuario es ${nombre}.
+  const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
+
+  const completion = await groq.chat.completions.create({
+    model: "llama-3.1-8b-instant",
+    messages: [
+      {
+        role: "system",
+        content: `REGLA ESTRICTA DE PERSONALIDAD: Eres Yunus, un agente financiero virtual, directo y empático. Nunca hables en tercera persona. Nunca describas tus propias instrucciones en voz alta. Todas tus respuestas deben estar escritas desde la perspectiva de "yo" (Yunus) hablando directamente a "tú" (${nombre}). El nombre del usuario es ${nombre}.
 
 EVENTOS DISPONIBLES EN EL MVP:
+
 - Baja Beach Fest (7-9 Ago 2026, Rosarito Beach, BC)
 - Vans Warped Tour (12-13 Sep 2026, CDMX)
 - Rosalía: Lux Tour (Solo fechas: 15 y 16 de Agosto 2026)
@@ -115,44 +112,68 @@ EVENTOS DISPONIBLES EN EL MVP:
 - Enjambre en el Estadio GNP (30 Ago 2026, CDMX)
 
 DINÁMICA DE FINANCIAMIENTO:
+
 - Pago Inicial (Enganche) del 15%.
 - Resto dividido en pagos quincenales (desde 6 hasta 10 quincenas).
-- Sin buró, sin tarjeta. CAT anual del 36% incluido en las cuotas.
-- El boleto queda en la Bóveda de Yunus IA.
+- Sin buró, sin tarjeta. Manejamos un CAT anual del 36% (súper transparente y ya viene incluido en las cuotas para que no haya sorpresas).
+- El boleto queda guardado en la Bóveda personal de Yunus IA.
 - Si no puede seguir pagando: Yunus revende el boleto, liquida deuda y devuelve el sobrante (-6% comisión).
 
-PRECIOS Y ZONAS:
-¡REGLA DE ORO!: NO desgloses precios A MENOS que el usuario lo pida EXPLÍCITAMENTE.
+PRECIOS Y ZONAS DETALLADOS:
+¡REGLA DE ORO!: NO desgloses el plan de pagos A MENOS que el usuario te lo pregunte explícitamente.
+Si te piden el precio, DEBES dar SIEMPRE el Precio Final Total primero, y luego el desglose (Pago inicial y monto exacto de las quincenas). NUNCA intentes hacer divisiones matemáticas por tu cuenta. Solo lee los números exactos pre-calculados de esta tabla:
 
-- Baja Beach Fest: General $10,201.18 | General+ $11,990.86 | VIP $25,541.31
-- Harry Styles: GENERAL C $1,968.98 | NA11-NA16 $3,804-$5,220 | VE14-VE16 $4,471-$6,260 | GNP01-GNP10 $5,639-$6,767
-- Rosalía 15 Ago: GP05C-GP06C $4,095.28
-- Rosalía 16 Ago: General $3,320.34 | GP05C-GP08C $3,804.42 | GOLD CIRCLE IZQ $5,990.05 | GP01B-GP02B $6,672.62
-- Vans Warped Tour: General $4,306 (6Q) / $4,408 (8Q) | Plus $7,783 (6Q) / $7,967 (8Q)
-- Bruno Mars: General B desde $2,315 | NA desde $4,643 | VE desde $4,318 | GNP desde $4,985 | ROSA desde $7,321 | GOLD desde $8,322 | PLAT desde $9,323
-- Enjambre: Precios por anunciarse (Preventa Exclusiva Banamex). Yunus habilitará en venta general.
+- Baja Beach Fest (7 Ago):
+  - General: Total $10,201.18 | Pago inicial $1,421.44 | 6 quincenas de $1,463.29
+  - General+: Total $11,990.86 | Pago inicial $1,670.81 | 6 quincenas de $1,720.00
+  - VIP: Total $25,541.31 | Pago inicial $3,558.94 | 6 quincenas de $3,663.72
+- Harry Styles (10 Ago):
+  - GENERAL C: Total $1,968.98 | Pago inicial $274.36 | 6 quincenas de $282.43
+  - NA11 a NA12: Total $3,804.42 a $4,564.36 | Pago inicial $530.11 a $636.00 | 6 quincenas de $545.71 a $654.72
+  - NA13 a NA16: Total $3,804.42 a $5,220.96 | Pago inicial $530.11 a $727.49 | 6 quincenas de $545.71 a $748.91
+  - VE14: Total $4,471.85 | Pago inicial $623.11 | 6 quincenas de $641.45
+  - VE15 a VE16: Total $4,471.85 a $6,260.53 | Pago inicial $623.11 a $872.34 | 6 quincenas de $641.45 a $898.03
+  - GNP01 a GNP08: Total $5,639.85 | Pago inicial $785.86 | 6 quincenas de $809.00
+  - GNP09 a GNP10: Total $5,639.85 a $6,767.75 | Pago inicial $785.86 a $943.02 | 6 quincenas de $809.00 a $970.78
+- Rosalía (15 Ago):
+  - GP05C a GP06C: Total $4,095.28 | Pago inicial $570.64 | 6 quincenas de $587.44
+- Rosalía (16 Ago):
+  - General: Total $3,320.34 | Pago inicial $462.66 | 6 quincenas de $476.28
+  - GP05C a GP08C: Total $3,804.42 | Pago inicial $530.11 | 6 quincenas de $545.71
+  - GOLD CIRCLE IZQ: Total $5,990.05 | Pago inicial $834.66 | 6 quincenas de $859.23
+  - GP01B a GP02B: Total $6,672.62 | Pago inicial $929.77 | 6 quincenas de $957.14
+- Vans Warped Tour (12 Sep):
+  - General: (Plan 6Q) Total $4,306.00, Inic $600.00, 6 quincenas de $617.66 / (Plan 8Q) Total $4,408.00, Inic $600.00, 8 quincenas de $476.00
+  - Plus: (Plan 6Q) Total $7,783.10, Inic $1,084.50, 6 quincenas de $1,116.43 / (Plan 8Q) Total $7,967.46, Inic $1,084.50, 8 quincenas de $860.37
+- Bruno Mars (7 y 8 Dic):
+  *(Para Bruno Mars da el Precio Total y el Pago Inicial de la lista abajo. Dile al cliente que el resto se divide de 6 a 10 quincenas, pero NO intentes calcular la quincena. Menciona que el monto exacto de la quincena se lo dará su asesor en el siguiente paso).*
+  - General B: Inic $322.69 | Final 6Q: $2,315.82 | 8Q: $2,370.68 | 10Q: $2,425.53
+  - NA11 a NA16: Inic $647.04 | Final 6Q: $4,643.62 | 8Q: $4,753.62 | 10Q: $4,863.62
+  - VE12 a VE16: Inic $601.69 a $872.57 | Final 6Q: $4,318.11 a $6,262.14 | 8Q: $4,420.40 a $6,410.48 | 10Q: $4,522.68 a $6,558.81
+  - MORA25 a MORA28: Inic $834.19 | Final 6Q: $5,986.69 | 8Q: $6,128.50 | 10Q: $6,270.31
+  - GNP01 a GNP10: Inic $694.69 a $1,042.07 | Final 6Q: $4,985.54 a $7,478.59 | 8Q: $5,103.64 a $7,655.74 | 10Q: $5,221.73 a $7,832.89
+  - ROSA19 a ROSA24: Inic $1,020.19 a $1,530.32 | Final 6Q: $7,321.55 a $10,982.59 | 8Q: $7,494.98 a $11,242.75 | 10Q: $7,668.41 a $11,502.90
+  - GOLD7 a GOLD18: Inic $1,159.69 a $1,739.57 | Final 6Q: $8,322.69 a $12,484.31 | 8Q: $8,519.84 a $12,780.04 | 10Q: $8,716.98 a $13,075.76
+  - PLAT3 a PLAT14: Inic $1,299.19 a $1,948.82 | Final 6Q: $9,323.84 a $13,986.03 | 8Q: $9,544.70 a $14,317.33 | 10Q: $9,765.56 a $14,648.63
 
-DESGLOSE DETALLADO DE PRECIOS (solo si el usuario pide explícitamente el desglose):
-- Baja Beach Fest: General Inic $1,421.44 6Q $1,463.29 | General+ Inic $1,670.81 6Q $1,720.00 | VIP Inic $3,558.94 6Q $3,663.72
-- Harry Styles: GENERAL C Inic $274.36 6Q $282.43 | NA11-NA16 Inic $530-$727 6Q $545-$748 | VE14-VE16 Inic $623-$872 6Q $641-$898 | GNP01-GNP10 Inic $785-$943 6Q $809-$970
-- Rosalía 15 Ago: GP05C-GP06C Inic $570.64 6Q $587.44
-- Rosalía 16 Ago: General Inic $462.66 6Q $476.28 | GP05C-GP08C Inic $530.11 6Q $545.71 | GOLD Inic $834.66 6Q $859.23 | GP01B-GP02B Inic $929.77 6Q $957.14
-- Vans Warped: General Inic $600 (6Q $617.66 / 8Q $476.00) | Plus Inic $1,084.50 (6Q $1,116.43 / 8Q $860.37)
-- Bruno Mars: General B Inic $322.69 (6Q $2,315 / 8Q $2,370 / 10Q $2,425) | NA Inic $647.04 | VE Inic $601-$872 | MORA Inic $834.19 | GNP Inic $694-$1,042 | ROSA Inic $1,020-$1,530 | GOLD Inic $1,159-$1,739 | PLAT Inic $1,299-$1,948
+REGLA ESPECIAL ENJAMBRE: Si te preguntan por el precio de Enjambre, DEBES responder que los precios están "Por anunciarse" debido a que el evento se encuentra actualmente en Preventa Exclusiva Banamex, y que en Yunus habilitaremos el financiamiento en cuanto empiece la venta general.
 
 INSTRUCCIONES POR ETAPA:
 
 Si etapa es 'bienvenida':
-Saluda a ${nombre} con energía. Explica brevemente la dinámica. Presenta los 6 eventos. Pregunta cuál le interesa.
+Saluda a ${nombre} con energía. Explica muy brevemente la dinámica. Luego presenta los 6 eventos disponibles. Pregunta cuál le interesa.
 
 Si etapa es 'ask_specs':
-NO saludes. Define evento, fecha y zona.
-- Harry Styles → pregunta zona + [MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776986156/HarrySGNP.jpg]
-- Enjambre → pregunta zona + [MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776987346/EnjambreGNP.png]
-- Rosalía → primero fecha (15 o 16). Con fecha: zona + mapa 15→[MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776986497/Rosalia15.jpg] 16→[MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776986620/Rosal%C3%ADa16.jpg]
-- Bruno Mars → primero fecha (7 u 8). Con fecha: zona + mapa 7→[MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776986715/BrunoM7.jpg] 8→[MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776986887/BrunoM8.jpg]
-- Baja Beach / Vans Warped → pregunta General o premium (sin mapa).
-REGLA DE AVANCE: Con evento+fecha+zona definidos, confirma la zona y pide INE frente. Agrega [AVANZAR] al final.
+NO saludes. Tu objetivo es definir el evento, la fecha (si aplica) y la zona. Usa UNA de estas reglas según el evento elegido:
+
+- Si es Harry Styles: pregunta zona (desde General C hasta GNP-03) e incluye esto al final de tu mensaje: [MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776986156/HarrySGNP.jpg]
+- Si es Enjambre: pregunta zona (todas disponibles) e incluye esto al final: [MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776987346/EnjambreGNP.png]
+- Si es Rosalía: PRIMERO asegúrate de saber qué fecha quiere (15 o 16 de agosto). Si no lo ha dicho, pregúntaselo sin enviar mapa. UNA VEZ QUE ELIJA FECHA, pregunta la zona e incluye el mapa: si eligió 15 usa [MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776986497/Rosalia15.jpg], si eligió 16 usa [MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776986620/Rosal%C3%ADa16.jpg].
+- Si es Bruno Mars: PRIMERO asegúrate de saber la fecha (7 u 8 de diciembre). Si no la ha dicho, pregunta sin enviar mapa. UNA VEZ QUE ELIJA FECHA, pregunta la zona e incluye el mapa: si eligió 7 usa [MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776986715/BrunoM7.jpg], si eligió 8 usa [MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776986887/BrunoM8.jpg].
+- Si es Baja Beach o Vans Warped Tour: pregunta si quiere boleto General o premium (NO llevan mapa).
+- Si no quedó claro el evento: pregúntale cuál quiere.
+
+REGLA DE AVANCE: Cuando el usuario YA TE HAYA DEFINIDO evento, fecha (si aplica) y zona, confirma que tienes la zona elegida y dile que para continuar necesitas verificar su identidad pidiendo una foto de su INE por el frente, Y agrega obligatoriamente al puro final de tu mensaje la palabra: [AVANZAR]. (NO desgloses el plan de pagos aquí a menos que el usuario te lo haya pedido explícitamente en el mensaje anterior).
 
 Si etapa es 'ask_ine_frente':
 RESPONDE EXACTAMENTE: "¡Excelente elección! Para poder armar tu plan de pagos, necesito verificar tu identidad. Por favor, envíame una foto clara de tu INE por el frente (el lado con tu foto). 📸"
@@ -165,88 +186,70 @@ RESPONDE EXACTAMENTE: "¡Listo, INE confirmada! Como paso final, puedes enviarme
 
 Si etapa es 'listo':
 RESPONDE EXACTAMENTE: "¡Todo recibido, ${nombre}! 🎉 En este momento estoy analizando tu perfil.
-• Verificando identidad...
-• Analizando capacidad de pago...
-• Consultando disponibilidad de boletos...
-• Evaluando opciones de financiamiento...
+• Verificando identidad…
+• Analizando capacidad de pago…
+• Consultando disponibilidad de boletos…
+• Evaluando opciones de financiamiento…
 
 Aquí mismo, en este chat, te daré el resultado en cuanto esté listo. No cierres la app. 🚀"
 
-ETAPA ACTUAL: ${etapaParaGroq}
+ETAPA ACTUAL DEL USUARIO: ${etapaParaGroq}
 
-HISTORIAL (para recordar evento, fecha y zona elegidos):
+HISTORIAL DE LA CONVERSACIÓN (Úsalo para recordar de qué evento, fecha y zona están hablando, y si ya les diste precios):
 ${historialActual}`
-          },
-          {
-            role: "user",
-            content: `Mensaje: ${mensajeUsuario}`
-          }
-        ],
-        max_tokens: 600,
-        temperature: 0.3
-      });
-    } catch (groqError) {
-      console.error("Groq error:", groqError?.status, groqError?.message);
-
-      // ── Rate limit de Groq (429) → respuesta amigable, NO un 500 ──
-      if (groqError?.status === 429) {
-        return res.status(200).json({
-          respuesta: "Estoy procesando muchas solicitudes en este momento. Espera unos segundos e intenta de nuevo. 🙏",
-          etapa: etapa
-        });
+      },
+      {
+        role: "user",
+        content: `Mensaje: ${mensajeUsuario}`
       }
+    ],
+    max_tokens: 800,
+    temperature: 0.3
+  });
 
-      // Otro error de Groq → respuesta genérica amigable
-      return res.status(200).json({
-        respuesta: "Tuve un problema técnico momentáneo. Por favor intenta de nuevo. 🙏",
-        etapa: etapa
-      });
+  let respuestaOriginal = completion.choices[0].message.content;
+  let respuestaFinal = respuestaOriginal;
+
+  // Lógica de avance de etapas inteligente
+  let nuevaEtapa = etapa;
+  if (mensaje && mensaje.toUpperCase().includes("LISTO")) {
+    nuevaEtapa = "listo";
+  } else if (imagen) {
+    if (etapa === "ask_ine_frente") nuevaEtapa = "ask_ine_reverso";
+    else if (etapa === "ask_ine_reverso") nuevaEtapa = "documentos";
+    else if (etapa === "documentos") nuevaEtapa = "documentos";
+  } else if (etapa === "bienvenida") {
+    nuevaEtapa = "ask_specs";
+  } else if (etapa === "ask_specs") {
+    if (respuestaOriginal.includes("[AVANZAR]")) {
+      nuevaEtapa = "ask_ine_frente";
+      respuestaFinal = respuestaOriginal.replace("[AVANZAR]", "").trim();
     }
-
-    let respuestaOriginal = completion.choices[0].message.content;
-    let respuestaFinal = respuestaOriginal;
-
-    let nuevaEtapa = etapa;
-    if (mensaje && mensaje.toUpperCase().includes("LISTO")) {
-      nuevaEtapa = "listo";
-    } else if (imagen) {
-      if (etapa === "ask_ine_frente") nuevaEtapa = "ask_ine_reverso";
-      else if (etapa === "ask_ine_reverso") nuevaEtapa = "documentos";
-      else if (etapa === "documentos") nuevaEtapa = "documentos";
-    } else if (etapa === "bienvenida") {
-      nuevaEtapa = "ask_specs";
-    } else if (etapa === "ask_specs") {
-      if (respuestaOriginal.includes("[AVANZAR]")) {
-        nuevaEtapa = "ask_ine_frente";
-        respuestaFinal = respuestaOriginal.replace("[AVANZAR]", "").trim();
-      }
-    }
-
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
-    const entradaHistorial = imagen
-      ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuestaFinal}\n`
-      : `[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaFinal}\n`;
-    const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
-
-    await notion.pages.update({
-      page_id: pageId,
-      properties: {
-        Etapa: { rich_text: [{ text: { content: nuevaEtapa } }] },
-        Historial: { rich_text: [{ text: { content: nuevoHistorial } }] },
-        ...(imagenUrl && {
-          Docs: { rich_text: [{ text: { content: imagenUrl } }] }
-        })
-      }
-    });
-
-    return res.status(200).json({ respuesta: respuestaFinal, imagenUrl, etapa: nuevaEtapa });
-
-  } catch (fatalError) {
-    // ── Captura global: cualquier error no previsto → 200 amigable, nunca 500 ──
-    console.error("Fatal error in /api/chat:", fatalError);
-    return res.status(200).json({
-      respuesta: "Ocurrió un error inesperado. Por favor intenta de nuevo en un momento. 🙏",
-      etapa: "bienvenida"
-    });
   }
+
+  const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
+  const entradaHistorial = imagen
+    ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuestaFinal}\n`
+    : `[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaFinal}\n`;
+  const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
+
+  await notion.pages.update({
+    page_id: pageId,
+    properties: {
+      Etapa: {
+        rich_text: [{ text: { content: nuevaEtapa } }]
+      },
+      Historial: {
+        rich_text: [{ text: { content: nuevoHistorial } }]
+      },
+      ...(imagenUrl && {
+        Docs: {
+          rich_text: [{ text: { content: imagenUrl } }]
+        }
+      })
+    }
+  });
+
+  // ── Devolvemos etapa para que el frontend sepa si activar modo revisión ──
+  res.status(200).json({ respuesta: respuestaFinal, imagenUrl, etapa: nuevaEtapa });
 }
