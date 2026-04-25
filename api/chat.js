@@ -61,22 +61,6 @@ export default async function handler(req, res) {
   const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
   const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
 
-  // ── MODO SILENCIO: si ya está en "listo", guardar mensaje pero NO llamar a Groq ──
-  if (etapa === "listo") {
-    if (mensaje) {
-      const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
-      const entradaHistorial = `[${timestamp}] Usuario: ${mensaje}\n`;
-      const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
-      await notion.pages.update({
-        page_id: pageId,
-        properties: {
-          Historial: { rich_text: [{ text: { content: nuevoHistorial } }] }
-        }
-      });
-    }
-    return res.status(200).json({ respuesta: null, etapa: "listo" });
-  }
-
   let imagenUrl = null;
   if (imagen) {
     const upload = await cloudinary.uploader.upload(imagen, {
@@ -96,7 +80,7 @@ export default async function handler(req, res) {
   const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
 
   const completion = await groq.chat.completions.create({
-    model: "qwen/qwen3-32b",
+    model: "llama-3.3-70b-versatile",
     messages: [
       {
         role: "system",
@@ -185,13 +169,13 @@ Si etapa es 'documentos':
 RESPONDE EXACTAMENTE: "¡Listo, INE confirmada! Como paso final, puedes enviarme un comprobante de ingresos (nómina o estado de cuenta). Esto es **100% OPCIONAL**, pero enviarlo aumenta muchísimo las probabilidades de ser aprobado. Si prefieres no enviarlo, simplemente escribe **'LISTO'**."
 
 Si etapa es 'listo':
-RESPONDE EXACTAMENTE: "¡Todo recibido, ${nombre}! 🎉 En este momento estoy analizando tu perfil.
+RESPONDE EXACTAMENTE: "¡Todo recibido, ${nombre}! En este momento estoy analizando tu perfil y revisando viabilidad.
 • Verificando identidad…
 • Analizando capacidad de pago…
 • Consultando disponibilidad de boletos…
 • Evaluando opciones de financiamiento…
 
-Aquí mismo, en este chat, te daré el resultado en cuanto esté listo. No cierres la app. 🚀"
+Este proceso puede tardar un par de minutos. Un agente de Yunus te escribirá por aquí en cuanto tengamos tu resultado. 🚀"
 
 ETAPA ACTUAL DEL USUARIO: ${etapaParaGroq}
 
@@ -221,6 +205,7 @@ ${historialActual}`
   } else if (etapa === "bienvenida") {
     nuevaEtapa = "ask_specs";
   } else if (etapa === "ask_specs") {
+    // Solo si Groq determinó que ya tiene todos los datos, avanzamos la BD
     if (respuestaOriginal.includes("[AVANZAR]")) {
       nuevaEtapa = "ask_ine_frente";
       respuestaFinal = respuestaOriginal.replace("[AVANZAR]", "").trim();
@@ -250,6 +235,5 @@ ${historialActual}`
     }
   });
 
-  // ── Devolvemos etapa para que el frontend sepa si activar modo revisión ──
-  res.status(200).json({ respuesta: respuestaFinal, imagenUrl, etapa: nuevaEtapa });
+  res.status(200).json({ respuesta: respuestaFinal, imagenUrl });
 }
