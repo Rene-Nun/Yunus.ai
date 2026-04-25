@@ -16,347 +16,202 @@
             --card-bg: #111111;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+```
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
 
-        html { height: 100%; }
+    body {
+        height: 100%;
+        font-family: 'DM Sans', sans-serif;
+        background: var(--ink);
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        color: var(--paper);
+    }
 
-        body {
-            height: 100%;
-            font-family: 'DM Sans', sans-serif;
-            background: var(--ink);
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
-            color: var(--paper);
-        }
+    #app {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        max-width: 480px;
+        margin: 0 auto;
+        background: var(--ink);
+    }
 
-        #app {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            max-width: 480px;
-            margin: 0 auto;
-            background: var(--ink);
-        }
+    /* LOGIN */
+    #loginBox {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        overflow-y: auto;
+    }
+    #loginBox .inner {
+        width: 100%;
+        max-width: 320px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .login-logo {
+        width: 180px; height: 180px; object-fit: contain;
+        margin-bottom: 32px; opacity: 0;
+        animation: fadeUp 0.6s ease 0.1s both;
+    }
+    .login-h1 {
+        font-family: 'Bebas Neue', sans-serif; font-size: 42px;
+        line-height: 0.95; letter-spacing: 0.02em; color: var(--paper);
+        text-align: center; margin-bottom: 12px; opacity: 0;
+        animation: fadeUp 0.5s ease 0.2s both;
+    }
+    .login-sub {
+        font-size: 13px; color: var(--muted); line-height: 1.65;
+        text-align: center; margin-bottom: 28px; opacity: 0;
+        animation: fadeUp 0.5s ease 0.3s both;
+    }
+    .btn-registro {
+        width: 100%; padding: 14px; background: var(--volt); color: var(--ink);
+        font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+        text-transform: uppercase; border: none; border-radius: 12px; cursor: pointer;
+        font-weight: 500; transition: opacity 0.2s; text-decoration: none;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        opacity: 0; animation: fadeUp 0.5s ease 0.4s both;
+    }
+    .btn-registro:hover { opacity: 0.85; }
+    .divider-wrap {
+        width: 100%; display: flex; align-items: center; gap: 12px;
+        margin: 24px 0; opacity: 0; animation: fadeUp 0.5s ease 0.45s both;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--border); }
+    .divider-text {
+        font-family: 'DM Mono', monospace; font-size: 9px;
+        letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); flex-shrink: 0;
+    }
+    .input-row { display: flex; gap: 8px; width: 100%; opacity: 0; animation: fadeUp 0.5s ease 0.5s both; }
+    .prefix {
+        padding: 12px; background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border); border-radius: 12px;
+        font-family: 'DM Mono', monospace; font-size: 14px; color: var(--muted); flex-shrink: 0;
+    }
+    #celularInput {
+        flex: 1; padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px;
+        font-size: 16px; outline: none; font-family: inherit;
+        background: rgba(255,255,255,0.04); -webkit-appearance: none;
+        transition: border-color 0.2s; color: var(--paper);
+    }
+    #celularInput::placeholder { color: var(--muted); }
+    #celularInput:focus { border-color: var(--volt); }
+    #btnEntrar {
+        width: 100%; margin-top: 12px; background: var(--volt); color: var(--ink);
+        padding: 14px; border-radius: 12px; font-family: 'DM Mono', monospace;
+        font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border: none;
+        cursor: pointer; font-weight: 500; transition: opacity 0.2s;
+        opacity: 0; animation: fadeUp 0.5s ease 0.55s both;
+    }
+    #btnEntrar:hover { opacity: 0.85; }
+    #loginError {
+        display: none; margin-top: 12px; padding: 10px 14px;
+        background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+        border-radius: 10px; font-size: 13px; color: #ef4444; text-align: center; width: 100%;
+    }
+    .login-footer { margin-top: auto; padding-top: 32px; text-align: center; opacity: 0; animation: fadeUp 0.5s ease 0.6s both; }
+    .login-footer span { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
 
-        /* LOGIN SCREEN */
-        #loginBox {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            overflow-y: auto;
-        }
+    /* CHAT */
+    #chatBox { display: none; flex-direction: column; flex: 1; min-height: 0; }
+    #mensajes {
+        flex: 1; overflow-y: auto; padding: 16px;
+        display: flex; flex-direction: column; gap: 10px;
+        -webkit-overflow-scrolling: touch; background: #0d0d0d;
+    }
+    #mensajes::-webkit-scrollbar { display: none; }
 
-        #loginBox .inner {
-            width: 100%;
-            max-width: 320px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    /* Indicador normal (pensando) */
+    #typingIndicator {
+        display: none; padding: 8px 16px;
+        font-family: 'DM Mono', monospace; font-size: 10px;
+        letter-spacing: 0.15em; text-transform: uppercase;
+        color: var(--volt); background: #0d0d0d;
+        animation: pulseText 1.5s infinite; flex-shrink: 0;
+    }
+    /* Modo revisión — verde permanente */
+    #typingIndicator.revision-mode {
+        display: block !important; color: #22c55e;
+        border-top: 1px solid rgba(34,197,94,0.15);
+        animation: pulseText 1.2s infinite;
+    }
 
-        .login-logo {
-            width: 180px;
-            height: 180px;
-            object-fit: contain;
-            margin-bottom: 32px;
-            opacity: 0;
-            animation: fadeUp 0.6s ease 0.1s both;
-        }
+    @keyframes pulseText {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.35; }
+    }
 
-        .login-h1 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 42px;
-            line-height: 0.95;
-            letter-spacing: 0.02em;
-            color: var(--paper);
-            text-align: center;
-            margin-bottom: 12px;
-            opacity: 0;
-            animation: fadeUp 0.5s ease 0.2s both;
-        }
+    #inputBar {
+        background: #111; border-top: 1px solid var(--border);
+        padding: 10px 14px; display: flex; gap: 8px;
+        align-items: center; flex-shrink: 0; transition: opacity 0.3s;
+    }
+    /* Bloqueo visual cuando está en modo revisión */
+    #inputBar.bloqueado { opacity: 0.35; pointer-events: none; }
 
-        .login-sub {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 13px;
-            color: var(--muted);
-            line-height: 1.65;
-            text-align: center;
-            margin-bottom: 28px;
-            opacity: 0;
-            animation: fadeUp 0.5s ease 0.3s both;
-        }
+    #cameraBtn {
+        width: 36px; height: 36px; border-radius: 50%;
+        background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; flex-shrink: 0;
+    }
+    #cameraBtn svg { stroke: var(--muted); }
+    #inputMsg {
+        flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+        border-radius: 999px; padding: 10px 16px; font-size: 14px; outline: none;
+        font-family: inherit; -webkit-appearance: none; color: var(--paper);
+    }
+    #inputMsg::placeholder { color: var(--muted); }
+    #sendBtn {
+        width: 36px; height: 36px; border-radius: 50%; background: var(--volt);
+        border: none; cursor: pointer; display: flex; align-items: center;
+        justify-content: center; flex-shrink: 0; transition: opacity 0.2s;
+    }
+    #sendBtn:hover { opacity: 0.85; }
 
-        .btn-registro {
-            width: 100%;
-            padding: 14px;
-            background: var(--volt);
-            color: var(--ink);
-            font-family: 'DM Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: opacity 0.2s;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            opacity: 0;
-            animation: fadeUp 0.5s ease 0.4s both;
-        }
-        .btn-registro:hover { opacity: 0.85; }
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+```
 
-        .divider-wrap {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 24px 0;
-            opacity: 0;
-            animation: fadeUp 0.5s ease 0.45s both;
-        }
-        .divider-line {
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-        .divider-text {
-            font-family: 'DM Mono', monospace;
-            font-size: 9px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--muted);
-            flex-shrink: 0;
-        }
-
-        .input-row {
-            display: flex;
-            gap: 8px;
-            width: 100%;
-            opacity: 0;
-            animation: fadeUp 0.5s ease 0.5s both;
-        }
-
-        .prefix {
-            padding: 12px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-family: 'DM Mono', monospace;
-            font-size: 14px;
-            color: var(--muted);
-            flex-shrink: 0;
-        }
-
-        #celularInput {
-            flex: 1;
-            padding: 12px 14px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 16px;
-            outline: none;
-            font-family: inherit;
-            background: rgba(255,255,255,0.04);
-            -webkit-appearance: none;
-            transition: border-color 0.2s;
-            color: var(--paper);
-        }
-        #celularInput::placeholder { color: var(--muted); }
-        #celularInput:focus { border-color: var(--volt); }
-
-        #btnEntrar {
-            width: 100%;
-            margin-top: 12px;
-            background: var(--volt);
-            color: var(--ink);
-            padding: 14px;
-            border-radius: 12px;
-            font-family: 'DM Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: opacity 0.2s;
-            opacity: 0;
-            animation: fadeUp 0.5s ease 0.55s both;
-        }
-        #btnEntrar:hover { opacity: 0.85; }
-
-        #loginError {
-            display: none;
-            margin-top: 12px;
-            padding: 10px 14px;
-            background: rgba(239,68,68,0.1);
-            border: 1px solid rgba(239,68,68,0.3);
-            border-radius: 10px;
-            font-size: 13px;
-            color: #ef4444;
-            text-align: center;
-            width: 100%;
-        }
-
-        .login-footer {
-            margin-top: auto;
-            padding-top: 32px;
-            text-align: center;
-            opacity: 0;
-            animation: fadeUp 0.5s ease 0.6s both;
-        }
-        .login-footer span {
-            font-family: 'DM Mono', monospace;
-            font-size: 9px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--muted);
-        }
-
-        /* CHAT */
-        #chatBox {
-            display: none;
-            flex-direction: column;
-            flex: 1;
-            min-height: 0;
-        }
-
-        #mensajes {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            -webkit-overflow-scrolling: touch;
-            background: #0d0d0d;
-        }
-
-        #mensajes::-webkit-scrollbar { display: none; }
-
-        /* INDICADOR DE ESCRITURA ESTILO CONSOLA */
-        #typingIndicator {
-            display: none;
-            padding: 8px 16px;
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--volt);
-            background: #0d0d0d;
-            animation: pulseText 1.5s infinite;
-            flex-shrink: 0;
-        }
-
-        @keyframes pulseText {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        #inputBar {
-            background: #111;
-            border-top: 1px solid var(--border);
-            padding: 10px 14px;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        #cameraBtn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        #cameraBtn svg { stroke: var(--muted); }
-
-        #inputMsg {
-            flex: 1;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            padding: 10px 16px;
-            font-size: 14px;
-            outline: none;
-            font-family: inherit;
-            -webkit-appearance: none;
-            color: var(--paper);
-        }
-        #inputMsg::placeholder { color: var(--muted); }
-
-        #sendBtn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--volt);
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: opacity 0.2s;
-        }
-        #sendBtn:hover { opacity: 0.85; }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
 </head>
 <body>
 
 <div id="app">
 
+```
 <div id="loginBox">
     <div class="inner">
         <img src="darklogo.png" alt="Yunus" class="login-logo" onerror="this.src='darklogo.jpeg'">
-
         <h1 class="login-h1">Accede a los<br>mejores eventos<br>del año</h1>
-        
         <p class="login-sub">Financia boletos para los conciertos y festivales que no te puedes perder. Sin tarjeta, sin buró.</p>
-        
         <a href="index.html?modal=onboarding" class="btn-registro">
             Registrarse
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
             </svg>
         </a>
-        
         <div class="divider-wrap">
             <div class="divider-line"></div>
             <span class="divider-text">¿Ya tienes cuenta?</span>
             <div class="divider-line"></div>
         </div>
-        
         <div class="input-row">
             <span class="prefix">+52</span>
-            <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10"
-                inputmode="numeric" pattern="[0-9]*">
+            <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
         </div>
-        
         <button id="btnEntrar" onclick="iniciarChat()">Entrar →</button>
-        
         <div id="loginError"></div>
-        
-        <div class="login-footer">
-            <span>Yunus 1.0.1 BETA</span>
-        </div>
+        <div class="login-footer"><span>Yunus 1.0.1 BETA</span></div>
     </div>
 </div>
 
@@ -371,8 +226,7 @@
             </svg>
         </label>
         <input id="inputFoto" type="file" accept="image/*" style="display:none;" onchange="enviarFoto(this)">
-        <input id="inputMsg" type="text" placeholder="Escribe un mensaje..."
-            onkeydown="if(event.key=='Enter') enviar()">
+        <input id="inputMsg" type="text" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter') enviar()">
         <button id="sendBtn" onclick="enviar()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5">
                 <line x1="22" y1="2" x2="11" y2="13"/>
@@ -381,325 +235,358 @@
         </button>
     </div>
 </div>
+```
 
 </div>
 
 <script>
-let celular = '';
-let primerMensajeYunus = true;
-let typingInterval;
+    let celular = '';
+    let primerMensajeYunus = true;
+    let typingInterval;
+    let enModoRevision = false;
+    let pollingInterval = null;
 
-// Lógica del Indicador de Carga
-function mostrarCargando(esImagen) {
-    const indicator = document.getElementById('typingIndicator');
-    indicator.style.display = 'block';
-    
-    const pasosTexto = ["Pensando...", "Evaluando viabilidad...", "Preparando respuesta..."];
-    const pasosImagen = ["Subiendo imagen...", "Analizando documento...", "Validando identidad..."];
-    
-    const pasos = esImagen ? pasosImagen : pasosTexto;
-    let i = 0;
-    indicator.textContent = pasos[i];
-    
-    clearInterval(typingInterval);
-    typingInterval = setInterval(() => {
-        i = (i + 1) % pasos.length;
+    // ─────────────────────────────────────────
+    // INDICADOR DE CARGA
+    // ─────────────────────────────────────────
+    function mostrarCargando(esImagen) {
+        if (enModoRevision) return;
+        const indicator = document.getElementById('typingIndicator');
+        indicator.style.display = 'block';
+        const pasosTexto  = ["Pensando...", "Evaluando viabilidad...", "Preparando respuesta..."];
+        const pasosImagen = ["Subiendo imagen...", "Analizando documento...", "Validando identidad..."];
+        const pasos = esImagen ? pasosImagen : pasosTexto;
+        let i = 0;
         indicator.textContent = pasos[i];
-    }, 1500); // Cambia el texto cada 1.5 segundos
-    
-    // Scrollear hacia abajo para que el usuario vea el indicador
-    const contenedor = document.getElementById('mensajes');
-    contenedor.scrollTop = contenedor.scrollHeight;
-}
+        clearInterval(typingInterval);
+        typingInterval = setInterval(() => { i = (i + 1) % pasos.length; indicator.textContent = pasos[i]; }, 1500);
+        document.getElementById('mensajes').scrollTop = document.getElementById('mensajes').scrollHeight;
+    }
 
-function ocultarCargando() {
-    clearInterval(typingInterval);
-    document.getElementById('typingIndicator').style.display = 'none';
-}
+    function ocultarCargando() {
+        clearInterval(typingInterval);
+        if (!enModoRevision) document.getElementById('typingIndicator').style.display = 'none';
+    }
 
-async function mostrarChat() {
-    document.getElementById('loginBox').style.display = 'none';
-    const chatBox = document.getElementById('chatBox');
-    chatBox.style.display = 'flex';
-    primerMensajeYunus = true;
+    // ─────────────────────────────────────────
+    // MODO REVISIÓN (etapa "listo")
+    // ─────────────────────────────────────────
+    function activarModoRevision() {
+        if (enModoRevision) return;
+        enModoRevision = true;
+        document.getElementById('inputBar').classList.add('bloqueado');
+        document.getElementById('inputMsg').disabled = true;
+        document.getElementById('inputMsg').placeholder = 'Aguarda tu resultado...';
+        clearInterval(typingInterval);
+        const indicator = document.getElementById('typingIndicator');
+        indicator.textContent = '● REVISANDO PERFIL...';
+        indicator.classList.add('revision-mode');
+        document.getElementById('mensajes').scrollTop = document.getElementById('mensajes').scrollHeight;
+        if (!pollingInterval) pollingInterval = setInterval(verificarNuevosMensajes, 5000);
+    }
 
-    try {
-        const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
-        if (res.ok) {
+    // Polling: detecta mensajes nuevos que el operador escribió en Notion
+    async function verificarNuevosMensajes() {
+        try {
+            const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
+            if (!res.ok) return;
             const data = await res.json();
-            localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
-        }
-    } catch {
-        // Server unavailable, fall through to localStorage
-    }
-
-    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-    if (historial.length === 0) {
-        agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
-    } else {
-        historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
-    }
-}
-
-async function iniciarChat() {
-    const input = document.getElementById('celularInput').value.trim();
-    if (input.length !== 10) { mostrarError('Ingresa 10 dígitos válidos.'); return; }
-
-    ocultarError();
-    const btn = document.getElementById('btnEntrar');
-    btn.disabled = true;
-    btn.textContent = 'Verificando...';
-
-    const numeroCelular = '+52' + input;
-
-    try {
-        const res = await fetch('/api/historial?celular=' + encodeURIComponent(numeroCelular));
-
-        if (res.status === 404) {
-            mostrarError('Este número no está registrado. Regístrate primero en yunusia.com');
-            btn.disabled = false;
-            btn.textContent = 'Entrar →';
-            return;
-        }
-
-        celular = numeroCelular;
-        localStorage.setItem('yunus_celular', celular);
-
-        if (res.ok) {
-            const data = await res.json();
-            localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
-        }
-
-        btn.disabled = false;
-        btn.textContent = 'Entrar →';
-        window.location.href = 'marketplace.html';
-
-    } catch {
-        celular = numeroCelular;
-        localStorage.setItem('yunus_celular', celular);
-        btn.disabled = false;
-        btn.textContent = 'Entrar →';
-        window.location.href = 'marketplace.html';
-    }
-}
-
-function mostrarChatDirecto() {
-    document.getElementById('loginBox').style.display = 'none';
-    const chatBox = document.getElementById('chatBox');
-    chatBox.style.display = 'flex';
-    primerMensajeYunus = true;
-
-    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-    if (historial.length === 0) {
-        agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
-    } else {
-        historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
-    }
-}
-
-function mostrarError(msg) {
-    const el = document.getElementById('loginError');
-    el.textContent = msg;
-    el.style.display = 'block';
-}
-
-function ocultarError() {
-    document.getElementById('loginError').style.display = 'none';
-}
-
-function cerrarSesion() {
-    try {
-        localStorage.removeItem('yunus_celular');
-        localStorage.removeItem('yunus_historial');
-    } catch (e) {
-        console.warn('No se pudo limpiar localStorage:', e);
-    }
-    celular = '';
-    const chatLogo = document.getElementById('chatLogo');
-    chatLogo.style.opacity = '0';
-    setTimeout(() => chatLogo.style.display = 'none', 300);
-    document.getElementById('chatBox').style.display = 'none';
-    document.getElementById('loginBox').style.display = 'flex';
-    document.getElementById('mensajes').innerHTML = '';
-    document.getElementById('celularInput').value = '';
-    primerMensajeYunus = true;
-}
-
-function renderMensaje(texto, tipo, esImagen = false) {
-    const contenedor = document.getElementById('mensajes');
-    const esYunus = tipo === 'yunus';
-
-    const wrapper = document.createElement('div');
-    wrapper.style.cssText = `display: flex; align-items: flex-end; gap: 8px; justify-content: ${esYunus ? 'flex-start' : 'flex-end'};`;
-
-    if (esYunus && primerMensajeYunus) {
-        const avatar = document.createElement('img');
-        avatar.src = 'Vector.png';
-        avatar.style.cssText = 'width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid var(--border); background: #1a1a1a;';
-        avatar.onerror = function() { this.style.display = 'none'; };
-        wrapper.appendChild(avatar);
-        primerMensajeYunus = false;
-    } else if (esYunus) {
-        const spacer = document.createElement('div');
-        spacer.style.cssText = 'width: 26px; flex-shrink: 0;';
-        wrapper.appendChild(spacer);
-    }
-
-    const burbuja = document.createElement('div');
-    if (esYunus) {
-        burbuja.style.cssText = 'max-width: 80%; background: #1a1a1a; border: 1px solid var(--border); border-radius: 16px; border-bottom-left-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--paper); line-height: 1.5;';
-    } else {
-        burbuja.style.cssText = 'max-width: 80%; background: var(--volt); border-radius: 16px; border-bottom-right-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--ink); line-height: 1.5; font-weight: 500;';
-    }
-
-    if (esImagen) {
-        const img = document.createElement('img');
-        img.src = texto;
-        img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 180px; object-fit: cover; display: block;';
-        burbuja.appendChild(img);
-    } else {
-        // Analizar si Yunus mandó la etiqueta secreta de un mapa
-        const partes = texto.split(/(\[MAPA:.*?\])/);
-        partes.forEach(parte => {
-            if (parte.startsWith('[MAPA:') && parte.endsWith(']')) {
-                const url = parte.slice(6, -1).trim();
-                const img = document.createElement('img');
-                img.src = url;
-                // Le damos diseño para que parezca una tarjeta dentro del chat
-                img.style.cssText = 'border-radius: 8px; max-width: 100%; margin-top: 8px; display: block; border: 1px solid rgba(255,255,255,0.1);';
-                img.onerror = function() { this.style.display = 'none'; }; // Si la URL falla, se oculta
-                burbuja.appendChild(img);
-            } else if (parte) {
-                const span = document.createElement('span');
-                span.textContent = parte;
-                span.style.whiteSpace = 'pre-wrap'; // Respeta los saltos de línea de Yunus
-                burbuja.appendChild(span);
+            const historialLocal    = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+            const historialServidor = data.historial || [];
+            if (historialServidor.length > historialLocal.length) {
+                const nuevos = historialServidor.slice(historialLocal.length);
+                nuevos.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+                localStorage.setItem('yunus_historial', JSON.stringify(historialServidor));
+                document.getElementById('mensajes').scrollTop = document.getElementById('mensajes').scrollHeight;
             }
-        });
+        } catch (e) { console.warn('[Yunus polling]', e); }
     }
 
-    wrapper.appendChild(burbuja);
-    contenedor.appendChild(wrapper);
-    contenedor.scrollTop = contenedor.scrollHeight;
-}
+    // ─────────────────────────────────────────
+    // HISTORIAL — guardar sin renderizar
+    // ─────────────────────────────────────────
+    function guardarHistorial(texto, tipo, esImagen = false) {
+        const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+        historial.push({ texto, tipo, esImagen });
+        localStorage.setItem('yunus_historial', JSON.stringify(historial));
+    }
 
-function agregarMensaje(texto, tipo, esImagen = false) {
-    const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-    historial.push({ texto, tipo, esImagen });
-    localStorage.setItem('yunus_historial', JSON.stringify(historial));
-    renderMensaje(texto, tipo, esImagen);
-}
+    // ─────────────────────────────────────────
+    // CARGA DEL CHAT
+    // ─────────────────────────────────────────
+    async function mostrarChat() {
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('chatBox').style.display = 'flex';
+        primerMensajeYunus = true;
 
-function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
-    return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const scale = Math.min(1, maxWidth / img.width);
-                canvas.width = img.width * scale;
-                canvas.height = img.height * scale;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                resolve(canvas.toDataURL('image/jpeg', calidad));
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
-}
-
-async function enviarFoto(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const base64 = await comprimirImagen(file);
-    agregarMensaje(base64, 'usuario', true);
-    input.value = '';
-    
-    mostrarCargando(true); // Activar indicador para imagen
-
-    try {
-        const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
-        });
-        const data = await res.json();
-        
-        if (data.imagenUrl) {
-            const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
-            for (let i = historial.length - 1; i >= 0; i--) {
-                if (historial[i].tipo === 'usuario' && historial[i].esImagen) {
-                    historial[i].texto = data.imagenUrl;
-                    break;
-                }
+        let etapaServidor = null;
+        try {
+            const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
+            if (res.ok) {
+                const data = await res.json();
+                localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+                etapaServidor = data.etapa || null;
             }
-            localStorage.setItem('yunus_historial', JSON.stringify(historial));
-        }
-        
-        ocultarCargando(); // Ocultar indicador justo antes de responder
-        agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
-    } catch {
-        ocultarCargando();
-        agregarMensaje('Error de conexión.', 'yunus');
-    }
-}
+        } catch { /* sin server → localStorage */ }
 
-async function enviar() {
-    const input = document.getElementById('inputMsg');
-    const mensaje = input.value.trim();
-    if (!mensaje) return;
-    input.value = '';
-    agregarMensaje(mensaje, 'usuario');
-    
-    mostrarCargando(false); // Activar indicador para texto
-
-    try {
-        const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mensaje, celular })
-        });
-        const data = await res.json();
-        
-        ocultarCargando(); // Ocultar indicador justo antes de responder
-        agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
-    } catch {
-        ocultarCargando();
-        agregarMensaje('Error de conexión.', 'yunus');
-    }
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    const modoChat = params.get('modo') === 'chat';
-    const prefillMsg = params.get('msg'); // Capturamos el mensaje de la URL
-
-    const celularGuardado = localStorage.getItem('yunus_celular');
-    if (celularGuardado) {
-        celular = celularGuardado;
-        if (modoChat) {
-            // Dentro del popup de marketplace → mostrar chat normal
-            mostrarChat().then(() => {
-                // Si la URL trae un mensaje, lo enviamos automáticamente
-                if (prefillMsg) {
-                    const input = document.getElementById('inputMsg');
-                    input.value = prefillMsg;
-                    enviar(); // Dispara la misma función como si el usuario diera "Enter"
-                    
-                    // Limpia la URL para que no se reenvíe si recarga la página
-                    const newUrl = window.location.pathname + '?modo=chat';
-                    window.history.replaceState({}, document.title, newUrl);
-                }
-            });
+        const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+        if (historial.length === 0) {
+            agregarMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
         } else {
-            // Acceso directo con sesión activa → ir a marketplace
+            historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+        }
+
+        if (etapaServidor === 'listo') activarModoRevision();
+    }
+
+    // ─────────────────────────────────────────
+    // LOGIN
+    // ─────────────────────────────────────────
+    async function iniciarChat() {
+        const input = document.getElementById('celularInput').value.trim();
+        if (input.length !== 10) { mostrarError('Ingresa 10 dígitos válidos.'); return; }
+        ocultarError();
+        const btn = document.getElementById('btnEntrar');
+        btn.disabled = true; btn.textContent = 'Verificando...';
+        const numeroCelular = '+52' + input;
+        try {
+            const res = await fetch('/api/historial?celular=' + encodeURIComponent(numeroCelular));
+            if (res.status === 404) {
+                mostrarError('Este número no está registrado. Regístrate primero en yunusia.com');
+                btn.disabled = false; btn.textContent = 'Entrar →'; return;
+            }
+            celular = numeroCelular;
+            localStorage.setItem('yunus_celular', celular);
+            if (res.ok) {
+                const data = await res.json();
+                localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+            }
+            btn.disabled = false; btn.textContent = 'Entrar →';
+            window.location.href = 'marketplace.html';
+        } catch {
+            celular = numeroCelular;
+            localStorage.setItem('yunus_celular', celular);
+            btn.disabled = false; btn.textContent = 'Entrar →';
             window.location.href = 'marketplace.html';
         }
     }
-    // Sin sesión → mostrar pantalla de login (no hacer nada más)
-});
+
+    function mostrarError(msg) { const el = document.getElementById('loginError'); el.textContent = msg; el.style.display = 'block'; }
+    function ocultarError()    { document.getElementById('loginError').style.display = 'none'; }
+
+    function cerrarSesion() {
+        if (pollingInterval) { clearInterval(pollingInterval); pollingInterval = null; }
+        enModoRevision = false;
+        try { localStorage.removeItem('yunus_celular'); localStorage.removeItem('yunus_historial'); } catch(e) {}
+        celular = '';
+        document.getElementById('chatBox').style.display = 'none';
+        document.getElementById('loginBox').style.display = 'flex';
+        document.getElementById('mensajes').innerHTML = '';
+        document.getElementById('celularInput').value = '';
+        document.getElementById('inputBar').classList.remove('bloqueado');
+        document.getElementById('typingIndicator').classList.remove('revision-mode');
+        document.getElementById('typingIndicator').style.display = 'none';
+        primerMensajeYunus = true;
+    }
+
+    // ─────────────────────────────────────────
+    // RENDER DE MENSAJES
+    // ─────────────────────────────────────────
+    function renderMensaje(texto, tipo, esImagen = false) {
+        const contenedor = document.getElementById('mensajes');
+        const esYunus = tipo === 'yunus';
+
+        const wrapper = document.createElement('div');
+        wrapper.style.cssText = `display:flex;align-items:flex-end;gap:8px;justify-content:${esYunus ? 'flex-start' : 'flex-end'};`;
+
+        if (esYunus && primerMensajeYunus) {
+            const avatar = document.createElement('img');
+            avatar.src = 'Vector.png';
+            avatar.style.cssText = 'width:26px;height:26px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--border);background:#1a1a1a;';
+            avatar.onerror = function() { this.style.display = 'none'; };
+            wrapper.appendChild(avatar);
+            primerMensajeYunus = false;
+        } else if (esYunus) {
+            const spacer = document.createElement('div');
+            spacer.style.cssText = 'width:26px;flex-shrink:0;';
+            wrapper.appendChild(spacer);
+        }
+
+        const burbuja = document.createElement('div');
+        burbuja.style.cssText = esYunus
+            ? 'max-width:80%;background:#1a1a1a;border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:3px;padding:10px 14px;font-size:13px;color:var(--paper);line-height:1.5;'
+            : 'max-width:80%;background:var(--volt);border-radius:16px;border-bottom-right-radius:3px;padding:10px 14px;font-size:13px;color:var(--ink);line-height:1.5;font-weight:500;';
+
+        if (esImagen) {
+            const img = document.createElement('img');
+            img.src = texto;
+            img.style.cssText = 'border-radius:10px;max-width:100%;max-height:180px;object-fit:cover;display:block;';
+            burbuja.appendChild(img);
+        } else {
+            // Parsear [MAPA: url] — funciona para Groq Y para mensajes manuales del operador
+            const partes = texto.split(/(\[MAPA:.*?\])/);
+            partes.forEach(parte => {
+                if (parte.startsWith('[MAPA:') && parte.endsWith(']')) {
+                    const url = parte.slice(6, -1).trim();
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.style.cssText = 'border-radius:8px;max-width:100%;margin-top:8px;display:block;border:1px solid rgba(255,255,255,0.1);';
+                    img.onerror = function() { this.style.display = 'none'; };
+                    burbuja.appendChild(img);
+                } else if (parte) {
+                    const span = document.createElement('span');
+                    span.textContent = parte;
+                    span.style.whiteSpace = 'pre-wrap';
+                    burbuja.appendChild(span);
+                }
+            });
+        }
+
+        wrapper.appendChild(burbuja);
+        contenedor.appendChild(wrapper);
+        contenedor.scrollTop = contenedor.scrollHeight;
+    }
+
+    // render + guarda en localStorage
+    function agregarMensaje(texto, tipo, esImagen = false) {
+        guardarHistorial(texto, tipo, esImagen);
+        renderMensaje(texto, tipo, esImagen);
+    }
+
+    // ─────────────────────────────────────────
+    // COMPRESIÓN DE IMAGEN
+    // ─────────────────────────────────────────
+    function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const scale = Math.min(1, maxWidth / img.width);
+                    canvas.width = img.width * scale; canvas.height = img.height * scale;
+                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL('image/jpeg', calidad));
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // ─────────────────────────────────────────
+    // ENVÍO DE FOTO
+    // ─────────────────────────────────────────
+    async function enviarFoto(input) {
+        if (enModoRevision) return;
+        const file = input.files[0];
+        if (!file) return;
+        const base64 = await comprimirImagen(file);
+
+        // Guardar base64 en localStorage para el thumbnail (se actualiza a Cloudinary si éxito)
+        agregarMensaje(base64, 'usuario', true);
+        input.value = '';
+        mostrarCargando(true);
+
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
+            });
+            const data = await res.json();
+
+            // Actualizar URL de la foto de base64 a Cloudinary
+            if (data.imagenUrl) {
+                const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+                for (let i = historial.length - 1; i >= 0; i--) {
+                    if (historial[i].tipo === 'usuario' && historial[i].esImagen) {
+                        historial[i].texto = data.imagenUrl; break;
+                    }
+                }
+                localStorage.setItem('yunus_historial', JSON.stringify(historial));
+            }
+
+            ocultarCargando();
+            if (data.respuesta) agregarMensaje(data.respuesta, 'yunus');
+            if (data.etapa === 'listo') activarModoRevision();
+
+        } catch {
+            ocultarCargando();
+            // Eliminar la foto fallida del localStorage (no contaminar el historial)
+            const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+            if (historial.length > 0 && historial[historial.length - 1].esImagen && historial[historial.length - 1].tipo === 'usuario') {
+                historial.pop();
+                localStorage.setItem('yunus_historial', JSON.stringify(historial));
+            }
+            // Mostrar error sin guardarlo en localStorage
+            renderMensaje('Error al subir imagen. Intenta de nuevo. 📷', 'yunus');
+        }
+    }
+
+    // ─────────────────────────────────────────
+    // ENVÍO DE TEXTO
+    // ─────────────────────────────────────────
+    async function enviar() {
+        if (enModoRevision) return;
+        const input = document.getElementById('inputMsg');
+        const mensaje = input.value.trim();
+        if (!mensaje) return;
+        input.value = '';
+
+        // ── CLAVE: solo renderizar, NO guardar en localStorage todavía ──
+        renderMensaje(mensaje, 'usuario');
+        mostrarCargando(false);
+
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensaje, celular })
+            });
+            const data = await res.json();
+            ocultarCargando();
+
+            if (data.respuesta) {
+                // ── ÉXITO: ahora sí guardar ambos mensajes en localStorage ──
+                guardarHistorial(mensaje, 'usuario');
+                agregarMensaje(data.respuesta, 'yunus');
+            }
+
+            if (data.etapa === 'listo') activarModoRevision();
+
+        } catch {
+            ocultarCargando();
+            // ── ERROR: mostrar mensaje pero NO guardarlo, ni el del usuario ──
+            // El usuario puede volver a escribir su mensaje sin que queden duplicados
+            renderMensaje('Sin conexión. Por favor intenta de nuevo. 🔄', 'yunus');
+        }
+    }
+
+    // ─────────────────────────────────────────
+    // INIT
+    // ─────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', () => {
+        const params     = new URLSearchParams(window.location.search);
+        const modoChat   = params.get('modo') === 'chat';
+        const prefillMsg = params.get('msg');
+        const celularGuardado = localStorage.getItem('yunus_celular');
+
+        if (celularGuardado) {
+            celular = celularGuardado;
+            if (modoChat) {
+                mostrarChat().then(() => {
+                    if (prefillMsg && !enModoRevision) {
+                        document.getElementById('inputMsg').value = prefillMsg;
+                        enviar();
+                        window.history.replaceState({}, document.title, window.location.pathname + '?modo=chat');
+                    }
+                });
+            } else {
+                window.location.href = 'marketplace.html';
+            }
+        }
+    });
 </script>
 
 </body>
