@@ -6,7 +6,7 @@
 <title>Yunus — Financia tu Experiencia</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -45,7 +45,6 @@ body::after {
 }
 
 /* TYPOGRAPHY */
-.display { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.02em; line-height: 0.92; }
 .heading { font-family: 'Syne', sans-serif; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
 .mono { font-family: 'DM Mono', monospace; letter-spacing: 0.04em; }
 
@@ -141,19 +140,20 @@ body::after {
 }
 
 .yunus-hero-headline {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(52px, 8vw, 110px);
-  line-height: 0.93;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(36px, 7vw, 76px);
+  line-height: 1.1;
   color: var(--paper);
-  letter-spacing: 0.01em;
-  margin-bottom: 28px;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
   max-width: 900px;
 }
 .yunus-hero-headline em {
   color: transparent;
-  -webkit-text-stroke: 2px var(--paper);
+  -webkit-text-stroke: 1.5px var(--paper);
   font-style: normal;
-  opacity: 0.3;
+  opacity: 0.5;
 }
 .yunus-hero-headline .accent { color: var(--volt); }
 
@@ -167,7 +167,7 @@ body::after {
 }
 .yunus-hero-sub strong { color: var(--paper); font-weight: 500; }
 
-/* CAROUSEL (Now seamlessly inside Hero) */
+/* CAROUSEL */
 @keyframes cscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 #evTrack:hover { animation-play-state: paused; }
 .carousel-wrap {
@@ -203,97 +203,19 @@ body::after {
 }
 .btn-hero:hover { opacity: 0.88; transform: translateY(-1px); }
 
-/* How it works — mini, inside hero area */
-.mini-steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  border: 1px solid var(--border);
-  max-width: 900px;
-  width: 100%;
-  margin: 0 auto;
-  text-align: left;
-}
-.mini-step {
-  padding: 24px 22px;
-  border-right: 1px solid var(--border);
-  transition: background 0.3s;
-}
-.mini-step:last-child { border-right: none; }
-.mini-step:hover { background: rgba(212,245,60,0.04); }
-.mini-step-num {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; color: var(--volt);
-  letter-spacing: 0.16em; margin-bottom: 10px; display: block;
-}
-.mini-step-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700; font-size: 13px;
-  color: var(--paper); margin-bottom: 6px;
-  line-height: 1.3;
-}
-.mini-step-body { font-size: 11px; color: var(--muted); line-height: 1.65; }
-
 /* SECTION DIVIDER */
 .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
-
-/* SECURITY SECTION */
-.security-wrap {
-  padding: 120px 32px;
-  max-width: 1280px; margin: 0 auto;
-}
-.security-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
-}
-.security-copy h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(56px, 6vw, 96px); line-height: 0.92;
-  color: var(--paper); margin-bottom: 24px;
-}
-.security-copy h2 em {
-  color: transparent; -webkit-text-stroke: 2px rgba(242,239,232,0.3);
-  font-style: normal;
-}
-.security-copy p { font-size: 15px; color: var(--muted); line-height: 1.75; margin-bottom: 48px; }
-.steps-list { display: flex; flex-direction: column; gap: 0; }
-.step-item {
-  display: flex; gap: 24px; padding: 24px 0;
-  border-bottom: 1px solid var(--border);
-}
-.step-item:first-child { border-top: 1px solid var(--border); }
-.step-n {
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  color: var(--volt); width: 24px; flex-shrink: 0; padding-top: 2px;
-}
-.step-content h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--paper); margin-bottom: 6px; }
-.step-content p { font-size: 13px; color: var(--muted); line-height: 1.65; }
-
-.stat-block { display: flex; flex-direction: column; gap: 24px; }
-.big-stat {
-  border: 1px solid var(--border); padding: 48px;
-  position: relative; overflow: hidden;
-}
-.big-stat::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: var(--volt);
-}
-.big-num {
-  font-family: 'Bebas Neue', sans-serif; font-size: 120px;
-  line-height: 1; color: var(--volt); display: block; margin-bottom: 12px;
-}
-.big-stat-label { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; color: var(--paper); margin-bottom: 8px; }
-.big-stat-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
-.mono-note { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.08em; margin-top: 16px; }
-.info-block { border: 1px solid var(--border); padding: 28px 32px; }
-.info-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
-.info-text { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
 /* FAQ */
 .faq-wrap { padding: 120px 32px; border-top: 1px solid var(--border); }
 .faq-inner { max-width: 1280px; margin: 0 auto; }
 .faq-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; }
-.faq-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 5vw, 80px); line-height: 0.92; color: var(--paper); }
-.faq-title em { color: transparent; -webkit-text-stroke: 2px rgba(242,239,232,0.3); font-style: normal; }
+.faq-title { 
+  font-family: 'Syne', sans-serif; font-weight: 800; 
+  font-size: clamp(32px, 6vw, 56px); line-height: 1.1; 
+  color: var(--paper); letter-spacing: -0.02em; 
+}
+.faq-title em { color: transparent; -webkit-text-stroke: 1.5px rgba(242,239,232,0.5); font-style: normal; }
 .faq-list { border-top: 1px solid var(--border); }
 .faq-item { border-bottom: 1px solid var(--border); }
 .faq-q {
@@ -317,9 +239,9 @@ body::after {
 }
 .contact-inner { max-width: 600px; margin: 0 auto; }
 .contact-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(36px, 5vw, 56px); line-height: 0.95;
-  color: var(--paper); margin-bottom: 24px;
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: clamp(28px, 6vw, 48px); line-height: 1.1;
+  color: var(--paper); margin-bottom: 20px; letter-spacing: -0.02em;
 }
 .contact-body { font-size: 15px; color: var(--muted); line-height: 1.75; margin-bottom: 40px; }
 .contact-email {
@@ -463,17 +385,13 @@ body::after {
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
-  .security-grid, .faq-grid { grid-template-columns: 1fr; gap: 48px; }
-  .mini-steps { grid-template-columns: 1fr 1fr; }
-  .mini-step { border-right: 1px solid var(--border); }
-  .mini-step:nth-child(2n) { border-right: none; }
+  .faq-grid { grid-template-columns: 1fr; gap: 48px; }
 }
 @media (max-width: 600px) {
-  .mini-steps { grid-template-columns: 1fr; }
-  .mini-step { border-right: none; border-bottom: 1px solid var(--border); }
-  .security-wrap, .faq-wrap, .contact-wrap { padding: 80px 20px; }
+  .faq-wrap, .contact-wrap { padding: 60px 20px; }
   .yunus-hero { padding: 60px 20px 40px; }
-  .yunus-stat-pill { font-size: 9px; }
+  .contact-title { font-size: 32px; margin-bottom: 12px; }
+  .contact-body { font-size: 14px; margin-bottom: 32px; }
 }
 </style>
 </head>
@@ -525,56 +443,58 @@ body::after {
 
 </section>
 
-<section id="seguridad">
-<div class="security-wrap">
-  <div class="security-grid">
-    <div class="reveal">
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,6vw,88px);line-height:0.92;color:var(--paper);margin-bottom:24px;">
-        ¿Y si no puedes<br><span style="color:transparent;-webkit-text-stroke:2px rgba(242,239,232,0.25);">seguir pagando?</span>
-      </h2>
-      <p style="font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:48px;">No te dejamos colgado. Gestionamos la reventa del boleto antes del evento y recuperas lo que ya pagaste.</p>
-      <div class="steps-list">
-        <div class="step-item">
-          <span class="step-n">01</span>
-          <div class="step-content">
-            <h4>Avisas a Yunus</h4>
-            <p>Seleccionas "Revender" en el boleto de tu bóveda que desees listar.</p>
-          </div>
-        </div>
-        <div class="step-item">
-          <span class="step-n">02</span>
-          <div class="step-content">
-            <h4>Yunus publica el boleto</h4>
-            <p>Lo listamos en nuestro Marketplace cerrado a precio de mercado, antes de que llegue la fecha del evento.</p>
-          </div>
-        </div>
-        <div class="step-item">
-          <span class="step-n">03</span>
-          <div class="step-content">
-            <h4>Se vende y se liquida tu deuda</h4>
-            <p>Con lo obtenido se cubre lo que aún debías más un 6% de comisión por el servicio de reventa.</p>
-          </div>
-        </div>
-        <div class="step-item">
-          <span class="step-n">04</span>
-          <div class="step-content">
-            <h4>Lo que sobre es tuyo</h4>
-            <p>El resto va directo a tu cuenta. La meta es que recuperes total o parcialmente lo que ya habías pagado.</p>
-          </div>
-        </div>
+<section id="seguridad" style="padding: 80px 32px; text-align: center; max-width: 760px; margin: 0 auto;">
+  <div class="reveal">
+    <h2 style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(32px,5vw,48px);color:var(--paper);margin-bottom:20px;letter-spacing:-0.02em;">
+      ¿Y si no puedes <span style="color:var(--volt);">seguir pagando?</span>
+    </h2>
+    <p style="font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:24px;">
+      No te dejamos colgado. Si tus planes cambian o no puedes liquidar, Yunus revende tu boleto en nuestro mercado cerrado a precio justo antes del evento. Con la venta, cubrimos tu saldo pendiente más una <strong>comisión del 6%</strong> por el servicio. El remanente regresa directo a tu cuenta. Cero deudas y sin llamadas de cobranza.
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<div class="faq-wrap">
+  <div class="faq-inner">
+    <div class="faq-grid">
+      <div class="reveal">
+        <h2 class="faq-title">Lo que necesitas<br><em>saber.</em></h2>
       </div>
-    </div>
-    <div class="reveal d1 stat-block">
-      <div class="big-stat">
-        <span class="big-num">6%</span>
-        <div class="big-stat-label">Comisión de reventa — y nada más.</div>
-        <div class="big-stat-body">Si Yunus tiene que revender tu boleto, solo cobramos ese 6% por el servicio. Sin intereses extra, sin penalizaciones, sin llamadas de cobranza.</div>
-        <div class="mono-note">CAT del crédito: 36% anual · 3% mensual</div>
+      <div class="faq-list reveal d1">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)">
+            <span class="faq-q-text">¿Cómo saben si puedo pagar el boleto?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Al registrarte, Yunus hace una verificación rápida para saber si el plan de pagos es viable — sin consultar buró. Si aplicas, ves el plan directo. Si no, te mostramos opciones que sí están a tu alcance.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)">
+            <span class="faq-q-text">¿Cuánto tengo que pagar para apartar el boleto?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">El 15% del valor del boleto, pagadero vía SPEI o efectivo en Oxxo. Con ese pago, el boleto queda en tu Bóveda. El resto lo vas pagando en quincenas.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)">
+            <span class="faq-q-text">¿Cuánto me cobra Yunus por el servicio?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">El crédito tiene un CAT del 36% anual (3% mensual), ya incluido en el plan de pagos. No hay cobros sorpresa. Si necesitas reventa, Yunus cobra adicionalmente un 6% de comisión sobre esa operación.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)">
+            <span class="faq-q-text">¿Qué pasa si no puedo terminar de pagar?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Seleccionas "Revender" en el boleto de tu bóveda que desees listar y ponemos el boleto en venta antes del evento. Con lo que se obtenga se cubre tu deuda pendiente más el 6% de comisión, y el resto es para ti.</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-</section>
 
 <hr class="divider">
 
@@ -590,7 +510,7 @@ body::after {
   <div class="footer-inner">
     <div>
       <img src="darklogo.png" alt="Yunus" style="height:120px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoFooter').style.display='block'">
-      <span id="logoFooter" style="display:none;font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--paper);">YUNUS</span>
+      <span id="logoFooter" style="display:none;font-family:'Syne',sans-serif;font-weight:800;font-size:24px;color:var(--paper);">YUNUS</span>
     </div>
     <div class="footer-copy">Ampliando límites físicos · Paso del Norte Labs · Ciudad Juárez, México</div>
     <div class="footer-links">
@@ -614,7 +534,7 @@ body::after {
 
 <div id="card1" class="onboarding-card active">
   <div class="modal-body card-scroll">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--paper);margin-bottom:24px;letter-spacing:.04em;">Únete a la Waitlist</div>
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--paper);margin-bottom:24px;letter-spacing:-0.02em;">Únete a la Waitlist</div>
     <form id="form1">
       <input type="hidden" name="Paso" value="Registro">
       <div class="form-group"><label class="form-label">Nombre completo</label><input type="text" name="Nombre_completo" required class="form-input"></div>
@@ -638,7 +558,7 @@ body::after {
 
 <div id="card2" class="onboarding-card">
   <div class="modal-body card-scroll">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--paper);margin-bottom:24px;letter-spacing:.04em;">Tu perfil financiero</div>
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--paper);margin-bottom:24px;letter-spacing:-0.02em;">Tu perfil financiero</div>
     <form id="form2">
       <input type="hidden" name="Paso" value="Registro + Perfil">
       <div class="form-group"><label class="form-label">Ingreso mensual neto (MXN)</label><input type="number" name="Ingreso_mensual" min="0" step="100" required class="form-input"></div>
@@ -666,7 +586,7 @@ body::after {
     <div style="width:64px;height:64px;background:var(--volt);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--paper);letter-spacing:.04em;margin-bottom:12px;">¡Ya estás en la lista!</div>
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:32px;color:var(--paper);letter-spacing:-0.02em;margin-bottom:12px;">¡Ya estás en la lista!</div>
     <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:300px;margin-bottom:32px;">Te avisaremos en cuanto tu acceso esté desbloqueado.</p>
     <button class="btn-primary" style="width:100%;padding:14px;font-size:12px;" onclick="closeOnboardingModal()">Entendido</button>
   </div>
