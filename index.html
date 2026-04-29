@@ -161,37 +161,11 @@ body::after {
   font-size: 16px;
   color: var(--muted);
   line-height: 1.75;
-  max-width: 580px;
-  margin: 0 auto 40px;
+  max-width: 600px;
+  margin: 0 auto 32px;
   font-weight: 300;
 }
 .yunus-hero-sub strong { color: var(--paper); font-weight: 500; }
-
-/* Stats pills */
-.yunus-stats {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 40px;
-}
-.yunus-stat-pill {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink);
-  background: var(--volt);
-  padding: 7px 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.yunus-stat-pill.ghost {
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--border);
-}
 
 /* CAROUSEL (Now seamlessly inside Hero) */
 @keyframes cscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
@@ -218,12 +192,6 @@ body::after {
 }
 
 /* CTA hero */
-.yunus-cta-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 60px;
-}
 .btn-hero {
   font-family: 'DM Mono', monospace;
   font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
@@ -530,34 +498,29 @@ body::after {
     <img src="iaicon.png" alt="Yunus IA" class="yunus-icon" onerror="this.style.opacity='0'">
   </div>
 
-    <h1 class="yunus-hero-headline hero-anim-2">
+  <h1 class="yunus-hero-headline hero-anim-2">
     Hola, soy Yunus&nbsp;👋<br>
     dime a qué evento <span class="accent">quieres ir</span><br>
     y te <em>financio</em> el boleto.
   </h1>
 
-  <!-- Subtext -->
-
   <p class="yunus-hero-sub hero-anim-3">
-    Sin tarjeta. Sin buró. <strong>Solo 15% de enganche</strong> y pagas el resto en quincenas cómodas.
-    Casi <strong>100% de aprobación</strong> — porque el boleto es el colateral.
+    Sé lo frustrante que es quedarte fuera por falta de liquidez hoy. Conmigo no necesitas tarjeta ni buró. Asegura tu lugar con <strong>solo 15% de enganche</strong> y paga el resto en quincenas cómodas. Tienes casi <strong>100% de aprobación</strong> — porque tu boleto es el colateral.
   </p>
 
-  <div class="yunus-stats hero-anim-4">
-    <div class="yunus-stat-pill">0 consultas al buró</div>
-    <div class="yunus-stat-pill ghost">36% CAT anual</div>
-  </div>
-
-  <div class="carousel-wrap hero-anim-4">
-    <div class="carousel-fade-l"></div>
-    <div class="carousel-fade-r"></div>
-    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;animation:cscroll 50s linear infinite;will-change:transform;padding:0 28px;"></div>
-  </div>
-
-  <div class="yunus-cta-row hero-anim-5">
+  <div class="hero-anim-4" style="display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 60px;">
     <button class="btn-hero" onclick="openOnboardingModal()">
       Únete a la Waitlist →
     </button>
+    <span style="font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;">
+      Tasa transparente · 36% CAT anual
+    </span>
+  </div>
+
+  <div class="carousel-wrap hero-anim-5">
+    <div class="carousel-fade-l"></div>
+    <div class="carousel-fade-r"></div>
+    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;animation:cscroll 50s linear infinite;will-change:transform;padding:0 28px;"></div>
   </div>
 
   <div class="mini-steps hero-anim-5">
