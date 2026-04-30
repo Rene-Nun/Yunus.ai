@@ -38,7 +38,7 @@ export default async function handler(req, res) {
   // Verificar si ya existe en BD principal
   const existing = await notion.databases.query({
     database_id: DATABASE_ID,
-    filter: { property: "Telefono", title: { equals: telefonoNotion } }
+    filter: { property: "Teléfono", title: { equals: telefonoNotion } }
   });
   // telefonoNotion = "whatsapp:+521XXXXXXXXXX" — formato exacto de la BD
 
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
   await notion.pages.create({
     parent: { database_id: DATABASE_ID },
     properties: {
-      "Telefono": { title: [{ text: { content: telefonoNotion } }] },
+      "Teléfono": { title: [{ text: { content: telefonoNotion } }] },
       "Nombre": { rich_text: [{ text: { content: Nombre_completo } }] },
       "Edad": { number: parseInt(Edad) || 0 },
       "Entidad_federativa": { rich_text: [{ text: { content: Entidad_federativa || "" } }] },
