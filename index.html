@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
@@ -348,6 +349,7 @@ body::after {
   .min-security-card { padding: 24px; }
 }
 </style>
+
 </head>
 
 <body>
@@ -375,7 +377,7 @@ body::after {
     dime a qué evento <span class="accent">quieres ir</span>
     y te financio el boleto.
   </h1>
-  
+
   <div class="carousel-wrap hero-anim-5">
     <div class="carousel-fade-l"></div>
     <div class="carousel-fade-r"></div>
@@ -386,18 +388,30 @@ body::after {
     Sé lo frustrante que es quedarte fuera por falta de liquidez hoy. Conmigo no necesitas tarjeta ni buró. Asegura tu lugar con <strong>solo 15% de enganche</strong> y paga el resto en quincenas cómodas. Tienes casi <strong>100% de aprobación</strong> — porque tu boleto es el colateral.
   </p>
 
-  <div class="hero-anim-4" style="display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 20px;">
-    
-    <input type="tel" placeholder="(Tu numero con WhatsApp)" style="padding: 16px 24px; width: 100%; max-width: 320px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; text-align: center; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--volt)'" onblur="this.style.borderColor='var(--border)'">
+  <!-- ── CTA WAITLIST ── -->
 
-    <button class="btn-hero" disabled style="opacity: 0.5; cursor: not-allowed;">
-      Únete a la Waitlist →
-    </button>
-    
-    <span style="font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;">
-      Tasa transparente · 36% CAT anual
-    </span>
+  <div class="hero-anim-4" style="display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 20px;">
+
+```
+<input id="waitlistInput" type="tel" placeholder="(Tu numero con WhatsApp)" inputmode="numeric" maxlength="10"
+  style="padding: 16px 24px; width: 100%; max-width: 320px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; text-align: center; transition: border-color 0.2s;"
+  onfocus="this.style.borderColor='var(--volt)'"
+  onblur="this.style.borderColor='var(--border)'"
+  oninput="toggleWaitlistBtn()">
+
+<button id="waitlistBtn" class="btn-hero" onclick="unirseWaitlist()" disabled style="opacity: 0.5; cursor: not-allowed;">
+  Únete a la Waitlist →
+</button>
+
+<div id="waitlistMsg" style="display:none; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:center;"></div>
+
+<span style="font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;">
+  Tasa transparente · 36% CAT anual
+</span>
+```
+
   </div>
+  <!-- ── /CTA WAITLIST ── -->
 
 </section>
 
@@ -497,6 +511,62 @@ function buildEventCard(e) {
   const cards = events.map(buildEventCard).join('');
   track.innerHTML = cards + cards;
 })();
+
+// ── WAITLIST CTA ──
+function toggleWaitlistBtn() {
+  const val = document.getElementById('waitlistInput').value.trim();
+  const btn = document.getElementById('waitlistBtn');
+  const activo = val.replace(/\D/g, '').length === 10;
+  btn.disabled = !activo;
+  btn.style.opacity = activo ? '1' : '0.5';
+  btn.style.cursor = activo ? 'pointer' : 'not-allowed';
+}
+
+async function unirseWaitlist() {
+  const input = document.getElementById('waitlistInput');
+  const btn = document.getElementById('waitlistBtn');
+  const msg = document.getElementById('waitlistMsg');
+  const digits = input.value.replace(/\D/g, '').slice(-10);
+
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+  btn.textContent = 'Enviando...';
+  msg.style.display = 'none';
+
+  try {
+    const res = await fetch('/api/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ celular: '+52' + digits })
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      // Éxito — nuevo o ya estaba
+      input.style.display = 'none';
+      btn.style.display = 'none';
+      msg.style.display = 'block';
+      msg.style.color = 'var(--volt)';
+      msg.textContent = data.nuevo
+        ? '✓ Listo — te avisamos cuando tengas acceso.'
+        : '✓ Ya estás en la lista — te avisamos pronto.';
+    } else {
+      msg.style.display = 'block';
+      msg.style.color = '#ef4444';
+      msg.textContent = data.error || 'Error al registrarse. Intenta de nuevo.';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.textContent = 'Únete a la Waitlist →';
+    }
+  } catch {
+    msg.style.display = 'block';
+    msg.style.color = '#ef4444';
+    msg.textContent = 'Error de conexión. Intenta de nuevo.';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.textContent = 'Únete a la Waitlist →';
+  }
+}
 
 // ── LEGAL TEXTS ──
 const legalTexts = {
