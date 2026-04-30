@@ -560,7 +560,6 @@ async function validarCodigo() {
       return;
     }
 
-    // Código válido — guardamos el celular de la waitlist si existe
     celularDesdeWaitlist = data.celular || '';
     if (celularDesdeWaitlist) {
       document.getElementById('r_celular').value = celularDesdeWaitlist.replace('+52', '');
@@ -576,7 +575,6 @@ async function validarCodigo() {
   }
 }
 
-// Enter en el campo de código
 document.getElementById('codigoInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') validarCodigo();
 });
@@ -584,7 +582,6 @@ document.getElementById('codigoInput').addEventListener('keydown', e => {
 // ── REGISTRO ──
 function avanzarRegistro() {
   if (regStep === 1) {
-    // Validar Card 1
     const nombre = document.getElementById('r_nombre').value.trim();
     const celular = document.getElementById('r_celular').value.trim();
     const edad = document.getElementById('r_edad').value.trim();
@@ -592,10 +589,9 @@ function avanzarRegistro() {
     const cp = document.getElementById('r_cp').value.trim();
 
     if (!nombre || !celular || celular.length !== 10 || !edad || !entidad || cp.length !== 5) {
-      return; // Los campos HTML5 muestran el error
+      return;
     }
 
-    // Pasar a Card 2
     document.getElementById('regCard1').classList.remove('active');
     document.getElementById('regCard2').classList.add('active');
     document.getElementById('stepLabel').textContent = 'Paso 2 de 2';
@@ -673,7 +669,6 @@ async function submitRegistro() {
       return;
     }
 
-    // Guardar celular y redirigir
     localStorage.setItem('yunus_celular', celularFull);
     localStorage.setItem('yunus_historial', JSON.stringify([]));
     btn.disabled = false;
