@@ -563,6 +563,51 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* ═══════════════════════════════════════
+           MODALES LEGALES
+        ═══════════════════════════════════════ */
+        .modal-bg {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px); z-index: 200; display: none;
+            align-items: center; justify-content: center; padding: 24px;
+        }
+        .modal-bg.open { display: flex; }
+        .modal-panel {
+            background: #111; border: 1px solid var(--border);
+            width: 100%; max-width: 480px; max-height: 90vh;
+            overflow-y: auto; position: relative;
+        }
+        .modal-panel::-webkit-scrollbar { width: 4px; }
+        .modal-panel::-webkit-scrollbar-thumb { background: var(--border); }
+        .modal-header {
+            padding: 24px 28px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; background: #111; z-index: 1;
+        }
+        .modal-title {
+            font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: 0.04em;
+            font-size: 24px; color: var(--paper);
+        }
+        .modal-close {
+            background: none; border: none; cursor: pointer;
+            color: var(--muted); font-size: 20px; line-height: 1;
+            transition: color 0.2s; padding: 4px;
+        }
+        .modal-close:hover { color: var(--paper); }
+        .modal-body { padding: 28px; }
+        .modal-footer {
+            padding: 16px 28px; border-top: 1px solid var(--border);
+            position: sticky; bottom: 0; background: #111;
+        }
+        .legal-panel { max-width: 680px; max-height: 85vh; }
+        .legal-content { padding: 28px; font-size: 13px; color: var(--muted); line-height: 1.75; }
+        .legal-content h2 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--paper); margin: 24px 0 12px; letter-spacing: 0.04em; }
+        .legal-content h3 { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--paper); margin: 20px 0 8px; }
+        .legal-content p { margin-bottom: 12px; }
+        .legal-content ul { padding-left: 20px; margin-bottom: 12px; }
+        .legal-content ul li { margin-bottom: 6px; }
+        .legal-content strong { color: var(--paper); font-weight: 500; }
     </style>
 </head>
 <body>
@@ -571,11 +616,6 @@
 
 <div id="app">
 
-    <!-- ══════════════════════════════════════
-         NUEVAS PANTALLAS DE ACCESO
-    ══════════════════════════════════════ -->
-
-    <!-- SCREEN: CÓDIGO -->
     <div id="screenCodigo" class="access-screen active">
         <div class="codigo-inner">
             <img src="darklogo.png" alt="Yunus" class="codigo-logo" onerror="this.src='darklogo.jpeg'">
@@ -595,7 +635,6 @@
         </div>
     </div>
 
-    <!-- SCREEN: LOGIN EXISTENTE -->
     <div id="screenLogin" class="access-screen">
         <div class="login-new-inner">
             <button class="back-btn" onclick="showAccessScreen('screenCodigo')">← Volver</button>
@@ -610,14 +649,12 @@
         </div>
     </div>
 
-    <!-- SCREEN: REGISTRO -->
     <div id="screenRegistro" class="access-screen" style="align-items:stretch;justify-content:flex-start;padding:0;">
         <div class="registro-header">
             <img src="darklogo.png" alt="Yunus" onerror="this.style.display='none'">
             <span class="registro-step-label" id="stepLabel">Paso 1 de 2</span>
         </div>
         <div class="registro-body">
-            <!-- Card 1 -->
             <div id="regCard1" class="card-reg active">
                 <div class="reg-title">Regístrate</div>
                 <div class="form-group-r">
@@ -647,7 +684,6 @@
                     <input type="text" id="r_cp" class="form-input-r" placeholder="5 dígitos" maxlength="5" inputmode="numeric">
                 </div>
             </div>
-            <!-- Card 2 -->
             <div id="regCard2" class="card-reg">
                 <div class="reg-title">Tu perfil financiero</div>
                 <div class="form-group-r">
@@ -714,7 +750,7 @@
                 </div>
                 <div class="check-wrap-r">
                     <input type="checkbox" id="r_terms">
-                    <label for="r_terms">He leído y acepto los <span onclick="window.open('index.html#terms','_blank')">Términos y condiciones</span> y la <span onclick="window.open('index.html#privacy','_blank')">Política de privacidad</span>.</label>
+                    <label for="r_terms">He leído y acepto los <span onclick="openLegalModal('terms')">Términos y condiciones</span> y la <span onclick="openLegalModal('privacy')">Política de privacidad</span>.</label>
                 </div>
                 <div id="regError"></div>
             </div>
@@ -724,7 +760,6 @@
         </div>
     </div>
 
-    <!-- SCREEN: BIENVENIDA -->
     <div id="screenBienvenida" class="access-screen">
         <div class="bienvenida-inner">
             <div class="check-icon">
@@ -740,10 +775,6 @@
             <button class="btn-ir" onclick="window.location.href='marketplace.html'">Ir al Marketplace →</button>
         </div>
     </div>
-
-    <!-- ══════════════════════════════════════
-         CÓDIGO ORIGINAL INTACTO
-    ══════════════════════════════════════ -->
 
     <div id="loginBox" style="display:none;">
         <div class="inner">
@@ -797,7 +828,38 @@
 
 </div>
 
+<div id="legalModal" class="modal-bg" style="z-index:300;" onclick="if(event.target===this)closeLegalModal()">
+    <div class="modal-panel legal-panel" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <span class="modal-title" id="legalTitle">Legal</span>
+            <button class="modal-close" onclick="closeLegalModal()">×</button>
+        </div>
+        <div id="legalContent" class="legal-content"></div>
+        <div class="modal-footer">
+            <button style="width:100%;background:var(--volt);color:var(--ink);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;border:none;padding:16px;cursor:pointer;font-weight:500;transition:opacity 0.2s;" onclick="closeLegalModal()" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Cerrar</button>
+        </div>
+    </div>
+</div>
+
 <script>
+/* ═══════════════════════════════════════════
+   LÓGICA MODALES LEGALES
+═══════════════════════════════════════════ */
+const legalTexts = {
+  terms: `<h2>TÉRMINOS Y CONDICIONES – YUNUS</h2><p><strong>Ultima actualizacion:</strong> 20 de abril de 2026</p><h3>1. ACEPTACION</h3><p>Al utilizar yunusia.com, completar el formulario de registro, enviar documentos de identificacion, or realizar cualquier pago, usted acepta de forma expresa e irrevocable estos Terminos y Condiciones en su totalidad.</p><h3>2. NATURALEZA DEL SERVICIO</h3><p>El formulario de registro constituye unicamente una <strong>solicitud de evaluacion financiera</strong>, no una contratacion definitiva ni una reserva de boleto. Yunus se reserva el derecho de admision y podra rechazar cualquier solicitud sin necesidad de justificacion.</p><h3>3. MODELO DE FINANCIAMIENTO</h3><ul><li><strong>Enganche:</strong> 15% del valor total del boleto, pagadero mediante SPEI or efectivo en Oxxo.</li><li><strong>Saldo restante:</strong> El 85% se divide en pagos quincenales hasta la fecha del evento.</li><li><strong>CAT:</strong> 36% anual (3% mensual), incluido en las cuotas. Sin cargos ocultos.</li><li><strong>Sin buro de credito:</strong> Yunus no consulta ni reporta al Buro de Credito.</li></ul><h3>4. TITULARIDAD DE CUENTA Y DEPOSITOS</h3><p>Para mantener las tasas de interes competitivas y evitar comisiones de intermediarios durante esta fase beta, los depositos via SPEI se realizaran a la cuenta bancaria personal del fundador, <strong>Christian Nuñez</strong>. Al realizar el pago, el usuario reconoce y acepta que esta cuenta es el canal oficial de recaudacion de Yunus para la etapa actual del proyecto.</p><h3>5. LA BOVEDA Y LA REPRESENTACION DEL BOLETO</h3><p>Una vez realizado el enganche, el boleto es adquirido por Yunus y resguardado en custodia. El usuario accede a una representacion visual en su Boveda personal. <strong>Esta representacion no es el boleto original</strong> ni constituye un documento de acceso al evento. La transferencia oficial del boleto via Ticketmaster ocurrira unicamente al completar el 100% de los pagos de forma exitosa.</p><h3>6. PROPIEDAD DEL BOLETO</h3><p>Durante la vigencia del plan de pagos, el boleto es propiedad de Yunus. El usuario no adquiere titularidad sobre el boleto hasta haber liquidado la totalidad del credito.</p><h3>7. INCUMPLIMIENTO DE PAGO</h3><p>Se considera incumplimiento cuando el usuario no realiza un pago dentro de los 7 dias naturales posteriores a su fecha de vencimiento. Ante un incumplimiento, Yunus activara la reventa del boleto. El producto de la reventa se aplica en el siguiente orden: (1) saldo insoluto pendiente, (2) comision de reventa del <strong>6%</strong>, (3) remanente al usuario si lo hubiere.</p><p>Si el precio de reventa no cubre el saldo insoluto y la comision, el usuario perdera la totalidad de los pagos realizados sin derecho a reembolso. Si el incumplimiento ocurre cerca de la fecha del evento, Yunus podra vender el boleto al precio necesario para recuperar el mayor porcentaje posible, incluso por debajo del valor original. La decision de precio y momento de venta es discrecional de Yunus.</p><h3>8. CANCELACION DEL EVENTO</h3><p>En caso de cancelacion oficial del evento, Yunus gestionara el reembolso ante Ticketmaster. El monto reembolsado se aplicara primero al saldo insoluto; el remanente se devuelve al usuario. No habra rendimientos sobre pagos realizados en este escenario. Los tiempos de reembolso dependen de Ticketmaster (30–90 dias) y Yunus no es responsable por demoras.</p><h3>9. CANCELACION VOLUNTARIA</h3><p>Si el usuario desea cancelar su plan, debera notificar a Yunus por escrito. Se procedera a la reventa del boleto bajo las mismas condiciones de la seccion 7. No existe reembolso directo sin que el boleto sea previamente revendido.</p><h3>10. VERIFICACION DE IDENTIDAD</h3><p>El usuario acepta proporcionar documentos de identidad validos (INE/IFE vigente). La informacion falsa or documentos alterados son causa de rechazo inmediato y cancelacion sin derecho a reembolso.</p><h3>11. PRIVACIDAD</h3><p>Los datos personales son utilizados exclusivamente para los fines del servicio. Yunus no vende ni comparte informacion personal con terceros, salvo requerimiento de autoridad competente.</p><h3>12. LIMITACION DE RESPONSABILIDAD</h3><p>Yunus no es responsable por cambios en el evento, fallas de plataformas de terceros, ni diferencias entre el precio original y el precio de reventa. La responsabilidad maxima de Yunus se limita al monto total de pagos recibidos del usuario.</p><h3>13. LEY APLICABLE</h3><p>Estos terminos se rigen por las leyes de los Estados Unidos Mexicanos. Cualquier controversia sera resuelta ante los tribunales competentes de Ciudad Juarez, Chihuahua, Mexico.</p><h3>14. CONTACTO</h3><p>christianturista@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juarez, Chihuahua, Mexico</p>`,
+  privacy: `<h2>POLITICA DE PRIVACIDAD – YUNUS</h2><p><strong>Ultima actualizacion:</strong> 19 de abril de 2026</p><h3>1. DATOS QUE RECOPILAMOS</h3><ul><li><strong>Identificacion:</strong> Nombre, numero de celular, y fotografias de identificacion oficial (INE/IFE).</li><li><strong>Documentos opcionales:</strong> Comprobante de ingresos (nomina, estado de cuenta u equivalente).</li><li><strong>Datos de uso:</strong> Historial de conversacion con el agente Yunus, etapa del proceso de solicitud.</li></ul><h3>2. FINALIDAD</h3><p>Los datos recopilados se utilizan exclusivamente para: verificacion de identidad, evaluacion interna de riesgo crediticio, gestion del plan de pagos, y comunicacion relacionada con el servicio. <strong>NO vendemos ni compartimos datos personales con terceros, buros de credito, ni anunciantes.</strong></p><h3>3. ALMACENAMIENTO Y SEGURIDAD</h3><p>La informacion se almacena en bases de datos internas (Notion) accesibles unicamente por el equipo operador de Paso del Norte Labs. Las imagenes de documentos se almacenan en Cloudinary bajo acceso restringido. Yunus no comparte credenciales de acceso a estos sistemas con terceros.</p><h3>4. RETENCION DE DATOS</h3><p>Los datos del usuario se conservan durante la vigencia del plan de pagos y por un periodo adicional de 12 meses tras la conclusion del mismo, con fines de auditoria interna.</p><h3>5. DERECHOS ARCO</h3><p>Conforme a la LFPDPPP, usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento de sus datos personales. Contactenos en christianturista@proton.me. Responderemos en un plazo maximo de 20 dias habiles.</p><h3>6. COOKIES Y DATOS DE NAVEGACION</h3><p>Yunus puede utilizar almacenamiento local del navegador (localStorage) para mantener la sesion activa del usuario. No se utilizan cookies de rastreo ni herramientas de publicidad.</p><h3>7. CONTACTO</h3><p>christianturista@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juarez, Chihuahua, Mexico.</p>`
+};
+
+function openLegalModal(type) {
+  document.getElementById('legalTitle').innerText = type === 'terms' ? 'Términos y Condiciones' : 'Política de Privacidad';
+  document.getElementById('legalContent').innerHTML = legalTexts[type];
+  document.getElementById('legalModal').classList.add('open');
+}
+
+function closeLegalModal() {
+  document.getElementById('legalModal').classList.remove('open');
+}
+
 /* ═══════════════════════════════════════════
    LÓGICA NUEVAS PANTALLAS DE ACCESO
 ═══════════════════════════════════════════ */
