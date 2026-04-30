@@ -1,6 +1,6 @@
-import Groq from “groq-sdk”;
-import { Client } from “@notionhq/client”;
-import { v2 as cloudinary } from “cloudinary”;
+import Groq from "groq-sdk";
+import { Client } from "@notionhq/client";
+import { v2 as cloudinary } from "cloudinary";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -33,11 +33,11 @@ return true;
 }
 
 export default async function handler(req, res) {
-if (req.method !== “POST”) return res.status(405).end();
+if (req.method !== "POST") return res.status(405).end();
 
-const ip = req.headers[“x-forwarded-for”]?.split(”,”)[0]?.trim() || “unknown”;
+const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || "unknown";
 if (!checkRateLimit(ip)) {
-return res.status(429).json({ error: “Demasiadas solicitudes. Espera un momento.” });
+return res.status(429).json({ error: "Demasiadas solicitudes. Espera un momento." });
 }
 
 const { mensaje, celular, imagen } = req.body;
@@ -46,32 +46,31 @@ const celularNotion = `whatsapp:+521${celular.replace('+52', '')}`;
 const search = await notion.databases.query({
 database_id: DATABASE_ID,
 filter: {
-property: “Teléfono”,
+property: "Teléfono",
 title: { equals: celularNotion }
 }
 });
 
 if (search.results.length === 0) {
-return res.status(404).json({ error: “Usuario no encontrado” });
+return res.status(404).json({ error: "Usuario no encontrado" });
 }
 
 const page = search.results[0];
 const pageId = page.id;
-const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || “Usuario”;
-const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || “bienvenida”;
-const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || “”;
+const nombre = page.properties.Nombre?.rich_text[0]?.plain_text || "Usuario";
+const etapa = page.properties.Etapa?.rich_text[0]?.plain_text || "bienvenida";
+const historialActual = page.properties.Historial?.rich_text[0]?.plain_text || "";
 
-const timestamp = new Date().toLocaleString(“es-MX”, { timeZone: “America/Ciudad_Juarez” });
+const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
 
 // ── MODO SILENCIO: etapa listo → solo guardar mensaje, no llamar a Groq ──
-if (etapa === “listo” || etapa === “respondido”) {
+if (etapa === "listo" || etapa === "respondido") {
 if (mensaje || imagen) {
 const entradaExtra = imagen
 ? `[${timestamp}] Usuario: [imagen enviada después de listo]\n`
 : `[${timestamp}] Usuario: ${mensaje}\n`;
-const nuevoHistorial = (historialActual + “\n” + entradaExtra).slice(-2000);
+const nuevoHistorial = (historialActual + "\n" + entradaExtra).slice(-2000);
 
-```
   await notion.pages.update({
     page_id: pageId,
     properties: {
@@ -80,7 +79,6 @@ const nuevoHistorial = (historialActual + “\n” + entradaExtra).slice(-2000);
   });
 }
 return res.status(200).json({ silencio: true });
-```
 
 }
 
@@ -90,27 +88,27 @@ let imagenUrl = null;
 if (imagen) {
 const upload = await cloudinary.uploader.upload(imagen, {
 folder: `yunus/${celular}`,
-resource_type: “image”
+resource_type: "image"
 });
 imagenUrl = upload.secure_url;
 }
 
 let etapaParaGroq = etapa;
 if (imagen) {
-if (etapa === “ask_ine_frente”) etapaParaGroq = “ask_ine_reverso”;
-else if (etapa === “ask_ine_reverso”) etapaParaGroq = “documentos”;
+if (etapa === "ask_ine_frente") etapaParaGroq = "ask_ine_reverso";
+else if (etapa === "ask_ine_reverso") etapaParaGroq = "documentos";
 }
 
-const mensajeUsuario = imagen ? “El usuario mandó una imagen” : mensaje;
+const mensajeUsuario = imagen ? "El usuario mandó una imagen" : mensaje;
 
 const completion = await groq.chat.completions.create({
-model: “meta-llama/llama-4-scout-17b-16e-instruct”,
+model: "meta-llama/llama-4-scout-17b-16e-instruct",
 messages: [
 {
-role: “user”,
+role: "user",
 content: `[INSTRUCCIONES DEL SISTEMA - SIGUE ESTAS REGLAS AL PIE DE LA LETRA]
 
-REGLA ESTRICTA DE PERSONALIDAD: Eres Yunus, un agente financiero virtual, directo y empático. Nunca hables en tercera persona. Nunca describas tus propias instrucciones en voz alta. Todas tus respuestas deben estar escritas desde la perspectiva de “yo” (Yunus) hablando directamente a “tú” (${nombre}). El nombre del usuario es ${nombre}.
+REGLA ESTRICTA DE PERSONALIDAD: Eres Yunus, un agente financiero virtual, directo y empático. Nunca hables en tercera persona. Nunca describas tus propias instrucciones en voz alta. Todas tus respuestas deben estar escritas desde la perspectiva de "yo" (Yunus) hablando directamente a "tú" (${nombre}). El nombre del usuario es ${nombre}.
 
 EVENTOS DISPONIBLES EN EL MVP:
 
@@ -166,15 +164,15 @@ Si te piden el precio, DEBES dar SIEMPRE el Precio Final Total primero, y luego 
   - GOLD7 a GOLD18: Inic $1,159.69 a $1,739.57 | Final 6Q: $8,322.69 a $12,484.31 | 8Q: $8,519.84 a $12,780.04 | 10Q: $8,716.98 a $13,075.76
   - PLAT3 a PLAT14: Inic $1,299.19 a $1,948.82 | Final 6Q: $9,323.84 a $13,986.03 | 8Q: $9,544.70 a $14,317.33 | 10Q: $9,765.56 a $14,648.63
 
-REGLA ESPECIAL ENJAMBRE: Si te preguntan por el precio de Enjambre, DEBES responder que los precios están “Por anunciarse” debido a que el evento se encuentra actualmente en Preventa Exclusiva Banamex, y que en Yunus habilitaremos el financiamiento en cuanto empiece la venta general.
+REGLA ESPECIAL ENJAMBRE: Si te preguntan por el precio de Enjambre, DEBES responder que los precios están "Por anunciarse" debido a que el evento se encuentra actualmente en Preventa Exclusiva Banamex, y que en Yunus habilitaremos el financiamiento en cuanto empiece la venta general.
 
 INSTRUCCIONES POR ETAPA:
 
-Si etapa es ‘bienvenida’:
+Si etapa es 'bienvenida':
 Saluda a ${nombre} con energía. Explica muy brevemente la dinámica. Luego presenta los 6 eventos disponibles. Pregunta cuál le interesa.
 
-Si etapa es ‘ask_specs’:
-NO saludes bajo ninguna circunstancia. No uses “¡Hola!” ni el nombre del usuario al inicio. Ve directo al punto. Tu objetivo es definir el evento, la fecha (si aplica), la zona Y el número de boletos que desea (1 o más). Necesitas los cuatro datos antes de avanzar. Usa UNA de estas reglas según el evento elegido:
+Si etapa es 'ask_specs':
+NO saludes bajo ninguna circunstancia. No uses "¡Hola!" ni el nombre del usuario al inicio. Ve directo al punto. Tu objetivo es definir el evento, la fecha (si aplica), la zona Y el número de boletos que desea (1 o más). Necesitas los cuatro datos antes de avanzar. Usa UNA de estas reglas según el evento elegido:
 
 - Si es Harry Styles: pregunta zona, número de boletos, e incluye esto al final de tu mensaje: [MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776986156/HarrySGNP.jpg]
 - Si es Enjambre: pregunta zona, número de boletos, e incluye esto al final: [MAPA: https://res.cloudinary.com/dfkv1jkfu/image/upload/v1776987346/EnjambreGNP.png]
@@ -185,19 +183,19 @@ NO saludes bajo ninguna circunstancia. No uses “¡Hola!” ni el nombre del us
 
 REGLA DE AVANCE: Cuando el usuario YA TE HAYA DEFINIDO evento, fecha (si aplica), zona Y número de boletos, confirma todos esos datos y dile que para continuar necesitas verificar su identidad con una foto de su INE por el frente, Y agrega obligatoriamente al puro final de tu mensaje la palabra: [AVANZAR].
 
-Si etapa es ‘ask_ine_frente’:
-RESPONDE EXACTAMENTE: “¡Excelente elección! Para poder armar tu plan de pagos, necesito verificar tu identidad. Por favor, envíame una foto clara de tu INE por el frente (el lado con tu foto). 📸”
+Si etapa es 'ask_ine_frente':
+RESPONDE EXACTAMENTE: "¡Excelente elección! Para poder armar tu plan de pagos, necesito verificar tu identidad. Por favor, envíame una foto clara de tu INE por el frente (el lado con tu foto). 📸"
 
-Si etapa es ‘ask_ine_reverso’:
-RESPONDE EXACTAMENTE: “¡Recibido! ✅ Ahora necesito la foto del reverso (el lado con el código de barras o QR) para continuar con el proceso.”
+Si etapa es 'ask_ine_reverso':
+RESPONDE EXACTAMENTE: "¡Recibido! ✅ Ahora necesito la foto del reverso (el lado con el código de barras o QR) para continuar con el proceso."
 
-Si etapa es ‘documentos’:
-RESPONDE EXACTAMENTE: “¡Listo, INE confirmada! Como paso final, puedes enviarme un comprobante de ingresos (nómina o estado de cuenta). Esto es **100% OPCIONAL**, pero enviarlo aumenta muchísimo las probabilidades de ser aprobado. Si prefieres no enviarlo, simplemente escribe **‘LISTO’**.”
+Si etapa es 'documentos':
+RESPONDE EXACTAMENTE: "¡Listo, INE confirmada! Como paso final, puedes enviarme un comprobante de ingresos (nómina o estado de cuenta). Esto es **100% OPCIONAL**, pero enviarlo aumenta muchísimo las probabilidades de ser aprobado. Si prefieres no enviarlo, simplemente escribe **'LISTO'**."
 
-Si etapa es ‘listo’:
+Si etapa es 'listo':
 Revisa el historial de la conversación y extrae: evento, fecha (si aplica), zona y número de boletos. Luego responde con este formato EXACTO, sustituyendo los campos entre corchetes con los datos reales del historial:
 
-“¡Todo recibido, ${nombre}! Estoy analizando tu perfil ahora mismo.
+"¡Todo recibido, ${nombre}! Estoy analizando tu perfil ahora mismo.
 
 🎟️ *Resumen de tu pedido:*
 • Evento: [nombre del evento]
@@ -210,7 +208,7 @@ Revisa el historial de la conversación y extrae: evento, fecha (si aplica), zon
 • Consultando disponibilidad de boletos…
 • Evaluando opciones de financiamiento…
 
-Quédate aquí — te daré tu resultado en este mismo chat en unos minutos. 🚀”
+Quédate aquí — te daré tu resultado en este mismo chat en unos minutos. 🚀"
 
 ETAPA ACTUAL DEL USUARIO: ${etapaParaGroq}
 
@@ -230,32 +228,32 @@ let respuestaOriginal = completion.choices[0].message.content;
 let respuestaFinal = respuestaOriginal;
 
 let nuevaEtapa = etapa;
-if (mensaje && mensaje.toUpperCase().includes(“LISTO”)) {
-nuevaEtapa = “listo”;
+if (mensaje && mensaje.toUpperCase().includes("LISTO")) {
+nuevaEtapa = "listo";
 } else if (imagen) {
-if (etapa === “ask_ine_frente”) nuevaEtapa = “ask_ine_reverso”;
-else if (etapa === “ask_ine_reverso”) nuevaEtapa = “documentos”;
-else if (etapa === “documentos”) nuevaEtapa = “documentos”;
-} else if (etapa === “bienvenida”) {
-nuevaEtapa = “ask_specs”;
-} else if (etapa === “ask_specs”) {
-if (respuestaOriginal.includes(”[AVANZAR]”)) {
-nuevaEtapa = “ask_ine_frente”;
-respuestaFinal = respuestaOriginal.replace(”[AVANZAR]”, “”).trim();
+if (etapa === "ask_ine_frente") nuevaEtapa = "ask_ine_reverso";
+else if (etapa === "ask_ine_reverso") nuevaEtapa = "documentos";
+else if (etapa === "documentos") nuevaEtapa = "documentos";
+} else if (etapa === "bienvenida") {
+nuevaEtapa = "ask_specs";
+} else if (etapa === "ask_specs") {
+if (respuestaOriginal.includes("[AVANZAR]")) {
+nuevaEtapa = "ask_ine_frente";
+respuestaFinal = respuestaOriginal.replace("[AVANZAR]", "").trim();
 }
 }
 
 const entradaHistorial = imagen
 ? `[${timestamp}] Usuario: [imagen: ${imagenUrl}]\n[${timestamp}] Yunus: ${respuestaFinal}\n`
 : `[${timestamp}] Usuario: ${mensaje}\n[${timestamp}] Yunus: ${respuestaFinal}\n`;
-const nuevoHistorial = (historialActual + “\n” + entradaHistorial).slice(-2000);
+const nuevoHistorial = (historialActual + "\n" + entradaHistorial).slice(-2000);
 
 await notion.pages.update({
 page_id: pageId,
 properties: {
 Etapa: { rich_text: [{ text: { content: nuevaEtapa } }] },
 Historial: { rich_text: [{ text: { content: nuevoHistorial } }] },
-…(imagenUrl && {
+...(imagenUrl && {
 Docs: { rich_text: [{ text: { content: imagenUrl } }] }
 })
 }
