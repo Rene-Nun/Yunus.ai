@@ -7,7 +7,7 @@
 <title>Yunus — Financia tu Experiencia</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@500;600;700&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -50,67 +50,146 @@ body::after {
 .heading { font-family: 'Syne', sans-serif; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
 .mono { font-family: 'DM Mono', monospace; letter-spacing: 0.04em; }
 
-/* NAV */
-#nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(10,10,10,0.85);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+/* ── YUNUS HERO ── */
+.yunus-hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 32px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
-.nav-inner {
-  max-width: 1280px; margin: 0 auto;
-  padding: 0 32px; height: 72px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.nav-links { display: flex; align-items: center; gap: 32px; }
-.nav-links a {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted); text-decoration: none;
-  transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--paper); }
-.btn-primary {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-  background: var(--volt); color: var(--ink);
-  padding: 10px 20px; border: none; cursor: pointer;
-  transition: opacity 0.2s; font-weight: 500;
-}
-.btn-primary:hover { opacity: 0.85; }
-.btn-ghost {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-  background: transparent; color: var(--paper);
-  padding: 10px 20px; border: 1px solid var(--border); cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-ghost:hover { border-color: var(--paper); }
 
-/* ANNOUNCE BAR */
-.announce {
-  background: var(--volt); color: var(--ink);
-  padding: 10px 24px; text-align: center;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+/* Radial glow behind icon */
+.yunus-hero::before {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(212,245,60,0.07) 0%, transparent 70%);
+  pointer-events: none;
 }
-.announce button {
-  background: none; border: none; cursor: pointer;
-  font-family: inherit; font-size: inherit; letter-spacing: inherit;
-  color: var(--ink); text-decoration: underline; margin-left: 8px;
-  opacity: 0.7; transition: opacity 0.2s;
-}
-.announce button:hover { opacity: 1; }
 
-/* CAROUSEL */
-@keyframes cscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-#evTrack:hover { animation-play-state: paused; }
+/* Floating icon */
+@keyframes float-yunus {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-14px) rotate(1deg); }
+  66%       { transform: translateY(-6px) rotate(-1deg); }
+}
+@keyframes orbit-a {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes orbit-b {
+  from { transform: rotate(180deg); }
+  to   { transform: rotate(540deg); }
+}
+
+.yunus-icon-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 48px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.yunus-icon {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  animation: float-yunus 5s ease-in-out infinite;
+  position: absolute;
+  z-index: 2;
+  filter: drop-shadow(0 0 32px rgba(212,245,60,0.25));
+}
+
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(212,245,60,0.18);
+}
+.orbit-ring-1 {
+  width: 180px; height: 180px;
+  animation: orbit-a 28s linear infinite;
+}
+.orbit-ring-2 {
+  width: 230px; height: 230px;
+  animation: orbit-b 38s linear infinite;
+  border-color: rgba(212,245,60,0.09);
+}
+.orbit-dot {
+  position: absolute;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--volt);
+  top: -3.5px; left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px rgba(212,245,60,0.8);
+}
+.orbit-dot-sm {
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(212,245,60,0.5);
+  bottom: -2px; right: 18px;
+}
+
+/* HERO HEADLINE APLICANDO OSWALD PARA FORMATO NORMAL */
+.yunus-hero-headline {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: clamp(46px, 6vw, 76px);
+  line-height: 1.1;
+  color: var(--paper);
+  letter-spacing: -0.01em;
+  margin-bottom: 28px;
+  max-width: 900px;
+}
+.yunus-hero-headline em {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--paper);
+  font-style: normal;
+  opacity: 0.4;
+}
+.yunus-hero-headline .accent { color: var(--volt); }
+
+.yunus-hero-sub {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 600px;
+  margin: 0 auto 32px;
+  font-weight: 300;
+}
+.yunus-hero-sub strong { color: var(--paper); font-weight: 500; }
+
+/* CAROUSEL (Ahora es una cuadrícula desplazable horizontalmente) */
 .carousel-wrap {
-  overflow: hidden; position: relative;
+  overflow-x: auto;
+  position: relative;
+  width: 100vw;
+  margin: 0 calc(-50vw + 50%);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   padding: 16px 0;
+  margin-bottom: 48px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.carousel-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+/* Efectos de desvanecimiento laterales eliminados */
+/*
 .carousel-fade-l {
   position: absolute; left: 0; top: 0; bottom: 0; width: 80px;
   background: linear-gradient(to right, var(--ink), transparent);
@@ -121,270 +200,72 @@ body::after {
   background: linear-gradient(to left, var(--ink), transparent);
   z-index: 10; pointer-events: none;
 }
+*/
 
-/* HERO */
-.hero {
-  padding: 160px 32px 80px;
-  max-width: 1280px; margin: 0 auto;
-  position: relative;
-}
-.hero-eyebrow {
+/* CTA hero */
+.btn-hero {
   font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--volt); margin-bottom: 24px;
-  display: flex; align-items: center; gap: 12px;
+  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  background: var(--volt); color: var(--ink);
+  padding: 18px 48px; border: none; cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  font-weight: 500;
+  display: inline-flex; align-items: center; gap: 10px;
 }
-.hero-eyebrow::before {
-  content: '';
-  display: block; width: 32px; height: 1px; background: var(--volt);
-}
-.hero-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(96px, 14vw, 200px);
-  line-height: 0.9; letter-spacing: 0.01em;
-  color: var(--paper);
-  margin-bottom: 40px;
-}
-.hero-title em {
-  color: transparent;
-  -webkit-text-stroke: 2px var(--paper);
-  font-style: normal;
-  opacity: 0.35;
-}
-.hero-sub {
-  font-size: 16px; line-height: 1.75;
-  color: var(--muted); max-width: 480px;
-  font-weight: 300; margin-bottom: 48px;
-}
-.hero-sub strong { color: var(--paper); font-weight: 500; }
-.hero-bottom {
-  display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
-}
-.hero-stat {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
-}
-.hero-stat span { color: var(--volt); margin-right: 4px; }
+.btn-hero:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
 
 /* SECTION DIVIDER */
-.divider {
-  border: none; border-top: 1px solid var(--border); margin: 0;
-}
+.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 
-/* HOW IT WORKS */
-.section { padding: 120px 32px; max-width: 1280px; margin: 0 auto; }
-.section-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 64px;
-  display: flex; align-items: center; gap: 16px;
-}
-.section-label::after {
-  content: ''; flex: 1; height: 1px; background: var(--border);
-}
-.steps-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 0; border: 1px solid var(--border);
-}
-.step {
-  padding: 40px 32px; border-right: 1px solid var(--border);
-  position: relative; transition: background 0.3s;
-}
-.step:last-child { border-right: none; }
-.step:hover { background: rgba(242,239,232,0.03); }
-.step-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 80px; line-height: 1;
-  color: transparent; -webkit-text-stroke: 1px var(--border);
-  margin-bottom: 24px; display: block;
-  transition: color 0.3s, -webkit-text-stroke 0.3s;
-}
-.step:hover .step-num {
-  color: var(--volt);
-  -webkit-text-stroke: 1px var(--volt);
-}
-.step-title {
-  font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: 16px; color: var(--paper); margin-bottom: 12px;
-}
-.step-body { font-size: 13px; color: var(--muted); line-height: 1.7; }
-
-/* DEMO SECTION */
-.demo-wrap {
-  padding: 120px 32px; border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.demo-inner {
-  max-width: 1280px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
-}
-.demo-copy h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(56px, 6vw, 96px); line-height: 0.92;
-  color: var(--paper); margin-bottom: 24px;
-}
-.demo-copy h2 em {
-  color: transparent; -webkit-text-stroke: 2px rgba(242,239,232,0.3);
-  font-style: normal;
-}
-.demo-copy p { font-size: 15px; color: var(--muted); line-height: 1.75; margin-bottom: 40px; }
-.check-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
-.check-list li {
-  display: flex; align-items: flex-start; gap: 14px;
-  font-size: 14px; color: var(--muted); line-height: 1.6;
-}
-.check-list li::before {
-  content: '✓'; color: var(--volt); flex-shrink: 0;
-  font-family: 'DM Mono', monospace; font-size: 12px; margin-top: 2px;
-}
-.check-list li strong { color: var(--paper); font-weight: 500; }
-
-/* CHAT WIDGET */
-#demoChat { max-height: 380px; overflow-y: auto; scroll-behavior: smooth; }
-#demoChat::-webkit-scrollbar { width: 4px; }
-#demoChat::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.chat-widget {
-  border: 1px solid var(--border);
-  background: #111; max-width: 420px;
-  overflow: hidden;
-}
-.chat-header {
-  background: #111; border-bottom: 1px solid var(--border);
-  padding: 14px 20px; display: flex; align-items: center; gap: 10px;
-}
-.chat-header-dot {
-  width: 8px; height: 8px; border-radius: 50%; background: var(--volt);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-.chat-header-title {
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper);
-}
-.chat-input-bar {
-  background: #111; border-top: 1px solid var(--border);
-  padding: 10px 14px; display: flex; gap: 8px; align-items: center;
-}
-
-/* SECURITY SECTION */
+/* SECURITY SECTION (OPTIMIZADA AL MÍNIMO) */
 .security-wrap {
   padding: 120px 32px;
-  max-width: 1280px; margin: 0 auto;
-}
-.security-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+  max-width: 760px; /* Reducido para formato central */
+  margin: 0 auto;
+  text-align: center;
 }
 .security-copy h2 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(56px, 6vw, 96px); line-height: 0.92;
+  font-size: clamp(48px, 8vw, 88px);
+  line-height: 0.92;
   color: var(--paper); margin-bottom: 24px;
 }
 .security-copy h2 em {
   color: transparent; -webkit-text-stroke: 2px rgba(242,239,232,0.3);
   font-style: normal;
 }
-.security-copy p { font-size: 15px; color: var(--muted); line-height: 1.75; margin-bottom: 48px; }
-.steps-list { display: flex; flex-direction: column; gap: 0; }
-.step-item {
-  display: flex; gap: 24px; padding: 24px 0;
-  border-bottom: 1px solid var(--border);
-}
-.step-item:first-child { border-top: 1px solid var(--border); }
-.step-n {
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  color: var(--volt); width: 24px; flex-shrink: 0; padding-top: 2px;
-}
-.step-content h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--paper); margin-bottom: 6px; }
-.step-content p { font-size: 13px; color: var(--muted); line-height: 1.65; }
-
-.stat-block { display: flex; flex-direction: column; gap: 24px; }
-.big-stat {
-  border: 1px solid var(--border); padding: 48px;
-  position: relative; overflow: hidden;
-}
-.big-stat::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: var(--volt);
-}
-.big-num {
-  font-family: 'Bebas Neue', sans-serif; font-size: 120px;
-  line-height: 1; color: var(--volt); display: block; margin-bottom: 12px;
-}
-.big-stat-label { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; color: var(--paper); margin-bottom: 8px; }
-.big-stat-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
-.mono-note { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.08em; margin-top: 16px; }
-.info-block { border: 1px solid var(--border); padding: 28px 32px; }
-.info-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
-.info-text { font-size: 13px; color: var(--muted); line-height: 1.65; }
-
-/* FAQ */
-.faq-wrap { padding: 120px 32px; border-top: 1px solid var(--border); }
-.faq-inner { max-width: 1280px; margin: 0 auto; }
-.faq-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; }
-.faq-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 5vw, 80px); line-height: 0.92; color: var(--paper); }
-.faq-title em { color: transparent; -webkit-text-stroke: 2px rgba(242,239,232,0.3); font-style: normal; }
-.faq-list { border-top: 1px solid var(--border); }
-.faq-item { border-bottom: 1px solid var(--border); }
-.faq-q {
-  width: 100%; background: none; border: none; cursor: pointer;
-  padding: 24px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px;
+.min-security-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  padding: 40px;
   text-align: left;
+  margin-top: 32px;
 }
-.faq-q-text { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 15px; color: var(--paper); }
-.faq-icon {
-  font-family: 'DM Mono', monospace; font-size: 18px;
-  color: var(--muted); flex-shrink: 0; transition: transform 0.3s, color 0.3s;
-}
-.faq-item.open .faq-icon { transform: rotate(45deg); color: var(--volt); }
-.faq-a { display: none; padding-bottom: 24px; font-size: 14px; color: var(--muted); line-height: 1.75; }
-.faq-a.open { display: block; }
 
-/* CTA */
-.cta-wrap {
-  background: var(--paper); padding: 160px 32px; text-align: center;
-  position: relative; overflow: hidden;
-}
-.cta-bg-text {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  font-family: 'Bebas Neue', sans-serif; font-size: 28vw;
-  color: transparent; -webkit-text-stroke: 1px rgba(10,10,10,0.06);
-  pointer-events: none; line-height: 1; user-select: none; white-space: nowrap;
-}
-.cta-inner { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-.cta-inner h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(72px, 10vw, 160px); line-height: 0.9;
-  color: var(--ink); margin-bottom: 32px;
-}
-.cta-inner p { font-size: 16px; color: #5C5C5C; line-height: 1.6; margin-bottom: 48px; }
-.btn-dark {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
-  background: var(--ink); color: var(--paper);
-  padding: 16px 40px; border: none; cursor: pointer;
-  transition: opacity 0.2s; display: inline-flex; align-items: center; gap: 12px;
-}
-.btn-dark:hover { opacity: 0.8; }
-
-/* INVESTOR STRIP */
-.investor-wrap {
+/* CONTACT SECTION */
+.contact-wrap {
   background: #0f0f0f; padding: 120px 32px; text-align: center;
   border-top: 1px solid var(--border);
 }
-.investor-inner { max-width: 720px; margin: 0 auto; }
-.investor-tag {
-  display: inline-block;
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--muted); border: 1px solid var(--border);
-  padding: 6px 16px; margin-bottom: 40px;
-}
-.investor-title {
+.contact-inner { max-width: 600px; margin: 0 auto; }
+.contact-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(48px, 6vw, 80px); line-height: 0.95;
+  font-size: clamp(36px, 8vw, 56px); /* Ajustado para pantallas pequeñas */
+  line-height: 0.95;
   color: var(--paper); margin-bottom: 24px;
 }
-.investor-body { font-size: 15px; color: var(--muted); line-height: 1.75; margin-bottom: 48px; }
+.contact-body { font-size: 15px; color: var(--muted); line-height: 1.75; margin-bottom: 40px; }
+.contact-email {
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  color: var(--volt);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(212,245,60,0.4);
+  padding-bottom: 4px;
+  transition: border-color 0.2s, opacity 0.2s;
+}
+.contact-email:hover { opacity: 0.8; border-color: var(--volt); }
 
 /* FOOTER */
 .footer {
@@ -407,20 +288,6 @@ body::after {
 .footer-copy {
   font-family: 'DM Mono', monospace; font-size: 10px;
   letter-spacing: 0.08em; color: var(--muted); text-align: center;
-}
-
-/* MOBILE NAV */
-#mobileMenu {
-  display: none; position: absolute; top: 100%; left: 0; right: 0;
-  background: rgba(10,10,10,0.97); border-bottom: 1px solid var(--border);
-  padding: 20px 24px; flex-direction: column; gap: 16px;
-}
-#mobileMenu.open { display: flex; }
-#mobileMenu a {
-  font-family: 'DM Mono', monospace; font-size: 12px;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted); text-decoration: none; padding: 8px 0;
-  border-bottom: 1px solid var(--border);
 }
 
 /* MODALS */
@@ -458,29 +325,6 @@ body::after {
   position: sticky; bottom: 0; background: #111;
 }
 
-/* FORM STYLES */
-.form-group { margin-bottom: 16px; }
-.form-label {
-  display: block; font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 8px;
-}
-.form-input {
-  width: 100%; padding: 12px 16px;
-  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-  color: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 14px;
-  outline: none; transition: border-color 0.2s; appearance: none;
-}
-.form-input:focus { border-color: var(--volt); }
-.form-input option { background: #111; }
-
-/* ONBOARDING CARDS */
-.onboarding-card { display: none; flex-direction: column; min-height: 500px; }
-.onboarding-card.active { display: flex; }
-.card-scroll { flex: 1; overflow-y: auto; padding-bottom: 8px; }
-.card-scroll::-webkit-scrollbar { width: 3px; }
-.card-scroll::-webkit-scrollbar-thumb { background: var(--border); }
-
 /* LEGAL MODAL */
 .legal-panel { max-width: 680px; max-height: 85vh; }
 .legal-content { padding: 28px; font-size: 13px; color: var(--muted); line-height: 1.75; }
@@ -491,45 +335,26 @@ body::after {
 .legal-content ul li { margin-bottom: 6px; }
 .legal-content strong { color: var(--paper); font-weight: 500; }
 
-/* CHECKBOX */
-.check-wrap {
-  display: flex; align-items: flex-start; gap: 12px;
-  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-  padding: 16px; margin-top: 8px;
-}
-.check-wrap input[type=checkbox] { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: var(--volt); }
-.check-wrap label { font-size: 12px; color: var(--muted); line-height: 1.6; cursor: pointer; }
-.check-wrap label span { color: var(--paper); text-decoration: underline; cursor: pointer; }
-#error-terms { font-family: 'DM Mono', monospace; font-size: 10px; color: #ef4444; margin-top: 6px; display: none; }
-
-/* PREFIX INPUT */
-.prefix-wrap { display: flex; }
-.prefix-tag {
-  padding: 12px 16px; background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border); border-right: none;
-  font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted);
-}
-.prefix-wrap .form-input { border-left: none; }
-
 /* REVEAL */
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .reveal.visible { opacity: 1; transform: none; }
-.d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.2s; } .d3 { transition-delay: 0.3s; }
+
+/* Hero entrance animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-anim-1 { animation: fadeUp 0.7s ease both; animation-delay: 0.1s; }
+.hero-anim-2 { animation: fadeUp 0.7s ease both; animation-delay: 0.25s; }
+.hero-anim-3 { animation: fadeUp 0.7s ease both; animation-delay: 0.4s; }
+.hero-anim-4 { animation: fadeUp 0.7s ease both; animation-delay: 0.55s; }
+.hero-anim-5 { animation: fadeUp 0.7s ease both; animation-delay: 0.7s; }
 
 /* RESPONSIVE */
-@media (max-width: 900px) {
-  .steps-grid { grid-template-columns: 1fr 1fr; }
-  .step { border-right: 1px solid var(--border); }
-  .step:nth-child(2n) { border-right: none; }
-  .demo-inner, .security-grid, .faq-grid { grid-template-columns: 1fr; gap: 48px; }
-  .nav-links { display: none; }
-  .hero-title { font-size: clamp(64px, 16vw, 120px); }
-}
 @media (max-width: 600px) {
-  .steps-grid { grid-template-columns: 1fr; }
-  .step { border-right: none; border-bottom: 1px solid var(--border); }
-  .section, .demo-wrap, .faq-wrap, .security-wrap { padding: 80px 20px; }
-  .hero { padding: 120px 20px 60px; }
+  .security-wrap, .contact-wrap { padding: 80px 20px; }
+  .yunus-hero { padding: 60px 20px 40px; }
+  .min-security-card { padding: 24px; }
 }
 </style>
 
@@ -537,493 +362,89 @@ body::after {
 
 <body>
 
-<!-- SVG SPRITES -->
-
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="ico-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
-  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></symbol>
-  <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
 </svg>
 
-<!-- NAV -->
+<div>
 
-<nav id="nav">
-  <div class="nav-inner">
-    <div>
-      <img src="darklogo.png" alt="Yunus" style="height:145px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoNav').style.display='block'">
-      <span id="logoNav" style="display:none;font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--paper);">YUNUS</span>
+<section class="yunus-hero">
+
+  <div class="yunus-icon-wrap hero-anim-1">
+    <div class="orbit-ring orbit-ring-1">
+      <span class="orbit-dot"></span>
     </div>
-    <div class="nav-links">
-      <a href="#como-funciona">Como funciona</a>
-      <a href="#seguridad">Si no puedes pagar</a>
-      <button class="btn-primary" style="white-space: nowrap;" onclick="openOnboardingModal()">Registrarse →</button>
-      <button class="btn-ghost" style="white-space: nowrap;" onclick="window.location.href='chat.html'">Iniciar sesión →</button>
+    <div class="orbit-ring orbit-ring-2">
+      <span class="orbit-dot-sm"></span>
     </div>
-    <button onclick="toggleMenu()" style="display:none;background:none;border:none;cursor:pointer;color:var(--paper);padding:8px;" id="hamburger">☰</button>
+    <img src="iaicon.png" alt="Yunus IA" class="yunus-icon" onerror="this.style.opacity='0'">
   </div>
-  <div id="mobileMenu">
-    <a href="#como-funciona" onclick="toggleMenu()">Como funciona</a>
-    <a href="#seguridad" onclick="toggleMenu()">Si no puedes pagar</a>
-    <button class="btn-primary" style="width:100%;padding:14px;" onclick="openOnboardingModal();toggleMenu()">Registrarse →</button>
-    <button class="btn-ghost" style="width:100%;padding:14px;margin-top:8px;" onclick="window.location.href='chat.html'">Iniciar sesión →</button>
-  </div>
-</nav>
 
-<div style="padding-top:72px;">
-
-<!-- ANNOUNCE BAR -->
-
-<div class="announce">
-  Revox · Brazo financiero de Yunus · 18% de rendimiento anual garantizado
-  <button onclick="window.location.href='https://yunusia.com/revox'">Saber mas →</button>
-</div>
-
-<!-- EVENT CAROUSEL -->
-
-<div class="carousel-wrap">
-  <div class="carousel-fade-l"></div>
-  <div class="carousel-fade-r"></div>
-  <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;animation:cscroll 50s linear infinite;will-change:transform;padding:0 28px;"></div>
-</div>
-
-<!-- HERO -->
-
-<section class="hero">
-  <h1 class="hero-title">
-    Asegura<br>tu boleto,<br><em>Paga</em><br><em>tranquilo.</em>
+  <h1 class="yunus-hero-headline hero-anim-2">
+    Hola, soy Yunus&nbsp;👋<br>
+    dime a qué evento <span class="accent">quieres ir</span>
+    y te financio el boleto.
   </h1>
-  <p class="hero-sub">
-    Yunus te da acceso a los mejores conciertos y festivales del ano. Paga un enganche y divide el resto en quincenas comodas.
-    <strong>Sin tarjeta. Sin buro. Sin complicaciones.</strong>
+
+  <div class="carousel-wrap hero-anim-5">
+    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;padding:0 15px;"></div>
+  </div>
+
+  <p class="yunus-hero-sub hero-anim-3">
+    Sé lo frustrante que es quedarte fuera por falta de liquidez hoy. Conmigo no necesitas tarjeta ni buró. Asegura tu lugar con <strong>solo 15% de enganche</strong> y paga el resto en quincenas cómodas. Tienes casi <strong>100% de aprobación</strong> — porque tu boleto es el colateral.
   </p>
-  <div class="hero-bottom">
-    <button class="btn-primary" style="font-size:13px;padding:14px 32px;" onclick="openOnboardingModal()">
-      Financiar mi boleto →
-    </button>
-    <div class="hero-stat"><span>15%</span>enganche inicial</div>
-    <div class="hero-stat"><span>36%</span>CAT anual</div>
-    <div class="hero-stat"><span>0</span>consultas al buro</div>
-  </div>
-</section>
 
-<hr class="divider">
+  <div class="hero-anim-4" style="display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 20px;">
+<input id="waitlistInput" type="tel" placeholder="(Tu numero con WhatsApp)" inputmode="numeric" maxlength="10"
+style="padding: 16px 24px; width: 100%; max-width: 320px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; text-align: center; transition: border-color 0.2s;"
+onfocus="this.style.borderColor='var(--volt)'"
+onblur="this.style.borderColor='var(--border)'"
+oninput="toggleWaitlistBtn()">
 
-<!-- COMO FUNCIONA -->
-
-<div id="como-funciona">
-<div class="section">
-  <div style="margin-bottom:56px;">
-    <h2 class="reveal" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,7vw,96px);line-height:0.92;color:var(--paper);">Asi de sencillo.</h2>
-  </div>
-  <div class="steps-grid reveal">
-    <div class="step">
-      <span class="step-num">01</span>
-      <div class="step-title">Eliges tu evento</div>
-      <div class="step-body">Selecciona entre Baja Beach Fest, Rosalia, Vans Warped Tour o Bruno Mars y el tipo de boleto que quieres.</div>
-    </div>
-    <div class="step">
-      <span class="step-num">02</span>
-      <div class="step-title">Yunus verifica tu perfil</div>
-      <div class="step-body">Analizamos tu capacidad de pago real sin consultar buro de credito. Rapido, justo y seguro.</div>
-    </div>
-    <div class="step">
-      <span class="step-num">03</span>
-      <div class="step-title">Pagas el 15% inicial</div>
-      <div class="step-body">Das el enganche via SPEI u Oxxo y Yunus asegura inmediatamente tu boleto en tu Boveda personal.</div>
-    </div>
-    <div class="step">
-      <span class="step-num">04</span>
-      <div class="step-title">Quincena a quincena</div>
-      <div class="step-body">Divides el resto en pagos quincenales. El ultimo pago desbloquea tu entrada y la transfiere a tu cuenta.</div>
-    </div>
-  </div>
-</div>
-</div>
-
-<hr class="divider">
-
-<!-- DEMO CHAT -->
-
-<section id="demo" class="demo-wrap">
-  <div class="demo-inner">
-    <div class="reveal d1">
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,6vw,88px);line-height:0.92;color:var(--paper);margin-bottom:24px;">
-        Asi se ve<br><span style="color:transparent;-webkit-text-stroke:2px rgba(242,239,232,0.25);">desde adentro.</span>
-      </h2>
-      <p style="font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:40px;">Eliges el evento, Yunus analiza tu perfil y te presenta el plan exacto. Si te late, pagas el enganche y el boleto queda en tu Boveda.</p>
-      <ul class="check-list">
-        <li><strong>Sin tarjeta ni buro</strong> — solo lo que necesitamos para verificar</li>
-        <li><strong>El boleto queda en tu Boveda</strong> — apartado desde el primer pago</li>
-        <li><strong>Pagas a tu ritmo</strong> — quincena a quincena, la ultima antes del evento</li>
-        <li><strong>Si no aplicas</strong> — Yunus te muestra opciones a tu alcance</li>
-      </ul>
-      <button class="btn-primary" onclick="openOnboardingModal()">Habla con Yunus →</button>
-    </div>
-
-<div class="reveal chat-widget">
-  <div class="chat-header">
-    <div class="chat-header-dot"></div>
-    <span class="chat-header-title">Yunus 1.0 Beta</span>
-  </div>
-  <div id="demoChat" style="padding:16px;display:flex;flex-direction:column;gap:10px;background:#0d0d0d;">
-
-    <div style="display:flex;align-items:flex-end;gap:8px;">
-      <img src="Vector.png" style="width:26px;height:26px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--border);background:#1a1a1a;" onerror="this.style.display='none'">
-      <div style="max-width:80%;background:#1a1a1a;border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:3px;padding:10px 14px;font-size:13px;color:var(--paper);line-height:1.5;">
-        Hola, escribeme para comenzar 👋
-      </div>
-    </div>
-
-    <div style="display:flex;justify-content:flex-end;">
-      <div style="max-width:80%;background:var(--volt);border-radius:16px;border-bottom-right-radius:3px;padding:10px 14px;font-size:13px;color:var(--ink);line-height:1.5;font-weight:500;">
-        Quiero boletos para Bruno Mars.
-      </div>
-    </div>
-
-    <div style="display:flex;align-items:flex-end;gap:8px;">
-      <div style="width:26px;flex-shrink:0;"></div>
-      <div style="max-width:80%;background:#1a1a1a;border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:3px;padding:12px 14px;">
-        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Analizando</div>
-        <div id="step1" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);">● Revisando inventario...</div>
-        <div id="step2" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);margin-top:4px;">● Cruzando con tu perfil...</div>
-        <div id="step3" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);margin-top:4px;">● Estructurando plan de pagos...</div>
-      </div>
-    </div>
-
-    <div id="approvalMsg" style="display:none;flex-direction:column;gap:10px;">
-      <div style="display:flex;align-items:flex-end;gap:8px;">
-        <div style="width:26px;flex-shrink:0;"></div>
-        <div style="max-width:85%;background:#1a1a1a;border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:3px;padding:10px 14px;font-size:13px;color:var(--paper);line-height:1.5;">
-          ¡Perfecto! 🎤 Encontre tu plan. Aqui esta:
-        </div>
-      </div>
-      <div style="display:flex;align-items:flex-end;gap:8px;">
-        <div style="width:26px;flex-shrink:0;"></div>
-        <div style="max-width:90%;background:#111;border:1px solid var(--volt);border-radius:16px;border-bottom-left-radius:3px;padding:16px 18px;">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
-            <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--paper);letter-spacing:.04em;">Bruno Mars</span>
-            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);background:rgba(255,255,255,0.05);padding:3px 8px;border-radius:2px;">Foro Sol · CDMX</span>
-          </div>
-          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:14px;letter-spacing:.06em;">📅 4 · 7 · 8 DIC 2026</div>
-          <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--border);padding-top:12px;">
-            <div style="display:flex;justify-content:space-between;font-size:12px;">
-              <span style="color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;">TOTAL PLAN</span>
-              <span style="color:var(--paper);font-weight:500;">$12,887 MXN</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:12px;">
-              <span style="color:var(--volt);font-family:'DM Mono',monospace;font-size:10px;">ENGANCHE (15%)</span>
-              <span style="color:var(--volt);font-weight:500;">$1,933 MXN</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:12px;">
-              <span style="color:#86efac;font-family:'DM Mono',monospace;font-size:10px;">QUINCENAS</span>
-              <span style="color:#86efac;font-weight:500;">15 × $869 MXN</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:flex-end;gap:8px;">
-        <div style="width:26px;flex-shrink:0;"></div>
-        <div style="max-width:85%;background:#1a1a1a;border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:3px;padding:10px 14px;font-size:13px;color:var(--paper);line-height:1.5;">
-          ¿Te late? Para continuar necesito verificar tu identidad — enviame una foto de tu INE por el frente. 🪪
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="chat-input-bar">
-    <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-    </div>
-    <input id="demoInput" type="text" placeholder="Escribe un mensaje..."
-      style="flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:999px;padding:10px 16px;font-size:13px;outline:none;color:var(--paper);font-family:'DM Sans',sans-serif;">
-    <button id="demoBtn" onclick="runDemo()" style="width:36px;height:36px;border-radius:50%;background:var(--volt);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    </button>
-  </div>
-</div>
-
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- SEGURIDAD -->
-
-<section id="seguridad">
+<button id="waitlistBtn" class="btn-hero" onclick="unirseWaitlist()" disabled style="opacity: 0.5; cursor: not-allowed;">
+  Únete a la Waitlist →
+</button><div id="waitlistMsg" style="display:none; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:center;"></div><span style="font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;">
+  Tasa transparente · 36% CAT anual
+</span></div>
+  </section><hr class="divider"><section id="seguridad">
 <div class="security-wrap">
-  <div class="security-grid">
-    <div class="reveal">
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,6vw,88px);line-height:0.92;color:var(--paper);margin-bottom:24px;">
-        ¿Y si no puedes<br><span style="color:transparent;-webkit-text-stroke:2px rgba(242,239,232,0.25);">seguir pagando?</span>
-      </h2>
-      <p style="font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:48px;">No te dejamos colgado. Gestionamos la reventa del boleto antes del evento y recuperas lo que ya pagaste.</p>
-      <div class="steps-list">
-        <div class="step-item">
-          <span class="step-n">01</span>
-          <div class="step-content">
-            <h4>Avisas a Yunus</h4>
-            <p>Seleccionas "Revender" en el boleto de tu bóveda que desees listar.</p>
-          </div>
-        </div>
-        <div class="step-item">
-          <span class="step-n">02</span>
-          <div class="step-content">
-            <h4>Yunus publica el boleto</h4>
-            <p>Lo listamos en nuestro Marketplace cerrado a precio de mercado, antes de que llegue la fecha del evento.</p>
-          </div>
-        </div>
-        <div class="step-item">
-          <span class="step-n">03</span>
-          <div class="step-content">
-            <h4>Se vende y se liquida tu deuda</h4>
-            <p>Con lo obtenido se cubre lo que aun debias mas un 6% de comision por el servicio de reventa.</p>
-          </div>
-        </div>
-        <div class="step-item">
-          <span class="step-n">04</span>
-          <div class="step-content">
-            <h4>Lo que sobre es tuyo</h4>
-            <p>El resto va directo a tu cuenta. La meta es que recuperes total o parcialmente lo que ya habias pagado.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="reveal d1 stat-block">
-      <div class="big-stat">
-        <span class="big-num">6%</span>
-        <div class="big-stat-label">Comision de reventa — y nada mas.</div>
-        <div class="big-stat-body">Si Yunus tiene que revender tu boleto, solo cobramos ese 6% por el servicio. Sin intereses extra, sin penalizaciones, sin llamadas de cobranza.</div>
-        <div class="mono-note">CAT del credito: 36% anual · 3% mensual</div>
-      </div>
-      <div class="info-block">
-        <div class="info-label">¿Por que funciona?</div>
-        <div class="info-text">Un boleto de concierto siempre tiene valor en el mercado. Eso es lo que hace posible que, si algo sale mal, nadie se quede sin nada.</div>
-      </div>
+  <div class="reveal security-copy">
+    <h2>
+      ¿Y si no puedes <br><span style="color:transparent;-webkit-text-stroke:2px rgba(242,239,232,0.25);">seguir pagando?</span>
+    </h2>
+    <div class="min-security-card">
+      <p style="font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:16px;">
+        Si no puedes o no quieres continuar pagando, pulsa el botón <strong>"Revender"</strong>. El boleto se publicará en nuestro Marketplace y nos encargaremos de revenderlo de manera segura.
+      </p>
+      <p style="font-size:16px;color:var(--paper);line-height:1.5;font-weight:500;">
+        Si la venta se logra, puedes recuperar hasta el 90% de lo ya invertido.
+      </p>
+      <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:16px;letter-spacing:0.04em;">
+        * El monto de recuperación dependerá del éxito de la venta y del precio en que se cierre en relación al costo original.
+      </p>
     </div>
   </div>
 </div>
-</section>
-
-<hr class="divider">
-
-<!-- FAQ -->
-
-<div class="faq-wrap">
-  <div class="faq-inner">
-    <div class="faq-grid">
-      <div class="reveal">
-        <h2 class="faq-title">Lo que necesitas<br><em>saber.</em></h2>
-      </div>
-      <div class="faq-list reveal d1">
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-            <span class="faq-q-text">¿Como saben si puedo pagar el boleto?</span>
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-a">Al registrarte, Yunus hace una verificacion rapida para saber si el plan de pagos es viable — sin consultar buro. Si aplicas, ves el plan directo. Si no, te mostramos opciones que si estan a tu alcance.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-            <span class="faq-q-text">¿Cuanto tengo que pagar para apartar el boleto?</span>
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-a">El 15% del valor del boleto, pagadero via SPEI o efectivo en Oxxo. Con ese pago, el boleto queda en tu Boveda. El resto lo vas pagando en quincenas.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-            <span class="faq-q-text">¿Cuanto me cobra Yunus por el servicio?</span>
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-a">El credito tiene un CAT del 36% anual (3% mensual), ya incluido en el plan de pagos. No hay cobros sorpresa. Si necesitas reventa, Yunus cobra adicionalmente un 6% de comision sobre esa operacion.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-            <span class="faq-q-text">¿Que pasa si no puedo terminar de pagar?</span>
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-a">Seleccionas "Revender" en el boleto de tu boveda que desees listar y ponemos el boleto en venta antes del evento. Con lo que se obtenga se cubre tu deuda pendiente mas el 6% de comision, y el resto es para ti.</div>
-        </div>
-      </div>
-    </div>
+</section><hr class="divider"><section class="contact-wrap">
+  <div class="contact-inner reveal">
+    <h2 class="contact-title">Dudas y aclaraciones.</h2>
+    <p class="contact-body">¿Tienes preguntas sobre tu solicitud, tu plan de pagos o simplemente quieres saber más? Escríbenos directamente.</p>
+    <a href="mailto:christianturista@proton.me" class="contact-email">christianturista@proton.me</a>
   </div>
-</div>
-
-<!-- CTA FINAL -->
-
-<section class="cta-wrap">
-  <div class="cta-bg-text">YUNUS</div>
-  <div class="cta-inner reveal">
-    <h2>Los boletos<br>no esperan.<br>Tu tampoco.</h2>
-    <p>Se de los pocos en recibir financiamiento ahora. Sin costo. Sin compromiso.</p>
-    <button class="btn-dark" onclick="openOnboardingModal()">
-      Pruébalo ahora
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </button>
-  </div>
-</section>
-
-<!-- INVERSORES -->
-
-<section class="investor-wrap">
-  <div class="investor-inner reveal">
-    <div class="investor-tag">Inversores</div>
-    <h2 class="investor-title">Tecnologia para los<br>Excluidos Solventes.</h2>
-    <p class="investor-body">Yunus es la primera Travel-Fintech impulsada por Agentes IA que capitaliza el mercado mas desatendido de la region. Modelos de riesgo obsoletos dejan millones sobre la mesa. Con aprobacion en tiempo real y mitigacion de riesgo a traves de activos de reventa garantizada, democratizamos el acceso a experiencias.</p>
-    <button class="btn-ghost" onclick="openInvestorModal()">
-      Solicitar Pitch Deck →
-    </button>
-  </div>
-</section>
-
-<!-- FOOTER -->
-
-<footer class="footer">
+</section><footer class="footer">
   <div class="footer-inner">
     <div>
       <img src="darklogo.png" alt="Yunus" style="height:120px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoFooter').style.display='block'">
       <span id="logoFooter" style="display:none;font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--paper);">YUNUS</span>
     </div>
-    <div class="footer-copy">Ampliando limites fisicos · Paso del Norte Labs · Ciudad Juarez, Mexico</div>
+    <div class="footer-copy">Ampliando límites físicos · Paso del Norte Labs · Ciudad Juárez, México</div>
     <div class="footer-links">
-      <button onclick="openLegalModal('terms')">Terminos y condiciones</button>
-      <button onclick="openLegalModal('privacy')">Politica de privacidad</button>
+      <button onclick="openLegalModal('terms')">Términos y condiciones</button>
+      <button onclick="openLegalModal('privacy')">Política de privacidad</button>
     </div>
     <div class="footer-copy">© 2026 Paso del Norte Labs</div>
   </div>
-</footer>
-
-</div><!-- end pt-72 -->
-
-<!-- ═══════════════ MODAL ONBOARDING ═══════════════ -->
-
-<div id="onboardingModal" class="modal-bg" onclick="if(event.target===this)closeOnboardingModal()">
-  <div class="modal-panel" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <div>
-        <img src="darklogo.png" alt="Yunus" style="height:36px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
-      </div>
-      <button class="modal-close" onclick="closeOnboardingModal()">×</button>
-    </div>
-
-<!-- Card 1 -->
-<div id="card1" class="onboarding-card active">
-  <div class="modal-body card-scroll">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--paper);margin-bottom:24px;letter-spacing:.04em;">Registrate</div>
-    <form id="form1">
-      <input type="hidden" name="Paso" value="Registro">
-      <div class="form-group"><label class="form-label">Nombre completo</label><input type="text" name="Nombre_completo" required class="form-input"></div>
-      <div class="form-group"><label class="form-label">Celular</label><div class="prefix-wrap"><span class="prefix-tag">+52</span><input type="tel" name="Celular" pattern="[0-9]{10}" required class="form-input"></div></div>
-      <div class="form-group"><label class="form-label">Edad</label><input type="number" name="Edad" min="18" max="99" required placeholder="Ej. 25" class="form-input"></div>
-      <div class="form-group">
-        <label class="form-label">Entidad federativa</label>
-        <select name="Entidad_federativa" required class="form-input">
-          <option value="">Selecciona</option>
-          <option value="AGU">Aguascalientes</option><option value="BCN">Baja California</option><option value="BCS">Baja California Sur</option><option value="CAM">Campeche</option><option value="COA">Coahuila</option><option value="COL">Colima</option><option value="CHP">Chiapas</option><option value="CHH">Chihuahua</option><option value="CMX">Ciudad de Mexico</option><option value="DUR">Durango</option><option value="GTO">Guanajuato</option><option value="GRO">Guerrero</option><option value="HGO">Hidalgo</option><option value="JAL">Jalisco</option><option value="MEX">Mexico</option><option value="MIC">Michoacan</option><option value="MOR">Morelos</option><option value="NAY">Nayarit</option><option value="NL">Nuevo Leon</option><option value="OAX">Oaxaca</option><option value="PUE">Puebla</option><option value="QRO">Queretaro</option><option value="QROO">Quintana Roo</option><option value="SLP">San Luis Potosi</option><option value="SIN">Sinaloa</option><option value="SON">Sonora</option><option value="TAB">Tabasco</option><option value="TAM">Tamaulipas</option><option value="TLA">Tlaxcala</option><option value="VER">Veracruz</option><option value="YUC">Yucatan</option><option value="ZAC">Zacatecas</option>
-        </select>
-      </div>
-      <div class="form-group"><label class="form-label">Codigo postal</label><input type="text" name="Codigo_postal" pattern="[0-9]{5}" maxlength="5" required class="form-input"></div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn-primary" style="width:100%;padding:14px;font-size:12px;" onclick="goToCard(2)">Siguiente →</button>
-    <p style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center;font-family:'DM Mono',monospace;">Al continuar aceptas nuestros <span onclick="openLegalModal('terms')" style="color:var(--paper);cursor:pointer;text-decoration:underline;">Terminos</span> y <span onclick="openLegalModal('privacy')" style="color:var(--paper);cursor:pointer;text-decoration:underline;">Politica de privacidad</span>.</p>
-    <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;">
-  <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">¿Ya tienes cuenta?</p>
-  <button onclick="closeOnboardingModal();window.location.href='/chat';" style="width:100%;padding:12px;background:transparent;border:1px solid var(--border);color:var(--paper);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--paper)'" onmouseout="this.style.borderColor='var(--border)'">Iniciar sesión →</button>
-  </div>
-  </div>
-</div>
-
-<!-- Card 2 -->
-<div id="card2" class="onboarding-card">
-  <div class="modal-body card-scroll">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--paper);margin-bottom:24px;letter-spacing:.04em;">Tu perfil financiero</div>
-    <form id="form2">
-      <input type="hidden" name="Paso" value="Registro + Perfil">
-      <div class="form-group"><label class="form-label">Ingreso mensual neto (MXN)</label><input type="number" name="Ingreso_mensual" min="0" step="100" required class="form-input"></div>
-      <div class="form-group"><label class="form-label">Marca de celular</label><select name="Marca_celular" required class="form-input"><option value="">Selecciona</option><option>Apple</option><option>Samsung</option><option>Xiaomi</option><option>OPPO</option><option>Realme</option><option>Motorola</option><option>Huawei</option><option>Sony</option><option>Nokia</option><option>LG</option><option>OnePlus</option><option>ASUS</option><option>Lenovo</option><option>Otro</option></select></div>
-      <div class="form-group"><label class="form-label">Gastos de celular</label><select name="Gastos_celular" required class="form-input"><option value="">Selecciona</option><option value="credito_activo">Credito de celular activo</option><option value="sin_deudas">Sin deudas / Plan de renta</option></select></div>
-      <div class="form-group"><label class="form-label">Gastos de vivienda</label><select name="Gastos_vivienda" required class="form-input"><option value="">Selecciona</option><option value="sin_gastos">No tengo gastos de vivienda</option><option value="pago_renta">Pago renta</option><option value="pago_hipoteca">Pago hipoteca</option></select></div>
-      <div class="form-group"><label class="form-label">Gastos de automovil</label><select name="Gastos_automovil" required class="form-input"><option value="">Selecciona</option><option value="no_tengo">No tengo carro</option><option value="credito_auto">Credito automotriz</option><option value="auto_sin_deuda">Auto sin deuda</option></select></div>
-      <div class="form-group"><label class="form-label">Dependientes economicos</label><select name="Dependientes" required class="form-input"><option value="">Selecciona</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select></div>
-      <div class="form-group"><label class="form-label">¿Como calificarias tu historial crediticio?</label><select name="Historial_crediticio" required class="form-input"><option value="">Selecciona</option><option value="Bueno">Bueno</option><option value="Regular">Regular</option><option value="Malo">Malo</option><option value="No tengo">No tengo / No se</option></select></div>
-      <div class="form-group"><label class="form-label">¿Estas pagando otro credito o deuda?</label><select name="Otras_deudas" required class="form-input"><option value="">Selecciona</option><option value="si">Si</option><option value="no">No</option></select></div>
-      <div class="check-wrap">
-        <input type="checkbox" id="acceptTerms">
-        <label for="acceptTerms">He leido y acepto los <span onclick="openLegalModal('terms')">Terminos y condiciones</span> y la <span onclick="openLegalModal('privacy')">Politica de privacidad</span>.</label>
-      </div>
-      <div id="error-terms">Debes aceptar los terminos para continuar.</div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn-primary" style="width:100%;padding:14px;font-size:12px;" onclick="submitAllDataAndGoToCard3()">Continuar →</button>
-  </div>
-</div>
-
-<!-- Card 3 -->
-<div id="card3" class="onboarding-card" style="text-align:center;">
-  <div class="modal-body" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;">
-    <div style="width:64px;height:64px;background:var(--volt);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-    </div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--paper);letter-spacing:.04em;margin-bottom:12px;">¡Ya estas dentro!</div>
-    <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:300px;margin-bottom:32px;">Yunus esta listo. Inicias sesión con el numero que registraste y empieza</p>
-    <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:24px;text-align:left;width:100%;display:flex;flex-direction:column;gap:16px;margin-bottom:32px;">
-      <div style="display:flex;gap:12px;align-items:flex-start;">
-        <span style="font-family:'DM Mono',monospace;color:var(--volt);font-size:11px;flex-shrink:0;">01</span>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;">Toca el boton para abrir el inicio de sesion.</p>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;">
-        <span style="font-family:'DM Mono',monospace;color:var(--volt);font-size:11px;flex-shrink:0;">02</span>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;">Ingresa tu numero celular y revisa nuestras opciones de eventos</p>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;">
-        <span style="font-family:'DM Mono',monospace;color:var(--volt);font-size:11px;flex-shrink:0;">03</span>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;">Mandale a Yunus tu deseo y el te guia desde ahi. 🚀</p>
-      </div>
-    </div>
-    <button class="btn-primary" style="width:100%;padding:14px;font-size:12px;" onclick="irAlChat()">Iniciar sesión→</button>
-    <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:12px;letter-spacing:.06em;">ACCESO SEGURO · SOLO USUARIOS REGISTRADOS</p>
-  </div>
-</div>
-
-  </div>
-</div>
-
-<!-- ═══════════════ MODAL INVERSORES ═══════════════ -->
-
-<div id="investorModal" class="modal-bg" onclick="if(event.target===this)closeInvestorModal()">
-  <div class="modal-panel" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <span class="modal-title">Acceso a Inversores</span>
-      <button class="modal-close" onclick="closeInvestorModal()">×</button>
-    </div>
-    <div class="modal-body" id="investorContent">
-      <p style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.7;">Dejanos tus datos para enviarte el Pitch Deck y ponernos en contacto contigo.</p>
-      <form id="investorForm" action="https://formspree.io/f/mreyjllj" method="POST" onsubmit="handleInvestorSubmit(event)">
-        <input type="hidden" name="Tipo_de_solicitud" value="PITCH DECK - INVERSOR">
-        <div class="form-group"><label class="form-label">Nombre completo</label><input type="text" name="Nombre" required class="form-input" placeholder="Tu nombre"></div>
-        <div class="form-group"><label class="form-label">Correo</label><input type="email" name="Email" required class="form-input" placeholder="tu@email.com"></div>
-        <div class="form-group"><label class="form-label">Empresa o Fondo</label><input type="text" name="Empresa_o_Fondo" required class="form-input" placeholder="Nombre de tu empresa"></div>
-        <div class="form-group"><label class="form-label">LinkedIn</label><input type="url" name="LinkedIn" required class="form-input" placeholder="https://linkedin.com/in/..."></div>
-        <input type="text" name="_gotcha" style="display:none">
-        <button type="submit" class="btn-primary" style="width:100%;padding:14px;font-size:12px;margin-top:8px;">Solicitar Pitch Deck →</button>
-      </form>
-    </div>
-    <div id="investorSuccessMessage" style="display:none;padding:48px 28px;text-align:center;">
-      <div style="width:56px;height:56px;background:rgba(212,245,60,0.1);border:1px solid var(--volt);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4F53C" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--paper);margin-bottom:8px;letter-spacing:.04em;">Solicitud recibida</div>
-      <p style="font-size:14px;color:var(--muted);">Nos pondremos en contacto a la brevedad.</p>
-      <button onclick="closeInvestorModal()" style="margin-top:24px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);background:none;border:none;cursor:pointer;text-decoration:underline;letter-spacing:.08em;">Cerrar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════ MODAL LEGAL ═══════════════ -->
-
-<div id="legalModal" class="modal-bg" style="z-index:300;" onclick="if(event.target===this)closeLegalModal()">
+</footer></div><div id="legalModal" class="modal-bg" style="z-index:300;" onclick="if(event.target===this)closeLegalModal()">
   <div class="modal-panel legal-panel" onclick="event.stopPropagation()" style="max-width:680px;">
     <div class="modal-header">
       <span class="modal-title" id="legalTitle">Legal</span>
@@ -1034,21 +455,20 @@ body::after {
       <button class="btn-primary" style="padding:12px 28px;font-size:11px;" onclick="closeLegalModal()">Cerrar</button>
     </div>
   </div>
-</div>
-
-<script>
+</div><script>
 // ── EVENT CARDS ──
 const events = [
-  { name:'Baja Beach Fest', tag:'Festival · Rosarito', date:'7-9 Ago 2026', price:'Desde $525 MXN × quincena', img:'BajaB.jpeg', accent:'#2563eb' },
-  { name:'Rosalia: Lux Tour', tag:'Concierto · CDMX / GDL', date:'Ago 2026', price:'Desde $381 MXN × quincena', img:'Rosalia.jpeg', accent:'#be185d' },
-  { name:'Vans Warped Tour', tag:'Festival · CDMX', date:'12-13 Sep 2026', price:'Desde $381 MXN × quincena', img:'VansW.webp', accent:'#ea580c' },
-  { name:'Bruno Mars', tag:'Concierto · CDMX', date:'4-7-8 Dic 2026', price:'Desde $169 MXN × quincena', img:'BrunoM.jpeg', accent:'#16a34a' },
   { name:'Harry Styles', tag:'Concierto · CDMX', date:'10 Ago 2026', price:'Desde $283 MXN × quincena', img:'HarryS.webp', accent:'#2563eb' },
+  { name:'Bruno Mars', tag:'Concierto · CDMX', date:'4-7-8 Dic 2026', price:'Desde $169 MXN × quincena', img:'BrunoM.jpeg', accent:'#16a34a' },
+  { name:'Vans Warped Tour', tag:'Festival · CDMX', date:'12-13 Sep 2026', price:'Desde $381 MXN × quincena', img:'VansW.webp', accent:'#ea580c' },
+  { name:'Baja Beach Fest', tag:'Festival · Rosarito', date:'7-9 Ago 2026', price:'Desde $525 MXN × quincena', img:'BajaB.jpeg', accent:'#2563eb' },
+  { name:'Rosalía: Lux Tour', tag:'Concierto · CDMX / GDL', date:'Ago 2026', price:'Desde $381 MXN × quincena', img:'Rosalia.jpeg', accent:'#be185d' },
   { name:'Enjambre E. GNP', tag:'Concierto · CDMX', date:'30 Ago 2026', price:'x confirmar', img:'Enjambre.webp', accent:'#be165d' },
 ];
 
+/* EFECTOS EN TARJETAS ELIMINADOS (transform, transition dynamic, hovers) */
 function buildEventCard(e) {
-  return `<div onclick="openOnboardingModal()" style="width:200px;flex-shrink:0;border:1px solid rgba(242,239,232,0.1);background:#111;cursor:pointer;display:flex;flex-direction:column;transition:border-color .2s,transform .2s;" onmouseover="this.style.borderColor='var(--volt)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(242,239,232,0.1)';this.style.transform='none'">
+  return `<div style="width:200px;flex-shrink:0;border:1px solid rgba(242,239,232,0.1);background:#111;cursor:pointer;display:flex;flex-direction:column;transition:none;">
     <div style="width:100%;height:90px;overflow:hidden;background:${e.accent}20;flex-shrink:0;">
       <img src="${e.img}" alt="${e.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.style.background='${e.accent}30'">
     </div>
@@ -1067,144 +487,86 @@ function buildEventCard(e) {
   const track = document.getElementById('evTrack');
   if (!track) return;
   const cards = events.map(buildEventCard).join('');
-  track.innerHTML = cards + cards;
+  track.innerHTML = cards;
 })();
+
+// ── WAITLIST CTA ──
+function toggleWaitlistBtn() {
+  const val = document.getElementById('waitlistInput').value.trim();
+  const btn = document.getElementById('waitlistBtn');
+  const activo = val.replace(/\D/g, '').length === 10;
+  btn.disabled = !activo;
+  btn.style.opacity = activo ? '1' : '0.5';
+  btn.style.cursor = activo ? 'pointer' : 'not-allowed';
+}
+
+async function unirseWaitlist() {
+  const input = document.getElementById('waitlistInput');
+  const btn = document.getElementById('waitlistBtn');
+  const msg = document.getElementById('waitlistMsg');
+  const digits = input.value.replace(/\D/g, '').slice(-10);
+
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+  btn.textContent = 'Enviando...';
+  msg.style.display = 'none';
+
+  try {
+    const res = await fetch('/api/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ celular: '+52' + digits })
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      // Éxito — nuevo o ya estaba
+      input.style.display = 'none';
+      btn.style.display = 'none';
+      msg.style.display = 'block';
+      msg.style.color = 'var(--volt)';
+      msg.textContent = data.nuevo
+        ? '✓ Listo — te avisamos cuando tengas acceso.'
+        : '✓ Ya estás en la lista — te avisamos pronto.';
+    } else {
+      msg.style.display = 'block';
+      msg.style.color = '#ef4444';
+      msg.textContent = data.error || 'Error al registrarse. Intenta de nuevo.';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.textContent = 'Únete a la Waitlist →';
+    }
+  } catch {
+    msg.style.display = 'block';
+    msg.style.color = '#ef4444';
+    msg.textContent = 'Error de conexión. Intenta de nuevo.';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.textContent = 'Únete a la Waitlist →';
+  }
+}
 
 // ── LEGAL TEXTS ──
 const legalTexts = {
-  terms: `<h2>TERMINOS Y CONDICIONES – YUNUS</h2><p><strong>Ultima actualizacion:</strong> 20 de abril de 2026</p><h3>1. ACEPTACION</h3><p>Al utilizar yunusia.com, completar el formulario de registro, enviar documentos de identificacion, o realizar cualquier pago, usted acepta de forma expresa e irrevocable estos Terminos y Condiciones en su totalidad.</p><h3>2. NATURALEZA DEL SERVICIO</h3><p>El formulario de registro constituye unicamente una <strong>solicitud de evaluacion financiera</strong>, no una contratacion definitiva ni una reserva de boleto. Yunus se reserva el derecho de admision y podra rechazar cualquier solicitud sin necesidad de justificacion.</p><h3>3. MODELO DE FINANCIAMIENTO</h3><ul><li><strong>Enganche:</strong> 15% del valor total del boleto, pagadero mediante SPEI o efectivo en Oxxo.</li><li><strong>Saldo restante:</strong> El 85% se divide en pagos quincenales hasta la fecha del evento.</li><li><strong>CAT:</strong> 36% anual (3% mensual), incluido en las cuotas. Sin cargos ocultos.</li><li><strong>Sin buro de credito:</strong> Yunus no consulta ni reporta al Buro de Credito.</li></ul><h3>4. TITULARIDAD DE CUENTA Y DEPOSITOS</h3><p>Para mantener las tasas de interes competitivas y evitar comisiones de intermediarios durante esta fase beta, los depositos via SPEI se realizaran a la cuenta bancaria personal del fundador, <strong>Christian Nuñez</strong>. Al realizar el pago, el usuario reconoce y acepta que esta cuenta es el canal oficial de recaudacion de Yunus para la etapa actual del proyecto.</p><h3>5. LA BOVEDA Y LA REPRESENTACION DEL BOLETO</h3><p>Una vez realizado el enganche, el boleto es adquirido por Yunus y resguardado en custodia. El usuario accede a una representacion visual en su Boveda personal. <strong>Esta representacion no es el boleto original</strong> ni constituye un documento de acceso al evento. La transferencia oficial del boleto via Ticketmaster ocurrira unicamente al completar el 100% de los pagos de forma exitosa.</p><h3>6. PROPIEDAD DEL BOLETO</h3><p>Durante la vigencia del plan de pagos, el boleto es propiedad de Yunus. El usuario no adquiere titularidad sobre el boleto hasta haber liquidado la totalidad del credito.</p><h3>7. INCUMPLIMIENTO DE PAGO</h3><p>Se considera incumplimiento cuando el usuario no realiza un pago dentro de los 7 dias naturales posteriores a su fecha de vencimiento. Ante un incumplimiento, Yunus activara la reventa del boleto. El producto de la reventa se aplica en el siguiente orden: (1) saldo insoluto pendiente, (2) comision de reventa del <strong>6%</strong>, (3) remanente al usuario si lo hubiere.</p><p>Si el precio de reventa no cubre el saldo insoluto y la comision, el usuario perdera la totalidad de los pagos realizados sin derecho a reembolso. Si el incumplimiento ocurre cerca de la fecha del evento, Yunus podra vender el boleto al precio necesario para recuperar el mayor porcentaje posible, incluso por debajo del valor original. La decision de precio y momento de venta es discrecional de Yunus.</p><h3>8. CANCELACION DEL EVENTO</h3><p>En caso de cancelacion oficial del evento, Yunus gestionara el reembolso ante Ticketmaster. El monto reembolsado se aplicara primero al saldo insoluto; el remanente se devuelve al usuario. No habra rendimientos sobre pagos realizados en este escenario. Los tiempos de reembolso dependen de Ticketmaster (30–90 dias) y Yunus no es responsable por demoras.</p><h3>9. CANCELACION VOLUNTARIA</h3><p>Si el usuario desea cancelar su plan, debera notificar a Yunus por escrito. Se procedera a la reventa del boleto bajo las mismas condiciones de la seccion 7. No existe reembolso directo sin que el boleto sea previamente revendido.</p><h3>10. VERIFICACION DE IDENTIDAD</h3><p>El usuario acepta proporcionar documentos de identidad validos (INE/IFE vigente). La informacion falsa o documentos alterados son causa de rechazo inmediato y cancelacion sin derecho a reembolso.</p><h3>11. PRIVACIDAD</h3><p>Los datos personales son utilizados exclusivamente para los fines del servicio. Yunus no vende ni comparte informacion personal con terceros, salvo requerimiento de autoridad competente.</p><h3>12. LIMITACION DE RESPONSABILIDAD</h3><p>Yunus no es responsable por cambios en el evento, fallas de plataformas de terceros, ni diferencias entre el precio original y el precio de reventa. La responsabilidad maxima de Yunus se limita al monto total de pagos recibidos del usuario.</p><h3>13. LEY APLICABLE</h3><p>Estos terminos se rigen por las leyes de los Estados Unidos Mexicanos. Cualquier controversia sera resuelta ante los tribunales competentes de Ciudad Juarez, Chihuahua, Mexico.</p><h3>14. CONTACTO</h3><p>christianturista@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juarez, Chihuahua, Mexico</p>`,
+  terms: `<h2>TÉRMINOS Y CONDICIONES – YUNUS</h2><p><strong>Ultima actualizacion:</strong> 20 de abril de 2026</p><h3>1. ACEPTACION</h3><p>Al utilizar yunusia.com, completar el formulario de registro, enviar documentos de identificacion, or realizar cualquier pago, usted acepta de forma expresa e irrevocable estos Terminos y Condiciones en su totalidad.</p><h3>2. NATURALEZA DEL SERVICIO</h3><p>El formulario de registro constituye unicamente una <strong>solicitud de evaluacion financiera</strong>, no una contratacion definitiva ni una reserva de boleto. Yunus se reserva el derecho de admision y podra rechazar cualquier solicitud sin necesidad de justificacion.</p><h3>3. MODELO DE FINANCIAMIENTO</h3><ul><li><strong>Enganche:</strong> 15% del valor total del boleto, pagadero mediante SPEI or efectivo en Oxxo.</li><li><strong>Saldo restante:</strong> El 85% se divide en pagos quincenales hasta la fecha del evento.</li><li><strong>CAT:</strong> 36% anual (3% mensual), incluido en las cuotas. Sin cargos ocultos.</li><li><strong>Sin buro de credito:</strong> Yunus no consulta ni reporta al Buro de Credito.</li></ul><h3>4. TITULARIDAD DE CUENTA Y DEPOSITOS</h3><p>Para mantener las tasas de interes competitivas y evitar comisiones de intermediarios durante esta fase beta, los depositos via SPEI se realizaran a la cuenta bancaria personal del fundador, <strong>Christian Nuñez</strong>. Al realizar el pago, el usuario reconoce y acepta que esta cuenta es el canal oficial de recaudacion de Yunus para la etapa actual del proyecto.</p><h3>5. LA BOVEDA Y LA REPRESENTACION DEL BOLETO</h3><p>Una vez realizado el enganche, el boleto es adquirido por Yunus y resguardado en custodia. El usuario accede a una representacion visual en su Boveda personal. <strong>Esta representacion no es el boleto original</strong> ni constituye un documento de acceso al evento. La transferencia oficial del boleto via Ticketmaster ocurrira unicamente al completar el 100% de los pagos de forma exitosa.</p><h3>6. PROPIEDAD DEL BOLETO</h3><p>Durante la vigencia del plan de pagos, el boleto es propiedad de Yunus. El usuario no adquiere titularidad sobre el boleto hasta haber liquidado la totalidad del credito.</p><h3>7. INCUMPLIMIENTO DE PAGO</h3><p>Se considera incumplimiento cuando el usuario no realiza un pago dentro de los 7 dias naturales posteriores a su fecha de vencimiento. Ante un incumplimiento, Yunus activara la reventa del boleto. El producto de la reventa se aplica en el siguiente orden: (1) saldo insoluto pendiente, (2) comision de reventa del <strong>6%</strong>, (3) remanente al usuario si lo hubiere.</p><p>Si el precio de reventa no cubre el saldo insoluto y la comision, el usuario perdera la totalidad de los pagos realizados sin derecho a reembolso. Si el incumplimiento ocurre cerca de la fecha del evento, Yunus podra vender el boleto al precio necesario para recuperar el mayor porcentaje posible, incluso por debajo del valor original. La decision de precio y momento de venta es discrecional de Yunus.</p><h3>8. CANCELACION DEL EVENTO</h3><p>En caso de cancelacion oficial del evento, Yunus gestionara el reembolso ante Ticketmaster. El monto reembolsado se aplicara primero al saldo insoluto; el remanente se devuelve al usuario. No habra rendimientos sobre pagos realizados en este escenario. Los tiempos de reembolso dependen de Ticketmaster (30–90 dias) y Yunus no es responsable por demoras.</p><h3>9. CANCELACION VOLUNTARIA</h3><p>Si el usuario desea cancelar su plan, debera notificar a Yunus por escrito. Se procedera a la reventa del boleto bajo las mismas condiciones de la seccion 7. No existe reembolso directo sin que el boleto sea previamente revendido.</p><h3>10. VERIFICACION DE IDENTIDAD</h3><p>El usuario acepta proporcionar documentos de identidad validos (INE/IFE vigente). La informacion falsa or documentos alterados son causa de rechazo inmediato y cancelacion sin derecho a reembolso.</p><h3>11. PRIVACIDAD</h3><p>Los datos personales son utilizados exclusivamente para los fines del servicio. Yunus no vende ni comparte informacion personal con terceros, salvo requerimiento de autoridad competente.</p><h3>12. LIMITACION DE RESPONSABILIDAD</h3><p>Yunus no es responsable por cambios en el evento, fallas de plataformas de terceros, ni diferencias entre el precio original y el precio de reventa. La responsabilidad maxima de Yunus se limita al monto total de pagos recibidos del usuario.</p><h3>13. LEY APLICABLE</h3><p>Estos terminos se rigen por las leyes de los Estados Unidos Mexicanos. Cualquier controversia sera resuelta ante los tribunales competentes de Ciudad Juarez, Chihuahua, Mexico.</p><h3>14. CONTACTO</h3><p>christianturista@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juarez, Chihuahua, Mexico</p>`,
   privacy: `<h2>POLITICA DE PRIVACIDAD – YUNUS</h2><p><strong>Ultima actualizacion:</strong> 19 de abril de 2026</p><h3>1. DATOS QUE RECOPILAMOS</h3><ul><li><strong>Identificacion:</strong> Nombre, numero de celular, y fotografias de identificacion oficial (INE/IFE).</li><li><strong>Documentos opcionales:</strong> Comprobante de ingresos (nomina, estado de cuenta u equivalente).</li><li><strong>Datos de uso:</strong> Historial de conversacion con el agente Yunus, etapa del proceso de solicitud.</li></ul><h3>2. FINALIDAD</h3><p>Los datos recopilados se utilizan exclusivamente para: verificacion de identidad, evaluacion interna de riesgo crediticio, gestion del plan de pagos, y comunicacion relacionada con el servicio. <strong>NO vendemos ni compartimos datos personales con terceros, buros de credito, ni anunciantes.</strong></p><h3>3. ALMACENAMIENTO Y SEGURIDAD</h3><p>La informacion se almacena en bases de datos internas (Notion) accesibles unicamente por el equipo operador de Paso del Norte Labs. Las imagenes de documentos se almacenan en Cloudinary bajo acceso restringido. Yunus no comparte credenciales de acceso a estos sistemas con terceros.</p><h3>4. RETENCION DE DATOS</h3><p>Los datos del usuario se conservan durante la vigencia del plan de pagos y por un periodo adicional de 12 meses tras la conclusion del mismo, con fines de auditoria interna.</p><h3>5. DERECHOS ARCO</h3><p>Conforme a la LFPDPPP, usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento de sus datos personales. Contactenos en christianturista@proton.me. Responderemos en un plazo maximo de 20 dias habiles.</p><h3>6. COOKIES Y DATOS DE NAVEGACION</h3><p>Yunus puede utilizar almacenamiento local del navegador (localStorage) para mantener la sesion activa del usuario. No se utilizan cookies de rastreo ni herramientas de publicidad.</p><h3>7. CONTACTO</h3><p>christianturista@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juarez, Chihuahua, Mexico.</p>`
 };
 
-// ── ONBOARDING ──
-let currentCard = 1;
-function openOnboardingModal() {
-  currentCard = 1;
-  document.querySelectorAll('.onboarding-card').forEach(c => c.classList.remove('active'));
-  document.getElementById('card1').classList.add('active');
-  document.getElementById('onboardingModal').classList.add('open');
-}
-function closeOnboardingModal() { document.getElementById('onboardingModal').classList.remove('open'); }
-function goToCard(n) {
-  document.getElementById('card'+currentCard).classList.remove('active');
-  currentCard = n;
-  document.getElementById('card'+n).classList.add('active');
-}
-
-// ── SUBMIT ──
-async function submitAllDataAndGoToCard3() {
-    const cb = document.getElementById('acceptTerms');
-    const err = document.getElementById('error-terms');
-    if (!cb.checked) { err.classList.remove('hidden'); cb.scrollIntoView({behavior:'smooth',block:'center'}); return; }
-    err.classList.add('hidden');
-    const combined = {};
-    for (let [k,v] of new FormData(document.getElementById('form1')).entries()) combined[k] = v;
-    for (let [k,v] of new FormData(document.getElementById('form2')).entries()) combined[k] = v;
-    const btn = document.querySelector('#card2 .modal-footer button');
-    const orig = btn.innerHTML;
-    btn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle;"></span>Enviando...';
-    btn.disabled = true;
-
-    // Verificar si el número ya está registrado
-    const celularIngresado = '+52' + combined['Celular'];
-    try {
-        const check = await fetch('/api/historial?celular=' + encodeURIComponent(celularIngresado));
-        if (check.ok) {
-            btn.innerHTML = orig;
-            btn.disabled = false;
-            alert('Este número ya está registrado en Yunus. Entra directo al chat con tu número.');
-            return;
-        }
-    } catch {}
-
-    try {
-        const res = await fetch('https://hook.us2.make.com/xxdbhuqw3rv3klrq0kewfipr8hsiogwe', {
-            method: 'POST',
-            body: JSON.stringify(combined),
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
-        });
-        if (res.ok || res.status === 200) {
-            setTimeout(() => { goToCard(3); btn.innerHTML=orig; btn.disabled=false; }, 800);
-        } else throw new Error();
-    } catch { alert('❌ Hubo un error. Por favor, inténtalo de nuevo.'); btn.innerHTML=orig; btn.disabled=false; }
-}
-
-function irAlChat() { window.open('https://yunusia.com/chat','_blank'); closeOnboardingModal(); }
-
-// ── INVESTOR ──
-function openInvestorModal() { document.getElementById('investorModal').classList.add('open'); }
-function closeInvestorModal() { document.getElementById('investorModal').classList.remove('open'); }
-async function handleInvestorSubmit(e) {
-  e.preventDefault();
-  const form = document.getElementById('investorForm');
-  try {
-    const r = await fetch(form.action,{method:form.method,body:new FormData(form),headers:{'Accept':'application/json'}});
-    if (r.ok) { document.getElementById('investorContent').style.display='none'; document.getElementById('investorSuccessMessage').style.display='block'; form.reset(); }
-    else alert('Hubo un problema. Intenta de nuevo.');
-  } catch { alert('Error de conexion. Intenta mas tarde.'); }
-}
-
 // ── LEGAL ──
 function openLegalModal(type) {
-  document.getElementById('legalTitle').innerText = type==='terms' ? 'Terminos y Condiciones' : 'Politica de Privacidad';
+  document.getElementById('legalTitle').innerText = type==='terms' ? 'Términos y Condiciones' : 'Política de Privacidad';
   document.getElementById('legalContent').innerHTML = legalTexts[type];
   document.getElementById('legalModal').classList.add('open');
 }
 function closeLegalModal() { document.getElementById('legalModal').classList.remove('open'); }
 
-// ── DEMO ──
-var demoPlayed = false;
-function scrollChat() { var c=document.getElementById('demoChat'); if(c) c.scrollTop=c.scrollHeight; }
-function runDemo() {
-  if (demoPlayed) return;
-  demoPlayed = true;
-  var btn=document.getElementById('demoBtn'); if(btn) btn.style.opacity='0.4';
-  setTimeout(()=>{ var s=document.getElementById('step1'); if(s){s.style.color='#D4F53C';s.textContent='✓ Inventario analizado';} },700);
-  setTimeout(()=>{ var s=document.getElementById('step2'); if(s){s.style.color='#D4F53C';s.textContent='✓ Perfil cruzado';} },1500);
-  setTimeout(()=>{ var s=document.getElementById('step3'); if(s){s.style.color='#D4F53C';s.textContent='✓ Plan de pagos listo';} },2300);
-  setTimeout(()=>{ var a=document.getElementById('approvalMsg'); if(a){a.style.display='flex';a.style.flexDirection='column';a.style.gap='10px';scrollChat();} },3100);
-}
+// ── REVEAL on scroll ──
 if ('IntersectionObserver' in window) {
-  var dIO=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&!demoPlayed){setTimeout(runDemo,600);dIO.disconnect();}},{threshold:0.3});
-  var dSec=document.getElementById('demo'); if(dSec) dIO.observe(dSec);
   document.querySelectorAll('.reveal').forEach(el=>{
     var io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:0.08});
     io.observe(el);
   });
 }
-document.getElementById('demoBtn').addEventListener('click',runDemo);
-
-// ── FAQ ──
-function toggleFaq(el) {
-  var a=el.querySelector('.faq-a');
-  var open=el.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(i=>{ i.classList.remove('open'); i.querySelector('.faq-a').classList.remove('open'); });
-  if (!open) { el.classList.add('open'); a.classList.add('open'); }
-}
-
-// ── NAV MOBILE ──
-function toggleMenu() {
-  var m=document.getElementById('mobileMenu');
-  m.classList.toggle('open');
-}
-
-// Responsive hamburger
-(function(){
-  var h=document.getElementById('hamburger');
-  function check(){ if(window.innerWidth<=900){h.style.display='block';}else{h.style.display='none';document.getElementById('mobileMenu').classList.remove('open');} }
-  window.addEventListener('resize',check); check();
-})();
-// Auto-abrir modal de onboarding si viene desde chat.html
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('modal') === 'onboarding') {
-        // Limpiar el parametro de la URL para no repetir al recargar
-        const newUrl = window.location.pathname + window.location.hash;
-        window.history.replaceState({}, document.title, newUrl);
-        // Abrir el modal
-        openOnboardingModal();
-    }
-})();
 </script>
 
 </body>
