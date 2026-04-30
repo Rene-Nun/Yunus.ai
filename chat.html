@@ -1,735 +1,1353 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Yunus — Acceso</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --ink: #0a0a0a;
-      --paper: #F2EFE8;
-      --volt: #D4F53C;
-      --muted: #5C5C5C;
-      --border: rgba(242,239,232,0.1);
-      --red: #ef4444;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--ink);
-      color: var(--paper);
-      min-height: 100%;
-      overflow-x: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yunus — Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0a0a0a;
+            --paper: #F2EFE8;
+            --volt: #D4F53C;
+            --muted: #5C5C5C;
+            --border: rgba(242,239,232,0.1);
+            --card-bg: #111111;
+            --red: #ef4444;
+        }
 
-/* ── SCREENS ── */
-.screen { display: none; min-height: 100vh; flex-direction: column; }
-.screen.active { display: flex; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { height: 100%; }
+        body {
+            height: 100%;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--ink);
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            color: var(--paper);
+        }
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--ink);
+        }
 
-/* ── SCREEN 1: CÓDIGO ── */
-#screenCodigo {
-  align-items: center;
-  justify-content: center;
-  padding: 32px 24px;
-  position: relative;
-}
-.noise {
-  position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 128px;
-}
-.codigo-inner {
-  position: relative; z-index: 1;
-  width: 100%; max-width: 360px;
-  display: flex; flex-direction: column; align-items: center;
-  gap: 0;
-}
-.codigo-logo {
-  width: 120px; height: 120px; object-fit: contain;
-  margin-bottom: 40px;
-  opacity: 0; animation: fadeUp 0.6s ease 0.1s both;
-}
-.codigo-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 16px; text-align: center;
-  opacity: 0; animation: fadeUp 0.5s ease 0.2s both;
-}
-#codigoInput {
-  width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(242,239,232,0.2);
-  padding: 16px 0;
-  font-family: 'DM Mono', monospace;
-  font-size: 22px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--paper);
-  outline: none;
-  transition: border-color 0.3s;
-  opacity: 0; animation: fadeUp 0.5s ease 0.3s both;
-}
-#codigoInput::placeholder {
-  color: rgba(242,239,232,0.15);
-  letter-spacing: 0.2em;
-}
-#codigoInput:focus { border-color: var(--volt); }
-#codigoError {
-  display: none;
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: 0.1em;
-  color: var(--red); margin-top: 12px; text-align: center;
-}
-#btnEntrarCodigo {
-  width: 100%; margin-top: 32px;
-  background: var(--volt); color: var(--ink);
-  font-family: 'DM Mono', monospace;
-  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  border: none; padding: 16px; cursor: pointer;
-  font-weight: 500; transition: opacity 0.2s;
-  opacity: 0; animation: fadeUp 0.5s ease 0.4s both;
-}
-#btnEntrarCodigo:hover { opacity: 0.85; }
-#btnEntrarCodigo:disabled { opacity: 0.4; cursor: not-allowed; }
-.divider-codigo {
-  width: 100%; display: flex; align-items: center; gap: 12px;
-  margin: 28px 0;
-  opacity: 0; animation: fadeUp 0.5s ease 0.45s both;
-}
-.divider-codigo .line { flex: 1; height: 1px; background: var(--border); }
-.divider-codigo span {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-}
-#btnYaTengo {
-  width: 100%; background: transparent;
-  border: 1px solid var(--border);
-  color: var(--muted); font-family: 'DM Mono', monospace;
-  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 14px; cursor: pointer; transition: all 0.2s;
-  opacity: 0; animation: fadeUp 0.5s ease 0.5s both;
-}
-#btnYaTengo:hover { border-color: var(--paper); color: var(--paper); }
-.codigo-footer {
-  margin-top: 48px; text-align: center;
-  opacity: 0; animation: fadeUp 0.5s ease 0.55s both;
-}
-.codigo-footer span {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.16em; text-transform: uppercase; color: rgba(92,92,92,0.5);
-}
+        /* ═══════════════════════════════════════
+           NUEVAS PANTALLAS DE ACCESO
+        ═══════════════════════════════════════ */
 
-/* ── SCREEN 2: LOGIN EXISTENTE ── */
-#screenLogin {
-  align-items: center; justify-content: center; padding: 32px 24px;
-}
-.login-inner {
-  position: relative; z-index: 1;
-  width: 100%; max-width: 360px;
-  display: flex; flex-direction: column; align-items: center;
-}
-.back-btn {
-  align-self: flex-start; margin-bottom: 32px;
-  background: none; border: none; cursor: pointer;
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--muted); display: flex; align-items: center; gap: 8px;
-  transition: color 0.2s;
-}
-.back-btn:hover { color: var(--paper); }
-.login-h {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 36px; color: var(--paper);
-  letter-spacing: 0.04em; margin-bottom: 8px; text-align: center;
-}
-.login-sub {
-  font-size: 13px; color: var(--muted); text-align: center;
-  line-height: 1.6; margin-bottom: 32px;
-}
-.input-row {
-  display: flex; gap: 8px; width: 100%; margin-bottom: 12px;
-}
-.prefix {
-  padding: 14px 12px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
-  font-family: 'DM Mono', monospace; font-size: 13px;
-  color: var(--muted); flex-shrink: 0;
-}
-#celularInput {
-  flex: 1; padding: 14px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
-  font-size: 16px; color: var(--paper);
-  font-family: inherit; outline: none;
-  transition: border-color 0.2s; -webkit-appearance: none;
-}
-#celularInput:focus { border-color: var(--volt); }
-#celularInput::placeholder { color: var(--muted); }
-#btnEntrarLogin {
-  width: 100%; background: var(--volt); color: var(--ink);
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  border: none; padding: 16px; cursor: pointer;
-  font-weight: 500; transition: opacity 0.2s;
-}
-#btnEntrarLogin:hover { opacity: 0.85; }
-#loginError {
-  display: none; margin-top: 12px; padding: 10px 14px;
-  background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  color: var(--red); text-align: center; width: 100%;
-}
+        .access-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 32px 24px;
+            overflow-y: auto;
+        }
+        .access-screen.active { display: flex; }
 
-/* ── SCREEN 3: REGISTRO (del código válido) ── */
-#screenRegistro {
-  padding: 0;
-  justify-content: flex-start;
-}
-.registro-header {
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(10,10,10,0.9);
-  position: sticky; top: 0; z-index: 10;
-  backdrop-filter: blur(12px);
-}
-.registro-header img { height: 40px; object-fit: contain; }
-.registro-step-label {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-}
-.registro-body { flex: 1; overflow-y: auto; padding: 28px 24px 100px; }
-.registro-body::-webkit-scrollbar { display: none; }
-.card-reg { display: none; }
-.card-reg.active { display: block; }
+        /* Noise overlay */
+        .noise-layer {
+            position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 128px;
+        }
 
-.reg-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 36px; color: var(--paper);
-  letter-spacing: 0.04em; margin-bottom: 24px;
-}
-.form-group { margin-bottom: 16px; }
-.form-label {
-  display: block; font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 8px;
-}
-.form-input {
-  width: 100%; padding: 14px 16px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
-  color: var(--paper); font-family: 'DM Sans', sans-serif;
-  font-size: 15px; outline: none;
-  transition: border-color 0.2s; -webkit-appearance: none; appearance: none;
-}
-.form-input:focus { border-color: var(--volt); }
-.form-input option { background: #111; }
-.prefix-wrap { display: flex; }
-.prefix-tag {
-  padding: 14px 12px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border); border-right: none;
-  font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted);
-}
-.prefix-wrap .form-input { border-left: none; }
-.check-wrap {
-  display: flex; align-items: flex-start; gap: 12px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border); padding: 14px; margin-top: 8px;
-}
-.check-wrap input[type=checkbox] { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: var(--volt); }
-.check-wrap label { font-size: 12px; color: var(--muted); line-height: 1.6; cursor: pointer; }
-.check-wrap label span { color: var(--paper); text-decoration: underline; cursor: pointer; }
-#regError { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--red); margin-top: 8px; display: none; }
+        /* ── Screen código ── */
+        .codigo-inner {
+            position: relative; z-index: 1;
+            width: 100%; max-width: 360px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .codigo-logo {
+            width: 120px; height: 120px; object-fit: contain;
+            margin-bottom: 40px;
+            opacity: 0; animation: fadeUp 0.6s ease 0.1s both;
+        }
+        .codigo-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+            color: var(--muted); margin-bottom: 16px; text-align: center;
+            opacity: 0; animation: fadeUp 0.5s ease 0.2s both;
+        }
+        #codigoInput {
+            width: 100%;
+            background: transparent; border: none;
+            border-bottom: 1px solid rgba(242,239,232,0.2);
+            padding: 16px 0;
+            font-family: 'DM Mono', monospace;
+            font-size: 22px; letter-spacing: 0.25em; text-transform: uppercase;
+            text-align: center; color: var(--paper); outline: none;
+            transition: border-color 0.3s;
+            opacity: 0; animation: fadeUp 0.5s ease 0.3s both;
+        }
+        #codigoInput::placeholder { color: rgba(242,239,232,0.15); letter-spacing: 0.2em; }
+        #codigoInput:focus { border-color: var(--volt); }
+        #codigoError {
+            display: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px; letter-spacing: 0.1em;
+            color: var(--red); margin-top: 12px; text-align: center;
+        }
+        #btnEntrarCodigo {
+            width: 100%; margin-top: 32px;
+            background: var(--volt); color: var(--ink);
+            font-family: 'DM Mono', monospace;
+            font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+            border: none; padding: 16px; cursor: pointer;
+            font-weight: 500; transition: opacity 0.2s;
+            opacity: 0; animation: fadeUp 0.5s ease 0.4s both;
+        }
+        #btnEntrarCodigo:hover { opacity: 0.85; }
+        #btnEntrarCodigo:disabled { opacity: 0.4; cursor: not-allowed; }
+        .divider-codigo {
+            width: 100%; display: flex; align-items: center; gap: 12px;
+            margin: 28px 0;
+            opacity: 0; animation: fadeUp 0.5s ease 0.45s both;
+        }
+        .divider-codigo .dc-line { flex: 1; height: 1px; background: var(--border); }
+        .divider-codigo span {
+            font-family: 'DM Mono', monospace; font-size: 9px;
+            letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+        }
+        #btnYaTengo {
+            width: 100%; background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted); font-family: 'DM Mono', monospace;
+            font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+            padding: 14px; cursor: pointer; transition: all 0.2s;
+            opacity: 0; animation: fadeUp 0.5s ease 0.5s both;
+        }
+        #btnYaTengo:hover { border-color: var(--paper); color: var(--paper); }
+        .codigo-footer {
+            margin-top: 48px; text-align: center;
+            opacity: 0; animation: fadeUp 0.5s ease 0.55s both;
+        }
+        .codigo-footer span {
+            font-family: 'DM Mono', monospace; font-size: 9px;
+            letter-spacing: 0.16em; text-transform: uppercase; color: rgba(92,92,92,0.5);
+        }
 
-.registro-footer {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  padding: 14px 24px; background: rgba(10,10,10,0.95);
-  border-top: 1px solid var(--border);
-  backdrop-filter: blur(12px); z-index: 10;
-}
-.btn-next {
-  width: 100%; background: var(--volt); color: var(--ink);
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  border: none; padding: 16px; cursor: pointer;
-  font-weight: 500; transition: opacity 0.2s;
-}
-.btn-next:hover { opacity: 0.85; }
-.btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+        /* ── Screen login existente ── */
+        #screenLogin { overflow-y: auto; }
+        .login-new-inner {
+            position: relative; z-index: 1;
+            width: 100%; max-width: 360px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .back-btn {
+            align-self: flex-start; margin-bottom: 32px;
+            background: none; border: none; cursor: pointer;
+            font-family: 'DM Mono', monospace; font-size: 10px;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--muted); display: flex; align-items: center; gap: 8px;
+            transition: color 0.2s;
+        }
+        .back-btn:hover { color: var(--paper); }
+        .login-new-h {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px; color: var(--paper);
+            letter-spacing: 0.04em; margin-bottom: 8px; text-align: center;
+        }
+        .login-new-sub {
+            font-size: 13px; color: var(--muted); text-align: center;
+            line-height: 1.6; margin-bottom: 32px;
+        }
+        .input-row-new { display: flex; gap: 8px; width: 100%; margin-bottom: 12px; }
+        .prefix-new {
+            padding: 14px 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            font-family: 'DM Mono', monospace; font-size: 13px;
+            color: var(--muted); flex-shrink: 0;
+        }
+        #celularLoginInput {
+            flex: 1; padding: 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            font-size: 16px; color: var(--paper);
+            font-family: inherit; outline: none;
+            transition: border-color 0.2s; -webkit-appearance: none;
+        }
+        #celularLoginInput:focus { border-color: var(--volt); }
+        #celularLoginInput::placeholder { color: var(--muted); }
+        #btnEntrarLogin {
+            width: 100%; background: var(--volt); color: var(--ink);
+            font-family: 'DM Mono', monospace; font-size: 11px;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            border: none; padding: 16px; cursor: pointer;
+            font-weight: 500; transition: opacity 0.2s;
+        }
+        #btnEntrarLogin:hover { opacity: 0.85; }
+        #loginNewError {
+            display: none; margin-top: 12px; padding: 10px 14px;
+            background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+            font-family: 'DM Mono', monospace; font-size: 11px;
+            color: var(--red); text-align: center; width: 100%;
+        }
 
-/* ── SCREEN 4: BIENVENIDA ── */
-#screenBienvenida {
-  align-items: center; justify-content: center;
-  padding: 40px 24px; text-align: center;
-}
-.bienvenida-inner {
-  position: relative; z-index: 1;
-  width: 100%; max-width: 320px;
-  display: flex; flex-direction: column; align-items: center;
-}
-.check-icon {
-  width: 64px; height: 64px; background: var(--volt);
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 24px;
-}
-.bienvenida-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 48px; color: var(--paper);
-  letter-spacing: 0.04em; line-height: 0.95; margin-bottom: 12px;
-}
-.bienvenida-sub {
-  font-size: 14px; color: var(--muted); line-height: 1.7;
-  margin-bottom: 36px;
-}
-.steps-mini {
-  width: 100%;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border);
-  padding: 20px; text-align: left;
-  display: flex; flex-direction: column; gap: 14px;
-  margin-bottom: 32px;
-}
-.step-mini { display: flex; gap: 12px; align-items: flex-start; }
-.step-mini-n {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  color: var(--volt); flex-shrink: 0; padding-top: 1px;
-}
-.step-mini-t { font-size: 13px; color: var(--muted); line-height: 1.55; }
-.btn-ir {
-  width: 100%; background: var(--volt); color: var(--ink);
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  border: none; padding: 16px; cursor: pointer;
-  font-weight: 500; transition: opacity 0.2s;
-}
-.btn-ir:hover { opacity: 0.85; }
+        /* ── Screen registro ── */
+        #screenRegistro {
+            display: none; flex-direction: column;
+            flex: 1; overflow: hidden;
+            justify-content: flex-start;
+        }
+        #screenRegistro.active { display: flex; }
+        .registro-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(10,10,10,0.9);
+            flex-shrink: 0;
+            backdrop-filter: blur(12px);
+        }
+        .registro-header img { height: 40px; object-fit: contain; }
+        .registro-step-label {
+            font-family: 'DM Mono', monospace; font-size: 9px;
+            letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+        }
+        .registro-body { flex: 1; overflow-y: auto; padding: 28px 24px 100px; }
+        .registro-body::-webkit-scrollbar { display: none; }
+        .card-reg { display: none; }
+        .card-reg.active { display: block; }
+        .reg-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px; color: var(--paper);
+            letter-spacing: 0.04em; margin-bottom: 24px;
+        }
+        .form-group-r { margin-bottom: 16px; }
+        .form-label-r {
+            display: block; font-family: 'DM Mono', monospace;
+            font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+            color: var(--muted); margin-bottom: 8px;
+        }
+        .form-input-r {
+            width: 100%; padding: 14px 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            color: var(--paper); font-family: 'DM Sans', sans-serif;
+            font-size: 15px; outline: none;
+            transition: border-color 0.2s; -webkit-appearance: none; appearance: none;
+        }
+        .form-input-r:focus { border-color: var(--volt); }
+        .form-input-r option { background: #111; }
+        .prefix-wrap-r { display: flex; }
+        .prefix-tag-r {
+            padding: 14px 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border); border-right: none;
+            font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted);
+        }
+        .prefix-wrap-r .form-input-r { border-left: none; }
+        .check-wrap-r {
+            display: flex; align-items: flex-start; gap: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border); padding: 14px; margin-top: 8px;
+        }
+        .check-wrap-r input[type=checkbox] { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: var(--volt); }
+        .check-wrap-r label { font-size: 12px; color: var(--muted); line-height: 1.6; cursor: pointer; }
+        .check-wrap-r label span { color: var(--paper); text-decoration: underline; cursor: pointer; }
+        #regError { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--red); margin-top: 8px; display: none; }
+        .registro-footer {
+            padding: 14px 24px; background: rgba(10,10,10,0.95);
+            border-top: 1px solid var(--border);
+            backdrop-filter: blur(12px); flex-shrink: 0;
+        }
+        .btn-next {
+            width: 100%; background: var(--volt); color: var(--ink);
+            font-family: 'DM Mono', monospace; font-size: 11px;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            border: none; padding: 16px; cursor: pointer;
+            font-weight: 500; transition: opacity 0.2s;
+        }
+        .btn-next:hover { opacity: 0.85; }
+        .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+        /* ── Screen bienvenida ── */
+        #screenBienvenida { overflow-y: auto; text-align: center; }
+        .bienvenida-inner {
+            position: relative; z-index: 1;
+            width: 100%; max-width: 320px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .check-icon {
+            width: 64px; height: 64px; background: var(--volt);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 24px;
+        }
+        .bienvenida-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px; color: var(--paper);
+            letter-spacing: 0.04em; line-height: 0.95; margin-bottom: 12px;
+        }
+        .bienvenida-sub { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 36px; }
+        .steps-mini {
+            width: 100%; background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border); padding: 20px; text-align: left;
+            display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px;
+        }
+        .step-mini { display: flex; gap: 12px; align-items: flex-start; }
+        .step-mini-n { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--volt); flex-shrink: 0; padding-top: 1px; }
+        .step-mini-t { font-size: 13px; color: var(--muted); line-height: 1.55; }
+        .btn-ir {
+            width: 100%; background: var(--volt); color: var(--ink);
+            font-family: 'DM Mono', monospace; font-size: 11px;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            border: none; padding: 16px; cursor: pointer;
+            font-weight: 500; transition: opacity 0.2s;
+        }
+        .btn-ir:hover { opacity: 0.85; }
 
-  </style>
+        /* ═══════════════════════════════════════
+           CÓDIGO ORIGINAL — LOGIN SCREEN
+        ═══════════════════════════════════════ */
+
+        #loginBox {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        #loginBox .inner {
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .login-logo {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fadeUp 0.6s ease 0.1s both;
+        }
+        .login-h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 42px;
+            line-height: 0.95;
+            letter-spacing: 0.02em;
+            color: var(--paper);
+            text-align: center;
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.2s both;
+        }
+        .login-sub {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.65;
+            text-align: center;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.3s both;
+        }
+        .btn-registro {
+            width: 100%;
+            padding: 14px;
+            background: var(--volt);
+            color: var(--ink);
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.4s both;
+        }
+        .btn-registro:hover { opacity: 0.85; }
+        .divider-wrap {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.45s both;
+        }
+        .divider-line { flex: 1; height: 1px; background: var(--border); }
+        .divider-text {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+        .input-row {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.5s both;
+        }
+        .prefix {
+            padding: 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: 'DM Mono', monospace;
+            font-size: 14px;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+        #celularInput {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            font-family: inherit;
+            background: rgba(255,255,255,0.04);
+            -webkit-appearance: none;
+            transition: border-color 0.2s;
+            color: var(--paper);
+        }
+        #celularInput::placeholder { color: var(--muted); }
+        #celularInput:focus { border-color: var(--volt); }
+        #btnEntrar {
+            width: 100%;
+            margin-top: 12px;
+            background: var(--volt);
+            color: var(--ink);
+            padding: 14px;
+            border-radius: 12px;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.55s both;
+        }
+        #btnEntrar:hover { opacity: 0.85; }
+        #loginError {
+            display: none;
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #ef4444;
+            text-align: center;
+            width: 100%;
+        }
+        .login-footer {
+            margin-top: auto;
+            padding-top: 32px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.6s both;
+        }
+        .login-footer span {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* ═══════════════════════════════════════
+           CÓDIGO ORIGINAL — CHAT
+        ═══════════════════════════════════════ */
+
+        #chatBox {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+        }
+        #mensajes {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            -webkit-overflow-scrolling: touch;
+            background: #0d0d0d;
+        }
+        #mensajes::-webkit-scrollbar { display: none; }
+        #typingIndicator {
+            display: none;
+            padding: 8px 16px;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--volt);
+            background: #0d0d0d;
+            animation: pulseText 1.5s infinite;
+            flex-shrink: 0;
+        }
+        @keyframes pulseText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        #inputBar {
+            background: #111;
+            border-top: 1px solid var(--border);
+            padding: 10px 14px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        #cameraBtn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        #cameraBtn svg { stroke: var(--muted); }
+        #inputMsg {
+            flex: 1;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-size: 14px;
+            outline: none;
+            font-family: inherit;
+            -webkit-appearance: none;
+            color: var(--paper);
+        }
+        #inputMsg::placeholder { color: var(--muted); }
+        #sendBtn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--volt);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: opacity 0.2s;
+        }
+        #sendBtn:hover { opacity: 0.85; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-<div class="noise"></div>
 
-<!-- ══ SCREEN 1: CÓDIGO ══ -->
+<div class="noise-layer"></div>
 
-<div id="screenCodigo" class="screen active">
-  <div class="codigo-inner">
-    <img src="darklogo.png" alt="Yunus" class="codigo-logo" onerror="this.src='darklogo.jpeg'">
-    <div class="codigo-label">Acceso restringido</div>
-    <input id="codigoInput" type="text" placeholder="CLAVE DE ACCESO" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false">
-    <div id="codigoError"></div>
-    <button id="btnEntrarCodigo" onclick="validarCodigo()">Entrar</button>
-    <div class="divider-codigo">
-      <div class="line"></div>
-      <span>Ya tengo cuenta</span>
-      <div class="line"></div>
+<div id="app">
+
+    <!-- ══════════════════════════════════════
+         NUEVAS PANTALLAS DE ACCESO
+    ══════════════════════════════════════ -->
+
+    <!-- SCREEN: CÓDIGO -->
+    <div id="screenCodigo" class="access-screen active">
+        <div class="codigo-inner">
+            <img src="darklogo.png" alt="Yunus" class="codigo-logo" onerror="this.src='darklogo.jpeg'">
+            <div class="codigo-label">Acceso restringido</div>
+            <input id="codigoInput" type="text" placeholder="CLAVE DE ACCESO" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false">
+            <div id="codigoError"></div>
+            <button id="btnEntrarCodigo" onclick="validarCodigo()">Entrar</button>
+            <div class="divider-codigo">
+                <div class="dc-line"></div>
+                <span>Ya tengo cuenta</span>
+                <div class="dc-line"></div>
+            </div>
+            <button id="btnYaTengo" onclick="showAccessScreen('screenLogin')">Iniciar sesión →</button>
+            <div class="codigo-footer">
+                <span>Yunus 1.0.1 BETA</span>
+            </div>
+        </div>
     </div>
-    <button id="btnYaTengo" onclick="showScreen('screenLogin')">Iniciar sesión →</button>
-    <div class="codigo-footer">
-      <span>Yunus 1.0.1 Beta</span>
+
+    <!-- SCREEN: LOGIN EXISTENTE -->
+    <div id="screenLogin" class="access-screen">
+        <div class="login-new-inner">
+            <button class="back-btn" onclick="showAccessScreen('screenCodigo')">← Volver</button>
+            <h1 class="login-new-h">Iniciar sesión</h1>
+            <p class="login-new-sub">Ingresa tu número para continuar donde lo dejaste.</p>
+            <div class="input-row-new">
+                <span class="prefix-new">+52</span>
+                <input id="celularLoginInput" type="tel" placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
+            </div>
+            <button id="btnEntrarLogin" onclick="iniciarSesionNuevo()">Entrar →</button>
+            <div id="loginNewError"></div>
+        </div>
     </div>
-  </div>
-</div>
 
-<!-- ══ SCREEN 2: LOGIN EXISTENTE ══ -->
-
-<div id="screenLogin" class="screen">
-  <div class="noise"></div>
-  <div class="login-inner">
-    <button class="back-btn" onclick="showScreen('screenCodigo')">
-      ← Volver
-    </button>
-    <h1 class="login-h">Iniciar sesión</h1>
-    <p class="login-sub">Ingresa tu número para continuar donde lo dejaste.</p>
-    <div class="input-row">
-      <span class="prefix">+52</span>
-      <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
+    <!-- SCREEN: REGISTRO -->
+    <div id="screenRegistro" class="access-screen" style="align-items:stretch;justify-content:flex-start;padding:0;">
+        <div class="registro-header">
+            <img src="darklogo.png" alt="Yunus" onerror="this.style.display='none'">
+            <span class="registro-step-label" id="stepLabel">Paso 1 de 2</span>
+        </div>
+        <div class="registro-body">
+            <!-- Card 1 -->
+            <div id="regCard1" class="card-reg active">
+                <div class="reg-title">Regístrate</div>
+                <div class="form-group-r">
+                    <label class="form-label-r">Nombre completo</label>
+                    <input type="text" id="r_nombre" class="form-input-r" placeholder="Tu nombre">
+                </div>
+                <div class="form-group-r">
+                    <label class="form-label-r">Celular</label>
+                    <div class="prefix-wrap-r">
+                        <span class="prefix-tag-r">+52</span>
+                        <input type="tel" id="r_celular" class="form-input-r" placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
+                    </div>
+                </div>
+                <div class="form-group-r">
+                    <label class="form-label-r">Edad</label>
+                    <input type="number" id="r_edad" class="form-input-r" placeholder="Ej. 25" min="18" max="99">
+                </div>
+                <div class="form-group-r">
+                    <label class="form-label-r">Entidad federativa</label>
+                    <select id="r_entidad" class="form-input-r">
+                        <option value="">Selecciona</option>
+                        <option value="AGU">Aguascalientes</option><option value="BCN">Baja California</option><option value="BCS">Baja California Sur</option><option value="CAM">Campeche</option><option value="COA">Coahuila</option><option value="COL">Colima</option><option value="CHP">Chiapas</option><option value="CHH">Chihuahua</option><option value="CMX">Ciudad de México</option><option value="DUR">Durango</option><option value="GTO">Guanajuato</option><option value="GRO">Guerrero</option><option value="HGO">Hidalgo</option><option value="JAL">Jalisco</option><option value="MEX">México</option><option value="MIC">Michoacán</option><option value="MOR">Morelos</option><option value="NAY">Nayarit</option><option value="NL">Nuevo León</option><option value="OAX">Oaxaca</option><option value="PUE">Puebla</option><option value="QRO">Querétaro</option><option value="QROO">Quintana Roo</option><option value="SLP">San Luis Potosí</option><option value="SIN">Sinaloa</option><option value="SON">Sonora</option><option value="TAB">Tabasco</option><option value="TAM">Tamaulipas</option><option value="TLA">Tlaxcala</option><option value="VER">Veracruz</option><option value="YUC">Yucatán</option><option value="ZAC">Zacatecas</option>
+                    </select>
+                </div>
+                <div class="form-group-r">
+                    <label class="form-label-r">Código postal</label>
+                    <input type="text" id="r_cp" class="form-input-r" placeholder="5 dígitos" maxlength="5" inputmode="numeric">
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div id="regCard2" class="card-reg">
+                <div class="reg-title">Tu perfil financiero</div>
+                <div class="form-group-r">
+                    <label class="form-label-r">Ingreso mensual neto (MXN)</label>
+                    <input type="number" id="r_ingreso" class="form-input-r" placeholder="Ej. 12000" min="0">
+                </div>
+                <div class="form-group-r">
+                    <label class="form-label-r">Marca de celular</label>
+                    <select id="r_marca" class="form-input-r">
+                        <option value="">Selecciona</option>
+                        <option>Apple</option><option>Samsung</option><option>Xiaomi</option><option>OPPO</option><option>Realme</option><option>Motorola</option><option>Huawei</option><option>Sony</option><option>Nokia</option><option>LG</option><option>OnePlus</option><option>ASUS</option><option>Lenovo</option><option>Otro</option>
+                    </select>
+                </div>
+                <div class="form-group-r">
+                    <label class="form-label-r">Gastos de celular</label>
+                    <select id="r_gcel" class="form-input-r">
+                        <option value="">Selecciona</option>
+                        <option value="credito_activo">Crédito de celular activo</option>
+                        <option value="sin_deudas">Sin deudas / Plan de renta</option>
+                    </select>
+                </div>
+                <div class="form-group-r">
+                    <label class="form-label-r">Gastos de vivienda</label>
+                    <select id="r_gviv" class="form-input-r">
+                        <option value="">Selecciona</option>
+                        <option value="sin_gastos">No tengo gastos de vivienda</option>
+                        <option value="pago_renta">Pago renta</option>
+                        <option value="pago_hipoteca">Pago hipoteca</option>
+                    </select>
+                </div>
+                <div class="form-group-r">
+                    <label class="form-label-r">Gastos de automóvil</label>
+                    <select id="r_gauto" class="form-input-r">
+                        <option value="">Selecciona</option>
+                        <option value="no_tengo">No tengo carro</option>
+                        <option value="credito_auto">Crédito automotriz</option>
+                        <option value="auto_sin_deuda">Auto sin deuda</option>
+                    </select>
+                </div>
+                <div class="form-group-r">
+                    <label class="form-label-r">Dependientes económicos</label>
+                    <select id="r_dep" class="form-input-r">
+                        <option value="">Selecciona</option>
+                        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option>
+                    </select>
+                </div>
+                <div class="form-group-r">
+                    <label class="form-label-r">¿Cómo calificarías tu historial crediticio?</label>
+                    <select id="r_hist" class="form-input-r">
+                        <option value="">Selecciona</option>
+                        <option value="Bueno">Bueno</option>
+                        <option value="Regular">Regular</option>
+                        <option value="Malo">Malo</option>
+                        <option value="No tengo">No tengo / No sé</option>
+                    </select>
+                </div>
+                <div class="form-group-r">
+                    <label class="form-label-r">¿Estás pagando otro crédito o deuda?</label>
+                    <select id="r_deudas" class="form-input-r">
+                        <option value="">Selecciona</option>
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="check-wrap-r">
+                    <input type="checkbox" id="r_terms">
+                    <label for="r_terms">He leído y acepto los <span onclick="window.open('index.html#terms','_blank')">Términos y condiciones</span> y la <span onclick="window.open('index.html#privacy','_blank')">Política de privacidad</span>.</label>
+                </div>
+                <div id="regError"></div>
+            </div>
+        </div>
+        <div class="registro-footer">
+            <button class="btn-next" id="btnSiguiente" onclick="avanzarRegistro()">Siguiente →</button>
+        </div>
     </div>
-    <button id="btnEntrarLogin" onclick="iniciarSesion()">Entrar →</button>
-    <div id="loginError"></div>
-  </div>
-</div>
 
-<!-- ══ SCREEN 3: REGISTRO ══ -->
-
-<div id="screenRegistro" class="screen">
-  <div class="registro-header">
-    <img src="darklogo.png" alt="Yunus" onerror="this.style.display='none'">
-    <span class="registro-step-label" id="stepLabel">Paso 1 de 2</span>
-  </div>
-  <div class="registro-body">
-
-<!-- Card 1 -->
-<div id="regCard1" class="card-reg active">
-  <div class="reg-title">Regístrate</div>
-  <div class="form-group">
-    <label class="form-label">Nombre completo</label>
-    <input type="text" id="r_nombre" class="form-input" placeholder="Tu nombre">
-  </div>
-  <div class="form-group">
-    <label class="form-label">Celular</label>
-    <div class="prefix-wrap">
-      <span class="prefix-tag">+52</span>
-      <input type="tel" id="r_celular" class="form-input" placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
+    <!-- SCREEN: BIENVENIDA -->
+    <div id="screenBienvenida" class="access-screen">
+        <div class="bienvenida-inner">
+            <div class="check-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="bienvenida-title">¡Ya estás<br>dentro!</div>
+            <p class="bienvenida-sub">Yunus está listo. Entra con el número que registraste y empieza a financiar tu experiencia.</p>
+            <div class="steps-mini">
+                <div class="step-mini"><span class="step-mini-n">01</span><span class="step-mini-t">Inicia sesión con tu número de celular.</span></div>
+                <div class="step-mini"><span class="step-mini-n">02</span><span class="step-mini-t">Explora los eventos disponibles en el Marketplace.</span></div>
+                <div class="step-mini"><span class="step-mini-n">03</span><span class="step-mini-t">Dile a Yunus qué evento quieres — él te guía desde ahí. 🚀</span></div>
+            </div>
+            <button class="btn-ir" onclick="window.location.href='marketplace.html'">Ir al Marketplace →</button>
+        </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label class="form-label">Edad</label>
-    <input type="number" id="r_edad" class="form-input" placeholder="Ej. 25" min="18" max="99">
-  </div>
-  <div class="form-group">
-    <label class="form-label">Entidad federativa</label>
-    <select id="r_entidad" class="form-input">
-      <option value="">Selecciona</option>
-      <option value="AGU">Aguascalientes</option><option value="BCN">Baja California</option><option value="BCS">Baja California Sur</option><option value="CAM">Campeche</option><option value="COA">Coahuila</option><option value="COL">Colima</option><option value="CHP">Chiapas</option><option value="CHH">Chihuahua</option><option value="CMX">Ciudad de México</option><option value="DUR">Durango</option><option value="GTO">Guanajuato</option><option value="GRO">Guerrero</option><option value="HGO">Hidalgo</option><option value="JAL">Jalisco</option><option value="MEX">México</option><option value="MIC">Michoacán</option><option value="MOR">Morelos</option><option value="NAY">Nayarit</option><option value="NL">Nuevo León</option><option value="OAX">Oaxaca</option><option value="PUE">Puebla</option><option value="QRO">Querétaro</option><option value="QROO">Quintana Roo</option><option value="SLP">San Luis Potosí</option><option value="SIN">Sinaloa</option><option value="SON">Sonora</option><option value="TAB">Tabasco</option><option value="TAM">Tamaulipas</option><option value="TLA">Tlaxcala</option><option value="VER">Veracruz</option><option value="YUC">Yucatán</option><option value="ZAC">Zacatecas</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label class="form-label">Código postal</label>
-    <input type="text" id="r_cp" class="form-input" placeholder="5 dígitos" maxlength="5" inputmode="numeric">
-  </div>
-</div>
 
-<!-- Card 2 -->
-<div id="regCard2" class="card-reg">
-  <div class="reg-title">Tu perfil financiero</div>
-  <div class="form-group">
-    <label class="form-label">Ingreso mensual neto (MXN)</label>
-    <input type="number" id="r_ingreso" class="form-input" placeholder="Ej. 12000" min="0">
-  </div>
-  <div class="form-group">
-    <label class="form-label">Marca de celular</label>
-    <select id="r_marca" class="form-input">
-      <option value="">Selecciona</option>
-      <option>Apple</option><option>Samsung</option><option>Xiaomi</option><option>OPPO</option><option>Realme</option><option>Motorola</option><option>Huawei</option><option>Sony</option><option>Nokia</option><option>LG</option><option>OnePlus</option><option>ASUS</option><option>Lenovo</option><option>Otro</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label class="form-label">Gastos de celular</label>
-    <select id="r_gcel" class="form-input">
-      <option value="">Selecciona</option>
-      <option value="credito_activo">Crédito de celular activo</option>
-      <option value="sin_deudas">Sin deudas / Plan de renta</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label class="form-label">Gastos de vivienda</label>
-    <select id="r_gviv" class="form-input">
-      <option value="">Selecciona</option>
-      <option value="sin_gastos">No tengo gastos de vivienda</option>
-      <option value="pago_renta">Pago renta</option>
-      <option value="pago_hipoteca">Pago hipoteca</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label class="form-label">Gastos de automóvil</label>
-    <select id="r_gauto" class="form-input">
-      <option value="">Selecciona</option>
-      <option value="no_tengo">No tengo carro</option>
-      <option value="credito_auto">Crédito automotriz</option>
-      <option value="auto_sin_deuda">Auto sin deuda</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label class="form-label">Dependientes económicos</label>
-    <select id="r_dep" class="form-input">
-      <option value="">Selecciona</option>
-      <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label class="form-label">¿Cómo calificarías tu historial crediticio?</label>
-    <select id="r_hist" class="form-input">
-      <option value="">Selecciona</option>
-      <option value="Bueno">Bueno</option>
-      <option value="Regular">Regular</option>
-      <option value="Malo">Malo</option>
-      <option value="No tengo">No tengo / No sé</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label class="form-label">¿Estás pagando otro crédito o deuda?</label>
-    <select id="r_deudas" class="form-input">
-      <option value="">Selecciona</option>
-      <option value="si">Sí</option>
-      <option value="no">No</option>
-    </select>
-  </div>
-  <div class="check-wrap">
-    <input type="checkbox" id="r_terms">
-    <label for="r_terms">He leído y acepto los <span onclick="window.open('index.html#terms','_blank')">Términos y condiciones</span> y la <span onclick="window.open('index.html#privacy','_blank')">Política de privacidad</span>.</label>
-  </div>
-  <div id="regError"></div>
-</div>
+    <!-- ══════════════════════════════════════
+         CÓDIGO ORIGINAL INTACTO
+    ══════════════════════════════════════ -->
 
-  </div>
-
-  <div class="registro-footer">
-    <button class="btn-next" id="btnSiguiente" onclick="avanzarRegistro()">Siguiente →</button>
-  </div>
-</div>
-
-<!-- ══ SCREEN 4: BIENVENIDA ══ -->
-
-<div id="screenBienvenida" class="screen">
-  <div class="noise"></div>
-  <div class="bienvenida-inner">
-    <div class="check-icon">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <div id="loginBox" style="display:none;">
+        <div class="inner">
+            <img src="darklogo.png" alt="Yunus" class="login-logo" onerror="this.src='darklogo.jpeg'">
+            <h1 class="login-h1">Accede a los<br>mejores eventos<br>del año</h1>
+            <p class="login-sub">Financia boletos para los conciertos y festivales que no te puedes perder. Sin tarjeta, sin buró.</p>
+            <a href="index.html?modal=onboarding" class="btn-registro">
+                Registrarse
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                </svg>
+            </a>
+            <div class="divider-wrap">
+                <div class="divider-line"></div>
+                <span class="divider-text">¿Ya tienes cuenta?</span>
+                <div class="divider-line"></div>
+            </div>
+            <div class="input-row">
+                <span class="prefix">+52</span>
+                <input id="celularInput" type="tel" placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
+            </div>
+            <button id="btnEntrar" onclick="iniciarChat()">Entrar →</button>
+            <div id="loginError"></div>
+            <div class="login-footer">
+                <span>Yunus 1.0.1 BETA</span>
+            </div>
+        </div>
     </div>
-    <div class="bienvenida-title">¡Ya estás<br>dentro!</div>
-    <p class="bienvenida-sub">Yunus está listo. Entra con el número que registraste y empieza a financiar tu experiencia.</p>
-    <div class="steps-mini">
-      <div class="step-mini">
-        <span class="step-mini-n">01</span>
-        <span class="step-mini-t">Inicia sesión con tu número de celular.</span>
-      </div>
-      <div class="step-mini">
-        <span class="step-mini-n">02</span>
-        <span class="step-mini-t">Explora los eventos disponibles en el Marketplace.</span>
-      </div>
-      <div class="step-mini">
-        <span class="step-mini-n">03</span>
-        <span class="step-mini-t">Dile a Yunus qué evento quieres — él te guía desde ahí. 🚀</span>
-      </div>
+
+    <div id="chatBox">
+        <div id="mensajes"></div>
+        <div id="typingIndicator">Procesando...</div>
+        <div id="inputBar">
+            <label for="inputFoto" id="cameraBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                </svg>
+            </label>
+            <input id="inputFoto" type="file" accept="image/*" style="display:none;" onchange="enviarFoto(this)">
+            <input id="inputMsg" type="text" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter') enviar()">
+            <button id="sendBtn" onclick="enviar()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+            </button>
+        </div>
     </div>
-    <button class="btn-ir" onclick="irAlMarketplace()">Ir al Marketplace →</button>
-  </div>
+
 </div>
 
 <script>
+/* ═══════════════════════════════════════════
+   LÓGICA NUEVAS PANTALLAS DE ACCESO
+═══════════════════════════════════════════ */
 let celularDesdeWaitlist = '';
 let regStep = 1;
 
-// ── UTILIDADES ──
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
+function showAccessScreen(id) {
+    document.querySelectorAll('.access-screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
 }
 
 function mostrarCodigoError(msg) {
-  const el = document.getElementById('codigoError');
-  el.textContent = msg;
-  el.style.display = 'block';
+    const el = document.getElementById('codigoError');
+    el.textContent = msg; el.style.display = 'block';
 }
 function ocultarCodigoError() {
-  document.getElementById('codigoError').style.display = 'none';
+    document.getElementById('codigoError').style.display = 'none';
 }
 
-// ── VALIDAR CÓDIGO ──
 async function validarCodigo() {
-  const codigo = document.getElementById('codigoInput').value.trim();
-  if (!codigo) { mostrarCodigoError('Ingresa tu código de acceso.'); return; }
-  ocultarCodigoError();
-
-  const btn = document.getElementById('btnEntrarCodigo');
-  btn.disabled = true;
-  btn.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border:2px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;"></span>Verificando...';
-
-  try {
-    const res = await fetch('/api/validar-codigo', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ codigo })
-    });
-    const data = await res.json();
-
-    if (!res.ok) {
-      mostrarCodigoError(data.error || 'Código no válido.');
-      btn.disabled = false;
-      btn.textContent = 'Entrar';
-      return;
+    const codigo = document.getElementById('codigoInput').value.trim();
+    if (!codigo) { mostrarCodigoError('Ingresa tu código de acceso.'); return; }
+    ocultarCodigoError();
+    const btn = document.getElementById('btnEntrarCodigo');
+    btn.disabled = true;
+    btn.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border:2px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;"></span>Verificando...';
+    try {
+        const res = await fetch('/api/validar-codigo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ codigo })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            mostrarCodigoError(data.error || 'Código no válido.');
+            btn.disabled = false; btn.textContent = 'Entrar'; return;
+        }
+        celularDesdeWaitlist = data.celular || '';
+        if (celularDesdeWaitlist) {
+            document.getElementById('r_celular').value = celularDesdeWaitlist.replace('+52', '');
+        }
+        btn.disabled = false; btn.textContent = 'Entrar';
+        showAccessScreen('screenRegistro');
+    } catch {
+        mostrarCodigoError('Error de conexión. Intenta de nuevo.');
+        btn.disabled = false; btn.textContent = 'Entrar';
     }
-
-    celularDesdeWaitlist = data.celular || '';
-    if (celularDesdeWaitlist) {
-      document.getElementById('r_celular').value = celularDesdeWaitlist.replace('+52', '');
-    }
-
-    btn.disabled = false;
-    btn.textContent = 'Entrar';
-    showScreen('screenRegistro');
-  } catch {
-    mostrarCodigoError('Error de conexión. Intenta de nuevo.');
-    btn.disabled = false;
-    btn.textContent = 'Entrar';
-  }
 }
 
 document.getElementById('codigoInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') validarCodigo();
+    if (e.key === 'Enter') validarCodigo();
 });
 
-// ── REGISTRO ──
 function avanzarRegistro() {
-  if (regStep === 1) {
-    const nombre = document.getElementById('r_nombre').value.trim();
-    const celular = document.getElementById('r_celular').value.trim();
-    const edad = document.getElementById('r_edad').value.trim();
-    const entidad = document.getElementById('r_entidad').value;
-    const cp = document.getElementById('r_cp').value.trim();
-
-    if (!nombre || !celular || celular.length !== 10 || !edad || !entidad || cp.length !== 5) {
-      return;
+    if (regStep === 1) {
+        const nombre = document.getElementById('r_nombre').value.trim();
+        const cel = document.getElementById('r_celular').value.trim();
+        const edad = document.getElementById('r_edad').value.trim();
+        const entidad = document.getElementById('r_entidad').value;
+        const cp = document.getElementById('r_cp').value.trim();
+        if (!nombre || !cel || cel.length !== 10 || !edad || !entidad || cp.length !== 5) return;
+        document.getElementById('regCard1').classList.remove('active');
+        document.getElementById('regCard2').classList.add('active');
+        document.getElementById('stepLabel').textContent = 'Paso 2 de 2';
+        document.getElementById('btnSiguiente').textContent = 'Crear cuenta →';
+        regStep = 2;
+        window.scrollTo(0, 0);
+    } else {
+        submitRegistro();
     }
-
-    document.getElementById('regCard1').classList.remove('active');
-    document.getElementById('regCard2').classList.add('active');
-    document.getElementById('stepLabel').textContent = 'Paso 2 de 2';
-    document.getElementById('btnSiguiente').textContent = 'Crear cuenta →';
-    regStep = 2;
-    window.scrollTo(0, 0);
-
-  } else if (regStep === 2) {
-    submitRegistro();
-  }
 }
 
 async function submitRegistro() {
-  const terms = document.getElementById('r_terms');
-  const errEl = document.getElementById('regError');
-
-  if (!terms.checked) {
-    errEl.textContent = 'Debes aceptar los términos para continuar.';
-    errEl.style.display = 'block';
-    return;
-  }
-
-  const ingreso = document.getElementById('r_ingreso').value;
-  const marca = document.getElementById('r_marca').value;
-  const gcel = document.getElementById('r_gcel').value;
-  const gviv = document.getElementById('r_gviv').value;
-  const gauto = document.getElementById('r_gauto').value;
-  const dep = document.getElementById('r_dep').value;
-  const hist = document.getElementById('r_hist').value;
-  const deudas = document.getElementById('r_deudas').value;
-
-  if (!ingreso || !marca || !gcel || !gviv || !gauto || !dep || !hist || !deudas) {
-    errEl.textContent = 'Completa todos los campos.';
-    errEl.style.display = 'block';
-    return;
-  }
-  errEl.style.display = 'none';
-
-  const btn = document.getElementById('btnSiguiente');
-  btn.disabled = true;
-  btn.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border:2px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;"></span>Creando cuenta...';
-
-  const celularRaw = document.getElementById('r_celular').value.trim();
-  const celularFull = '+52' + celularRaw;
-
-  const payload = {
-    celular: celularFull,
-    Nombre_completo: document.getElementById('r_nombre').value.trim(),
-    Edad: document.getElementById('r_edad').value,
-    Entidad_federativa: document.getElementById('r_entidad').value,
-    Codigo_postal: document.getElementById('r_cp').value.trim(),
-    Ingreso_mensual: ingreso,
-    Marca_celular: marca,
-    Gastos_celular: gcel,
-    Gastos_vivienda: gviv,
-    Gastos_automovil: gauto,
-    Dependientes: dep,
-    Historial_crediticio: hist,
-    Otras_deudas: deudas
-  };
-
-  try {
-    const res = await fetch('/api/registrar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-
-    if (!res.ok) {
-      errEl.textContent = data.error || 'Error al crear la cuenta.';
-      errEl.style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = 'Crear cuenta →';
-      return;
+    const terms = document.getElementById('r_terms');
+    const errEl = document.getElementById('regError');
+    if (!terms.checked) {
+        errEl.textContent = 'Debes aceptar los términos para continuar.';
+        errEl.style.display = 'block'; return;
     }
+    const ingreso = document.getElementById('r_ingreso').value;
+    const marca = document.getElementById('r_marca').value;
+    const gcel = document.getElementById('r_gcel').value;
+    const gviv = document.getElementById('r_gviv').value;
+    const gauto = document.getElementById('r_gauto').value;
+    const dep = document.getElementById('r_dep').value;
+    const hist = document.getElementById('r_hist').value;
+    const deudas = document.getElementById('r_deudas').value;
+    if (!ingreso || !marca || !gcel || !gviv || !gauto || !dep || !hist || !deudas) {
+        errEl.textContent = 'Completa todos los campos.';
+        errEl.style.display = 'block'; return;
+    }
+    errEl.style.display = 'none';
+    const btn = document.getElementById('btnSiguiente');
+    btn.disabled = true;
+    btn.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border:2px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;"></span>Creando cuenta...';
+    const celularRaw = document.getElementById('r_celular').value.trim();
+    const payload = {
+        celular: '+52' + celularRaw,
+        Nombre_completo: document.getElementById('r_nombre').value.trim(),
+        Edad: document.getElementById('r_edad').value,
+        Entidad_federativa: document.getElementById('r_entidad').value,
+        Codigo_postal: document.getElementById('r_cp').value.trim(),
+        Ingreso_mensual: ingreso,
+        Marca_celular: marca,
+        Gastos_celular: gcel,
+        Gastos_vivienda: gviv,
+        Gastos_automovil: gauto,
+        Dependientes: dep,
+        Historial_crediticio: hist,
+        Otras_deudas: deudas
+    };
+    try {
+        const res = await fetch('/api/registrar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            errEl.textContent = data.error || 'Error al crear la cuenta.';
+            errEl.style.display = 'block';
+            btn.disabled = false; btn.textContent = 'Crear cuenta →'; return;
+        }
+        localStorage.setItem('yunus_celular', '+52' + celularRaw);
+        localStorage.setItem('yunus_historial', JSON.stringify([]));
+        btn.disabled = false; btn.textContent = 'Crear cuenta →';
+        showAccessScreen('screenBienvenida');
+    } catch {
+        errEl.textContent = 'Error de conexión. Intenta de nuevo.';
+        errEl.style.display = 'block';
+        btn.disabled = false; btn.textContent = 'Crear cuenta →';
+    }
+}
 
-    localStorage.setItem('yunus_celular', celularFull);
-    localStorage.setItem('yunus_historial', JSON.stringify([]));
-    btn.disabled = false;
-    btn.textContent = 'Crear cuenta →';
-    showScreen('screenBienvenida');
+async function iniciarSesionNuevo() {
+    const input = document.getElementById('celularLoginInput').value.trim();
+    const errEl = document.getElementById('loginNewError');
+    if (input.length !== 10) {
+        errEl.textContent = 'Ingresa 10 dígitos válidos.';
+        errEl.style.display = 'block'; return;
+    }
+    errEl.style.display = 'none';
+    const btn = document.getElementById('btnEntrarLogin');
+    btn.disabled = true; btn.textContent = 'Verificando...';
+    const numeroCelular = '+52' + input;
+    try {
+        const res = await fetch('/api/historial?celular=' + encodeURIComponent(numeroCelular));
+        if (res.status === 404) {
+            errEl.textContent = 'Este número no está registrado.';
+            errEl.style.display = 'block';
+            btn.disabled = false; btn.textContent = 'Entrar →'; return;
+        }
+        localStorage.setItem('yunus_celular', numeroCelular);
+        if (res.ok) {
+            const data = await res.json();
+            localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+        }
+        window.location.href = 'marketplace.html';
+    } catch {
+        localStorage.setItem('yunus_celular', numeroCelular);
+        window.location.href = 'marketplace.html';
+    }
+}
 
-  } catch {
-    errEl.textContent = 'Error de conexión. Intenta de nuevo.';
-    errEl.style.display = 'block';
-    btn.disabled = false;
-    btn.textContent = 'Crear cuenta →';
+document.getElementById('celularLoginInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') iniciarSesionNuevo();
+});
+
+/* ═══════════════════════════════════════════
+   CÓDIGO ORIGINAL INTACTO — sin modificar
+═══════════════════════════════════════════ */
+let celular = '';
+let primerMensajeYunus = true;
+let typingInterval;
+let pollingInterval = null;
+let enModoListo = false;
+
+function mostrarCargando(esImagen) {
+  if (enModoListo) return;
+  const indicator = document.getElementById('typingIndicator');
+  indicator.style.display = 'block';
+  indicator.style.color = 'var(--volt)';
+  indicator.style.animation = 'pulseText 1.5s infinite';
+  const pasosTexto = ["Pensando...", "Evaluando viabilidad...", "Preparando respuesta..."];
+  const pasosImagen = ["Subiendo imagen...", "Analizando documento...", "Validando identidad..."];
+  const pasos = esImagen ? pasosImagen : pasosTexto;
+  let i = 0;
+  indicator.textContent = pasos[i];
+  clearInterval(typingInterval);
+  typingInterval = setInterval(() => {
+    i = (i + 1) % pasos.length;
+    indicator.textContent = pasos[i];
+  }, 1500);
+  document.getElementById('mensajes').scrollTop = document.getElementById('mensajes').scrollHeight;
+}
+
+function ocultarCargando() {
+  clearInterval(typingInterval);
+  if (!enModoListo) {
+    document.getElementById('typingIndicator').style.display = 'none';
   }
 }
 
-// ── LOGIN EXISTENTE ──
-async function iniciarSesion() {
-  const input = document.getElementById('celularInput').value.trim();
-  const errEl = document.getElementById('loginError');
-  if (input.length !== 10) {
-    errEl.textContent = 'Ingresa 10 dígitos válidos.';
-    errEl.style.display = 'block';
-    return;
-  }
-  errEl.style.display = 'none';
+function activarModoListo() {
+  if (enModoListo) return;
+  enModoListo = true;
+  fetch(`/api/historial?celular=${encodeURIComponent(celular)}`)
+    .then(r => r.json())
+    .then(data => {
+      localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+    });
+  const inputMsg = document.getElementById('inputMsg');
+  const sendBtn = document.getElementById('sendBtn');
+  const cameraBtn = document.getElementById('cameraBtn');
+  inputMsg.disabled = true;
+  inputMsg.placeholder = 'Esperando resultado...';
+  sendBtn.style.opacity = '0.3';
+  sendBtn.style.pointerEvents = 'none';
+  cameraBtn.style.opacity = '0.3';
+  cameraBtn.style.pointerEvents = 'none';
+  const indicator = document.getElementById('typingIndicator');
+  clearInterval(typingInterval);
+  indicator.style.display = 'block';
+  indicator.style.color = 'var(--volt)';
+  indicator.style.animation = 'pulseText 1.5s infinite';
+  indicator.textContent = 'REVISANDO PERFIL...';
+  iniciarPolling();
+}
 
-  const btn = document.getElementById('btnEntrarLogin');
+function desactivarModoListo() {
+  enModoListo = false;
+  const inputMsg = document.getElementById('inputMsg');
+  const sendBtn = document.getElementById('sendBtn');
+  const cameraBtn = document.getElementById('cameraBtn');
+  inputMsg.disabled = false;
+  inputMsg.placeholder = 'Escribe un mensaje...';
+  sendBtn.style.opacity = '';
+  sendBtn.style.pointerEvents = '';
+  cameraBtn.style.opacity = '';
+  cameraBtn.style.pointerEvents = '';
+  document.getElementById('typingIndicator').style.display = 'none';
+}
+
+function iniciarPolling() {
+  if (!celular) return;
+  if (pollingInterval) return;
+  pollingInterval = setInterval(async () => {
+    try {
+      const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.etapa === 'respondido') {
+        desactivarModoListo();
+      }
+      const historialRemoto = data.historial || [];
+      const localActual = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+      if (historialRemoto.length > localActual.length) {
+        const nuevos = historialRemoto.slice(localActual.length);
+        nuevos.forEach(m => {
+          if (m.tipo === 'yunus') {
+            renderMensaje(m.texto, 'yunus', false);
+          }
+        });
+        localStorage.setItem('yunus_historial', JSON.stringify(historialRemoto));
+      }
+    } catch (e) {
+      console.warn('Polling error:', e);
+    }
+  }, 4000);
+}
+
+function detenerPolling() {
+  clearInterval(pollingInterval);
+  pollingInterval = null;
+}
+
+async function mostrarChat() {
+  document.getElementById('loginBox').style.display = 'none';
+  const chatBox = document.getElementById('chatBox');
+  chatBox.style.display = 'flex';
+  primerMensajeYunus = true;
+  try {
+    const res = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
+    if (res.ok) {
+      const data = await res.json();
+      localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+      const historial = data.historial || [];
+      if (historial.length === 0) {
+        renderMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+      } else {
+        historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+      }
+      if (data.etapa === 'listo') activarModoListo();
+      else if (data.etapa === 'respondido') {
+        desactivarModoListo();
+        if (celular) iniciarPolling();
+      }
+      return;
+    }
+  } catch { /* caer a localStorage */ }
+  const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+  if (historial.length === 0) {
+    renderMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+  } else {
+    historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+  }
+}
+
+async function iniciarChat() {
+  const input = document.getElementById('celularInput').value.trim();
+  if (input.length !== 10) { mostrarError('Ingresa 10 dígitos válidos.'); return; }
+  ocultarError();
+  const btn = document.getElementById('btnEntrar');
   btn.disabled = true;
   btn.textContent = 'Verificando...';
-
   const numeroCelular = '+52' + input;
   try {
     const res = await fetch('/api/historial?celular=' + encodeURIComponent(numeroCelular));
     if (res.status === 404) {
-      errEl.textContent = 'Este número no está registrado.';
-      errEl.style.display = 'block';
+      mostrarError('Este número no está registrado. Regístrate primero en yunusia.com');
       btn.disabled = false;
       btn.textContent = 'Entrar →';
       return;
     }
-    localStorage.setItem('yunus_celular', numeroCelular);
+    celular = numeroCelular;
+    localStorage.setItem('yunus_celular', celular);
     if (res.ok) {
       const data = await res.json();
       localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
     }
+    btn.disabled = false;
+    btn.textContent = 'Entrar →';
     window.location.href = 'marketplace.html';
   } catch {
-    localStorage.setItem('yunus_celular', numeroCelular);
+    celular = numeroCelular;
+    localStorage.setItem('yunus_celular', celular);
+    btn.disabled = false;
+    btn.textContent = 'Entrar →';
     window.location.href = 'marketplace.html';
   }
 }
 
-document.getElementById('celularInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') iniciarSesion();
-});
-
-// ── IR AL MARKETPLACE ──
-function irAlMarketplace() {
-  window.location.href = 'marketplace.html';
+function mostrarChatDirecto() {
+  document.getElementById('loginBox').style.display = 'none';
+  const chatBox = document.getElementById('chatBox');
+  chatBox.style.display = 'flex';
+  primerMensajeYunus = true;
+  const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+  if (historial.length === 0) {
+    renderMensaje('Hola, escríbeme para comenzar 👋', 'yunus');
+  } else {
+    historial.forEach(m => renderMensaje(m.texto, m.tipo, m.esImagen));
+  }
 }
 
-// ── AUTO-LOGIN SI YA HAY SESIÓN ──
+function mostrarError(msg) {
+  const el = document.getElementById('loginError');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function ocultarError() {
+  document.getElementById('loginError').style.display = 'none';
+}
+
+function cerrarSesion() {
+  detenerPolling();
+  try {
+    localStorage.removeItem('yunus_celular');
+    localStorage.removeItem('yunus_historial');
+  } catch (e) {
+    console.warn('No se pudo limpiar localStorage:', e);
+  }
+  celular = '';
+  enModoListo = false;
+  document.getElementById('chatBox').style.display = 'none';
+  document.getElementById('loginBox').style.display = 'flex';
+  document.getElementById('mensajes').innerHTML = '';
+  document.getElementById('celularInput').value = '';
+  primerMensajeYunus = true;
+}
+
+function renderMensaje(texto, tipo, esImagen = false) {
+  const contenedor = document.getElementById('mensajes');
+  const esYunus = tipo === 'yunus';
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = `display: flex; align-items: flex-end; gap: 8px; justify-content: ${esYunus ? 'flex-start' : 'flex-end'};`;
+  if (esYunus && primerMensajeYunus) {
+    const avatar = document.createElement('img');
+    avatar.src = 'Vector.png';
+    avatar.style.cssText = 'width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid var(--border); background: #1a1a1a;';
+    avatar.onerror = function() { this.style.display = 'none'; };
+    wrapper.appendChild(avatar);
+    primerMensajeYunus = false;
+  } else if (esYunus) {
+    const spacer = document.createElement('div');
+    spacer.style.cssText = 'width: 26px; flex-shrink: 0;';
+    wrapper.appendChild(spacer);
+  }
+  const burbuja = document.createElement('div');
+  if (esYunus) {
+    burbuja.style.cssText = 'max-width: 80%; background: #1a1a1a; border: 1px solid var(--border); border-radius: 16px; border-bottom-left-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--paper); line-height: 1.5;';
+  } else {
+    burbuja.style.cssText = 'max-width: 80%; background: var(--volt); border-radius: 16px; border-bottom-right-radius: 3px; padding: 10px 14px; font-size: 13px; color: var(--ink); line-height: 1.5; font-weight: 500;';
+  }
+  if (esImagen) {
+    const img = document.createElement('img');
+    img.src = texto;
+    img.style.cssText = 'border-radius: 10px; max-width: 100%; max-height: 180px; object-fit: cover; display: block;';
+    burbuja.appendChild(img);
+  } else {
+    const partes = texto.split(/(\[MAPA:.*?\])/);
+    partes.forEach(parte => {
+      if (parte.startsWith('[MAPA:') && parte.endsWith(']')) {
+        const url = parte.slice(6, -1).trim();
+        const img = document.createElement('img');
+        img.src = url;
+        img.style.cssText = 'border-radius: 8px; max-width: 100%; margin-top: 8px; display: block; border: 1px solid rgba(255,255,255,0.1);';
+        img.onerror = function() { this.style.display = 'none'; };
+        burbuja.appendChild(img);
+      } else if (parte) {
+        const span = document.createElement('span');
+        span.textContent = parte;
+        span.style.whiteSpace = 'pre-wrap';
+        burbuja.appendChild(span);
+      }
+    });
+  }
+  wrapper.appendChild(burbuja);
+  contenedor.appendChild(wrapper);
+  contenedor.scrollTop = contenedor.scrollHeight;
+}
+
+function agregarMensaje(texto, tipo, esImagen = false) {
+  const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+  historial.push({ texto, tipo, esImagen });
+  localStorage.setItem('yunus_historial', JSON.stringify(historial));
+  renderMensaje(texto, tipo, esImagen);
+}
+
+function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const scale = Math.min(1, maxWidth / img.width);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', calidad));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function enviarFoto(input) {
+  if (enModoListo) return;
+  const file = input.files[0];
+  if (!file) return;
+  const base64 = await comprimirImagen(file);
+  agregarMensaje(base64, 'usuario', true);
+  input.value = '';
+  mostrarCargando(true);
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mensaje: '', celular, imagen: base64 })
+    });
+    const data = await res.json();
+    if (data.imagenUrl) {
+      const historial = JSON.parse(localStorage.getItem('yunus_historial') || '[]');
+      for (let i = historial.length - 1; i >= 0; i--) {
+        if (historial[i].tipo === 'usuario' && historial[i].esImagen) {
+          historial[i].texto = data.imagenUrl;
+          break;
+        }
+      }
+      localStorage.setItem('yunus_historial', JSON.stringify(historial));
+    }
+    ocultarCargando();
+    if (!data.silencio) {
+      agregarMensaje(data.respuesta || 'Error al procesar tu imagen.', 'yunus');
+    }
+  } catch {
+    ocultarCargando();
+    agregarMensaje('Error de conexión.', 'yunus');
+  }
+}
+
+async function enviar() {
+  if (enModoListo) return;
+  const input = document.getElementById('inputMsg');
+  const mensaje = input.value.trim();
+  if (!mensaje) return;
+  input.value = '';
+  agregarMensaje(mensaje, 'usuario');
+  mostrarCargando(false);
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mensaje, celular })
+    });
+    const data = await res.json();
+    ocultarCargando();
+    if (data.silencio) {
+      const sync = await fetch(`/api/historial?celular=${encodeURIComponent(celular)}`);
+      const syncData = await sync.json();
+      localStorage.setItem('yunus_historial', JSON.stringify(syncData.historial || []));
+      return;
+    }
+    agregarMensaje(data.respuesta || 'Error al procesar tu mensaje.', 'yunus');
+    if (data.respuesta && data.respuesta.includes('Quédate aquí')) {
+      activarModoListo();
+    }
+  } catch {
+    ocultarCargando();
+    agregarMensaje('Error de conexión.', 'yunus');
+  }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const modoChat = params.get('modo') === 'chat';
+  const prefillMsg = params.get('msg');
   const celularGuardado = localStorage.getItem('yunus_celular');
   if (celularGuardado) {
-    window.location.href = 'marketplace.html';
+    celular = celularGuardado;
+    if (modoChat) {
+      // Ocultar pantallas de acceso, mostrar chat directamente
+      document.querySelectorAll('.access-screen').forEach(s => s.classList.remove('active'));
+      mostrarChat().then(() => {
+        if (prefillMsg && !enModoListo) {
+          const input = document.getElementById('inputMsg');
+          input.value = prefillMsg;
+          enviar();
+          const newUrl = window.location.pathname + '?modo=chat';
+          window.history.replaceState({}, document.title, newUrl);
+        }
+      });
+    } else {
+      window.location.href = 'marketplace.html';
+    }
   }
 });
 </script>
