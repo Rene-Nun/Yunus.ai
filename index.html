@@ -203,7 +203,7 @@ body::after {
   font-weight: 500;
   display: inline-flex; align-items: center; gap: 10px;
 }
-.btn-hero:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-hero:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
 
 /* SECTION DIVIDER */
 .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
@@ -316,29 +316,6 @@ body::after {
   position: sticky; bottom: 0; background: #111;
 }
 
-/* FORM STYLES */
-.form-group { margin-bottom: 16px; }
-.form-label {
-  display: block; font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 8px;
-}
-.form-input {
-  width: 100%; padding: 12px 16px;
-  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-  color: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 14px;
-  outline: none; transition: border-color 0.2s; appearance: none;
-}
-.form-input:focus { border-color: var(--volt); }
-.form-input option { background: #111; }
-
-/* ONBOARDING CARDS */
-.onboarding-card { display: none; flex-direction: column; min-height: 500px; }
-.onboarding-card.active { display: flex; }
-.card-scroll { flex: 1; overflow-y: auto; padding-bottom: 8px; }
-.card-scroll::-webkit-scrollbar { width: 3px; }
-.card-scroll::-webkit-scrollbar-thumb { background: var(--border); }
-
 /* LEGAL MODAL */
 .legal-panel { max-width: 680px; max-height: 85vh; }
 .legal-content { padding: 28px; font-size: 13px; color: var(--muted); line-height: 1.75; }
@@ -348,26 +325,6 @@ body::after {
 .legal-content ul { padding-left: 20px; margin-bottom: 12px; }
 .legal-content ul li { margin-bottom: 6px; }
 .legal-content strong { color: var(--paper); font-weight: 500; }
-
-/* CHECKBOX */
-.check-wrap {
-  display: flex; align-items: flex-start; gap: 12px;
-  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-  padding: 16px; margin-top: 8px;
-}
-.check-wrap input[type=checkbox] { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: var(--volt); }
-.check-wrap label { font-size: 12px; color: var(--muted); line-height: 1.6; cursor: pointer; }
-.check-wrap label span { color: var(--paper); text-decoration: underline; cursor: pointer; }
-#error-terms { font-family: 'DM Mono', monospace; font-size: 10px; color: #ef4444; margin-top: 6px; display: none; }
-
-/* PREFIX INPUT */
-.prefix-wrap { display: flex; }
-.prefix-tag {
-  padding: 12px 16px; background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border); border-right: none;
-  font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted);
-}
-.prefix-wrap .form-input { border-left: none; }
 
 /* REVEAL */
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -430,9 +387,13 @@ body::after {
   </p>
 
   <div class="hero-anim-4" style="display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 20px;">
-    <button class="btn-hero" onclick="openOnboardingModal()">
+    
+    <input type="tel" placeholder="(Tu numero con WhatsApp)" style="padding: 16px 24px; width: 100%; max-width: 320px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; text-align: center; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--volt)'" onblur="this.style.borderColor='var(--border)'">
+
+    <button class="btn-hero" disabled style="opacity: 0.5; cursor: not-allowed;">
       Únete a la Waitlist →
     </button>
+    
     <span style="font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;">
       Tasa transparente · 36% CAT anual
     </span>
@@ -490,78 +451,6 @@ body::after {
 
 </div>
 
-<div id="onboardingModal" class="modal-bg" onclick="if(event.target===this)closeOnboardingModal()">
-  <div class="modal-panel" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <div>
-        <img src="darklogo.png" alt="Yunus" style="height:36px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
-      </div>
-      <button class="modal-close" onclick="closeOnboardingModal()">×</button>
-    </div>
-
-<div id="card1" class="onboarding-card active">
-  <div class="modal-body card-scroll">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--paper);margin-bottom:24px;letter-spacing:.04em;">Únete a la Waitlist</div>
-    <form id="form1">
-      <input type="hidden" name="Paso" value="Registro">
-      <div class="form-group"><label class="form-label">Nombre completo</label><input type="text" name="Nombre_completo" required class="form-input"></div>
-      <div class="form-group"><label class="form-label">Celular</label><div class="prefix-wrap"><span class="prefix-tag">+52</span><input type="tel" name="Celular" pattern="[0-9]{10}" required class="form-input"></div></div>
-      <div class="form-group"><label class="form-label">Edad</label><input type="number" name="Edad" min="18" max="99" required placeholder="Ej. 25" class="form-input"></div>
-      <div class="form-group">
-        <label class="form-label">Entidad federativa</label>
-        <select name="Entidad_federativa" required class="form-input">
-          <option value="">Selecciona</option>
-          <option value="AGU">Aguascalientes</option><option value="BCN">Baja California</option><option value="BCS">Baja California Sur</option><option value="CAM">Campeche</option><option value="COA">Coahuila</option><option value="COL">Colima</option><option value="CHP">Chiapas</option><option value="CHH">Chihuahua</option><option value="CMX">Ciudad de Mexico</option><option value="DUR">Durango</option><option value="GTO">Guanajuato</option><option value="GRO">Guerrero</option><option value="HGO">Hidalgo</option><option value="JAL">Jalisco</option><option value="MEX">Mexico</option><option value="MIC">Michoacán</option><option value="MOR">Morelos</option><option value="NAY">Nayarit</option><option value="NL">Nuevo Leon</option><option value="OAX">Oaxaca</option><option value="PUE">Puebla</option><option value="QRO">Querétaro</option><option value="QROO">Quintana Roo</option><option value="SLP">San Luis Potosí</option><option value="SIN">Sinaloa</option><option value="SON">Sonora</option><option value="TAB">Tabasco</option><option value="TAM">Tamaulipas</option><option value="TLA">Tlaxcala</option><option value="VER">Veracruz</option><option value="YUC">Yucatán</option><option value="ZAC">Zacatecas</option>
-        </select>
-      </div>
-      <div class="form-group"><label class="form-label">Código postal</label><input type="text" name="Codigo_postal" pattern="[0-9]{5}" maxlength="5" required class="form-input"></div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn-primary" style="width:100%;padding:14px;font-size:12px;" onclick="goToCard(2)">Siguiente →</button>
-    <p style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center;font-family:'DM Mono',monospace;">Al continuar aceptas nuestros <span onclick="openLegalModal('terms')" style="color:var(--paper);cursor:pointer;text-decoration:underline;">Términos</span> y <span onclick="openLegalModal('privacy')" style="color:var(--paper);cursor:pointer;text-decoration:underline;">Política de privacidad</span>.</p>
-  </div>
-</div>
-
-<div id="card2" class="onboarding-card">
-  <div class="modal-body card-scroll">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--paper);margin-bottom:24px;letter-spacing:.04em;">Tu perfil financiero</div>
-    <form id="form2">
-      <input type="hidden" name="Paso" value="Registro + Perfil">
-      <div class="form-group"><label class="form-label">Ingreso mensual neto (MXN)</label><input type="number" name="Ingreso_mensual" min="0" step="100" required class="form-input"></div>
-      <div class="form-group"><label class="form-label">Marca de celular</label><select name="Marca_celular" required class="form-input"><option value="">Selecciona</option><option>Apple</option><option>Samsung</option><option>Xiaomi</option><option>OPPO</option><option>Realme</option><option>Motorola</option><option>Huawei</option><option>Sony</option><option>Nokia</option><option>LG</option><option>OnePlus</option><option>ASUS</option><option>Lenovo</option><option>Otro</option></select></div>
-      <div class="form-group"><label class="form-label">Gastos de celular</label><select name="Gastos_celular" required class="form-input"><option value="">Selecciona</option><option value="credito_activo">Crédito de celular activo</option><option value="sin_deudas">Sin deudas / Plan de renta</option></select></div>
-      <div class="form-group"><label class="form-label">Gastos de vivienda</label><select name="Gastos_vivienda" required class="form-input"><option value="">Selecciona</option><option value="sin_gastos">No tengo gastos de vivienda</option><option value="pago_renta">Pago renta</option><option value="pago_hipoteca">Pago hipoteca</option></select></div>
-      <div class="form-group"><label class="form-label">Gastos de automóvil</label><select name="Gastos_automovil" required class="form-input"><option value="">Selecciona</option><option value="no_tengo">No tengo carro</option><option value="credito_auto">Crédito automotriz</option><option value="auto_sin_deuda">Auto sin deuda</option></select></div>
-      <div class="form-group"><label class="form-label">Dependientes económicos</label><select name="Dependientes" required class="form-input"><option value="">Selecciona</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select></div>
-      <div class="form-group"><label class="form-label">¿Cómo calificarías tu historial crediticio?</label><select name="Historial_crediticio" required class="form-input"><option value="">Selecciona</option><option value="Bueno">Bueno</option><option value="Regular">Regular</option><option value="Malo">Malo</option><option value="No tengo">No tengo / No sé</option></select></div>
-      <div class="form-group"><label class="form-label">¿Estás pagando otro crédito o deuda?</label><select name="Otras_deudas" required class="form-input"><option value="">Selecciona</option><option value="si">Sí</option><option value="no">No</option></select></div>
-      <div class="check-wrap">
-        <input type="checkbox" id="acceptTerms">
-        <label for="acceptTerms">He leído y acepto los <span onclick="openLegalModal('terms')">Términos y condiciones</span> y la <span onclick="openLegalModal('privacy')">Política de privacidad</span>.</label>
-      </div>
-      <div id="error-terms">Debes aceptar los términos para continuar.</div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn-primary" style="width:100%;padding:14px;font-size:12px;" onclick="submitAllDataAndGoToCard3()">Continuar →</button>
-  </div>
-</div>
-
-<div id="card3" class="onboarding-card" style="text-align:center;">
-  <div class="modal-body" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;">
-    <div style="width:64px;height:64px;background:var(--volt);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-    </div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--paper);letter-spacing:.04em;margin-bottom:12px;">¡Ya estás en la lista!</div>
-    <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:300px;margin-bottom:32px;">Te avisaremos en cuanto tu acceso esté desbloqueado.</p>
-    <button class="btn-primary" style="width:100%;padding:14px;font-size:12px;" onclick="closeOnboardingModal()">Entendido</button>
-  </div>
-</div>
-
-  </div>
-</div>
-
 <div id="legalModal" class="modal-bg" style="z-index:300;" onclick="if(event.target===this)closeLegalModal()">
   <div class="modal-panel legal-panel" onclick="event.stopPropagation()" style="max-width:680px;">
     <div class="modal-header">
@@ -587,7 +476,7 @@ const events = [
 ];
 
 function buildEventCard(e) {
-  return `<div onclick="openOnboardingModal()" style="width:200px;flex-shrink:0;border:1px solid rgba(242,239,232,0.1);background:#111;cursor:pointer;display:flex;flex-direction:column;transition:border-color .2s,transform .2s;" onmouseover="this.style.borderColor='var(--volt)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(242,239,232,0.1)';this.style.transform='none'">
+  return `<div style="width:200px;flex-shrink:0;border:1px solid rgba(242,239,232,0.1);background:#111;cursor:pointer;display:flex;flex-direction:column;transition:border-color .2s,transform .2s;" onmouseover="this.style.borderColor='var(--volt)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(242,239,232,0.1)';this.style.transform='none'">
     <div style="width:100%;height:90px;overflow:hidden;background:${e.accent}20;flex-shrink:0;">
       <img src="${e.img}" alt="${e.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.style.background='${e.accent}30'">
     </div>
@@ -614,58 +503,6 @@ const legalTexts = {
   terms: `<h2>TÉRMINOS Y CONDICIONES – YUNUS</h2><p><strong>Última actualización:</strong> 20 de abril de 2026</p><h3>1. ACEPTACIÓN</h3><p>Al utilizar yunusia.com, completar el formulario de registro, enviar documentos de identificación, o realizar cualquier pago, usted acepta de forma expresa e irrevocable estos Términos y Condiciones en su totalidad.</p><h3>2. NATURALEZA DEL SERVICIO</h3><p>El formulario de registro constituye únicamente una <strong>solicitud de evaluación financiera</strong>, no una contratación definitiva ni una reserva de boleto. Yunus se reserva el derecho de admisión y podrá rechazar cualquier solicitud sin necesidad de justificación.</p><h3>3. MODELO DE FINANCIAMIENTO</h3><ul><li><strong>Enganche:</strong> 15% del valor total del boleto, pagadero mediante SPEI o efectivo en Oxxo.</li><li><strong>Saldo restante:</strong> El 85% se divide en pagos quincenales hasta la fecha del evento.</li><li><strong>CAT:</strong> 36% anual (3% mensual), incluido en las cuotas. Sin cargos ocultos.</li><li><strong>Sin buró de crédito:</strong> Yunus no consulta ni reporta al Buró de Crédito.</li></ul>`,
   privacy: `<h2>POLÍTICA DE PRIVACIDAD – YUNUS</h2><p><strong>Última actualización:</strong> 19 de abril de 2026</p><h3>1. DATOS QUE RECOPILAMOS</h3><ul><li><strong>Identificación:</strong> Nombre, número de celular, y fotografías de identificación oficial (INE/IFE).</li><li><strong>Documentos opcionales:</strong> Comprobante de ingresos (nómina, estado de cuenta u equivalente).</li><li><strong>Datos de uso:</strong> Historial de conversación con el agente Yunus, etapa del proceso de solicitud.</li></ul><h3>2. FINALIDAD</h3><p>Los datos recopilados se utilizan exclusivamente para: verificación de identidad, evaluación interna de riesgo crediticio, gestión del plan de pagos, y comunicación relacionada con el servicio. <strong>NO vendemos ni compartimos datos personales con terceros, burós de crédito, ni anunciantes.</strong></p>`
 };
-
-// ── ONBOARDING ──
-let currentCard = 1;
-function openOnboardingModal() {
-  currentCard = 1;
-  document.querySelectorAll('.onboarding-card').forEach(c => c.classList.remove('active'));
-  document.getElementById('card1').classList.add('active');
-  document.getElementById('onboardingModal').classList.add('open');
-}
-function closeOnboardingModal() { document.getElementById('onboardingModal').classList.remove('open'); }
-function goToCard(n) {
-  document.getElementById('card'+currentCard).classList.remove('active');
-  currentCard = n;
-  document.getElementById('card'+n).classList.add('active');
-}
-
-// ── SUBMIT ──
-async function submitAllDataAndGoToCard3() {
-    const cb = document.getElementById('acceptTerms');
-    const err = document.getElementById('error-terms');
-    if (!cb.checked) { err.style.display='block'; cb.scrollIntoView({behavior:'smooth',block:'center'}); return; }
-    err.style.display='none';
-    const combined = {};
-    for (let [k,v] of new FormData(document.getElementById('form1')).entries()) combined[k] = v;
-    for (let [k,v] of new FormData(document.getElementById('form2')).entries()) combined[k] = v;
-    const btn = document.querySelector('#card2 .modal-footer button');
-    const orig = btn.innerHTML;
-    btn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle;"></span>Enviando...';
-    btn.disabled = true;
-
-    const celularIngresado = '+52' + combined['Celular'];
-    try {
-        const check = await fetch('/api/historial?celular=' + encodeURIComponent(celularIngresado));
-        if (check.ok) {
-            btn.innerHTML = orig;
-            btn.disabled = false;
-            alert('Este número ya está en la Waitlist.');
-            return;
-        }
-    } catch {}
-
-    try {
-        const res = await fetch('https://hook.us2.make.com/xxdbhuqw3rv3klrq0kewfipr8hsiogwe', {
-            method: 'POST',
-            body: JSON.stringify(combined),
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
-        });
-        if (res.ok || res.status === 200) {
-            setTimeout(() => { goToCard(3); btn.innerHTML=orig; btn.disabled=false; }, 800);
-        } else throw new Error();
-    } catch { alert('❌ Hubo un error. Por favor, inténtalo de nuevo.'); btn.innerHTML=orig; btn.disabled=false; }
-}
 
 // ── LEGAL ──
 function openLegalModal(type) {
