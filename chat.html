@@ -618,19 +618,12 @@
 
     <div id="screenCodigo" class="access-screen active">
         <div class="codigo-inner">
-            <img src="darklogo.png" alt="Yunus" class="codigo-logo" onerror="this.src='darklogo.jpeg'">
             <div class="codigo-label">Acceso restringido</div>
             <input id="codigoInput" type="text" placeholder="CLAVE DE ACCESO" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false">
             <div id="codigoError"></div>
             <button id="btnEntrarCodigo" onclick="validarCodigo()">Entrar</button>
-            <div class="divider-codigo">
-                <div class="dc-line"></div>
-                <span>Ya tengo cuenta</span>
-                <div class="dc-line"></div>
-            </div>
-            <button id="btnYaTengo" onclick="showAccessScreen('screenLogin')">Iniciar sesión →</button>
-            <div class="codigo-footer">
-                <span>Yunus 1.0.1 BETA</span>
+            <div class="divider-codigo" style="justify-content: center;">
+                <span onclick="showAccessScreen('screenLogin')" style="cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='var(--paper)'" onmouseout="this.style.color='var(--muted)'">Ya tengo cuenta</span>
             </div>
         </div>
     </div>
