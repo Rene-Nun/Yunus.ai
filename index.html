@@ -170,11 +170,9 @@ body::after {
 }
 .yunus-hero-sub strong { color: var(--paper); font-weight: 500; }
 
-/* CAROUSEL */
-@keyframes cscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-#evTrack:hover { animation-play-state: paused; }
+/* CAROUSEL (Ahora es una cuadrícula desplazable horizontalmente) */
 .carousel-wrap {
-  overflow: hidden; 
+  overflow-x: auto;
   position: relative;
   width: 100vw;
   margin: 0 calc(-50vw + 50%);
@@ -182,6 +180,12 @@ body::after {
   border-bottom: 1px solid var(--border);
   padding: 16px 0;
   margin-bottom: 48px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carousel-wrap::-webkit-scrollbar {
+  display: none;
 }
 .carousel-fade-l {
   position: absolute; left: 0; top: 0; bottom: 0; width: 80px;
@@ -381,7 +385,7 @@ body::after {
   <div class="carousel-wrap hero-anim-5">
     <div class="carousel-fade-l"></div>
     <div class="carousel-fade-r"></div>
-    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;animation:cscroll 50s linear infinite;will-change:transform;padding:0 28px;"></div>
+    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;padding:0 28px;"></div>
   </div>
 
   <p class="yunus-hero-sub hero-anim-3">
@@ -393,31 +397,20 @@ body::after {
   <div class="hero-anim-4" style="display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 20px;">
 
 ```
+
 <input id="waitlistInput" type="tel" placeholder="(Tu numero con WhatsApp)" inputmode="numeric" maxlength="10"
-  style="padding: 16px 24px; width: 100%; max-width: 320px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; text-align: center; transition: border-color 0.2s;"
-  onfocus="this.style.borderColor='var(--volt)'"
-  onblur="this.style.borderColor='var(--border)'"
-  oninput="toggleWaitlistBtn()">
+style="padding: 16px 24px; width: 100%; max-width: 320px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; text-align: center; transition: border-color 0.2s;"
+onfocus="this.style.borderColor='var(--volt)'"
+onblur="this.style.borderColor='var(--border)'"
+oninput="toggleWaitlistBtn()">
 
 <button id="waitlistBtn" class="btn-hero" onclick="unirseWaitlist()" disabled style="opacity: 0.5; cursor: not-allowed;">
   Únete a la Waitlist →
-</button>
-
-<div id="waitlistMsg" style="display:none; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:center;"></div>
-
-<span style="font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;">
+</button><div id="waitlistMsg" style="display:none; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:center;"></div><span style="font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;">
   Tasa transparente · 36% CAT anual
 </span>
-```
-
-  </div>
-  <!-- ── /CTA WAITLIST ── -->
-
-</section>
-
-<hr class="divider">
-
-<section id="seguridad">
+```</div>
+  <!-- ── /CTA WAITLIST ── --></section><hr class="divider"><section id="seguridad">
 <div class="security-wrap">
   <div class="reveal security-copy">
     <h2>
@@ -436,19 +429,13 @@ body::after {
     </div>
   </div>
 </div>
-</section>
-
-<hr class="divider">
-
-<section class="contact-wrap">
+</section><hr class="divider"><section class="contact-wrap">
   <div class="contact-inner reveal">
     <h2 class="contact-title">Dudas y aclaraciones.</h2>
     <p class="contact-body">¿Tienes preguntas sobre tu solicitud, tu plan de pagos o simplemente quieres saber más? Escríbenos directamente.</p>
     <a href="mailto:christianturista@proton.me" class="contact-email">christianturista@proton.me</a>
   </div>
-</section>
-
-<footer class="footer">
+</section><footer class="footer">
   <div class="footer-inner">
     <div>
       <img src="darklogo.png" alt="Yunus" style="height:120px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoFooter').style.display='block'">
@@ -461,11 +448,7 @@ body::after {
     </div>
     <div class="footer-copy">© 2026 Paso del Norte Labs</div>
   </div>
-</footer>
-
-</div>
-
-<div id="legalModal" class="modal-bg" style="z-index:300;" onclick="if(event.target===this)closeLegalModal()">
+</footer></div><div id="legalModal" class="modal-bg" style="z-index:300;" onclick="if(event.target===this)closeLegalModal()">
   <div class="modal-panel legal-panel" onclick="event.stopPropagation()" style="max-width:680px;">
     <div class="modal-header">
       <span class="modal-title" id="legalTitle">Legal</span>
@@ -476,16 +459,14 @@ body::after {
       <button class="btn-primary" style="padding:12px 28px;font-size:11px;" onclick="closeLegalModal()">Cerrar</button>
     </div>
   </div>
-</div>
-
-<script>
+</div><script>
 // ── EVENT CARDS ──
 const events = [
+  { name:'Harry Styles', tag:'Concierto · CDMX', date:'10 Ago 2026', price:'Desde $283 MXN × quincena', img:'HarryS.webp', accent:'#2563eb' },
+  { name:'Bruno Mars', tag:'Concierto · CDMX', date:'4-7-8 Dic 2026', price:'Desde $169 MXN × quincena', img:'BrunoM.jpeg', accent:'#16a34a' },
+  { name:'Vans Warped Tour', tag:'Festival · CDMX', date:'12-13 Sep 2026', price:'Desde $381 MXN × quincena', img:'VansW.webp', accent:'#ea580c' },
   { name:'Baja Beach Fest', tag:'Festival · Rosarito', date:'7-9 Ago 2026', price:'Desde $525 MXN × quincena', img:'BajaB.jpeg', accent:'#2563eb' },
   { name:'Rosalía: Lux Tour', tag:'Concierto · CDMX / GDL', date:'Ago 2026', price:'Desde $381 MXN × quincena', img:'Rosalia.jpeg', accent:'#be185d' },
-  { name:'Vans Warped Tour', tag:'Festival · CDMX', date:'12-13 Sep 2026', price:'Desde $381 MXN × quincena', img:'VansW.webp', accent:'#ea580c' },
-  { name:'Bruno Mars', tag:'Concierto · CDMX', date:'4-7-8 Dic 2026', price:'Desde $169 MXN × quincena', img:'BrunoM.jpeg', accent:'#16a34a' },
-  { name:'Harry Styles', tag:'Concierto · CDMX', date:'10 Ago 2026', price:'Desde $283 MXN × quincena', img:'HarryS.webp', accent:'#2563eb' },
   { name:'Enjambre E. GNP', tag:'Concierto · CDMX', date:'30 Ago 2026', price:'x confirmar', img:'Enjambre.webp', accent:'#be165d' },
 ];
 
@@ -509,7 +490,7 @@ function buildEventCard(e) {
   const track = document.getElementById('evTrack');
   if (!track) return;
   const cards = events.map(buildEventCard).join('');
-  track.innerHTML = cards + cards;
+  track.innerHTML = cards;
 })();
 
 // ── WAITLIST CTA ──
