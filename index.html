@@ -417,9 +417,9 @@ body::after {
   </div>
 
   <p class="hero-sub">
-    Yunus te da acceso a los mejores conciertos y festivales del año. Paga un enganche y divide el resto en quincenas cómodas.
-    <strong>Sin tarjeta. Sin buró. Sin complicaciones.</strong>
+    Sé lo frustrante que es quedarte fuera por falta de liquidez hoy. Aqui no necesitas tarjeta ni historial. Asegura tu lugar con <strong>solo 15% de enganche</strong> y paga el resto en quincenas cómodas. Tienes casi <strong>100% de aprobación</strong> — porque tu boleto es el colateral.
   </p>
+
   <div class="hero-bottom">
     <div style="display: flex; flex-direction: column; align-items: stretch; gap: 14px; margin-bottom: 20px; width: 100%;">
       <input id="waitlistInput" type="tel" placeholder="(Tu numero con WhatsApp)" inputmode="numeric" maxlength="10"
@@ -431,15 +431,16 @@ body::after {
       <button id="waitlistBtn" class="btn-hero" onclick="unirseWaitlist()" disabled style="opacity: 0.5; cursor: not-allowed; width: 100%; justify-content: center;">
         Únete a la Lista de espera →
       </button>
+      
       <div id="waitlistMsg" style="display:none; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:center;"></div>
+      
       <div style="font-family: 'DM Sans', sans-serif; font-size: 18px; color: var(--muted); margin-top: 4px; align-self: center;">
         🔥 <span id="waitlistCount" style="color: var(--paper); font-weight: 500;">103</span> personas esperando
       </div>
-    </div>
-    <div style="display: flex; align-items: center; justify-content: center; gap: 32px; flex-wrap: wrap;">
-      <div class="hero-stat"><span>15%</span>enganche inicial</div>
-      <div class="hero-stat"><span>36%</span>CAT anual</div>
-      <div class="hero-stat"><span>0</span>consultas al buro</div>
+
+      <span style="font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; align-self: center; margin-top: 4px;">
+        Tasa transparente · 36% CAT anual
+      </span>
     </div>
   </div>
 </section>
