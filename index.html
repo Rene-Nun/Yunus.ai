@@ -98,28 +98,26 @@ body::after {
 .btn-hero:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
 
 /* CAROUSEL */
-@keyframes cscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-#evTrack:hover { animation-play-state: paused; }
 .carousel-wrap {
-  overflow: hidden; position: relative;
+  overflow-x: auto;
+  position: relative;
+  width: 100vw;
+  margin: 0 calc(-50vw + 50%);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   padding: 16px 0;
+  margin-bottom: 48px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-.carousel-fade-l {
-  position: absolute; left: 0; top: 0; bottom: 0; width: 80px;
-  background: linear-gradient(to right, var(--ink), transparent);
-  z-index: 10; pointer-events: none;
-}
-.carousel-fade-r {
-  position: absolute; right: 0; top: 0; bottom: 0; width: 80px;
-  background: linear-gradient(to left, var(--ink), transparent);
-  z-index: 10; pointer-events: none;
+.carousel-wrap::-webkit-scrollbar {
+  display: none;
 }
 
 /* HERO */
 .hero {
-  padding: 160px 32px 80px;
+  padding: 100px 32px 80px; /* Reducido de 160px a 100px para eliminar el espacio vacío */
   max-width: 1280px; margin: 0 auto;
   position: relative;
   text-align: center;
@@ -194,7 +192,7 @@ body::after {
 }
 .step-body { font-size: 13px; color: var(--muted); line-height: 1.7; }
 
-/* SECURITY SECTION (OPTIMIZADA) */
+/* SECURITY SECTION */
 .security-wrap {
   padding: 120px 32px;
   max-width: 760px;
@@ -362,7 +360,7 @@ body::after {
   .steps-grid { grid-template-columns: 1fr; }
   .step { border-right: none; border-bottom: 1px solid var(--border); }
   .section, .faq-wrap, .security-wrap, .contact-wrap { padding: 80px 20px; }
-  .hero { padding: 120px 20px 60px; }
+  .hero { padding: 90px 20px 60px; } /* Ajustado también en móviles */
   .min-security-card { padding: 24px; }
 }
 </style>
@@ -406,14 +404,6 @@ body::after {
 
 <div style="padding-top:72px;">
 
-<!-- EVENT CAROUSEL -->
-
-<div class="carousel-wrap">
-  <div class="carousel-fade-l"></div>
-  <div class="carousel-fade-r"></div>
-  <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;animation:cscroll 50s linear infinite;will-change:transform;padding:0 28px;"></div>
-</div>
-
 <!-- HERO -->
 
 <section class="hero reveal">
@@ -422,6 +412,12 @@ body::after {
     dime a qué evento <span class="accent">quieres ir</span>
     y te financio el boleto.
   </h1>
+
+  <!-- EVENT CAROUSEL MOVIDO DEBAJO DEL TÍTULO -->
+  <div class="carousel-wrap">
+    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;padding:0 15px;"></div>
+  </div>
+
   <p class="hero-sub">
     Yunus te da acceso a los mejores conciertos y festivales del año. Paga un enganche y divide el resto en quincenas cómodas.
     <strong>Sin tarjeta. Sin buró. Sin complicaciones.</strong>
@@ -634,8 +630,9 @@ function buildEventCard(e) {
 (function() {
   const track = document.getElementById('evTrack');
   if (!track) return;
+  // Sin repetición para que sea estático y se acabe donde termina el contenido
   const cards = events.map(buildEventCard).join('');
-  track.innerHTML = cards + cards;
+  track.innerHTML = cards;
 })();
 
 // ── WAITLIST CTA LOGIC ──
