@@ -55,7 +55,6 @@ body::after {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: rgba(10,10,10,0.85);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
 }
 .nav-inner {
   max-width: 1280px; margin: 0 auto;
@@ -103,8 +102,6 @@ body::after {
   position: relative;
   width: 100vw;
   margin: 0 calc(-50vw + 50%);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
   padding: 16px 0;
   margin-bottom: 48px;
   -webkit-overflow-scrolling: touch;
@@ -117,7 +114,7 @@ body::after {
 
 /* HERO */
 .hero {
-  padding: 100px 32px 80px; /* Reducido de 160px a 100px para eliminar el espacio vacío */
+  padding: 40px 32px 80px;
   max-width: 1280px; margin: 0 auto;
   position: relative;
   text-align: center;
@@ -128,7 +125,7 @@ body::after {
 .hero-title {
   font-family: 'Oswald', sans-serif;
   font-weight: 600;
-  font-size: clamp(36px, 6vw, 66px);
+  font-size: 66px;
   line-height: 1.1;
   color: var(--paper);
   letter-spacing: -0.01em;
@@ -354,13 +351,14 @@ body::after {
   .step:nth-child(2n) { border-right: none; }
   .faq-grid { grid-template-columns: 1fr; gap: 48px; }
   .nav-links { display: none; }
-  .hero-title { font-size: clamp(38px, 9vw, 64px); }
+  .hero-title { font-size: 48px; }
 }
 @media (max-width: 600px) {
   .steps-grid { grid-template-columns: 1fr; }
   .step { border-right: none; border-bottom: 1px solid var(--border); }
   .section, .faq-wrap, .security-wrap, .contact-wrap { padding: 80px 20px; }
-  .hero { padding: 90px 20px 60px; } /* Ajustado también en móviles */
+  .hero { padding: 20px 20px 60px; }
+  .hero-title { font-size: 36px; }
   .min-security-card { padding: 24px; }
 }
 </style>
