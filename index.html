@@ -362,51 +362,82 @@ body::after {
   .min-security-card { padding: 24px; }
 }
 
-/* TIMELINE */
-.timeline-wrap { padding: 100px 0 0; max-width: 680px; margin: 0 auto; }
-.timeline-header { text-align: center; padding: 0 32px; margin-bottom: 72px; }
-.timeline-body { position: relative; padding: 0 32px; }
+/* TIMELINE ZIGZAG */
+.timeline-wrap { padding: 100px 0 0; margin: 0 auto; }
+.timeline-header { text-align: center; padding: 0 32px; margin-bottom: 80px; }
+.timeline-body { position: relative; padding: 0; }
+
 .timeline-line {
-  position: absolute; left: 50px; top: 0; bottom: 0; width: 1px;
-  background: var(--border); z-index: 0;
+  position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
+  background: var(--border); transform: translateX(-50%); z-index: 0;
 }
 .timeline-line-fill {
-  position: absolute; left: 50px; top: 0; width: 1px;
-  background: var(--volt); z-index: 1;
-  height: 0; transition: height 0.1s linear;
+  position: absolute; left: 50%; top: 0; width: 1px;
+  background: var(--volt); transform: translateX(-50%); z-index: 1;
+  height: 0;
 }
+
 .tl-step {
-  position: relative; padding-left: 88px; padding-bottom: 72px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  position: relative; margin-bottom: 0;
   opacity: 0; transform: translateY(24px);
   transition: opacity 0.6s ease, transform 0.6s ease;
+  min-height: 480px;
 }
 .tl-step.visible { opacity: 1; transform: none; }
+
 .tl-dot {
-  position: absolute; left: 42px; top: 4px;
-  width: 17px; height: 17px; border-radius: 50%;
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px; height: 14px; border-radius: 50%;
   background: var(--ink); border: 1px solid var(--border);
   transition: background 0.4s, border-color 0.4s;
-  z-index: 2;
+  z-index: 3;
 }
 .tl-step.visible .tl-dot { background: var(--volt); border-color: var(--volt); }
-.tl-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--volt); margin-bottom: 8px; }
-.tl-num { font-family: 'Bebas Neue', sans-serif; font-size: 64px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(242,239,232,0.07); display: block; margin-bottom: 4px; }
-.tl-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: var(--paper); margin-bottom: 10px; line-height: 1.2; }
-.tl-body { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 24px; }
-.tl-photo {
-  width: 100%; overflow: hidden;
-  border: 1px solid var(--border);
-}
+
+/* Foto ocupa toda la celda */
+.tl-photo { overflow: hidden; position: relative; }
 .tl-photo img {
-  width: 100%; height: 340px;
+  width: 100%; height: 100%; min-height: 480px;
   object-fit: cover; object-position: center;
   display: block;
 }
-@media (max-width: 600px) {
-  .timeline-body { padding: 0 20px; }
-  .tl-step { padding-left: 72px; }
-  .tl-photo img { height: 260px; }
-  .tl-num { font-size: 48px; }
+
+/* Texto centrado verticalmente */
+.tl-text {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 56px 52px; background: var(--ink);
+  border-top: 1px solid var(--border);
+}
+.tl-step:first-child .tl-text,
+.tl-step:first-child .tl-photo { border-top: 1px solid var(--border); }
+.tl-step + .tl-step .tl-text,
+.tl-step + .tl-step .tl-photo { border-top: 1px solid var(--border); }
+
+.tl-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--volt); margin-bottom: 10px; }
+.tl-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(242,239,232,0.07); display: block; margin-bottom: 8px; }
+.tl-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 24px; color: var(--paper); margin-bottom: 14px; line-height: 1.2; }
+.tl-body { font-size: 14px; color: var(--muted); line-height: 1.75; }
+
+/* Pasos pares: foto derecha, texto izquierda */
+.tl-step.flip .tl-photo { order: 2; }
+.tl-step.flip .tl-text { order: 1; }
+
+/* Texto izquierdo alineado a la derecha para que "apunte" al centro */
+.tl-step.flip .tl-text { text-align: right; align-items: flex-end; }
+
+@media (max-width: 768px) {
+  .timeline-line { left: 24px; }
+  .timeline-line-fill { left: 24px; }
+  .tl-step, .tl-step.flip { 
+    grid-template-columns: 1fr; 
+    padding-left: 56px;
+  }
+  .tl-dot { left: 24px; top: 32px; transform: translateX(-50%); }
+  .tl-photo { order: 1 !important; }
+  .tl-text { order: 2 !important; padding: 32px 24px 32px 0; text-align: left !important; align-items: flex-start !important; }
+  .tl-photo img { min-height: 260px; height: 260px; }
 }
 
 </style>
@@ -508,47 +539,57 @@ body::after {
 
     <div class="tl-step" id="tls1">
       <div class="tl-dot"></div>
-      <span class="tl-tag">Paso 01</span>
-      <span class="tl-num">01</span>
-      <div class="tl-title">Elige tus boletos</div>
-      <div class="tl-body">Selecciona el evento y la zona que quieres. Escoge entre 6, 8 o 10 quincenas según tu ritmo.</div>
       <div class="tl-photo"><img src="Paso1.png" alt="Elige tus boletos"></div>
+      <div class="tl-text">
+        <span class="tl-tag">Paso 01</span>
+        <span class="tl-num">01</span>
+        <div class="tl-title">Elige tus boletos</div>
+        <div class="tl-body">Selecciona el evento y la zona que quieres. Escoge entre 6, 8 o 10 quincenas según tu ritmo.</div>
+      </div>
     </div>
 
-    <div class="tl-step" id="tls2">
+    <div class="tl-step flip" id="tls2">
       <div class="tl-dot"></div>
-      <span class="tl-tag">Paso 02</span>
-      <span class="tl-num">02</span>
-      <div class="tl-title">Paga solo el 15%</div>
-      <div class="tl-body">Cubre el enganche vía SPEI u Oxxo. Sin tarjeta, sin buró, sin complicaciones.</div>
       <div class="tl-photo"><img src="Paso2.png" alt="Paga solo el 15%"></div>
+      <div class="tl-text">
+        <span class="tl-tag">Paso 02</span>
+        <span class="tl-num">02</span>
+        <div class="tl-title">Paga solo el 15%</div>
+        <div class="tl-body">Cubre el enganche vía SPEI u Oxxo. Sin tarjeta, sin buró, sin complicaciones.</div>
+      </div>
     </div>
 
     <div class="tl-step" id="tls3">
       <div class="tl-dot"></div>
-      <span class="tl-tag">Paso 03</span>
-      <span class="tl-num">03</span>
-      <div class="tl-title">Tus boletos quedan asegurados</div>
-      <div class="tl-body">Los guardamos en tu Bóveda personal. Ya son tuyos — solo falta terminar el plan.</div>
       <div class="tl-photo"><img src="Paso3.png" alt="Boletos asegurados"></div>
+      <div class="tl-text">
+        <span class="tl-tag">Paso 03</span>
+        <span class="tl-num">03</span>
+        <div class="tl-title">Tus boletos quedan asegurados</div>
+        <div class="tl-body">Los guardamos en tu Bóveda personal. Ya son tuyos — solo falta terminar el plan.</div>
+      </div>
     </div>
 
-    <div class="tl-step" id="tls4">
+    <div class="tl-step flip" id="tls4">
       <div class="tl-dot"></div>
-      <span class="tl-tag">Paso 04</span>
-      <span class="tl-num">04</span>
-      <div class="tl-title">Quincena a quincena</div>
-      <div class="tl-body">Pagas cómodo cada dos semanas. Consulta tu avance y próximo pago en tu Bóveda en cualquier momento.</div>
       <div class="tl-photo"><img src="Paso4.jpeg" alt="Quincena a quincena"></div>
+      <div class="tl-text">
+        <span class="tl-tag">Paso 04</span>
+        <span class="tl-num">04</span>
+        <div class="tl-title">Quincena a quincena</div>
+        <div class="tl-body">Pagas cómodo cada dos semanas. Consulta tu avance y próximo pago en tu Bóveda en cualquier momento.</div>
+      </div>
     </div>
 
     <div class="tl-step" id="tls5">
       <div class="tl-dot"></div>
-      <span class="tl-tag">Paso 05</span>
-      <span class="tl-num">05</span>
-      <div class="tl-title">Desbloqueas tu entrada</div>
-      <div class="tl-body">Al liquidar el plan, el boleto es tuyo al 100% y está listo para usarse. A disfrutar.</div>
       <div class="tl-photo"><img src="Paso5.png" alt="Desbloqueas tu entrada"></div>
+      <div class="tl-text">
+        <span class="tl-tag">Paso 05</span>
+        <span class="tl-num">05</span>
+        <div class="tl-title">Desbloqueas tu entrada</div>
+        <div class="tl-body">Al liquidar el plan, el boleto es tuyo al 100% y está listo para usarse. A disfrutar.</div>
+      </div>
     </div>
 
   </div>
@@ -821,23 +862,20 @@ function toggleMenu() {
     }
 })();
 
-(function(){
+(function() {
   const steps = document.querySelectorAll('.tl-step');
   const fill = document.getElementById('tlFill');
   const line = document.querySelector('.timeline-line');
 
   const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add('visible');
-    });
-  }, { threshold: 0.15 });
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
 
   steps.forEach(s => io.observe(s));
 
   function updateFill() {
     if (!line || !fill) return;
-    const lineRect = line.getBoundingClientRect();
-    const lineTop = lineRect.top + window.scrollY;
+    const lineTop = line.getBoundingClientRect().top + window.scrollY;
     const lineHeight = line.offsetHeight;
     const scrolled = window.scrollY + window.innerHeight * 0.6;
     const progress = Math.min(Math.max(scrolled - lineTop, 0), lineHeight);
@@ -847,8 +885,6 @@ function toggleMenu() {
   window.addEventListener('scroll', updateFill, { passive: true });
   updateFill();
 })();
-
-</script>
 
 </body>
 </html>
