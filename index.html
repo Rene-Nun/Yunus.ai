@@ -362,34 +362,51 @@ body::after {
   .min-security-card { padding: 24px; }
 }
 
-/* STEPS ZIGZAG */
-.steps-zigzag { display: flex; flex-direction: column; }
-.step-row {
-  display: grid; grid-template-columns: 1fr 1fr;
-  border: 1px solid var(--border); margin-bottom: -1px;
-  min-height: 420px; overflow: hidden;
+/* TIMELINE */
+.timeline-wrap { padding: 100px 0 0; max-width: 680px; margin: 0 auto; }
+.timeline-header { text-align: center; padding: 0 32px; margin-bottom: 72px; }
+.timeline-body { position: relative; padding: 0 32px; }
+.timeline-line {
+  position: absolute; left: 50px; top: 0; bottom: 0; width: 1px;
+  background: var(--border); z-index: 0;
 }
-.step-photo { overflow: hidden; position: relative; }
-.step-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.7s ease; }
-.step-row:hover .step-photo img { transform: scale(1.04); }
-.step-text {
-  padding: 48px 44px; display: flex; flex-direction: column;
-  justify-content: center; background: var(--ink);
-  border-left: 1px solid var(--border);
+.timeline-line-fill {
+  position: absolute; left: 50px; top: 0; width: 1px;
+  background: var(--volt); z-index: 1;
+  height: 0; transition: height 0.1s linear;
 }
-.step-row.flip { direction: rtl; }
-.step-row.flip > * { direction: ltr; }
-.step-row.flip .step-text { border-left: none; border-right: 1px solid var(--border); }
-.step-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--volt); margin-bottom: 12px; }
-.step-num-lg { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(242,239,232,0.08); margin-bottom: 10px; display: block; }
-.step-title-lg { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: var(--paper); margin-bottom: 14px; line-height: 1.2; }
-.step-body-lg { font-size: 14px; color: var(--muted); line-height: 1.75; max-width: 380px; }
-@media (max-width: 768px) {
-  .step-row, .step-row.flip { grid-template-columns: 1fr; direction: ltr; min-height: auto; }
-  .step-photo { height: 260px; }
-  .step-text { padding: 32px 24px; border-left: none !important; border-right: none !important; border-top: 1px solid var(--border); }
-  .step-row.flip { display: flex; flex-direction: column-reverse; }
-  .step-row.flip .step-text { border-top: none; border-bottom: 1px solid var(--border); }
+.tl-step {
+  position: relative; padding-left: 88px; padding-bottom: 72px;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.tl-step.visible { opacity: 1; transform: none; }
+.tl-dot {
+  position: absolute; left: 42px; top: 4px;
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--ink); border: 1px solid var(--border);
+  transition: background 0.4s, border-color 0.4s;
+  z-index: 2;
+}
+.tl-step.visible .tl-dot { background: var(--volt); border-color: var(--volt); }
+.tl-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--volt); margin-bottom: 8px; }
+.tl-num { font-family: 'Bebas Neue', sans-serif; font-size: 64px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(242,239,232,0.07); display: block; margin-bottom: 4px; }
+.tl-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: var(--paper); margin-bottom: 10px; line-height: 1.2; }
+.tl-body { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 24px; }
+.tl-photo {
+  width: 100%; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.tl-photo img {
+  width: 100%; height: 340px;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+@media (max-width: 600px) {
+  .timeline-body { padding: 0 20px; }
+  .tl-step { padding-left: 72px; }
+  .tl-photo img { height: 260px; }
+  .tl-num { font-size: 48px; }
 }
 
 </style>
@@ -479,62 +496,59 @@ body::after {
 
 <!-- COMO FUNCIONA -->
 <div id="como-funciona">
-<div style="padding: 100px 0 0; max-width: 1280px; margin: 0 auto;">
-  <div style="padding: 0 32px; margin-bottom: 56px; text-align: center;">
-    <p class="reveal" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--volt);margin-bottom:16px;">Cómo funciona</p>
-    <h2 class="reveal" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,7vw,96px);line-height:0.92;color:var(--paper);">Tan fácil como suena.</h2>
+<div class="timeline-wrap">
+  <div class="timeline-header">
+    <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--volt);margin-bottom:16px;">Cómo funciona</p>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,7vw,96px);line-height:0.92;color:var(--paper);">Tan fácil como suena.</h2>
   </div>
 
-  <div class="steps-zigzag">
+  <div class="timeline-body">
+    <div class="timeline-line"></div>
+    <div class="timeline-line-fill" id="tlFill"></div>
 
-    <div class="step-row reveal">
-      <div class="step-photo"><img src="Paso1.png" alt="Elige tus boletos"></div>
-      <div class="step-text">
-        <span class="step-tag">Paso 01</span>
-        <span class="step-num-lg">01</span>
-        <div class="step-title-lg">Elige tus boletos</div>
-        <div class="step-body-lg">Selecciona el evento y la zona que quieres. Escoge entre 6, 8 o 10 quincenas según tu ritmo.</div>
-      </div>
+    <div class="tl-step" id="tls1">
+      <div class="tl-dot"></div>
+      <span class="tl-tag">Paso 01</span>
+      <span class="tl-num">01</span>
+      <div class="tl-title">Elige tus boletos</div>
+      <div class="tl-body">Selecciona el evento y la zona que quieres. Escoge entre 6, 8 o 10 quincenas según tu ritmo.</div>
+      <div class="tl-photo"><img src="Paso1.png" alt="Elige tus boletos"></div>
     </div>
 
-    <div class="step-row flip reveal">
-      <div class="step-photo"><img src="Paso2.png" alt="Paga solo el 15%"></div>
-      <div class="step-text">
-        <span class="step-tag">Paso 02</span>
-        <span class="step-num-lg">02</span>
-        <div class="step-title-lg">Paga solo el 15%</div>
-        <div class="step-body-lg">Cubre el enganche vía SPEI u Oxxo. Sin tarjeta, sin buró, sin complicaciones.</div>
-      </div>
+    <div class="tl-step" id="tls2">
+      <div class="tl-dot"></div>
+      <span class="tl-tag">Paso 02</span>
+      <span class="tl-num">02</span>
+      <div class="tl-title">Paga solo el 15%</div>
+      <div class="tl-body">Cubre el enganche vía SPEI u Oxxo. Sin tarjeta, sin buró, sin complicaciones.</div>
+      <div class="tl-photo"><img src="Paso2.png" alt="Paga solo el 15%"></div>
     </div>
 
-    <div class="step-row reveal">
-      <div class="step-photo"><img src="Paso3.png" alt="Tus boletos quedan asegurados"></div>
-      <div class="step-text">
-        <span class="step-tag">Paso 03</span>
-        <span class="step-num-lg">03</span>
-        <div class="step-title-lg">Tus boletos quedan asegurados</div>
-        <div class="step-body-lg">Los guardamos en tu Bóveda personal. Ya son tuyos — solo falta terminar el plan.</div>
-      </div>
+    <div class="tl-step" id="tls3">
+      <div class="tl-dot"></div>
+      <span class="tl-tag">Paso 03</span>
+      <span class="tl-num">03</span>
+      <div class="tl-title">Tus boletos quedan asegurados</div>
+      <div class="tl-body">Los guardamos en tu Bóveda personal. Ya son tuyos — solo falta terminar el plan.</div>
+      <div class="tl-photo"><img src="Paso3.png" alt="Boletos asegurados"></div>
     </div>
 
-    <div class="step-row flip reveal">
-      <div class="step-photo"><img src="Paso4.jpeg" alt="Quincena a quincena"></div>
-      <div class="step-text">
-        <span class="step-tag">Paso 04</span>
-        <span class="step-num-lg">04</span>
-        <div class="step-title-lg">Quincena a quincena</div>
-        <div class="step-body-lg">Pagas cómodo cada dos semanas. Consulta tu avance y próximo pago en tu Bóveda en cualquier momento.</div>
-      </div>
+    <div class="tl-step" id="tls4">
+      <div class="tl-dot"></div>
+      <span class="tl-tag">Paso 04</span>
+      <span class="tl-num">04</span>
+      <div class="tl-title">Quincena a quincena</div>
+      <div class="tl-body">Pagas cómodo cada dos semanas. Consulta tu avance y próximo pago en tu Bóveda en cualquier momento.</div>
+      <div class="tl-photo"><img src="Paso4.jpeg" alt="Quincena a quincena"></div>
     </div>
 
-    <div class="step-row reveal">
-      <div class="step-photo"><img src="Paso5.png" alt="Desbloqueas tu entrada"></div>
-      <div class="step-text">
-        <span class="step-tag">Paso 05</span>
-        <span class="step-num-lg">05</span>
-        <div class="step-title-lg">Desbloqueas tu entrada</div>
-        <div class="step-body-lg">Al liquidar el plan, el boleto es tuyo al 100% y está listo para usarse. A disfrutar.</div>
-      </div>
+    <div class="tl-step" id="tls5">
+      <div class="tl-dot"></div>
+      <span class="tl-tag">Paso 05</span>
+      <span class="tl-num">05</span>
+      <div class="tl-title">Desbloqueas tu entrada</div>
+      <div class="tl-body">Al liquidar el plan, el boleto es tuyo al 100% y está listo para usarse. A disfrutar.</div>
+      <div class="tl-photo"><img src="Paso5.png" alt="Desbloqueas tu entrada"></div>
     </div>
 
   </div>
@@ -806,6 +820,34 @@ function toggleMenu() {
         scrollToWaitlist();
     }
 })();
+
+(function(){
+  const steps = document.querySelectorAll('.tl-step');
+  const fill = document.getElementById('tlFill');
+  const line = document.querySelector('.timeline-line');
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.15 });
+
+  steps.forEach(s => io.observe(s));
+
+  function updateFill() {
+    if (!line || !fill) return;
+    const lineRect = line.getBoundingClientRect();
+    const lineTop = lineRect.top + window.scrollY;
+    const lineHeight = line.offsetHeight;
+    const scrolled = window.scrollY + window.innerHeight * 0.6;
+    const progress = Math.min(Math.max(scrolled - lineTop, 0), lineHeight);
+    fill.style.height = progress + 'px';
+  }
+
+  window.addEventListener('scroll', updateFill, { passive: true });
+  updateFill();
+})();
+
 </script>
 
 </body>
