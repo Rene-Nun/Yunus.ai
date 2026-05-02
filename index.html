@@ -153,16 +153,27 @@ body::after {
 }
 .hero-stat span { color: var(--volt); margin-right: 4px; }
 
+/* SECTION DIVIDER */
+.divider {
+  border: none; border-top: 1px solid var(--border); margin: 0;
+}
+
 /* SECURITY SECTION */
 .security-wrap {
   padding: 120px 32px;
-  max-width: 760px;
+  max-width: 1100px;
   margin: 0 auto;
-  text-align: center;
 }
+.security-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 64px;
+  align-items: center;
+}
+.security-copy { text-align: left; }
 .security-copy h2 {
   font-family: 'Oswald', sans-serif;
-  font-size: clamp(42px, 8vw, 78px);
+  font-size: clamp(42px, 6vw, 78px);
   line-height: 0.92;
   color: var(--paper); margin-bottom: 24px;
 }
@@ -379,6 +390,7 @@ body::after {
   .faq-grid { grid-template-columns: 1fr; gap: 48px; }
   .nav-links { display: none; }
   .hero-title { font-size: 48px; }
+  .security-inner { grid-template-columns: 1fr; gap: 48px; }
 }
 @media (max-width: 600px) {
   .section, .faq-wrap, .security-wrap, .contact-wrap { padding: 80px 20px; }
@@ -529,20 +541,25 @@ body::after {
 <!-- SEGURIDAD -->
 <section id="seguridad">
 <div class="security-wrap">
-  <div class="reveal security-copy">
-    <h2>
-      ¿Y si no puedes <br> seguir pagando?
-    </h2>
-    <div class="min-security-card">
-      <p style="font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:16px;">
-        Si no puedes o no quieres continuar pagando, selecciona revender en los boletos de tu boveda que quieras listar. Se publicarán en nuestro Marketplace y nos encargaremos de encontrar comprador de manera segura.
-      </p>
-      <p style="font-size:16px;color:var(--paper);line-height:1.5;font-weight:500;">
-        Si la venta se logra, puedes recuperar hasta el 90% de lo ya invertido.
-      </p>
-      <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:16px;letter-spacing:0.04em;">
-        * El monto de recuperación dependerá del éxito de la venta y del precio en que se cierre en relación al costo original.
-      </p>
+  <div class="reveal security-inner">
+    <div class="security-copy">
+      <h2>
+        ¿Y si no puedes <br> seguir pagando?
+      </h2>
+      <div class="min-security-card">
+        <p style="font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:16px;">
+          Si no puedes o no quieres continuar pagando, selecciona revender en los boletos de tu boveda que quieras listar. Se publicarán en nuestro Marketplace y nos encargaremos de encontrar comprador de manera segura.
+        </p>
+        <p style="font-size:16px;color:var(--paper);line-height:1.5;font-weight:500;">
+          Si la venta se logra, puedes recuperar hasta el 90% de lo ya invertido.
+        </p>
+        <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:16px;letter-spacing:0.04em;">
+          * El monto de recuperación dependerá del éxito de la venta y del precio en que se cierre en relación al costo original.
+        </p>
+      </div>
+    </div>
+    <div>
+      <img src="Revender.jpeg" alt="Confirmar Reventa" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
     </div>
   </div>
 </div>
