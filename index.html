@@ -108,9 +108,7 @@ body::after {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-.carousel-wrap::-webkit-scrollbar {
-  display: none;
-}
+.carousel-wrap::-webkit-scrollbar { display: none; }
 
 /* HERO */
 .hero {
@@ -155,40 +153,6 @@ body::after {
 }
 .hero-stat span { color: var(--volt); margin-right: 4px; }
 
-/* SECTION DIVIDER */
-.divider {
-  border: none; border-top: 1px solid var(--border); margin: 0;
-}
-
-/* HOW IT WORKS */
-.section { padding: 120px 32px; max-width: 1280px; margin: 0 auto; }
-.steps-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 0; border: 1px solid var(--border);
-}
-.step {
-  padding: 40px 32px; border-right: 1px solid var(--border);
-  position: relative; transition: background 0.3s;
-}
-.step:last-child { border-right: none; }
-.step:hover { background: rgba(242,239,232,0.03); }
-.step-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 80px; line-height: 1;
-  color: transparent; -webkit-text-stroke: 1px var(--border);
-  margin-bottom: 24px; display: block;
-  transition: color 0.3s, -webkit-text-stroke 0.3s;
-}
-.step:hover .step-num {
-  color: var(--volt);
-  -webkit-text-stroke: 1px var(--volt);
-}
-.step-title {
-  font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: 16px; color: var(--paper); margin-bottom: 12px;
-}
-.step-body { font-size: 13px; color: var(--muted); line-height: 1.7; }
-
 /* SECURITY SECTION */
 .security-wrap {
   padding: 120px 32px;
@@ -215,7 +179,7 @@ body::after {
 }
 
 /* FAQ */
-.faq-wrap { padding: 120px 32px; border-top: 1px solid var(--border); }
+.faq-wrap { padding: 120px 32px; }
 .faq-inner { max-width: 1280px; margin: 0 auto; }
 .faq-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; }
 .faq-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 5vw, 80px); line-height: 0.92; color: var(--paper); }
@@ -227,7 +191,7 @@ body::after {
   padding: 24px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px;
   text-align: left;
 }
-.faq-q-text { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 15px; color: var(--paper); }
+.faq-q-text { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px; color: var(--paper); }
 .faq-icon {
   font-family: 'DM Mono', monospace; font-size: 18px;
   color: var(--muted); flex-shrink: 0; transition: transform 0.3s, color 0.3s;
@@ -239,7 +203,6 @@ body::after {
 /* CONTACT SECTION */
 .contact-wrap {
   background: #0f0f0f; padding: 120px 32px; text-align: center;
-  border-top: 1px solid var(--border);
 }
 .contact-inner { max-width: 600px; margin: 0 auto; }
 .contact-title {
@@ -318,7 +281,7 @@ body::after {
   position: sticky; top: 0; background: #111; z-index: 1;
 }
 .modal-title {
-  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-family: 'Oswald', sans-serif; font-weight: 600;
   font-size: 18px; color: var(--paper);
 }
 .modal-close {
@@ -332,8 +295,8 @@ body::after {
 /* LEGAL MODAL */
 .legal-panel { max-width: 680px; max-height: 85vh; }
 .legal-content { padding: 28px; font-size: 13px; color: var(--muted); line-height: 1.75; }
-.legal-content h2 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; color: var(--paper); margin: 24px 0 12px; }
-.legal-content h3 { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px; color: var(--paper); margin: 20px 0 8px; }
+.legal-content h2 { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 18px; color: var(--paper); margin: 24px 0 12px; }
+.legal-content h3 { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 14px; color: var(--paper); margin: 20px 0 8px; }
 .legal-content p { margin-bottom: 12px; }
 .legal-content ul { padding-left: 20px; margin-bottom: 12px; }
 .legal-content ul li { margin-bottom: 6px; }
@@ -343,24 +306,6 @@ body::after {
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .reveal.visible { opacity: 1; transform: none; }
 .d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.2s; } .d3 { transition-delay: 0.3s; }
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .steps-grid { grid-template-columns: 1fr 1fr; }
-  .step { border-right: 1px solid var(--border); }
-  .step:nth-child(2n) { border-right: none; }
-  .faq-grid { grid-template-columns: 1fr; gap: 48px; }
-  .nav-links { display: none; }
-  .hero-title { font-size: 48px; }
-}
-@media (max-width: 600px) {
-  .steps-grid { grid-template-columns: 1fr; }
-  .step { border-right: none; border-bottom: 1px solid var(--border); }
-  .section, .faq-wrap, .security-wrap, .contact-wrap { padding: 80px 20px; }
-  .hero { padding: 20px 20px 60px; }
-  .hero-title { font-size: 36px; }
-  .min-security-card { padding: 24px; }
-}
 
 /* TIMELINE ZIGZAG */
 .timeline-wrap { padding: 100px 0 0; margin: 0 auto; }
@@ -396,7 +341,6 @@ body::after {
 }
 .tl-step.visible .tl-dot { background: var(--volt); border-color: var(--volt); }
 
-/* Foto ocupa toda la celda */
 .tl-photo { overflow: hidden; position: relative; }
 .tl-photo img {
   width: 100%; height: 100%; min-height: 480px;
@@ -404,42 +348,44 @@ body::after {
   display: block;
 }
 
-/* Texto centrado verticalmente */
 .tl-text {
   display: flex; flex-direction: column; justify-content: center;
   padding: 56px 52px; background: var(--ink);
-  border-top: 1px solid var(--border);
 }
-.tl-step:first-child .tl-text,
-.tl-step:first-child .tl-photo { border-top: 1px solid var(--border); }
-.tl-step + .tl-step .tl-text,
-.tl-step + .tl-step .tl-photo { border-top: 1px solid var(--border); }
 
 .tl-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--volt); margin-bottom: 10px; }
 .tl-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(242,239,232,0.07); display: block; margin-bottom: 8px; }
-.tl-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 24px; color: var(--paper); margin-bottom: 14px; line-height: 1.2; }
+.tl-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 28px; color: var(--paper); margin-bottom: 14px; line-height: 1.15; letter-spacing: -0.01em; }
 .tl-body { font-size: 14px; color: var(--muted); line-height: 1.75; }
 
-/* Pasos pares: foto derecha, texto izquierda */
 .tl-step.flip .tl-photo { order: 2; }
-.tl-step.flip .tl-text { order: 1; }
-
-/* Texto izquierdo alineado a la derecha para que "apunte" al centro */
-.tl-step.flip .tl-text { text-align: right; align-items: flex-end; }
+.tl-step.flip .tl-text { order: 1; text-align: right; align-items: flex-end; }
 
 @media (max-width: 768px) {
   .timeline-line { left: 24px; }
   .timeline-line-fill { left: 24px; }
-  .tl-step, .tl-step.flip { 
-    grid-template-columns: 1fr; 
+  .tl-step, .tl-step.flip {
+    grid-template-columns: 1fr;
     padding-left: 56px;
   }
   .tl-dot { left: 24px; top: 32px; transform: translateX(-50%); }
-  .tl-photo { order: 1 !important; }
-  .tl-text { order: 2 !important; padding: 32px 24px 32px 0; text-align: left !important; align-items: flex-start !important; }
+  .tl-text { order: 1 !important; padding: 32px 24px 24px 0; text-align: left !important; align-items: flex-start !important; }
+  .tl-photo { order: 2 !important; }
   .tl-photo img { min-height: 260px; height: 260px; }
 }
 
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .faq-grid { grid-template-columns: 1fr; gap: 48px; }
+  .nav-links { display: none; }
+  .hero-title { font-size: 48px; }
+}
+@media (max-width: 600px) {
+  .section, .faq-wrap, .security-wrap, .contact-wrap { padding: 80px 20px; }
+  .hero { padding: 20px 20px 60px; }
+  .hero-title { font-size: 36px; }
+  .min-security-card { padding: 24px; }
+}
 </style>
 
 <!-- Google tag (gtag.js) -->
@@ -456,7 +402,6 @@ body::after {
 <body>
 
 <!-- NAV -->
-
 <nav id="nav">
   <div class="nav-inner">
     <div>
@@ -482,14 +427,12 @@ body::after {
 <div style="padding-top:72px;">
 
 <!-- HERO -->
-
 <section class="hero reveal">
   <h1 class="hero-title">
     Tus eventos favoritos<br>
     En plazos <span class="accent">muy comodos.</span>
   </h1>
 
-  <!-- EVENT CAROUSEL MOVIDO DEBAJO DEL TÍTULO -->
   <div class="carousel-wrap">
     <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;padding:0 15px;"></div>
   </div>
@@ -509,9 +452,9 @@ body::after {
       <button id="waitlistBtn" class="btn-hero" onclick="unirseWaitlist()" disabled style="opacity: 0.5; cursor: not-allowed; width: 100%; justify-content: center;">
         Pide tu código de acceso →
       </button>
-      
+
       <div id="waitlistMsg" style="display:none; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:center;"></div>
-      
+
       <div style="font-family: 'DM Sans', sans-serif; font-size: 18px; color: var(--muted); margin-top: 4px; align-self: center;">
         🔥 <span id="waitlistCount" style="color: var(--paper); font-weight: 500;">103</span> personas esperando
       </div>
@@ -523,13 +466,12 @@ body::after {
   </div>
 </section>
 
-<hr class="divider">
-
 <!-- COMO FUNCIONA -->
 <div id="como-funciona">
 <div class="timeline-wrap">
   <div class="timeline-header">
-    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,7vw,96px);line-height:0.92;color:var(--paper);">Tan fácil como suena.</h2>
+    <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--volt);margin-bottom:16px;">Cómo funciona</p>
+    <h2 style="font-family:'Oswald',sans-serif;font-weight:600;font-size:clamp(56px,7vw,96px);line-height:0.92;color:var(--paper);letter-spacing:-0.01em;">Tan fácil como suena.</h2>
   </div>
 
   <div class="timeline-body">
@@ -540,6 +482,8 @@ body::after {
       <div class="tl-dot"></div>
       <div class="tl-photo"><img src="Paso1.png" alt="Elige tus boletos"></div>
       <div class="tl-text">
+        <span class="tl-tag">Paso 01</span>
+        <span class="tl-num">01</span>
         <div class="tl-title">Elige tus boletos</div>
         <div class="tl-body">Selecciona el evento y la zona que quieres. Escoge entre 6, 8 o 10 quincenas según tu ritmo.</div>
       </div>
@@ -547,8 +491,10 @@ body::after {
 
     <div class="tl-step flip" id="tls2">
       <div class="tl-dot"></div>
-      <div class="tl-photo"><img src="Untitled design.png" alt="Paga solo el 15%"></div>
+      <div class="tl-photo"><img src="Paso2.png" alt="Paga solo el 15%"></div>
       <div class="tl-text">
+        <span class="tl-tag">Paso 02</span>
+        <span class="tl-num">02</span>
         <div class="tl-title">Paga solo el 15%</div>
         <div class="tl-body">Cubre el enganche vía SPEI u Oxxo. Sin tarjeta, sin buró, sin complicaciones.</div>
       </div>
@@ -556,8 +502,10 @@ body::after {
 
     <div class="tl-step" id="tls3">
       <div class="tl-dot"></div>
-      <div class="tl-photo"><img src="Untitled design.jpeg" alt="Boletos asegurados"></div>
+      <div class="tl-photo"><img src="Paso3.png" alt="Boletos asegurados"></div>
       <div class="tl-text">
+        <span class="tl-tag">Paso 03</span>
+        <span class="tl-num">03</span>
         <div class="tl-title">Tus boletos quedan asegurados</div>
         <div class="tl-body">Los guardamos en tu Bóveda personal. Ya son tuyos — solo falta terminar el plan.</div>
       </div>
@@ -567,6 +515,8 @@ body::after {
       <div class="tl-dot"></div>
       <div class="tl-photo"><img src="Paso4.jpeg" alt="Quincena a quincena"></div>
       <div class="tl-text">
+        <span class="tl-tag">Paso 04</span>
+        <span class="tl-num">04</span>
         <div class="tl-title">Quincena a quincena</div>
         <div class="tl-body">Pagas cómodo cada dos semanas. Consulta tu avance y próximo pago en tu Bóveda en cualquier momento.</div>
       </div>
@@ -576,6 +526,8 @@ body::after {
       <div class="tl-dot"></div>
       <div class="tl-photo"><img src="Paso5.png" alt="Desbloqueas tu entrada"></div>
       <div class="tl-text">
+        <span class="tl-tag">Paso 05</span>
+        <span class="tl-num">05</span>
         <div class="tl-title">Desbloqueas tu entrada</div>
         <div class="tl-body">Al liquidar el plan, el boleto es tuyo al 100% y está listo para usarse. A disfrutar.</div>
       </div>
@@ -585,10 +537,7 @@ body::after {
 </div>
 </div>
 
-<hr class="divider">
-
 <!-- SEGURIDAD -->
-
 <section id="seguridad">
 <div class="security-wrap">
   <div class="reveal security-copy">
@@ -610,10 +559,7 @@ body::after {
 </div>
 </section>
 
-<hr class="divider">
-
 <!-- FAQ -->
-
 <div class="faq-wrap">
   <div class="faq-inner">
     <div class="faq-grid">
@@ -655,7 +601,6 @@ body::after {
 </div>
 
 <!-- DUDAS Y ACLARACIONES -->
-
 <section class="contact-wrap">
   <div class="contact-inner reveal">
     <h2 class="contact-title">Dudas y aclaraciones.</h2>
@@ -665,7 +610,6 @@ body::after {
 </section>
 
 <!-- FOOTER -->
-
 <footer class="footer">
   <div class="footer-inner">
     <div>
@@ -683,8 +627,7 @@ body::after {
 
 </div><!-- end pt-72 -->
 
-<!-- ═══════════════ MODAL LEGAL ═══════════════ -->
-
+<!-- MODAL LEGAL -->
 <div id="legalModal" class="modal-bg" style="z-index:300;" onclick="if(event.target===this)closeLegalModal()">
   <div class="modal-panel legal-panel" onclick="event.stopPropagation()" style="max-width:680px;">
     <div class="modal-header">
@@ -708,11 +651,11 @@ function scrollToWaitlist() {
 
 // ── EVENT CARDS ──
 const events = [
+  { name:'Harry Styles', tag:'Concierto · CDMX', date:'10 Ago 2026', price:'Desde $283 MXN × quincena', img:'HarryS.webp', accent:'#2563eb' },
+  { name:'Bruno Mars', tag:'Concierto · CDMX', date:'4-7-8 Dic 2026', price:'Desde $169 MXN × quincena', img:'BrunoM.jpeg', accent:'#16a34a' },
+  { name:'Vans Warped Tour', tag:'Festival · CDMX', date:'12-13 Sep 2026', price:'Desde $381 MXN × quincena', img:'VansW.webp', accent:'#ea580c' },
   { name:'Baja Beach Fest', tag:'Festival · Rosarito', date:'7-9 Ago 2026', price:'Desde $525 MXN × quincena', img:'BajaB.jpeg', accent:'#2563eb' },
   { name:'Rosalia: Lux Tour', tag:'Concierto · CDMX / GDL', date:'Ago 2026', price:'Desde $381 MXN × quincena', img:'Rosalia.jpeg', accent:'#be185d' },
-  { name:'Vans Warped Tour', tag:'Festival · CDMX', date:'12-13 Sep 2026', price:'Desde $381 MXN × quincena', img:'VansW.webp', accent:'#ea580c' },
-  { name:'Bruno Mars', tag:'Concierto · CDMX', date:'4-7-8 Dic 2026', price:'Desde $169 MXN × quincena', img:'BrunoM.jpeg', accent:'#16a34a' },
-  { name:'Harry Styles', tag:'Concierto · CDMX', date:'10 Ago 2026', price:'Desde $283 MXN × quincena', img:'HarryS.webp', accent:'#2563eb' },
   { name:'Enjambre E. GNP', tag:'Concierto · CDMX', date:'30 Ago 2026', price:'x confirmar', img:'Enjambre.webp', accent:'#be165d' },
 ];
 
@@ -723,7 +666,7 @@ function buildEventCard(e) {
     </div>
     <div style="padding:12px 14px;">
       <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">${e.tag}</div>
-      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--paper);line-height:1.2;margin-bottom:8px;">${e.name}</div>
+      <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;color:var(--paper);line-height:1.2;margin-bottom:8px;">${e.name}</div>
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);">${e.date}</span>
         <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--volt);font-weight:500;">${e.price}</span>
@@ -735,9 +678,7 @@ function buildEventCard(e) {
 (function() {
   const track = document.getElementById('evTrack');
   if (!track) return;
-  // Sin repetición para que sea estático y se acabe donde termina el contenido
-  const cards = events.map(buildEventCard).join('');
-  track.innerHTML = cards;
+  track.innerHTML = events.map(buildEventCard).join('');
 })();
 
 // ── WAITLIST CTA LOGIC ──
@@ -774,7 +715,6 @@ async function unirseWaitlist() {
         const counterEl = document.getElementById('waitlistCount');
         if (counterEl) counterEl.innerText = parseInt(counterEl.innerText) + 1;
       }
-
       input.style.display = 'none';
       btn.style.display = 'none';
       msg.style.display = 'block';
@@ -843,12 +783,12 @@ function toggleMenu() {
 })();
 
 (function() {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('modal') === 'onboarding') {
-        const newUrl = window.location.pathname + window.location.hash;
-        window.history.replaceState({}, document.title, newUrl);
-        scrollToWaitlist();
-    }
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('modal') === 'onboarding') {
+    const newUrl = window.location.pathname + window.location.hash;
+    window.history.replaceState({}, document.title, newUrl);
+    scrollToWaitlist();
+  }
 })();
 
 (function(){
