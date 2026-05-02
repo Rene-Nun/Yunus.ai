@@ -361,6 +361,37 @@ body::after {
   .hero-title { font-size: 36px; }
   .min-security-card { padding: 24px; }
 }
+
+/* STEPS ZIGZAG */
+.steps-zigzag { display: flex; flex-direction: column; }
+.step-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--border); margin-bottom: -1px;
+  min-height: 420px; overflow: hidden;
+}
+.step-photo { overflow: hidden; position: relative; }
+.step-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.7s ease; }
+.step-row:hover .step-photo img { transform: scale(1.04); }
+.step-text {
+  padding: 48px 44px; display: flex; flex-direction: column;
+  justify-content: center; background: var(--ink);
+  border-left: 1px solid var(--border);
+}
+.step-row.flip { direction: rtl; }
+.step-row.flip > * { direction: ltr; }
+.step-row.flip .step-text { border-left: none; border-right: 1px solid var(--border); }
+.step-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--volt); margin-bottom: 12px; }
+.step-num-lg { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(242,239,232,0.08); margin-bottom: 10px; display: block; }
+.step-title-lg { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: var(--paper); margin-bottom: 14px; line-height: 1.2; }
+.step-body-lg { font-size: 14px; color: var(--muted); line-height: 1.75; max-width: 380px; }
+@media (max-width: 768px) {
+  .step-row, .step-row.flip { grid-template-columns: 1fr; direction: ltr; min-height: auto; }
+  .step-photo { height: 260px; }
+  .step-text { padding: 32px 24px; border-left: none !important; border-right: none !important; border-top: 1px solid var(--border); }
+  .step-row.flip { display: flex; flex-direction: column-reverse; }
+  .step-row.flip .step-text { border-top: none; border-bottom: 1px solid var(--border); }
+}
+
 </style>
 
 <!-- Google tag (gtag.js) -->
@@ -447,33 +478,65 @@ body::after {
 <hr class="divider">
 
 <!-- COMO FUNCIONA -->
-
 <div id="como-funciona">
-<div class="section">
-  <div style="margin-bottom:56px;">
-    <h2 class="reveal" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,7vw,96px);line-height:0.92;color:var(--paper);text-align:center;">Asi de sencillo.</h2>
+<div style="padding: 100px 0 0; max-width: 1280px; margin: 0 auto;">
+  <div style="padding: 0 32px; margin-bottom: 56px; text-align: center;">
+    <p class="reveal" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--volt);margin-bottom:16px;">Cómo funciona</p>
+    <h2 class="reveal" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,7vw,96px);line-height:0.92;color:var(--paper);">Tan fácil como suena.</h2>
   </div>
-  <div class="steps-grid reveal">
-    <div class="step">
-      <span class="step-num">01</span>
-      <div class="step-title">Eliges tu evento</div>
-      <div class="step-body">Selecciona entre Baja Beach Fest, Rosalia, Vans Warped Tour o Bruno Mars y el tipo de boleto que quieres.</div>
+
+  <div class="steps-zigzag">
+
+    <div class="step-row reveal">
+      <div class="step-photo"><img src="Paso1.png" alt="Elige tus boletos"></div>
+      <div class="step-text">
+        <span class="step-tag">Paso 01</span>
+        <span class="step-num-lg">01</span>
+        <div class="step-title-lg">Elige tus boletos</div>
+        <div class="step-body-lg">Selecciona el evento y la zona que quieres. Escoge entre 6, 8 o 10 quincenas según tu ritmo.</div>
+      </div>
     </div>
-    <div class="step">
-      <span class="step-num">02</span>
-      <div class="step-title">Yunus verifica tu perfil</div>
-      <div class="step-body">Analizamos tu capacidad de pago real sin consultar buro de credito. Rapido, justo y seguro.</div>
+
+    <div class="step-row flip reveal">
+      <div class="step-photo"><img src="Paso2.png" alt="Paga solo el 15%"></div>
+      <div class="step-text">
+        <span class="step-tag">Paso 02</span>
+        <span class="step-num-lg">02</span>
+        <div class="step-title-lg">Paga solo el 15%</div>
+        <div class="step-body-lg">Cubre el enganche vía SPEI u Oxxo. Sin tarjeta, sin buró, sin complicaciones.</div>
+      </div>
     </div>
-    <div class="step">
-      <span class="step-num">03</span>
-      <div class="step-title">Pagas el 15% inicial</div>
-      <div class="step-body">Das el enganche via SPEI u Oxxo y Yunus asegura inmediatamente tu boleto en tu Boveda personal.</div>
+
+    <div class="step-row reveal">
+      <div class="step-photo"><img src="Paso3.png" alt="Tus boletos quedan asegurados"></div>
+      <div class="step-text">
+        <span class="step-tag">Paso 03</span>
+        <span class="step-num-lg">03</span>
+        <div class="step-title-lg">Tus boletos quedan asegurados</div>
+        <div class="step-body-lg">Los guardamos en tu Bóveda personal. Ya son tuyos — solo falta terminar el plan.</div>
+      </div>
     </div>
-    <div class="step">
-      <span class="step-num">04</span>
-      <div class="step-title">Quincena a quincena</div>
-      <div class="step-body">Divides el resto en pagos quincenales. El ultimo pago desbloquea tu entrada y la transfiere a tu cuenta.</div>
+
+    <div class="step-row flip reveal">
+      <div class="step-photo"><img src="Paso4.jpeg" alt="Quincena a quincena"></div>
+      <div class="step-text">
+        <span class="step-tag">Paso 04</span>
+        <span class="step-num-lg">04</span>
+        <div class="step-title-lg">Quincena a quincena</div>
+        <div class="step-body-lg">Pagas cómodo cada dos semanas. Consulta tu avance y próximo pago en tu Bóveda en cualquier momento.</div>
+      </div>
     </div>
+
+    <div class="step-row reveal">
+      <div class="step-photo"><img src="Paso5.png" alt="Desbloqueas tu entrada"></div>
+      <div class="step-text">
+        <span class="step-tag">Paso 05</span>
+        <span class="step-num-lg">05</span>
+        <div class="step-title-lg">Desbloqueas tu entrada</div>
+        <div class="step-body-lg">Al liquidar el plan, el boleto es tuyo al 100% y está listo para usarse. A disfrutar.</div>
+      </div>
+    </div>
+
   </div>
 </div>
 </div>
