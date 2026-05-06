@@ -14,666 +14,1148 @@
   --muted: #5C5C5C;
   --border: rgba(242,239,232,0.1);
   --card-bg: #111111;
+  --red: #ef4444;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-  ::selection { background: var(--volt); color: var(--ink); }
+- { box-sizing: border-box; margin: 0; padding: 0; }
+  ::selection { background: var(–volt); color: var(–ink); }
 
 html, body {
 min-height: 100dvh;
-background: var(--ink);
-color: var(--paper);
-font-family: 'DM Sans', sans-serif;
+background: var(–ink);
+color: var(–paper);
+font-family: ‘DM Sans’, sans-serif;
 font-weight: 300;
 overflow-x: hidden;
 }
 
 body::after {
-content: '';
+content: ‘’;
 position: fixed; inset: 0;
 pointer-events: none; z-index: 9999; opacity: 0.03;
-background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’/%3E%3C/svg%3E”);
 background-size: 128px;
 }
 
+/* ═══════════════════════════
+ACCESS LAYER
+═══════════════════════════ */
+#accessLayer {
+position: fixed; inset: 0; z-index: 500;
+background: var(–ink);
+display: flex; flex-direction: column;
+}
+#accessLayer.hidden { display: none; }
+
+.access-screen {
+display: none;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+flex: 1;
+padding: 32px 24px;
+overflow-y: auto;
+}
+.access-screen.active { display: flex; }
+
+/* Código screen */
+.codigo-inner {
+position: relative; z-index: 1;
+width: 100%; max-width: 360px;
+display: flex; flex-direction: column; align-items: center;
+}
+.codigo-logo {
+width: 110px; height: 110px; object-fit: contain;
+margin-bottom: 40px;
+opacity: 0; animation: fadeUp 0.6s ease 0.1s both;
+}
+.codigo-label {
+font-family: ‘DM Mono’, monospace;
+font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+color: var(–muted); margin-bottom: 16px; text-align: center;
+opacity: 0; animation: fadeUp 0.5s ease 0.2s both;
+}
+#codigoInput {
+width: 100%;
+background: transparent; border: none;
+border-bottom: 1px solid rgba(242,239,232,0.2);
+padding: 16px 0;
+font-family: ‘DM Mono’, monospace;
+font-size: 22px; letter-spacing: 0.25em; text-transform: uppercase;
+text-align: center; color: var(–paper); outline: none;
+transition: border-color 0.3s;
+opacity: 0; animation: fadeUp 0.5s ease 0.3s both;
+}
+#codigoInput::placeholder { color: rgba(242,239,232,0.15); }
+#codigoInput:focus { border-color: var(–volt); }
+#codigoError {
+display: none;
+font-family: ‘DM Mono’, monospace;
+font-size: 10px; letter-spacing: 0.1em;
+color: var(–red); margin-top: 12px; text-align: center;
+}
+#btnEntrarCodigo {
+width: 100%; margin-top: 32px;
+background: var(–volt); color: var(–ink);
+font-family: ‘DM Mono’, monospace;
+font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+border: none; padding: 16px; cursor: pointer;
+font-weight: 500; transition: opacity 0.2s;
+opacity: 0; animation: fadeUp 0.5s ease 0.4s both;
+}
+#btnEntrarCodigo:hover { opacity: 0.85; }
+#btnEntrarCodigo:disabled { opacity: 0.4; cursor: not-allowed; }
+.ya-tengo-link {
+margin-top: 28px;
+font-family: ‘DM Mono’, monospace; font-size: 10px;
+letter-spacing: 0.14em; text-transform: uppercase;
+color: var(–muted); cursor: pointer; text-align: center;
+transition: color 0.2s;
+opacity: 0; animation: fadeUp 0.5s ease 0.5s both;
+}
+.ya-tengo-link:hover { color: var(–paper); }
+
+/* Login screen */
+.login-inner {
+width: 100%; max-width: 360px;
+display: flex; flex-direction: column; align-items: center;
+}
+.back-btn {
+align-self: flex-start; margin-bottom: 32px;
+background: none; border: none; cursor: pointer;
+font-family: ‘DM Mono’, monospace; font-size: 10px;
+letter-spacing: 0.12em; text-transform: uppercase;
+color: var(–muted); display: flex; align-items: center; gap: 8px;
+transition: color 0.2s;
+}
+.back-btn:hover { color: var(–paper); }
+.access-title {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 40px; color: var(–paper);
+letter-spacing: 0.04em; margin-bottom: 8px; text-align: center;
+line-height: 1;
+}
+.access-sub {
+font-size: 13px; color: var(–muted); text-align: center;
+line-height: 1.65; margin-bottom: 32px;
+}
+.input-row-acc { display: flex; gap: 0; width: 100%; margin-bottom: 12px; }
+.prefix-acc {
+padding: 14px 12px;
+background: rgba(255,255,255,0.04);
+border: 1px solid var(–border); border-right: none;
+font-family: ‘DM Mono’, monospace; font-size: 13px;
+color: var(–muted); flex-shrink: 0;
+}
+.input-acc {
+flex: 1; padding: 14px;
+background: rgba(255,255,255,0.04);
+border: 1px solid var(–border);
+font-size: 16px; color: var(–paper);
+font-family: inherit; outline: none;
+transition: border-color 0.2s; -webkit-appearance: none;
+}
+.input-acc:focus { border-color: var(–volt); }
+.input-acc::placeholder { color: var(–muted); }
+.btn-acc-primary {
+width: 100%; background: var(–volt); color: var(–ink);
+font-family: ‘DM Mono’, monospace; font-size: 11px;
+letter-spacing: 0.1em; text-transform: uppercase;
+border: none; padding: 16px; cursor: pointer;
+font-weight: 500; transition: opacity 0.2s; margin-top: 4px;
+}
+.btn-acc-primary:hover { opacity: 0.85; }
+.btn-acc-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.acc-error {
+display: none; margin-top: 10px; padding: 10px 14px;
+background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25);
+font-family: ‘DM Mono’, monospace; font-size: 10px;
+letter-spacing: 0.08em; color: var(–red); text-align: center; width: 100%;
+}
+
+/* Registro screen */
+#screenRegistro {
+display: none; flex-direction: column;
+align-items: stretch; justify-content: flex-start;
+flex: 1; overflow-y: auto; padding: 0;
+}
+#screenRegistro.active { display: flex; }
+.reg-header {
+padding: 20px 24px; border-bottom: 1px solid var(–border);
+display: flex; align-items: center; justify-content: space-between;
+background: rgba(10,10,10,0.95); backdrop-filter: blur(12px);
+flex-shrink: 0; position: sticky; top: 0; z-index: 10;
+}
+.reg-header img { height: 36px; object-fit: contain; }
+.reg-step-label {
+font-family: ‘DM Mono’, monospace; font-size: 9px;
+letter-spacing: 0.16em; text-transform: uppercase; color: var(–muted);
+}
+.reg-body { flex: 1; overflow-y: auto; padding: 32px 24px 100px; }
+.reg-body::-webkit-scrollbar { display: none; }
+.reg-title {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 40px; color: var(–paper);
+letter-spacing: 0.04em; margin-bottom: 6px; line-height: 1;
+}
+.reg-sub {
+font-size: 13px; color: var(–muted); line-height: 1.6;
+margin-bottom: 28px;
+}
+.form-group { margin-bottom: 16px; }
+.form-label {
+display: block; font-family: ‘DM Mono’, monospace;
+font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+color: var(–muted); margin-bottom: 8px;
+}
+.form-input {
+width: 100%; padding: 14px 16px;
+background: rgba(255,255,255,0.04);
+border: 1px solid var(–border);
+color: var(–paper); font-family: ‘DM Sans’, sans-serif;
+font-size: 15px; outline: none;
+transition: border-color 0.2s; -webkit-appearance: none;
+}
+.form-input:focus { border-color: var(–volt); }
+.form-input::placeholder { color: var(–muted); }
+.prefix-wrap { display: flex; }
+.prefix-tag {
+padding: 14px 12px;
+background: rgba(255,255,255,0.04);
+border: 1px solid var(–border); border-right: none;
+font-family: ‘DM Mono’, monospace; font-size: 13px; color: var(–muted);
+}
+.prefix-wrap .form-input { border-left: none; }
+.terms-wrap {
+display: flex; align-items: flex-start; gap: 12px;
+background: rgba(255,255,255,0.03);
+border: 1px solid var(–border); padding: 14px; margin-top: 8px;
+}
+.terms-wrap input[type=checkbox] {
+width: 16px; height: 16px; margin-top: 2px;
+flex-shrink: 0; accent-color: var(–volt);
+}
+.terms-wrap label { font-size: 12px; color: var(–muted); line-height: 1.6; cursor: pointer; }
+.terms-wrap label span { color: var(–paper); text-decoration: underline; cursor: pointer; }
+#regError {
+font-family: ‘DM Mono’, monospace; font-size: 10px;
+letter-spacing: 0.08em; color: var(–red);
+margin-top: 10px; display: none;
+}
+.reg-footer {
+padding: 14px 24px; background: rgba(10,10,10,0.95);
+border-top: 1px solid var(–border);
+backdrop-filter: blur(12px); flex-shrink: 0;
+position: sticky; bottom: 0;
+}
+
+/* Bienvenida screen */
+#screenBienvenida { text-align: center; }
+.bienvenida-inner {
+width: 100%; max-width: 320px;
+display: flex; flex-direction: column; align-items: center;
+}
+.check-icon {
+width: 60px; height: 60px; background: var(–volt);
+display: flex; align-items: center; justify-content: center;
+margin-bottom: 20px;
+}
+.bienvenida-title {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 48px; color: var(–paper);
+letter-spacing: 0.04em; line-height: 0.95; margin-bottom: 10px;
+}
+.bienvenida-sub { font-size: 13px; color: var(–muted); line-height: 1.7; margin-bottom: 32px; }
+.btn-ir {
+width: 100%; background: var(–volt); color: var(–ink);
+font-family: ‘DM Mono’, monospace; font-size: 11px;
+letter-spacing: 0.12em; text-transform: uppercase;
+border: none; padding: 16px; cursor: pointer;
+font-weight: 500; transition: opacity 0.2s;
+}
+.btn-ir:hover { opacity: 0.85; }
+
+/* ═══════════════════════════
+MAIN APP
+═══════════════════════════ */
+#mainApp { display: none; }
+#mainApp.visible { display: block; }
+
 /* HEADER */
 header {
-position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-background: #0a0a0a;
+position: sticky; top: 0; z-index: 100;
+background: rgba(10,10,10,0.92);
 backdrop-filter: blur(16px);
-border-bottom: 1px solid var(--border);
-overflow: hidden;
+border-bottom: 1px solid var(–border);
 }
 .header-inner {
 max-width: 480px; margin: 0 auto;
 padding: 0 20px; height: 60px;
 display: flex; align-items: center; justify-content: space-between;
 }
-.header-logo {
-height: 120px;
-display: block;
-}
-.btn-nav {
-width: 36px; height: 36px; border-radius: 50%;
-background: var(--volt); color: var(--ink);
-border: none; cursor: pointer;
-display: flex; align-items: center; justify-content: center;
-transition: opacity 0.2s;
-}
-.btn-nav:hover { opacity: 0.85; }
-
-/* TOGGLE TABS */
-.toggle-wrap {
-padding: 80px 20px 0;
-max-width: 480px; margin: 0 auto;
-}
-.toggle-pill {
-display: flex;
-background: rgba(255,255,255,0.04);
-border: 1px solid var(--border);
-border-radius: 999px;
-padding: 4px;
-gap: 4px;
-}
-.toggle-btn {
-flex: 1;
-padding: 12px 20px;
-border: none;
-border-radius: 999px;
+.header-logo { height: 110px; display: block; }
+.btn-ceder {
+display: flex; align-items: center; gap: 6px;
 background: transparent;
-color: var(--muted);
-font-family: 'DM Mono', monospace;
-font-size: 11px;
-letter-spacing: 0.1em;
-text-transform: uppercase;
-cursor: pointer;
-transition: all 0.3s ease;
-font-weight: 500;
+border: 1px solid var(–border);
+color: var(–muted);
+font-family: ‘DM Mono’, monospace; font-size: 9px;
+letter-spacing: 0.12em; text-transform: uppercase;
+padding: 8px 12px; cursor: pointer;
+transition: all 0.2s;
 }
-.toggle-btn.active {
-background: var(--volt);
-color: var(--ink);
-}
+.btn-ceder:hover { border-color: var(–volt); color: var(–volt); }
 
-/* MAIN */
-main {
-padding-top: 16px;
-max-width: 480px;
-margin: 0 auto;
+/* INTRO STRIP */
+.intro-strip {
+max-width: 480px; margin: 0 auto;
+padding: 20px 20px 0;
 }
+.intro-label {
+font-family: ‘DM Mono’, monospace;
+font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+color: var(–muted);
+display: flex; align-items: center; gap: 12px; margin-bottom: 0;
+}
+.intro-label::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
 
-/* TIENDA — BOLETERA */
-#tiendaView { display: none; }
-#tiendaView.active { display: block; }
+/* EVENTS GRID */
+main { max-width: 480px; margin: 0 auto; }
+.boletos-grid { padding: 16px 20px 40px; display: flex; flex-direction: column; gap: 20px; }
 
-.tienda-hero {
-padding: 32px 20px 24px;
-border-bottom: 1px solid var(--border);
-}
-.tienda-h1 {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 24px; line-height: 0.92; letter-spacing: 0.02em;
-color: var(--paper); margin-bottom: 12px;
-}
-.tienda-sub {
-font-size: 18px; color: var(--muted);
-line-height: 1.65;
-}
-
-.boletos-grid {
-padding: 20px;
-display: flex;
-flex-direction: column;
-gap: 16px;
-}
-
-.boleto-tienda {
-background: var(--card-bg);
-border: 1px solid var(--border);
+/* EVENT CARD */
+.evento-card {
+background: var(–card-bg);
+border: 1px solid var(–border);
 overflow: hidden;
-position: relative;
 transition: border-color 0.25s, transform 0.25s;
 }
-.boleto-tienda:hover {
-border-color: rgba(212,245,60,0.35);
-transform: translateY(-2px);
-}
+.evento-card:hover { border-color: rgba(212,245,60,0.3); transform: translateY(-2px); }
 
-.boleto-tienda-img {
-position: relative; width: 100%; height: 160px; overflow: hidden;
-}
-.boleto-tienda-img img {
-width: 100%; height: 100%;
-object-fit: cover; display: block;
-filter: brightness(0.6) saturate(0.8);
+.evento-img-wrap { position: relative; width: 100%; height: 168px; overflow: hidden; }
+.evento-img {
+width: 100%; height: 100%; object-fit: cover; display: block;
+filter: brightness(0.6) saturate(0.85);
 transition: filter 0.3s;
 }
-.boleto-tienda:hover .boleto-tienda-img img {
-filter: brightness(0.75) saturate(1);
-}
+.evento-card:hover .evento-img { filter: brightness(0.75) saturate(1); }
 
-.boleto-tienda-badge {
+.evento-badge {
 position: absolute; top: 12px; left: 12px;
-font-family: 'DM Mono', monospace; font-size: 8px;
+font-family: ‘DM Mono’, monospace; font-size: 8px;
 letter-spacing: 0.14em; text-transform: uppercase;
-padding: 4px 10px; background: var(--volt); color: var(--ink);
+padding: 4px 10px; background: var(–volt); color: var(–ink);
 font-weight: 500;
 }
-.boleto-tienda-precio {
+.evento-precio-badge {
 position: absolute; bottom: 12px; right: 12px;
-font-family: 'Bebas Neue', sans-serif; font-size: 24px;
-letter-spacing: 0.04em; color: var(--volt);
-background: rgba(10,10,10,0.8);
-padding: 6px 12px;
+font-family: ‘Bebas Neue’, sans-serif; font-size: 22px;
+letter-spacing: 0.04em; color: var(–volt);
+background: rgba(10,10,10,0.82); padding: 5px 12px;
 backdrop-filter: blur(8px);
 }
 
-.boleto-tienda-body { padding: 18px 20px 20px; }
-.boleto-tienda-evento {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 28px; letter-spacing: 0.04em; color: var(--paper);
+/* Indicador de boletos disponibles */
+.disponibles-dot {
+position: absolute; top: 12px; right: 12px;
+display: flex; align-items: center; gap: 6px;
+background: rgba(10,10,10,0.75); backdrop-filter: blur(8px);
+padding: 5px 10px;
+}
+.dot-pulse {
+width: 6px; height: 6px; border-radius: 50%;
+background: var(–volt);
+animation: dotPulse 2s infinite;
+}
+.dot-pulse.amber { background: #f59e0b; animation: dotPulse 2s infinite; }
+@keyframes dotPulse {
+0%, 100% { opacity: 1; transform: scale(1); }
+50% { opacity: 0.5; transform: scale(0.85); }
+}
+.disponibles-label {
+font-family: ‘DM Mono’, monospace; font-size: 8px;
+letter-spacing: 0.1em; text-transform: uppercase; color: var(–paper);
+}
+
+.evento-body { padding: 18px 20px 20px; }
+.evento-nombre {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 30px; letter-spacing: 0.04em; color: var(–paper);
 line-height: 1; margin-bottom: 6px;
 }
-.boleto-tienda-meta {
-display: flex; align-items: center; gap: 12px;
-margin-bottom: 8px;
-}
-.boleto-tienda-tag {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-}
-.boleto-tienda-fecha {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.08em; color: var(--muted);
-}
-.boleto-tienda-fecha::before { content: '\00B7'; margin-right: 12px; color: var(--border); }
-
-.boleto-tienda-info {
-font-size: 13px; color: var(--muted);
-line-height: 1.65; margin-bottom: 16px;
-}
-
-.btn-comprar-tienda {
-width: 100%; padding: 14px;
-background: var(--volt); color: var(--ink);
-font-family: 'DM Mono', monospace; font-size: 11px;
-letter-spacing: 0.1em; text-transform: uppercase;
-border: none; cursor: pointer; font-weight: 500;
-transition: opacity 0.2s;
-display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.btn-comprar-tienda:hover { opacity: 0.85; }
-
-/* MARKETPLACE — ORIGINAL */
-#marketplaceView { display: none; }
-#marketplaceView.active { display: block; }
-
-.hero-strip {
-padding: 32px 20px 24px;
-border-bottom: 1px solid var(--border);
-}
-.hero-sub {
-font-size: 13px; color: var(--muted);
-line-height: 1.65;
-}
-
-.boletos-wrap { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-
-.section-label {
-font-family: 'DM Mono', monospace;
-font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-color: var(--muted); margin-bottom: 16px;
-display: flex; align-items: center; gap: 12px;
-}
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-/* BOLETO CARD */
-.boleto-card {
-background: var(--card-bg);
-border: 1px solid var(--border);
-overflow: hidden;
-position: relative;
-transition: border-color 0.25s, transform 0.25s;
-}
-.boleto-card:hover {
-border-color: rgba(212,245,60,0.35);
-transform: translateY(-2px);
-}
-
-.boleto-img-wrap {
-position: relative; width: 100%; height: 120px; overflow: hidden;
-}
-.boleto-img {
-width: 100%; height: 100%;
-object-fit: cover; display: block;
-filter: brightness(0.6) saturate(0.8);
-transition: filter 0.3s;
-}
-.boleto-card:hover .boleto-img { filter: brightness(0.75) saturate(1); }
-.boleto-img-placeholder {
-width: 100%; height: 120px;
-background: linear-gradient(135deg, #1a1a1a 0%, #1e1e1e 100%);
-display: flex; align-items: center; justify-content: center;
-}
-.boleto-img-placeholder span {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 36px; color: rgba(242,239,232,0.04); letter-spacing: 0.1em;
-}
-
-.reventa-badge {
-position: absolute; top: 10px; left: 10px;
-font-family: 'DM Mono', monospace; font-size: 8px;
-letter-spacing: 0.14em; text-transform: uppercase;
-padding: 3px 8px; background: #f59e0b; color: var(--ink);
-font-weight: 500;
-}
-.precio-badge {
-position: absolute; bottom: 10px; right: 10px;
-font-family: 'Bebas Neue', sans-serif; font-size: 22px;
-letter-spacing: 0.04em; color: var(--volt);
-background: rgba(10,10,10,0.8);
-padding: 4px 10px;
-backdrop-filter: blur(8px);
-}
-
-.boleto-body { padding: 16px 18px 18px; }
-.boleto-evento {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 24px; letter-spacing: 0.04em; color: var(--paper);
-line-height: 1; margin-bottom: 3px;
-}
-.boleto-meta {
-display: flex; align-items: center; gap: 12px;
+.evento-meta {
+display: flex; align-items: center; gap: 10px;
 margin-bottom: 16px;
 }
-.boleto-zona {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+.evento-tag {
+font-family: ‘DM Mono’, monospace; font-size: 9px;
+letter-spacing: 0.1em; text-transform: uppercase; color: var(–muted);
 }
-.boleto-fecha {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.08em; color: var(--muted);
+.evento-fecha {
+font-family: ‘DM Mono’, monospace; font-size: 9px;
+letter-spacing: 0.08em; color: var(–muted);
 }
-.boleto-fecha::before { content: '\00B7'; margin-right: 12px; color: var(--border); }
+.evento-fecha::before { content: ‘·’; margin-right: 10px; opacity: 0.4; }
 
-.btn-comprar {
-width: 100%; padding: 13px;
-background: var(--volt); color: var(--ink);
-font-family: 'DM Mono', monospace; font-size: 11px;
+.evento-desc {
+font-size: 12px; color: var(–muted); line-height: 1.65;
+margin-bottom: 16px;
+}
+
+/* Botones de acción duales */
+.evento-actions { display: flex; flex-direction: column; gap: 8px; }
+.btn-ver-boletos {
+width: 100%; padding: 14px;
+background: var(–volt); color: var(–ink);
+font-family: ‘DM Mono’, monospace; font-size: 11px;
 letter-spacing: 0.1em; text-transform: uppercase;
 border: none; cursor: pointer; font-weight: 500;
 transition: opacity 0.2s;
 display: flex; align-items: center; justify-content: center; gap: 8px;
 }
-.btn-comprar:hover { opacity: 0.85; }
-.btn-comprar svg { flex-shrink: 0; }
+.btn-ver-boletos:hover { opacity: 0.85; }
+.btn-listar {
+width: 100%; padding: 11px;
+background: transparent; color: var(–muted);
+font-family: ‘DM Mono’, monospace; font-size: 9px;
+letter-spacing: 0.1em; text-transform: uppercase;
+border: 1px solid rgba(242,239,232,0.08); cursor: pointer;
+transition: all 0.2s;
+display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.btn-listar:hover { border-color: rgba(212,245,60,0.3); color: var(–volt); }
 
-.perf-divider {
+/* Perforación decorativa */
+.card-perf {
 display: flex; align-items: center;
 padding: 0 18px; position: relative; margin: 0 -1px;
 }
-.perf-divider::before {
-content: ''; position: absolute; left: -8px;
+.card-perf::before {
+content: ‘’; position: absolute; left: -7px;
 width: 14px; height: 14px; border-radius: 50%;
-background: var(--ink); border: 1px solid var(--border); z-index: 1;
+background: var(–ink); border: 1px solid var(–border); z-index: 1;
 }
-.perf-divider::after {
-content: ''; position: absolute; right: -8px;
+.card-perf::after {
+content: ‘’; position: absolute; right: -7px;
 width: 14px; height: 14px; border-radius: 50%;
-background: var(--ink); border: 1px solid var(--border); z-index: 1;
+background: var(–ink); border: 1px solid var(–border); z-index: 1;
 }
 .perf-line {
 flex: 1; height: 1px;
-background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 5px, transparent 5px, transparent 10px);
+background: repeating-linear-gradient(90deg, var(–border) 0, var(–border) 5px, transparent 5px, transparent 10px);
 }
 .perf-label {
-font-family: 'DM Mono', monospace; font-size: 8px;
-letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+font-family: ‘DM Mono’, monospace; font-size: 8px;
+letter-spacing: 0.16em; text-transform: uppercase; color: var(–muted);
 padding: 8px 10px; flex-shrink: 0;
 }
 
-.empty-state {
-margin: 20px; padding: 60px 24px;
-border: 1px solid var(--border); text-align: center;
-}
-.empty-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.4; }
-.empty-title {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 28px; letter-spacing: 0.04em; color: var(--paper); margin-bottom: 8px;
-}
-.empty-sub { font-size: 13px; color: var(--muted); line-height: 1.65; }
-
-#loadingView {
-display: none; flex-direction: column;
-align-items: center; justify-content: center;
-min-height: calc(100dvh - 60px); gap: 20px;
-}
-.spinner {
-width: 28px; height: 28px; border-radius: 50%;
-border: 2px solid var(--border); border-top-color: var(--volt);
-animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-text {
-font-family: 'DM Mono', monospace; font-size: 10px;
-letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-}
-
-.count-pill {
-display: inline-block;
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.1em; padding: 3px 10px;
-background: rgba(212,245,60,0.1); color: var(--volt);
-border: 1px solid rgba(212,245,60,0.2);
-margin-left: 8px;
-}
-
-/* CHAT POPUP */
-.chat-popup-bg {
+/* ═══════════════════════════
+PANEL FLOTANTE — BOLETOS
+═══════════════════════════ */
+.panel-bg {
 position: fixed; inset: 0;
-background: rgba(0,0,0,0.8);
+background: rgba(0,0,0,0.75);
 backdrop-filter: blur(8px);
-z-index: 1000;
-display: none;
-align-items: center;
-justify-content: center;
-padding: 20px;
+z-index: 400;
+display: none; align-items: flex-end; justify-content: center;
 }
-.chat-popup-bg.open { display: flex; }
-.chat-popup-panel {
-width: 100%; max-width: 480px; height: 85vh;
-max-height: 700px;
-background: var(--ink);
-border: 1px solid var(--border);
-border-radius: 16px;
-overflow: hidden;
-position: relative;
-display: flex;
-flex-direction: column;
+.panel-bg.open { display: flex; }
+
+.panel-sheet {
+width: 100%; max-width: 480px;
+background: #0f0f0f;
+border-top: 1px solid var(–border);
+border-radius: 16px 16px 0 0;
+max-height: 90dvh;
+display: flex; flex-direction: column;
+transform: translateY(100%);
+transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
 }
-.chat-popup-header {
-padding: 0 20px;
-height: 60px;
-border-bottom: 1px solid var(--border);
-display: flex;
-align-items: center;
-justify-content: flex-start;
-background: rgba(10,10,10,0.95);
-gap: 8px;
+.panel-bg.open .panel-sheet { transform: translateY(0); }
+
+.panel-handle {
+display: flex; justify-content: center; padding: 12px 0 4px;
 flex-shrink: 0;
 }
-.chat-popup-logo {
-height: 150px;
-object-fit: contain;
-display: block;
+.panel-handle-bar {
+width: 36px; height: 4px; border-radius: 2px;
+background: rgba(242,239,232,0.15);
 }
-.chat-popup-version {
-font-family: 'DM Mono', monospace;
-font-size: 15px;
-letter-spacing: 0.08em;
-color: var(--muted);
+
+.panel-header {
+padding: 4px 20px 16px;
+border-bottom: 1px solid var(–border);
+flex-shrink: 0;
 }
-.chat-popup-close {
+.panel-evento-nombre {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 28px; letter-spacing: 0.04em; color: var(–paper);
+line-height: 1; margin-bottom: 4px;
+}
+.panel-evento-meta {
+font-family: ‘DM Mono’, monospace; font-size: 9px;
+letter-spacing: 0.1em; text-transform: uppercase; color: var(–muted);
+}
+.panel-close {
+position: absolute; top: 16px; right: 20px;
 background: none; border: none; cursor: pointer;
-color: var(--muted); font-size: 24px;
-line-height: 1; padding: 4px;
+color: var(–muted); font-size: 22px; line-height: 1; padding: 4px;
 transition: color 0.2s;
-margin-left: auto;
 }
-.chat-popup-close:hover { color: var(--paper); }
-.chat-popup-iframe {
-flex: 1;
-width: 100%;
-border: none;
-background: var(--ink);
+.panel-close:hover { color: var(–paper); }
+
+.panel-body {
+flex: 1; overflow-y: auto; padding: 16px 20px 32px;
+}
+.panel-body::-webkit-scrollbar { display: none; }
+
+.panel-section-label {
+font-family: ‘DM Mono’, monospace;
+font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+color: var(–muted); margin-bottom: 12px;
+display: flex; align-items: center; gap: 10px;
+}
+.panel-section-label::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
+
+/* Mapa del recinto placeholder */
+.recinto-map {
+width: 100%; height: 180px;
+background: #161616;
+border: 1px solid var(–border);
+display: flex; align-items: center; justify-content: center;
+margin-bottom: 20px; position: relative; overflow: hidden;
+}
+.recinto-map img {
+width: 100%; height: 100%; object-fit: contain;
+}
+.recinto-map-placeholder {
+display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.recinto-map-placeholder span {
+font-family: ‘DM Mono’, monospace; font-size: 9px;
+letter-spacing: 0.14em; text-transform: uppercase; color: var(–muted);
 }
 
-/* BURBUJA FLOTANTE CHAT */
-.chat-bubble {
-position: fixed;
-bottom: 24px;
-right: 24px;
-width: 56px;
-height: 56px;
-border-radius: 50%;
-background: var(--volt);
-color: var(--ink);
-border: none;
+/* Boletos en panel */
+.boleto-item {
+background: var(–card-bg);
+border: 1px solid var(–border);
+padding: 16px 18px;
+margin-bottom: 10px;
+display: flex; align-items: center; justify-content: space-between;
+gap: 12px;
+transition: border-color 0.2s;
 cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-z-index: 999;
-box-shadow: 0 4px 20px rgba(212,245,60,0.3);
-transition: transform 0.2s, box-shadow 0.2s;
-padding: 0;
-overflow: hidden;
 }
-.chat-bubble:hover {
-transform: scale(1.05);
-box-shadow: 0 6px 24px rgba(212,245,60,0.4);
+.boleto-item:hover { border-color: rgba(212,245,60,0.35); }
+.boleto-item-info { flex: 1; }
+.boleto-item-zona {
+font-family: ‘DM Mono’, monospace; font-size: 10px;
+letter-spacing: 0.1em; text-transform: uppercase; color: var(–paper);
+margin-bottom: 4px;
 }
-.chat-bubble img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-display: block;
+.boleto-item-detalle {
+font-size: 12px; color: var(–muted); line-height: 1.5;
+}
+.boleto-item-precio {
+font-family: ‘Bebas Neue’, sans-serif; font-size: 22px;
+letter-spacing: 0.04em; color: var(–volt); text-align: right; flex-shrink: 0;
+}
+.boleto-item-sub {
+font-family: ‘DM Mono’, monospace; font-size: 8px;
+letter-spacing: 0.08em; text-transform: uppercase;
+color: var(–muted); text-align: right;
 }
 
+.panel-empty {
+padding: 40px 0; text-align: center;
+}
+.panel-empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.35; }
+.panel-empty-title {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 24px; color: var(–paper); letter-spacing: 0.04em; margin-bottom: 6px;
+}
+.panel-empty-sub { font-size: 12px; color: var(–muted); line-height: 1.65; }
+
+.panel-loading {
+display: flex; flex-direction: column; align-items: center;
+padding: 40px 0; gap: 14px;
+}
+.spinner-sm {
+width: 22px; height: 22px; border-radius: 50%;
+border: 2px solid var(–border); border-top-color: var(–volt);
+animation: spin 0.8s linear infinite;
+}
+
+/* ═══════════════════════════
+MODAL LEGAL
+═══════════════════════════ */
+.modal-bg {
+position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+backdrop-filter: blur(8px); z-index: 600; display: none;
+align-items: center; justify-content: center; padding: 24px;
+}
+.modal-bg.open { display: flex; }
+.modal-panel {
+background: #111; border: 1px solid var(–border);
+width: 100%; max-width: 480px; max-height: 88vh;
+overflow-y: auto; position: relative; border-radius: 4px;
+}
+.modal-panel::-webkit-scrollbar { width: 3px; }
+.modal-panel::-webkit-scrollbar-thumb { background: var(–border); }
+.modal-header {
+padding: 20px 24px; border-bottom: 1px solid var(–border);
+display: flex; align-items: center; justify-content: space-between;
+position: sticky; top: 0; background: #111; z-index: 1;
+}
+.modal-title {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 22px; color: var(–paper); letter-spacing: 0.04em;
+}
+.modal-close {
+background: none; border: none; cursor: pointer;
+color: var(–muted); font-size: 20px; line-height: 1; padding: 4px;
+transition: color 0.2s;
+}
+.modal-close:hover { color: var(–paper); }
+.modal-footer {
+padding: 14px 24px; border-top: 1px solid var(–border);
+position: sticky; bottom: 0; background: #111;
+}
+.legal-content {
+padding: 24px; font-size: 12px; color: var(–muted); line-height: 1.75;
+}
+.legal-content h2 {
+font-family: ‘Bebas Neue’, sans-serif; font-size: 22px;
+color: var(–paper); margin: 20px 0 10px; letter-spacing: 0.04em;
+}
+.legal-content h3 {
+font-family: ‘DM Mono’, monospace; font-weight: 500; font-size: 10px;
+text-transform: uppercase; letter-spacing: 0.1em;
+color: var(–paper); margin: 18px 0 6px;
+}
+.legal-content p { margin-bottom: 10px; }
+.legal-content ul { padding-left: 18px; margin-bottom: 10px; }
+.legal-content ul li { margin-bottom: 5px; }
+.legal-content strong { color: var(–paper); font-weight: 500; }
+
+/* ═══════════════════════════
+ANIMATIONS & UTILS
+═══════════════════════════ */
 @keyframes fadeUp {
 from { opacity: 0; transform: translateY(10px); }
 to { opacity: 1; transform: translateY(0); }
 }
+@keyframes spin { to { transform: rotate(360deg); } }
+
 .fade-up { animation: fadeUp 0.4s ease both; }
 .d1 { animation-delay: 0.05s; }
 .d2 { animation-delay: 0.1s; }
 .d3 { animation-delay: 0.15s; }
+.d4 { animation-delay: 0.2s; }
+.d5 { animation-delay: 0.25s; }
+.d6 { animation-delay: 0.3s; }
 </style>
+
+<!-- Google tag (gtag.js) -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z36FM1LNY2"></script>
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z36FM1LNY2');
+</script>
 
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <button class="btn-nav" onclick="window.location.href='boveda.html'" aria-label="Bóveda">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="12" x2="21" y2="12"/>
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-    </button>
-    <img id="headerLogo" src="darklogo.png" alt="Yunus" class="header-logo">
-    <div style="width:36px;"></div>
-  </div>
-</header>
+<!-- ═══════════════════════════
+     ACCESS LAYER
+═══════════════════════════ -->
 
-<div class="toggle-wrap">
-  <div class="toggle-pill">
-    <button class="toggle-btn active" id="tabTienda" onclick="switchTab('tienda')">Tienda</button>
-    <button class="toggle-btn" id="tabMarketplace" onclick="switchTab('marketplace')">Marketplace</button>
+<div id="accessLayer">
+
+  <!-- Pantalla: Código de acceso -->
+
+  <div id="screenCodigo" class="access-screen active">
+    <div class="codigo-inner">
+      <img src="darklogo.png" alt="Yunus" class="codigo-logo" onerror="this.style.opacity='0'">
+      <div class="codigo-label">Acceso anticipado</div>
+      <input id="codigoInput" type="text" placeholder="CLAVE DE ACCESO"
+        maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false">
+      <div id="codigoError"></div>
+      <button id="btnEntrarCodigo" onclick="validarCodigo()">Entrar →</button>
+      <div class="ya-tengo-link" onclick="showScreen('screenLogin')">Ya tengo cuenta</div>
+    </div>
+  </div>
+
+  <!-- Pantalla: Login -->
+
+  <div id="screenLogin" class="access-screen">
+    <div class="login-inner">
+      <button class="back-btn" onclick="showScreen('screenCodigo')">← Volver</button>
+      <h1 class="access-title">Iniciar sesión</h1>
+      <p class="access-sub">Ingresa tu número para continuar.</p>
+      <div class="input-row-acc">
+        <span class="prefix-acc">+52</span>
+        <input id="celularLoginInput" class="input-acc" type="tel"
+          placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
+      </div>
+      <button class="btn-acc-primary" onclick="iniciarSesion()">Entrar →</button>
+      <div id="loginError" class="acc-error"></div>
+    </div>
+  </div>
+
+  <!-- Pantalla: Registro (simplificado, 1 paso) -->
+
+  <div id="screenRegistro" class="access-screen">
+    <div class="reg-header">
+      <img src="darklogo.png" alt="Yunus" onerror="this.style.display='none'">
+      <span class="reg-step-label">Crear cuenta</span>
+    </div>
+    <div class="reg-body">
+      <div class="reg-title">Regístrate</div>
+      <p class="reg-sub">Solo lo esencial. Sin buró, sin complicaciones.</p>
+
+```
+  <div class="form-group">
+    <label class="form-label">Nombre completo</label>
+    <input type="text" id="r_nombre" class="form-input" placeholder="Tu nombre completo">
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Celular</label>
+    <div class="prefix-wrap">
+      <span class="prefix-tag">+52</span>
+      <input type="tel" id="r_celular" class="form-input"
+        placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Edad</label>
+    <input type="number" id="r_edad" class="form-input"
+      placeholder="Ej. 25" min="18" max="99">
+  </div>
+
+  <div class="terms-wrap">
+    <input type="checkbox" id="r_terms">
+    <label for="r_terms">
+      He leído y acepto los
+      <span onclick="openLegal('terms')">Términos y condiciones</span>
+      y la
+      <span onclick="openLegal('privacy')">Política de privacidad</span>.
+    </label>
+  </div>
+
+  <div id="regError"></div>
+</div>
+<div class="reg-footer">
+  <button class="btn-acc-primary" onclick="submitRegistro()">Crear cuenta →</button>
+</div>
+```
+
+  </div>
+
+  <!-- Pantalla: Bienvenida -->
+
+  <div id="screenBienvenida" class="access-screen">
+    <div class="bienvenida-inner">
+      <div class="check-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+          stroke="#0a0a0a" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div class="bienvenida-title">¡Ya estás<br>dentro!</div>
+      <p class="bienvenida-sub">
+        Explora los eventos disponibles y asegura tus boletos hoy.
+      </p>
+      <button class="btn-ir" onclick="entrarApp()">Ver eventos →</button>
+    </div>
+  </div>
+
+</div><!-- /accessLayer -->
+
+<!-- ═══════════════════════════
+     MAIN APP
+═══════════════════════════ -->
+
+<div id="mainApp">
+
+  <header>
+    <div class="header-inner">
+      <img src="darklogo.png" alt="Yunus" class="header-logo"
+        onerror="this.style.display='none'">
+      <button class="btn-ceder" onclick="irACeder()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Ceder boleto
+      </button>
+    </div>
+  </header>
+
+  <div class="intro-strip">
+    <div class="intro-label">Eventos disponibles</div>
+  </div>
+
+  <main>
+    <div class="boletos-grid" id="eventosGrid"></div>
+  </main>
+
+</div><!-- /mainApp -->
+
+<!-- ═══════════════════════════
+     PANEL FLOTANTE — BOLETOS
+═══════════════════════════ -->
+
+<div id="boletosPanel" class="panel-bg" onclick="if(event.target===this)cerrarPanel()">
+  <div class="panel-sheet" onclick="event.stopPropagation()">
+    <div class="panel-handle"><div class="panel-handle-bar"></div></div>
+
+```
+<div class="panel-header" style="position:relative;">
+  <div class="panel-evento-nombre" id="panelNombre">—</div>
+  <div class="panel-evento-meta" id="panelMeta">—</div>
+  <button class="panel-close" onclick="cerrarPanel()">×</button>
+</div>
+
+<div class="panel-body" id="panelBody">
+  <!-- Contenido dinámico -->
+</div>
+```
+
   </div>
 </div>
 
-<main>
+<!-- ═══════════════════════════
+     MODAL LEGAL
+═══════════════════════════ -->
 
-  <!-- TIENDA VIEW -->
-
-  <div id="tiendaView" class="active">
-    <div class="tienda-hero">
-      <h1 class="tienda-h1">Asegura tu boleto hoy.</h1>
-      <p class="tienda-sub">Presiona comprar boletos en el evento de tu interes o dile a Yunus lo que deseas.</p>
+<div id="legalModal" class="modal-bg" onclick="if(event.target===this)closeLegal()">
+  <div class="modal-panel" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-title" id="legalTitle">Legal</span>
+      <button class="modal-close" onclick="closeLegal()">×</button>
     </div>
-
-<div class="boletos-grid" id="tiendaGrid"></div>
-
-  </div>
-
-  <!-- MARKETPLACE VIEW -->
-
-  <div id="marketplaceView">
-    <div id="loadingView">
-      <div class="spinner"></div>
-      <div class="loading-text">Cargando boletos...</div>
+    <div id="legalContent" class="legal-content"></div>
+    <div class="modal-footer">
+      <button style="width:100%;background:var(--volt);color:var(--ink);
+        font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;
+        text-transform:uppercase;border:none;padding:14px;cursor:pointer;
+        font-weight:500;transition:opacity 0.2s;"
+        onclick="closeLegal()"
+        onmouseover="this.style.opacity='0.85'"
+        onmouseout="this.style.opacity='1'">Cerrar</button>
     </div>
-
-<div id="mainView" style="display:none;">
-  <div class="hero-strip fade-up">
-    <p class="hero-sub">Boletos puestos a reventa por usuarios Yunus. Precio al contado, transacción directa.</p>
-  </div>
-
-  <div class="boletos-wrap">
-    <div class="section-label">
-      Disponibles <span id="countPill" class="count-pill">0</span>
-    </div>
-    <div id="boletosContainer"></div>
   </div>
 </div>
-
-  </div>
-
-</main>
-
-<!-- CHAT POPUP -->
-
-<div id="chatPopup" class="chat-popup-bg" onclick="if(event.target===this)closeChatPopup()">
-  <div class="chat-popup-panel" onclick="event.stopPropagation()">
-    <div class="chat-popup-header">
-      <img src="ialogo.png" alt="Yunus" class="chat-popup-logo">
-      <span class="chat-popup-version">1.0.0</span>
-      <button class="chat-popup-close" onclick="closeChatPopup()">&times;</button>
-    </div>
-    <iframe id="chatIframe" class="chat-popup-iframe" src=""></iframe>
-  </div>
-</div>
-
-<!-- BURBUJA FLOTANTE -->
-
-<button class="chat-bubble" onclick="openChatPopup()" aria-label="Abrir chat">
-  <img src="iaicon.png" alt="Chat">
-</button>
 
 <script>
-const eventosTienda = [
+/* ════════════════════════════════════════
+   DATOS DE EVENTOS
+════════════════════════════════════════ */
+const EVENTOS = [
   {
-    name: 'Baja Beach Fest',
-    tag: 'Festival · Rosarito',
-    fecha: '7-9 Ago 2026',
-    precio: 'Desde $49 USD × quincena',
-    img: 'BajaB.jpeg',
-    accent: '#2563eb',
-    descripcion: 'El festival de reggaetón más grande de Baja California. 3 días de música, playa y energía sin igual. Arena, mar y los mejores artistas del género urbano.'
+    id: 'harry-styles',
+    name: 'Harry Styles',
+    tag: 'Concierto · CDMX',
+    fecha: '10 Ago 2026',
+    precio: 'Desde $263 MXN × quinc.',
+    img: 'HarryS.webp',
+    descripcion: 'El ícono global del pop/rock contemporáneo llega a México. Una noche de carisma, estilo y sus más grandes éxitos.',
+    mapaImg: null,
+    apiKey: 'Harry Styles'
   },
   {
+    id: 'enjambre',
+    name: 'Enjambre Estadio GNP',
+    tag: 'Concierto · CDMX',
+    fecha: '30 Ago 2026',
+    precio: 'Por confirmar',
+    img: 'Enjambre.webp',
+    descripcion: 'La banda referente del rock mexicano marca un hito con su primer Estadio GNP. Sintetizadores e himnos de una generación.',
+    mapaImg: null,
+    apiKey: 'Enjambre'
+  },
+  {
+    id: 'bruno-mars',
+    name: 'Bruno Mars',
+    tag: 'Concierto · CDMX',
+    fecha: '4–7–8 Dic 2026',
+    precio: 'Desde $169 MXN × quinc.',
+    img: 'BrunoM.jpeg',
+    descripcion: 'El showman del pop y R&B moderno en el Foro Sol. Música, baile y una producción espectacular.',
+    mapaImg: null,
+    apiKey: 'Bruno Mars'
+  },
+  {
+    id: 'rosalia',
     name: 'Rosalía: Lux Tour',
     tag: 'Concierto · CDMX / GDL',
     fecha: 'Ago 2026',
-    precio: 'Desde $208 MXN × quincena',
+    precio: 'Desde $381 MXN × quinc.',
     img: 'Rosalia.jpeg',
-    accent: '#be185d',
-    descripcion: 'La artista española más innovadora del momento llega a México con su nuevo tour. Flamenco futurista, pop experimental y una puesta en escena inolvidable.'
+    descripcion: 'La artista española más innovadora del momento llega a México con su nuevo tour. Flamenco futurista y pop experimental.',
+    mapaImg: null,
+    apiKey: 'Rosalía Lux Tour'
   },
   {
+    id: 'vans-warped',
     name: 'Vans Warped Tour',
     tag: 'Festival · CDMX',
-    fecha: '12-13 Sep 2026',
-    precio: 'Desde $380 MXN × quincena',
+    fecha: '12–13 Sep 2026',
+    precio: 'Desde $381 MXN × quinc.',
     img: 'VansW.webp',
-    accent: '#ea580c',
-    descripcion: 'El festival de punk rock y metal más icónico del mundo regresa a la Ciudad de México. 2 días de mosh pits, skate y la cultura alternativa en su máxima expresión.'
+    descripcion: 'El festival de punk rock más icónico del mundo regresa a México. 2 días de mosh pits, skate y cultura alternativa.',
+    mapaImg: null,
+    apiKey: 'Vans Warped Tour'
   },
   {
-    name: 'Bruno Mars',
-    tag: 'Concierto · CDMX',
-    fecha: '4-7-8 Dic 2026',
-    precio: 'Desde $144 MXN × quincena',
-    img: 'BrunoM.jpeg',
-    accent: '#16a34a',
-    descripcion: 'El showman del pop y R&B moderno aterriza en el Foro Sol. Música, baile y una producción espectacular que no te puedes perder.'
+    id: 'baja-beach',
+    name: 'Baja Beach Fest',
+    tag: 'Festival · Rosarito',
+    fecha: '7–9 Ago 2026',
+    precio: 'Desde $525 MXN × quinc.',
+    img: 'BajaB.jpeg',
+    descripcion: 'El festival de reggaetón más grande de Baja California. 3 días de música, playa y energía sin igual.',
+    mapaImg: null,
+    apiKey: 'Baja Beach Fest'
   }
 ];
 
-const eventoImgs = {
-  'Baja Beach Fest': 'BajaB.jpeg',
-  'Rosalía Lux Tour': 'Rosalia.jpeg',
-  'Vans Warped Tour': 'VansW.webp',
-  'Bruno Mars': 'BrunoM.jpeg',
+/* ════════════════════════════════════════
+   TEXTOS LEGALES (idénticos a chat.html)
+════════════════════════════════════════ */
+const legalTexts = {
+  terms: `<h2>TÉRMINOS Y CONDICIONES – YUNUS</h2><p><strong>Ultima actualizacion:</strong> 20 de abril de 2026</p><h3>1. ACEPTACION</h3><p>Al utilizar yunusia.com, completar el formulario de registro, enviar documentos de identificacion, o realizar cualquier pago, usted acepta de forma expresa e irrevocable estos Terminos y Condiciones en su totalidad.</p><h3>2. NATURALEZA DEL SERVICIO</h3><p>El formulario de registro constituye unicamente una <strong>solicitud de evaluacion financiera</strong>, no una contratacion definitiva ni una reserva de boleto. Yunus se reserva el derecho de admision y podra rechazar cualquier solicitud sin necesidad de justificacion.</p><h3>3. MODELO DE FINANCIAMIENTO</h3><ul><li><strong>Enganche:</strong> 15% del valor total del boleto, pagadero mediante SPEI o efectivo en Oxxo.</li><li><strong>Saldo restante:</strong> El 85% se divide en pagos quincenales hasta la fecha del evento.</li><li><strong>CAT:</strong> 36% anual (3% mensual), incluido en las cuotas. Sin cargos ocultos.</li><li><strong>Sin buro de credito:</strong> Yunus no consulta ni reporta al Buro de Credito.</li></ul><h3>4. TITULARIDAD DE CUENTA Y DEPOSITOS</h3><p>Para mantener las tasas de interes competitivas y evitar comisiones de intermediarios durante esta fase beta, los depositos via SPEI se realizaran a la cuenta bancaria personal del fundador, <strong>Christian Nuñez</strong>. Al realizar el pago, el usuario reconoce y acepta que esta cuenta es el canal oficial de recaudacion de Yunus para la etapa actual del proyecto.</p><h3>5. LA BOVEDA Y LA REPRESENTACION DEL BOLETO</h3><p>Una vez realizado el enganche, el boleto es adquirido por Yunus y resguardado en custodia. El usuario accede a una representacion visual en su Boveda personal. <strong>Esta representacion no es el boleto original</strong> ni constituye un documento de acceso al evento. La transferencia oficial del boleto via Ticketmaster ocurrira unicamente al completar el 100% de los pagos de forma exitosa.</p><h3>6. PROPIEDAD DEL BOLETO</h3><p>Durante la vigencia del plan de pagos, el boleto es propiedad de Yunus. El usuario no adquiere titularidad sobre el boleto hasta haber liquidado la totalidad del credito.</p><h3>7. INCUMPLIMIENTO DE PAGO</h3><p>Se considera incumplimiento cuando el usuario no realiza un pago dentro de los 7 dias naturales posteriores a su fecha de vencimiento. Ante un incumplimiento, Yunus activara la reventa del boleto. Si el precio de reventa no cubre el saldo insoluto y la comision, el usuario perdera la totalidad de los pagos realizados sin derecho a reembolso.</p><h3>8. CANCELACION DEL EVENTO</h3><p>En caso de cancelacion oficial del evento, Yunus gestionara el reembolso ante Ticketmaster. El monto reembolsado se aplica primero al saldo insoluto; el remanente se devuelve al usuario.</p><h3>9. VERIFICACION DE IDENTIDAD</h3><p>El usuario acepta proporcionar documentos de identidad validos (INE/IFE vigente) al momento de confirmar una compra.</p><h3>10. LEY APLICABLE</h3><p>Estos terminos se rigen por las leyes de los Estados Unidos Mexicanos. Cualquier controversia sera resuelta ante los tribunales competentes de Ciudad Juarez, Chihuahua, Mexico.</p><h3>11. CONTACTO</h3><p>yunus.soporte@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juarez, Chihuahua, Mexico</p>`,
+  privacy: `<h2>POLITICA DE PRIVACIDAD – YUNUS</h2><p><strong>Ultima actualizacion:</strong> 19 de abril de 2026</p><h3>1. DATOS QUE RECOPILAMOS</h3><ul><li><strong>Identificacion:</strong> Nombre, numero de celular y edad.</li><li><strong>Documentos de compra:</strong> Fotografia de INE al momento de confirmar una transaccion.</li><li><strong>Datos de uso:</strong> Historial de conversacion con el agente Yunus, etapa del proceso de solicitud.</li></ul><h3>2. FINALIDAD</h3><p>Los datos recopilados se utilizan exclusivamente para: verificacion de identidad, gestion del plan de pagos, y comunicacion relacionada con el servicio. <strong>NO vendemos ni compartimos datos personales con terceros, buros de credito, ni anunciantes.</strong></p><h3>3. ALMACENAMIENTO Y SEGURIDAD</h3><p>La informacion se almacena en bases de datos internas (Notion) accesibles unicamente por el equipo operador de Paso del Norte Labs.</p><h3>4. DERECHOS ARCO</h3><p>Conforme a la LFPDPPP, usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento de sus datos personales. Contactenos en yunus.soporte@proton.me.</p><h3>5. CONTACTO</h3><p>yunus.soporte@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juarez, Chihuahua, Mexico.</p>`
 };
 
-function fmtMXN(n) {
-  if (!n) return '—';
-  return '$' + n.toLocaleString('es-MX', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' MXN';
+/* ════════════════════════════════════════
+   ESTADO
+════════════════════════════════════════ */
+let celularDesdeWaitlist = '';
+let boletosCache = [];       // Cache del /api/marketplace
+let panelEventoActual = null;
+
+/* ════════════════════════════════════════
+   ACCESO — PANTALLAS
+════════════════════════════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.access-screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
 }
 
-function fmtFecha(str) {
-  if (!str) return null;
-  const d = new Date(str + 'T12:00:00');
-  return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
+function entrarApp() {
+  document.getElementById('accessLayer').classList.add('hidden');
+  document.getElementById('mainApp').classList.add('visible');
 }
 
-function buildWALink(evento) {
-  const msg = encodeURIComponent(`¡Hola! Me interesa adquirir el boleto para *${evento || 'el evento'}* listado en el Marketplace de Yunus. ¿Podría darme más información?`);
-  return `https://wa.me/526563161314?text=${msg}`;
+/* ════════════════════════════════════════
+   ACCESO — CÓDIGO
+════════════════════════════════════════ */
+function mostrarCodigoError(msg) {
+  const el = document.getElementById('codigoError');
+  el.textContent = msg; el.style.display = 'block';
+}
+function ocultarCodigoError() {
+  document.getElementById('codigoError').style.display = 'none';
 }
 
-function buildTiendaCard(evento, i) {
+async function validarCodigo() {
+  const codigo = document.getElementById('codigoInput').value.trim();
+  if (!codigo) { mostrarCodigoError('Ingresa tu código de acceso.'); return; }
+  ocultarCodigoError();
+  const btn = document.getElementById('btnEntrarCodigo');
+  btn.disabled = true;
+  btn.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border:2px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;"></span>Verificando...';
+  try {
+    const res = await fetch('/api/validar-codigo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ codigo })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      mostrarCodigoError(data.error || 'Código no válido.');
+      btn.disabled = false; btn.textContent = 'Entrar →'; return;
+    }
+    celularDesdeWaitlist = data.celular || '';
+    if (celularDesdeWaitlist) {
+      document.getElementById('r_celular').value = celularDesdeWaitlist.replace('+52', '');
+    }
+    btn.disabled = false; btn.textContent = 'Entrar →';
+    showScreen('screenRegistro');
+  } catch {
+    mostrarCodigoError('Error de conexión. Intenta de nuevo.');
+    btn.disabled = false; btn.textContent = 'Entrar →';
+  }
+}
+
+document.getElementById('codigoInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') validarCodigo();
+});
+
+/* ════════════════════════════════════════
+   ACCESO — LOGIN
+════════════════════════════════════════ */
+async function iniciarSesion() {
+  const input = document.getElementById('celularLoginInput').value.trim();
+  const errEl = document.getElementById('loginError');
+  if (input.length !== 10) {
+    errEl.textContent = 'Ingresa 10 dígitos válidos.';
+    errEl.style.display = 'block'; return;
+  }
+  errEl.style.display = 'none';
+  const btn = document.querySelector('#screenLogin .btn-acc-primary');
+  btn.disabled = true; btn.textContent = 'Verificando...';
+  const numero = '+52' + input;
+  try {
+    const res = await fetch('/api/historial?celular=' + encodeURIComponent(numero));
+    if (res.status === 404) {
+      errEl.textContent = 'Número no registrado. Solicita tu código de acceso.';
+      errEl.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Entrar →'; return;
+    }
+    localStorage.setItem('yunus_celular', numero);
+    if (res.ok) {
+      const data = await res.json();
+      localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
+    }
+    btn.disabled = false; btn.textContent = 'Entrar →';
+    entrarApp();
+  } catch {
+    // Fallo de red: igual dejamos pasar con lo del localStorage
+    localStorage.setItem('yunus_celular', numero);
+    btn.disabled = false; btn.textContent = 'Entrar →';
+    entrarApp();
+  }
+}
+
+document.getElementById('celularLoginInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') iniciarSesion();
+});
+
+/* ════════════════════════════════════════
+   ACCESO — REGISTRO
+   Envía campos esenciales + defaults para
+   campos eliminados → no rompe /api/registrar
+════════════════════════════════════════ */
+async function submitRegistro() {
+  const nombre = document.getElementById('r_nombre').value.trim();
+  const celRaw = document.getElementById('r_celular').value.trim();
+  const edad   = document.getElementById('r_edad').value.trim();
+  const terms  = document.getElementById('r_terms').checked;
+  const errEl  = document.getElementById('regError');
+
+  if (!nombre || celRaw.length !== 10 || !edad || parseInt(edad) < 18) {
+    errEl.textContent = 'Completa todos los campos. Debes ser mayor de 18 años.';
+    errEl.style.display = 'block'; return;
+  }
+  if (!terms) {
+    errEl.textContent = 'Debes aceptar los términos para continuar.';
+    errEl.style.display = 'block'; return;
+  }
+  errEl.style.display = 'none';
+
+  const btn = document.querySelector('#screenRegistro .btn-acc-primary');
+  btn.disabled = true;
+  btn.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border:2px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;"></span>Creando cuenta...';
+
+  // Payload: campos reales + defaults seguros para campos eliminados
+  const payload = {
+    celular:              '+52' + celRaw,
+    Nombre_completo:      nombre,
+    Edad:                 edad,
+    // Defaults para campos eliminados del formulario (no rompen la BD)
+    Entidad_federativa:   '',
+    Codigo_postal:        '',
+    Ingreso_mensual:      '',
+    Marca_celular:        '',
+    Gastos_celular:       '',
+    Gastos_vivienda:      '',
+    Gastos_automovil:     '',
+    Dependientes:         '',
+    Historial_crediticio: '',
+    Otras_deudas:         ''
+  };
+
+  try {
+    const res = await fetch('/api/registrar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      errEl.textContent = data.error || 'Error al crear la cuenta.';
+      errEl.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Crear cuenta →'; return;
+    }
+    localStorage.setItem('yunus_celular', '+52' + celRaw);
+    localStorage.setItem('yunus_historial', JSON.stringify([]));
+    btn.disabled = false; btn.textContent = 'Crear cuenta →';
+    showScreen('screenBienvenida');
+  } catch {
+    errEl.textContent = 'Error de conexión. Intenta de nuevo.';
+    errEl.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Crear cuenta →';
+  }
+}
+
+/* ════════════════════════════════════════
+   RENDER EVENTOS
+════════════════════════════════════════ */
+function renderEventos() {
+  const grid = document.getElementById('eventosGrid');
+  grid.innerHTML = EVENTOS.map((ev, i) => buildEventoCard(ev, i)).join('');
+}
+
+function buildEventoCard(ev, i) {
   return `
-  <div class="boleto-tienda fade-up d${Math.min(i+1,3)}">
-    <div class="boleto-tienda-img">
-      <img src="${evento.img}" alt="${evento.name}" onerror="this.parentElement.style.background='${evento.accent}20'">
-      <div class="boleto-tienda-badge">Financiamiento Yunus</div>
-      <div class="boleto-tienda-precio">${evento.precio}</div>
+  <div class="evento-card fade-up d${Math.min(i+1,6)}">
+    <div class="evento-img-wrap">
+      <img src="${ev.img}" alt="${ev.name}" class="evento-img"
+        onerror="this.parentElement.style.background='#1a1a1a'">
+      <div class="evento-badge">Financiamiento Yunus</div>
+      <div class="evento-precio-badge">${ev.precio}</div>
     </div>
-    <div class="boleto-tienda-body">
-      <div class="boleto-tienda-evento">${evento.name}</div>
-      <div class="boleto-tienda-meta">
-        <span class="boleto-tienda-tag">${evento.tag}</span>
-        <span class="boleto-tienda-fecha">${evento.fecha}</span>
+    <div class="evento-body">
+      <div class="evento-nombre">${ev.name}</div>
+      <div class="evento-meta">
+        <span class="evento-tag">${ev.tag}</span>
+        <span class="evento-fecha">${ev.fecha}</span>
       </div>
-      <p class="boleto-tienda-info">${evento.descripcion}</p>
-      <button class="btn-comprar-tienda" onclick="comprarEvento('${evento.name.replace(/'/g, "\\'")}')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
-        Comprar boleto
-      </button>
-    </div>
-  </div>`;
-}
-
-function comprarEvento(nombreEvento) {
-  const mensaje = encodeURIComponent(`Hola Yunus, quiero comprar un boleto para ${nombreEvento}. ¿Me puedes dar más información sobre disponibilidad y el plan de pagos?`);
-  openChatPopup(mensaje);
-}
-
-function buildCard(b, i) {
-  const img = eventoImgs[b.evento] || null;
-  const fecha = fmtFecha(b.fechaEvento);
-
-  return `
-  <div class="boleto-card fade-up d${Math.min(i+1,3)}">
-    <div class="boleto-img-wrap">
-      ${img
-        ? `<img src="${img}" alt="${b.evento}" class="boleto-img">`
-        : `<div class="boleto-img-placeholder"><span>${b.evento || 'YUNUS'}</span></div>`
-      }
-      <div class="reventa-badge">Reventa</div>
-      ${b.precioReventa ? `<div class="precio-badge">${fmtMXN(b.precioReventa)}</div>` : ''}
-    </div>
-
-    <div class="boleto-body">
-      <div class="boleto-evento">${b.evento || '—'}</div>
-      <div class="boleto-meta">
-        ${b.zona ? `<span class="boleto-zona">${b.zona}</span>` : ''}
-        ${fecha ? `<span class="boleto-fecha">${fecha}</span>` : ''}
+      <p class="evento-desc">${ev.descripcion}</p>
+      <div class="evento-actions">
+        <button class="btn-ver-boletos" onclick="abrirPanel('${ev.id}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+          Ver boletos disponibles
+        </button>
+        <button class="btn-listar" onclick="listarParaEvento('${ev.id}', '${ev.name.replace(/'/g,"\\'")}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Lista boletos para este evento
+        </button>
       </div>
-      <a href="${buildWALink(b.evento)}" target="_blank" rel="noopener" class="btn-comprar">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Comprar boleto
-      </a>
     </div>
-
-    <div class="perf-divider">
+    <div class="card-perf">
       <div class="perf-line"></div>
       <span class="perf-label">Marketplace Yunus</span>
       <div class="perf-line"></div>
@@ -681,99 +1163,187 @@ function buildCard(b, i) {
   </div>`;
 }
 
-function switchTab(tab) {
-  const tienda = document.getElementById('tiendaView');
-  const marketplace = document.getElementById('marketplaceView');
-  const tabTienda = document.getElementById('tabTienda');
-  const tabMarketplace = document.getElementById('tabMarketplace');
-  const headerLogo = document.getElementById('headerLogo');
+/* ════════════════════════════════════════
+   PANEL DE BOLETOS
+════════════════════════════════════════ */
+async function abrirPanel(eventoId) {
+  const ev = EVENTOS.find(e => e.id === eventoId);
+  if (!ev) return;
+  panelEventoActual = ev;
 
-  if (tab === 'tienda') {
-    tienda.classList.add('active');
-    marketplace.classList.remove('active');
-    tabTienda.classList.add('active');
-    tabMarketplace.classList.remove('active');
-    headerLogo.src = 'darklogo.png';
-  } else {
-    tienda.classList.remove('active');
-    marketplace.classList.add('active');
-    tabTienda.classList.remove('active');
-    tabMarketplace.classList.add('active');
-    headerLogo.src = 'logomarketplace.png';
-    cargarMarketplace();
-  }
-}
+  document.getElementById('panelNombre').textContent = ev.name;
+  document.getElementById('panelMeta').textContent = ev.tag + ' · ' + ev.fecha;
 
-function openChatPopup(prefillMsg) {
-  const popup = document.getElementById('chatPopup');
-  const iframe = document.getElementById('chatIframe');
-  const url = prefillMsg 
-    ? `/chat?modo=chat&msg=${prefillMsg}` 
-    : '/chat?modo=chat';
-  iframe.src = url;
-  popup.classList.add('open');
+  // Mostrar panel con loading
+  const panelBg = document.getElementById('boletosPanel');
+  const panelBody = document.getElementById('panelBody');
+  panelBg.classList.add('open');
   document.body.style.overflow = 'hidden';
-}
 
-function closeChatPopup() {
-  const popup = document.getElementById('chatPopup');
-  const iframe = document.getElementById('chatIframe');
-  popup.classList.remove('open');
-  iframe.src = '';
-  document.body.style.overflow = '';
-}
+  panelBody.innerHTML = `
+    <div class="panel-loading">
+      <div class="spinner-sm"></div>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;
+        letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">
+        Cargando boletos...
+      </span>
+    </div>`;
 
-async function cargarMarketplace() {
-  document.getElementById('loadingView').style.display = 'flex';
-
+  // Cargar boletos del marketplace
   try {
     const res = await fetch('/api/marketplace');
     const data = await res.json();
-    const boletos = data.boletos || [];
-
-    document.getElementById('loadingView').style.display = 'none';
-    document.getElementById('mainView').style.display = 'block';
-    document.getElementById('countPill').textContent = boletos.length;
-
-    const container = document.getElementById('boletosContainer');
-
-    if (boletos.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state fade-up">
-          <div class="empty-icon">&#127903;</div>
-          <div class="empty-title">Sin boletos por ahora</div>
-          <p class="empty-sub">No hay boletos en reventa en este momento. Vuelve pronto o activa tu propio plan de financiamiento.</p>
-        </div>`;
-      return;
-    }
-
-    container.innerHTML = boletos.map((b, i) => buildCard(b, i)).join('');
-
+    const todos = data.boletos || [];
+    // Filtrar por evento (match flexible)
+    const filtrados = todos.filter(b =>
+      b.evento && b.evento.toLowerCase().includes(ev.apiKey.toLowerCase().split(' ')[0])
+    );
+    boletosCache = filtrados;
+    renderPanelBody(ev, filtrados);
   } catch {
-    document.getElementById('loadingView').style.display = 'none';
-    document.getElementById('mainView').style.display = 'block';
-    document.getElementById('boletosContainer').innerHTML = `
-      <div class="empty-state fade-up">
-        <div class="empty-icon">&#9888;</div>
-        <div class="empty-title">Error al cargar</div>
-        <p class="empty-sub">No pudimos cargar los boletos. Intenta de nuevo.</p>
-      </div>`;
+    renderPanelBody(ev, []);
   }
 }
 
+function renderPanelBody(ev, boletos) {
+  const panelBody = document.getElementById('panelBody');
+  let html = '';
+
+  // Mapa del recinto
+  html += `
+    <div class="panel-section-label" style="margin-top:4px;">Recinto</div>
+    <div class="recinto-map">
+      ${ev.mapaImg
+        ? `<img src="${ev.mapaImg}" alt="Mapa ${ev.name}">`
+        : `<div class="recinto-map-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+              stroke="rgba(242,239,232,0.15)" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <line x1="9" y1="3" x2="9" y2="21"/>
+              <line x1="15" y1="3" x2="15" y2="21"/>
+              <line x1="3" y1="9" x2="21" y2="9"/>
+              <line x1="3" y1="15" x2="21" y2="15"/>
+            </svg>
+            <span>Mapa próximamente</span>
+           </div>`
+      }
+    </div>`;
+
+  // Boletos disponibles
+  html += `<div class="panel-section-label">
+    Boletos disponibles
+    <span style="font-family:'DM Mono',monospace;font-size:9px;
+      padding:2px 8px;background:rgba(212,245,60,0.08);
+      color:var(--volt);border:1px solid rgba(212,245,60,0.2);">
+      ${boletos.length}
+    </span>
+  </div>`;
+
+  if (boletos.length === 0) {
+    html += `
+      <div class="panel-empty">
+        <div class="panel-empty-icon">🎟</div>
+        <div class="panel-empty-title">Sin boletos aún</div>
+        <p class="panel-empty-sub">
+          No hay boletos listados para este evento todavía.<br>
+          ¿Tienes uno? Ponlo a trabajar.
+        </p>
+        <button onclick="listarParaEvento('${ev.id}', '${ev.name.replace(/'/g,"\\'")}');cerrarPanel();"
+          style="margin-top:16px;padding:12px 20px;background:transparent;
+            color:var(--volt);font-family:'DM Mono',monospace;font-size:10px;
+            letter-spacing:0.1em;text-transform:uppercase;
+            border:1px solid rgba(212,245,60,0.3);cursor:pointer;">
+          Listar mi boleto →
+        </button>
+      </div>`;
+  } else {
+    html += boletos.map(b => buildBoletoItem(b)).join('');
+  }
+
+  document.getElementById('panelBody').innerHTML = html;
+}
+
+function buildBoletoItem(b) {
+  const precio = b.precioReventa
+    ? '$' + Number(b.precioReventa).toLocaleString('es-MX', {maximumFractionDigits:0}) + ' MXN'
+    : '—';
+  return `
+  <div class="boleto-item" onclick="seleccionarBoleto('${b.id || ''}')">
+    <div class="boleto-item-info">
+      <div class="boleto-item-zona">${b.zona || 'Zona general'}</div>
+      <div class="boleto-item-detalle">
+        ${b.fechaEvento ? formatFecha(b.fechaEvento) : ''}
+        ${b.notas ? ' · ' + b.notas : ''}
+      </div>
+    </div>
+    <div>
+      <div class="boleto-item-precio">${precio}</div>
+      <div class="boleto-item-sub">precio total</div>
+    </div>
+  </div>`;
+}
+
+function seleccionarBoleto(id) {
+  // Placeholder: aquí irá el flujo de checkout con plan de pagos
+  // Por ahora redirige a chat con contexto
+  const ev = panelEventoActual;
+  const msg = encodeURIComponent(`Quiero comprar un boleto para ${ev ? ev.name : 'el evento'}`);
+  window.location.href = `/chat?modo=chat&msg=${msg}`;
+}
+
+function cerrarPanel() {
+  const panelBg = document.getElementById('boletosPanel');
+  panelBg.classList.remove('open');
+  document.body.style.overflow = '';
+  panelEventoActual = null;
+}
+
+/* ════════════════════════════════════════
+   CEDENTE
+════════════════════════════════════════ */
+function irACeder() {
+  // Redirige a la página de cedente (pendiente de construir)
+  window.location.href = '/ceder';
+}
+
+function listarParaEvento(eventoId, eventoNombre) {
+  // Redirige a cedente pre-seleccionando el evento
+  window.location.href = `/ceder?evento=${encodeURIComponent(eventoNombre)}`;
+}
+
+/* ════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════ */
+function formatFecha(str) {
+  if (!str) return '';
+  const d = new Date(str + 'T12:00:00');
+  return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+/* ════════════════════════════════════════
+   LEGAL
+════════════════════════════════════════ */
+function openLegal(type) {
+  document.getElementById('legalTitle').textContent =
+    type === 'terms' ? 'Términos y Condiciones' : 'Política de Privacidad';
+  document.getElementById('legalContent').innerHTML = legalTexts[type];
+  document.getElementById('legalModal').classList.add('open');
+}
+function closeLegal() {
+  document.getElementById('legalModal').classList.remove('open');
+}
+
+/* ════════════════════════════════════════
+   INIT
+════════════════════════════════════════ */
 window.addEventListener('DOMContentLoaded', () => {
   const celular = localStorage.getItem('yunus_celular');
-  if (!celular) {
-    window.location.href = '/chat';
-    return;
+  if (celular) {
+    // Ya tiene sesión → entrar directo al app
+    entrarApp();
   }
-  
-  // Renderizar tienda
-  const tiendaGrid = document.getElementById('tiendaGrid');
-  tiendaGrid.innerHTML = eventosTienda.map((e, i) => buildTiendaCard(e, i)).join('');
-  
-  // Por defecto mostrar tienda
-  switchTab('tienda');
+  // Siempre renderizar eventos (para cuando entre al app)
+  renderEventos();
 });
 </script>
 
