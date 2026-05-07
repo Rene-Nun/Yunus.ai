@@ -68,7 +68,7 @@ export default async function handler(req, res) {
           title: [{ text: { content: digits } }]
         },
         "Tipo": {
-          select: { name: "Cesion" }
+          select: { name: "Cesión" }
         },
         "Estado": {
           select: { name: "En Revision" }
