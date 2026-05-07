@@ -379,7 +379,6 @@ header {
 @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 
-<!-- Google tag -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z36FM1LNY2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -413,7 +412,6 @@ header {
 
 <div id="app">
 
-  <!-- ═══════════ PASO 1 — TU BOLETO ═══════════ -->
   <div id="step1" class="screen active">
     <div class="step-body fade-up">
       <div class="step-title">Tu boleto</div>
@@ -497,7 +495,6 @@ header {
     </div>
   </div>
 
-  <!-- ═══════════ PASO 2 — VERIFICACIÓN ═══════════ -->
   <div id="step2" class="screen">
     <div class="step-body fade-up">
       <div class="step-title">Verificación</div>
@@ -513,7 +510,7 @@ header {
           maxlength="18" inputmode="numeric">
       </div>
 
-      <div class="form-group">
+      <div class="form-group" id="kycContainer">
         <label class="form-label">Documentos de identidad</label>
         <div class="upload-grid">
 
@@ -584,15 +581,13 @@ header {
     </div>
   </div>
 
-  <!-- ═══════════ PASO 3 — CONFIRMAR ═══════════ -->
   <div id="step3" class="screen">
     <div class="step-body fade-up">
       <div class="step-title">Confirmar</div>
       <p class="step-sub">Revisa que todo esté correcto antes de enviar.</p>
 
       <div class="resumen-card" id="resumenCard">
-        <!-- Se llena dinámicamente -->
-      </div>
+        </div>
 
       <div class="aviso-pago">
         <strong>¿Cómo recibes tu dinero?</strong><br>
@@ -615,7 +610,6 @@ header {
     </div>
   </div>
 
-  <!-- ═══════════ ÉXITO ═══════════ -->
   <div id="screenExito">
     <div class="exito-icon">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
@@ -652,10 +646,7 @@ header {
     </button>
   </div>
 
-</div><!-- /app -->
-
-<!-- FOOTER CTA -->
-<div class="step-footer" id="stepFooter">
+</div><div class="step-footer" id="stepFooter">
   <div class="step-footer-inner">
     <button class="btn-primary" id="btnContinuar" onclick="continuar()">
       Continuar →
@@ -714,6 +705,7 @@ const EVENTO_IMGS = {
 ════════════════════════════════════════ */
 let currentStep = 1;
 let celular     = '';
+let kycCompletado = false; // <-- AÑADIDO ESTADO KYC
 
 // Imágenes en base64 (se llenan con handleUpload)
 const imgs = {
@@ -791,9 +783,13 @@ function validarStep2() {
   const errEl = document.getElementById('error2');
 
   if (clabe.length !== 18) { mostrarError(errEl, 'La CLABE debe tener exactamente 18 dígitos.'); return false; }
-  if (!imgs.ineFrente)     { mostrarError(errEl, 'Sube la foto del frente de tu INE.'); return false; }
-  if (!imgs.ineReverso)    { mostrarError(errEl, 'Sube la foto del reverso de tu INE.'); return false; }
-  if (!imgs.selfie)        { mostrarError(errEl, 'Sube tu selfie sosteniendo la INE.'); return false; }
+  
+  // AÑADIDO: Solo exigir fotos si NO ha completado el KYC
+  if (!kycCompletado) {
+    if (!imgs.ineFrente)     { mostrarError(errEl, 'Sube la foto del frente de tu INE.'); return false; }
+    if (!imgs.ineReverso)    { mostrarError(errEl, 'Sube la foto del reverso de tu INE.'); return false; }
+    if (!imgs.selfie)        { mostrarError(errEl, 'Sube tu selfie sosteniendo la INE.'); return false; }
+  }
 
   errEl.style.display = 'none';
   return true;
@@ -1024,11 +1020,24 @@ function spinner() {
 /* ════════════════════════════════════════
    INIT
 ════════════════════════════════════════ */
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   celular = localStorage.getItem('yunus_celular') || '';
   if (!celular) {
     window.location.href = 'marketplace.html';
     return;
+  }
+
+  // AÑADIDO: Verificar si el usuario ya tiene KYC en Yunus
+  try {
+    const res = await fetch(`/api/verificar-kyc?celular=${celular}`);
+    const data = await res.json();
+    
+    if (data.kycCompletado) {
+      kycCompletado = true;
+      document.getElementById('kycContainer').style.display = 'none'; // Ocultamos las fotos
+    }
+  } catch (e) {
+    console.error("Error verificando KYC, se pedirá de nuevo.", e);
   }
 
   // Si viene con ?evento= desde el marketplace
