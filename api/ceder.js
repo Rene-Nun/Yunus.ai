@@ -45,19 +45,21 @@ export default async function handler(req, res) {
   if (!celular || !evento || !fechaEvento || !zona || !precioCedente || !precioListado) {
     return res.status(400).json({ error: "Faltan datos del boleto." });
   }
-  if (!clabe || !ineFrente || !ineReverso || !selfie) {
-    return res.status(400).json({ error: "Faltan datos de verificacion." });
+  
+  // NUEVO: Solo exigimos obligatoriamente la clabe, las fotos pueden no venir si ya tiene KYC
+  if (!clabe) {
+    return res.status(400).json({ error: "Falta la CLABE interbancaria." });
   }
 
   const digits = celular.replace(/\D/g, "").slice(-10);
 
   try {
-    // 1. Subir imagenes a Cloudinary
+    // 1. Subir imagenes a Cloudinary (Solo si existen en la petición)
     const folder          = `yunus/cedentes/${digits}`;
     const screenshotUrl   = screenshot ? await subirCloudinary(screenshot,  folder) : null;
-    const ineFrenteUrl    = await subirCloudinary(ineFrente,  folder);
-    const ineReversoUrl   = await subirCloudinary(ineReverso, folder);
-    const selfieUrl       = await subirCloudinary(selfie,     folder);
+    const ineFrenteUrl    = ineFrente  ? await subirCloudinary(ineFrente,   folder) : null;
+    const ineReversoUrl   = ineReverso ? await subirCloudinary(ineReverso,  folder) : null;
+    const selfieUrl       = selfie     ? await subirCloudinary(selfie,      folder) : null;
 
     // 2. Crear registro en BD Compras Yunus
     await notion.pages.create({
@@ -68,7 +70,7 @@ export default async function handler(req, res) {
           title: [{ text: { content: digits } }]
         },
         "Tipo": {
-          select: { name: "Cesión" }
+          select: { name: "Cesion" }
         },
         "Estado": {
           select: { name: "En Revision" }
@@ -106,20 +108,18 @@ export default async function handler(req, res) {
       }
     });
 
+    // NUEVO: Construimos las propiedades de KYC de forma dinámica 
+    // para no sobreescribir con valores vacíos si el usuario ya tiene fotos
     const kycProps = {
       "CLABE": {
         rich_text: [{ text: { content: clabe } }]
-      },
-      "INE frente": {
-        rich_text: [{ text: { content: ineFrenteUrl } }]
-      },
-      "INE reverso": {
-        rich_text: [{ text: { content: ineReversoUrl } }]
-      },
-      "Selfie": {
-        rich_text: [{ text: { content: selfieUrl } }]
       }
     };
+    
+    if (ineFrenteUrl)  kycProps["INE Frente"]  = { rich_text: [{ text: { content: ineFrenteUrl } }] };
+    if (ineReversoUrl) kycProps["INE Reverso"] = { rich_text: [{ text: { content: ineReversoUrl } }] };
+    if (selfieUrl)     kycProps["Selfie"]      = { rich_text: [{ text: { content: selfieUrl } }] };
+
 
     if (searchUser.results.length > 0) {
       // Actualizar registro existente con KYC + CLABE
