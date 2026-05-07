@@ -504,10 +504,23 @@ header {
       </p>
 
       <div class="form-group">
-        <label class="form-label">CLABE interbancaria (18 dígitos)</label>
-        <input type="tel" id="s2_clabe" class="form-input"
-          placeholder="000000000000000000"
-          maxlength="18" inputmode="numeric">
+        <label class="form-label">Cuenta de depósito (CLABE)</label>
+        
+        <div id="savedClabeContainer" style="display:none; margin-bottom: 12px;">
+          <div class="terms-wrap" style="background: rgba(212,245,60,0.08); border-color: var(--volt);">
+            <input type="radio" id="useSavedClabe" name="clabeOption" checked onclick="toggleClabeInput(false)">
+            <label for="useSavedClabe" id="savedClabeLabel" style="color: var(--paper);">
+              Usar CLABE guardada (***1234)
+            </label>
+          </div>
+          <div class="terms-wrap" style="margin-top: 8px;">
+            <input type="radio" id="useNewClabe" name="clabeOption" onclick="toggleClabeInput(true)">
+            <label for="useNewClabe">Usar otra cuenta diferente</label>
+          </div>
+        </div>
+
+        <input type="tel" id="s2_clabe" class="form-input" 
+          placeholder="000000000000000000" maxlength="18" inputmode="numeric">
       </div>
 
       <div class="form-group" id="kycContainer">
@@ -705,7 +718,8 @@ const EVENTO_IMGS = {
 ════════════════════════════════════════ */
 let currentStep = 1;
 let celular     = '';
-let kycCompletado = false; // <-- AÑADIDO ESTADO KYC
+let kycCompletado = false; 
+let clabeEnBD = ""; // <-- AÑADIDO: Para guardar la CLABE original
 
 // Imágenes en base64 (se llenan con handleUpload)
 const imgs = {
@@ -758,6 +772,19 @@ function volverOSalir() {
   }
 }
 
+// <-- AÑADIDO: Función para alternar entre CLABE guardada y nueva
+function toggleClabeInput(show) {
+  const input = document.getElementById('s2_clabe');
+  if (show) {
+    input.style.display = "block";
+    input.value = "";
+    input.focus();
+  } else {
+    input.style.display = "none";
+    input.value = clabeEnBD; // Si usa la guardada, el valor del input vuelve a ser la original
+  }
+}
+
 /* ════════════════════════════════════════
    VALIDACIONES
 ════════════════════════════════════════ */
@@ -784,7 +811,6 @@ function validarStep2() {
 
   if (clabe.length !== 18) { mostrarError(errEl, 'La CLABE debe tener exactamente 18 dígitos.'); return false; }
   
-  // AÑADIDO: Solo exigir fotos si NO ha completado el KYC
   if (!kycCompletado) {
     if (!imgs.ineFrente)     { mostrarError(errEl, 'Sube la foto del frente de tu INE.'); return false; }
     if (!imgs.ineReverso)    { mostrarError(errEl, 'Sube la foto del reverso de tu INE.'); return false; }
@@ -1027,14 +1053,22 @@ window.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // AÑADIDO: Verificar si el usuario ya tiene KYC en Yunus
   try {
     const res = await fetch(`/api/verificar-kyc?celular=${celular}`);
     const data = await res.json();
     
-    if (data.kycCompletado) {
+    // <-- AÑADIDO: Lógica para manejar la CLABE guardada
+    if (data.kycCompletado && data.clabeExistente) {
       kycCompletado = true;
-      document.getElementById('kycContainer').style.display = 'none'; // Ocultamos las fotos
+      clabeEnBD = data.clabeExistente;
+      
+      document.getElementById('kycContainer').style.display = 'none';
+      document.getElementById('savedClabeContainer').style.display = 'block';
+      document.getElementById('s2_clabe').style.display = 'none'; // Oculto inicialmente
+      document.getElementById('s2_clabe').value = clabeEnBD;
+      
+      const last4 = clabeEnBD.slice(-4);
+      document.getElementById('savedClabeLabel').textContent = `Usar CLABE guardada (***${last4})`;
     }
   } catch (e) {
     console.error("Error verificando KYC, se pedirá de nuevo.", e);
