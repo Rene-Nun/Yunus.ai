@@ -1,23 +1,27 @@
 import { Client } from "@notionhq/client";
+import { v2 as cloudinary } from "cloudinary";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const COMPRAS_DATABASE_ID = process.env.NOTION_COMPRAS_DATABASE_ID;
 const USERS_DATABASE_ID   = process.env.NOTION_DATABASE_ID;
 
-const CLOUDINARY_URL    = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`;
-const CLOUDINARY_PRESET = process.env.CLOUDINARY_UPLOAD_PRESET;
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Sube una imagen base64 a Cloudinary y devuelve la URL
 async function subirCloudinary(base64, folder) {
-  const body = new URLSearchParams();
-  body.append("file", base64);
-  body.append("upload_preset", CLOUDINARY_PRESET);
-  body.append("folder", folder);
-
-  const res  = await fetch(CLOUDINARY_URL, { method: "POST", body });
-  const data = await res.json();
-  if (!data.secure_url) throw new Error("Cloudinary error: " + JSON.stringify(data));
-  return data.secure_url;
+  try {
+    const result = await cloudinary.uploader.upload(base64, {
+      folder: folder,
+      resource_type: "image"
+    });
+    return result.secure_url;
+  } catch (error) {
+    throw new Error("Cloudinary error: " + JSON.stringify(error));
+  }
 }
 
 export default async function handler(req, res) {
