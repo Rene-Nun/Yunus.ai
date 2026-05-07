@@ -71,16 +71,16 @@ export default async function handler(req, res) {
       cloudinary.uploader.upload(selfie, uploadOptions)
     ]);
 
-    // 3. Generar la fecha y hora exacta (Hora local de Juárez)
-    const timestamp = new Date().toLocaleString("es-MX", { timeZone: "America/Ciudad_Juarez" });
+    // 3. Generar la fecha en el formato ISO 8601 que requiere Notion
+    const timestamp = new Date().toISOString();
 
-    // 4. Actualizar las columnas de texto en Notion
+    // 4. Actualizar Notion (nota el cambio en "Fecha registro")
     await notion.pages.update({
       page_id: pageId,
       properties: {
         "Evento interés": { rich_text: [{ text: { content: evento || "" } }] },
         "Zona/categoría": { rich_text: [{ text: { content: zona || "" } }] },
-        "Fecha registro": { rich_text: [{ text: { content: timestamp } }] },
+        "Fecha registro": { date: { start: timestamp } }, // <--- ¡AQUÍ ESTÁ LA MAGIA!
         "INE frente": { rich_text: [{ text: { content: uploadFrente.secure_url } }] },
         "INE reverso": { rich_text: [{ text: { content: uploadReverso.secure_url } }] },
         "Selfie": { rich_text: [{ text: { content: uploadSelfie.secure_url } }] }
