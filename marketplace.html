@@ -647,12 +647,22 @@ padding: 16px; margin-bottom: 20px; border-radius: 4px;
 .ine-upload {
 border: 1px dashed var(--border); padding: 24px 16px;
 text-align: center; cursor: pointer; background: rgba(255,255,255,0.02);
-transition: border-color 0.2s; border-radius: 4px; margin-bottom: 20px;
+transition: border-color 0.2s; border-radius: 4px; margin-bottom: 8px;
+position: relative;
 }
 .ine-upload:hover { border-color: var(--volt); }
 .ine-icon { font-size: 24px; margin-bottom: 8px; opacity: 0.5; }
 .ine-text { font-size: 12px; color: var(--muted); }
-.ine-preview { max-width: 100%; max-height: 140px; object-fit: contain; display: none; margin: 0 auto; }
+.ine-preview { max-width: 100%; max-height: 140px; object-fit: contain; display: none; margin: 0 auto; border-radius: 4px; }
+
+/* Indicadores de progreso del Wizard */
+.wizard-progress {
+  display: flex; gap: 12px; justify-content: center; margin-bottom: 24px;
+  font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+}
+.wizard-step-ind { color: var(--muted); transition: color 0.3s; }
+.wizard-step-ind.active { color: var(--volt); }
+.wizard-step-ind.done { color: var(--paper); }
 
 .solicitud-ok { text-align: center; padding: 40px 20px; }
 .solicitud-ok-icon { width: 48px; height: 48px; background: var(--volt); color: var(--ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px; }
@@ -1005,7 +1015,7 @@ const EVENTOS = [
 ];
 
 /* ════════════════════════════════════════
-   TEXTOS LEGALES (idénticos a chat.html)
+   TEXTOS LEGALES
 ════════════════════════════════════════ */
 const legalTexts = {
   terms: `<h2>TÉRMINOS Y CONDICIONES – YUNUS</h2><p><strong>Ultima actualizacion:</strong> 20 de abril de 2026</p><h3>1. ACEPTACION</h3><p>Al utilizar yunusia.com, completar el formulario de registro, enviar documentos de identificacion, o realizar cualquier pago, usted acepta de forma expresa e irrevocable estos Terminos y Condiciones en su totalidad.</p><h3>2. NATURALEZA DEL SERVICIO</h3><p>El formulario de registro constituye unicamente una <strong>solicitud de evaluacion financiera</strong>, no una contratacion definitiva ni una reserva de boleto. Yunus se reserva el derecho de admision y podra rechazar cualquier solicitud sin necesidad de justificacion.</p><h3>3. MODELO DE FINANCIAMIENTO</h3><ul><li><strong>Enganche:</strong> 15% del valor total del boleto, pagadero mediante SPEI o efectivo en Oxxo.</li><li><strong>Saldo restante:</strong> El 85% se divide en pagos quincenales hasta la fecha del evento.</li><li><strong>CAT:</strong> 36% anual (3% mensual), incluido en las cuotas. Sin cargos ocultos.</li><li><strong>Sin buro de credito:</strong> Yunus no consulta ni reporta al Buro de Credito.</li></ul><h3>4. TITULARIDAD DE CUENTA Y DEPOSITOS</h3><p>Para mantener las tasas de interes competitivas y evitar comisiones de intermediarios durante esta fase beta, los depositos via SPEI se realizaran a la cuenta bancaria personal del fundador, <strong>Christian Nuñez</strong>. Al realizar el pago, el usuario reconoce y acepta que esta cuenta es el canal oficial de recaudacion de Yunus para la etapa actual del proyecto.</p><h3>5. LA BOVEDA Y LA REPRESENTACION DEL BOLETO</h3><p>Una vez realizado el enganche, el boleto es adquirido por Yunus y resguardado en custodia. El usuario accede a una representacion visual en su Boveda personal. <strong>Esta representacion no es el boleto original</strong> ni constituye un documento de acceso al evento. La transferencia oficial del boleto via Ticketmaster ocurrira unicamente al completar el 100% de los pagos de forma exitosa.</p><h3>6. PROPIEDAD DEL BOLETO</h3><p>Durante la vigencia del plan de pagos, el boleto es propiedad de Yunus. El usuario no adquiere titularidad sobre el boleto hasta haber liquidado la totalidad del credito.</p><h3>7. INCUMPLIMIENTO DE PAGO</h3><p>Se considera incumplimiento cuando el usuario no realiza un pago dentro de los 7 dias naturales posteriores a su fecha de vencimiento. Ante un incumplimiento, Yunus activara la reventa del boleto. Si el precio de reventa no cubre el saldo insoluto y la comision, el usuario perdera la totalidad de los pagos realizados sin derecho a reembolso.</p><h3>8. CANCELACION DEL EVENTO</h3><p>En caso de cancelacion oficial del evento, Yunus gestionara el reembolso ante Ticketmaster. El monto reembolsado se aplica primero al saldo insoluto; el remanente se devuelve al usuario.</p><h3>9. VERIFICACION DE IDENTIDAD</h3><p>El usuario acepta proporcionar documentos de identidad validos (INE/IFE vigente) al momento de confirmar una compra.</p><h3>10. LEY APLICABLE</h3><p>Estos terminos se rigen por las leyes de los Estados Unidos Mexicanos. Cualquier controversia sera resuelta ante los tribunales competentes de Ciudad Juarez, Chihuahua, Mexico.</p><h3>11. CONTACTO</h3><p>yunus.soporte@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juarez, Chihuahua, Mexico</p>`,
@@ -1016,14 +1026,19 @@ const legalTexts = {
    ESTADO GLOBAL
 ════════════════════════════════════════ */
 let celularDesdeWaitlist = '';
-let boletosCache = [];       // Cache del /api/marketplace
+let boletosCache = [];       
 
 // ESTADO DEL PANEL Y CHECKOUT
 let panelEventoActual = null;
 let panelBoletoActual = null;
 let panelPlanActual = 4; // Por defecto a 4 quincenas
 let panelPaso = 1; // 1: Lista, 2: Configurar Plan, 3: Checkout
-let ineFileBase64 = null;
+
+// Variables para el Wizard de imágenes
+let ineFrenteBase64 = null;
+let ineReversoBase64 = null;
+let selfieBase64 = null;
+let uploadStep = 1; // 1: Frente, 2: Reverso, 3: Selfie
 
 /* ════════════════════════════════════════
    ACCESO — PANTALLAS
@@ -1041,7 +1056,7 @@ function entrarApp() {
 }
 
 /* ════════════════════════════════════════
-   ACCESO — CÓDIGO Y LOGIN (Igual al original)
+   ACCESO — CÓDIGO Y LOGIN
 ════════════════════════════════════════ */
 function mostrarCodigoError(msg) {
   const el = document.getElementById('codigoError');
@@ -1225,6 +1240,29 @@ function buildEventoCard(ev, i) {
 }
 
 /* ════════════════════════════════════════
+   COMPRIMIR IMÁGENES (HELPER DEL CHAT)
+════════════════════════════════════════ */
+function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const scale = Math.min(1, maxWidth / img.width);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', calidad));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ════════════════════════════════════════
    FLUJO DEL PANEL (Listado, Plan, Checkout)
 ════════════════════════════════════════ */
 
@@ -1253,7 +1291,13 @@ function cerrarPanel() {
   panelBoletoActual = null;
   panelPlanActual = 4;
   panelPaso = 1;
-  ineFileBase64 = null;
+  
+  // Limpiar wizard
+  ineFrenteBase64 = null;
+  ineReversoBase64 = null;
+  selfieBase64 = null;
+  uploadStep = 1;
+
   document.getElementById('panelHeader').classList.remove('has-back');
 }
 
@@ -1463,10 +1507,15 @@ function actualizarDesglose() {
 }
 
 function confirmarPlan() {
+  // Aseguramos que el wizard empiece siempre en el paso 1 al entrar
+  uploadStep = 1;
+  ineFrenteBase64 = null;
+  ineReversoBase64 = null;
+  selfieBase64 = null;
   renderStep3();
 }
 
-// Paso 3: Checkout (Confirmación y Subida de INE)
+// Paso 3: Checkout (Confirmación y Subida de Docs/Selfie con Wizard)
 function renderStep3() {
   panelPaso = 3;
   
@@ -1488,58 +1537,98 @@ function renderStep3() {
       </div>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Celular de contacto</label>
-      <input type="text" class="form-input" value="${celGuardado}" readonly style="opacity:0.6; cursor:not-allowed;">
+    <!-- Indicador de pasos del Wizard -->
+    <div class="wizard-progress">
+      <span id="prog1" class="wizard-step-ind active">1. FRENTE</span>
+      <span id="prog2" class="wizard-step-ind">2. REVERSO</span>
+      <span id="prog3" class="wizard-step-ind">3. SELFIE</span>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Identidad (INE Frontal)</label>
-      <input type="file" id="chk_ine" accept="image/*" style="display:none;" onchange="handleINEUpload(event)">
-      <div class="ine-upload" id="chk_ine_trigger" onclick="document.getElementById('chk_ine').click()">
-        <div id="chk_ine_content">
-          <div class="ine-icon">📸</div>
-          <div class="ine-text">Toca para subir o tomar foto de tu INE</div>
+    <div class="form-group" id="wizardContainer">
+      <label class="form-label" id="wizardLabel">Identidad (1/3): INE Frontal</label>
+      <input type="file" id="chk_upload" accept="image/*" style="display:none;" onchange="handleWizardUpload(event)">
+      
+      <div class="ine-upload" id="chk_upload_trigger" onclick="document.getElementById('chk_upload').click()">
+        <div id="chk_upload_content">
+          <div class="ine-icon" id="wizardIcon">🪪</div>
+          <div class="ine-text" id="wizardText">Toca para subir o tomar foto del frente de tu INE</div>
         </div>
-        <img id="chk_ine_preview" class="ine-preview">
+        <img id="chk_upload_preview" class="ine-preview">
       </div>
     </div>
 
     <div id="chk_error" class="acc-error"></div>
-    <button class="btn-ver-boletos" id="btnSubmitCheckout" style="margin-top:10px;" onclick="submitSolicitud()">
+    
+    <button class="btn-ver-boletos" id="btnSubmitCheckout" style="margin-top:10px; display:none;" onclick="submitSolicitud()">
       Enviar Solicitud →
     </button>
   `;
-
-  // Restaurar preview si el usuario volvió de un paso y ya había subido foto
-  if (ineFileBase64) {
-     document.getElementById('chk_ine_content').style.display = 'none';
-     const preview = document.getElementById('chk_ine_preview');
-     preview.src = ineFileBase64;
-     preview.style.display = 'block';
-  }
 }
 
-function handleINEUpload(e) {
+// Controla los 3 pasos de las fotos
+async function handleWizardUpload(e) {
   const file = e.target.files[0];
   if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = function(event) {
-    ineFileBase64 = event.target.result;
-    document.getElementById('chk_ine_content').style.display = 'none';
-    const preview = document.getElementById('chk_ine_preview');
-    preview.src = ineFileBase64;
+  // Mostramos indicador de carga en lo que se comprime la imagen
+  document.getElementById('chk_upload_content').innerHTML = `<div class="spinner-sm" style="margin: 0 auto;"></div>`;
+
+  const base64 = await comprimirImagen(file);
+
+  if (uploadStep === 1) {
+    ineFrenteBase64 = base64;
+    document.getElementById('prog1').classList.remove('active');
+    document.getElementById('prog1').classList.add('done');
+    document.getElementById('prog2').classList.add('active');
+    
+    uploadStep = 2;
+    document.getElementById('wizardLabel').textContent = 'Identidad (2/3): INE Reverso';
+    document.getElementById('chk_upload_content').innerHTML = `
+      <div class="ine-icon">🪪</div>
+      <div class="ine-text">¡Listo! Ahora toca para el reverso del INE</div>`;
+    
+  } else if (uploadStep === 2) {
+    ineReversoBase64 = base64;
+    document.getElementById('prog2').classList.remove('active');
+    document.getElementById('prog2').classList.add('done');
+    document.getElementById('prog3').classList.add('active');
+    
+    uploadStep = 3;
+    document.getElementById('wizardLabel').textContent = 'Identidad (3/3): Selfie';
+    // Activamos la cámara frontal si se usa en móvil
+    document.getElementById('chk_upload').setAttribute('capture', 'user');
+    document.getElementById('chk_upload_content').innerHTML = `
+      <div class="ine-icon">🤳</div>
+      <div class="ine-text">¡Casi terminamos! Toca para tomarte una selfie</div>`;
+      
+  } else if (uploadStep === 3) {
+    selfieBase64 = base64;
+    document.getElementById('prog3').classList.remove('active');
+    document.getElementById('prog3').classList.add('done');
+    
+    // Ocultar recuadro de subida y mostrar preview final
+    document.getElementById('chk_upload_content').style.display = 'none';
+    const preview = document.getElementById('chk_upload_preview');
+    preview.src = selfieBase64;
     preview.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
+    
+    document.getElementById('wizardLabel').textContent = '¡Documentos completados!';
+    document.getElementById('chk_upload_trigger').style.borderColor = 'var(--volt)';
+    document.getElementById('chk_upload_trigger').onclick = null; // deshabilitar más clicks
+
+    // Habilitar el botón de envío
+    document.getElementById('btnSubmitCheckout').style.display = 'block';
+  }
+
+  // Reset del input para permitir subir el mismo archivo si se equivocaron
+  e.target.value = '';
 }
 
-// Envío y Redirección a WhatsApp como puente
-function submitSolicitud() {
-  if (!ineFileBase64) {
+// Envío de la solicitud a la nueva API /api/checkout
+async function submitSolicitud() {
+  if (!ineFrenteBase64 || !ineReversoBase64 || !selfieBase64) {
     const err = document.getElementById('chk_error');
-    err.textContent = 'Es necesario subir una foto de tu INE para continuar.';
+    err.textContent = 'Es necesario completar las 3 fotos para continuar.';
     err.style.display = 'block';
     return;
   }
@@ -1549,27 +1638,24 @@ function submitSolicitud() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner-sm" style="display:inline-block;width:14px;height:14px;border-width:2px;margin-right:8px;vertical-align:middle;"></span>Procesando...';
 
-  // Simulamos un leve delay para dar feedback visual antes del redirect
-  setTimeout(() => {
-    const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
-    const enganche = precio * 0.15;
-    const cuota = (precio * 0.85) / panelPlanActual;
-    const celGuardado = localStorage.getItem('yunus_celular') || 'Desconocido';
+  const payload = {
+    celular: localStorage.getItem('yunus_celular'),
+    evento: panelEventoActual.name,
+    zona: panelBoletoActual.zona || 'General',
+    ineFrente: ineFrenteBase64,
+    ineReverso: ineReversoBase64,
+    selfie: selfieBase64
+  };
 
-    // Generamos el mensaje formateado para WhatsApp
-    const msg = `¡Hola Yunus! Quiero solicitar el siguiente boleto:
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
     
-🎟 Evento: ${panelEventoActual.name}
-📍 Zona: ${panelBoletoActual.zona || 'General'}
-🗓 Plan: ${panelPlanActual} quincenas de $${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})}
-💰 Enganche a depositar: $${enganche.toLocaleString('es-MX', {maximumFractionDigits:0})}
-
-Mi celular registrado es: ${celGuardado}.
-*Ya adjunté mi INE en la plataforma web.*`;
-
-    // Abrimos el puente en una nueva pestaña (Coloca aquí el número correcto de Yunus)
-    const telYunus = '5216560000000'; // <- Reemplazar con el número de soporte real
-    window.open(`https://wa.me/${telYunus}?text=${encodeURIComponent(msg)}`, '_blank');
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error al procesar solicitud');
 
     // Cambiamos a la pantalla de éxito
     document.getElementById('panelHeader').classList.remove('has-back');
@@ -1583,14 +1669,19 @@ Mi celular registrado es: ${celGuardado}.
         </div>
         <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--paper);margin-bottom:12px;letter-spacing:0.04em;">Todo en orden</h3>
         <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:32px;">
-          Hemos preparado tu solicitud. Te atenderemos vía WhatsApp en los próximos minutos para confirmar tu enganche y asegurar tu lugar.
+          Hemos recibido tus documentos. Te contactaremos vía WhatsApp en los próximos minutos para confirmar tu enganche y asegurar tu lugar.
         </p>
         <button class="btn-ver-boletos" onclick="cerrarPanel()">Volver al inicio</button>
       </div>
     `;
-  }, 1200);
+  } catch (error) {
+    const err = document.getElementById('chk_error');
+    err.textContent = 'Hubo un error de conexión. Intenta de nuevo.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = 'Enviar Solicitud →';
+  }
 }
-
 
 /* ════════════════════════════════════════
    CEDENTE
