@@ -1514,7 +1514,6 @@ function confirmarPlan() {
   selfieBase64 = null;
   renderStep3();
 }
-
 // Paso 3: Checkout (Confirmación y Subida de Docs/Selfie con Wizard)
 function renderStep3() {
   panelPaso = 3;
@@ -1523,6 +1522,7 @@ function renderStep3() {
   document.getElementById('panelMeta').textContent = 'Último paso';
 
   const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
+  const enganche = precio * 0.15;
   const cuota = (precio * 0.85) / panelPlanActual;
   const celGuardado = localStorage.getItem('yunus_celular') || '';
 
@@ -1531,13 +1531,24 @@ function renderStep3() {
       <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Resumen de la Orden</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--paper);line-height:1;">${panelEventoActual.name}</div>
       <div style="font-size:12px;color:var(--muted);margin:4px 0 12px;">${panelBoletoActual.zona || 'Zona General'}</div>
+      
+      <div style="border-top:1px solid var(--border);padding-top:12px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);">
+          <span>Precio listado</span>
+          <span style="font-family:'DM Mono',monospace;color:var(--paper);">$${precio.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);">
+          <span>Anticipo (15%)</span>
+          <span style="font-family:'DM Mono',monospace;color:var(--paper);">$${enganche.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
+        </div>
+      </div>
+
       <div style="display:flex;justify-content:space-between;font-size:13px;border-top:1px solid var(--border);padding-top:12px;">
         <span>Plan seleccionado</span>
         <span style="font-family:'DM Mono',monospace;color:var(--volt);">${panelPlanActual} quincenas de $${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
       </div>
     </div>
 
-    <!-- Indicador de pasos del Wizard -->
     <div class="wizard-progress">
       <span id="prog1" class="wizard-step-ind active">1. FRENTE</span>
       <span id="prog2" class="wizard-step-ind">2. REVERSO</span>
@@ -1564,7 +1575,6 @@ function renderStep3() {
     </button>
   `;
 }
-
 // Controla los 3 pasos de las fotos
 async function handleWizardUpload(e) {
   const file = e.target.files[0];
