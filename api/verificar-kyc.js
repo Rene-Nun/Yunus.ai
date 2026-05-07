@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     if (searchUser.results.length > 0) {
       const user = searchUser.results[0];
       // Verificamos si la propiedad "INE Frente" tiene contenido
-      const tieneINE = user.properties["INE Frente"]?.rich_text?.length > 0;
+      const tieneINE = user.properties["INE frente"]?.rich_text?.length > 0;
       
       return res.status(200).json({ kycCompletado: tieneINE });
     }
