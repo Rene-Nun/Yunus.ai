@@ -101,7 +101,7 @@ export default async function handler(req, res) {
     const searchUser = await notion.databases.query({
       database_id: USERS_DATABASE_ID,
       filter: {
-        property: "Telefono",
+        property: "Teléfono",
         title: { equals: celularNotion }
       }
     });
@@ -132,7 +132,7 @@ export default async function handler(req, res) {
       await notion.pages.create({
         parent: { database_id: USERS_DATABASE_ID },
         properties: {
-          "Telefono": {
+          "Teléfono": {
             title: [{ text: { content: celularNotion } }]
           },
           ...kycProps
