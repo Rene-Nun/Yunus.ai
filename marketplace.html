@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -452,7 +451,7 @@ padding: 8px 10px; flex-shrink: 0;
 }
 
 /* ═══════════════════════════
-PANEL FLOTANTE — BOLETOS
+PANEL FLOTANTE — BOLETOS Y CHECKOUT
 ═══════════════════════════ */
 .panel-bg {
 position: fixed; inset: 0;
@@ -488,23 +487,41 @@ background: rgba(242,239,232,0.15);
 padding: 4px 20px 16px;
 border-bottom: 1px solid var(--border);
 flex-shrink: 0;
+position: relative;
+display: flex;
+flex-direction: column;
 }
 .panel-evento-nombre {
 font-family: 'Bebas Neue', sans-serif;
 font-size: 28px; letter-spacing: 0.04em; color: var(--paper);
 line-height: 1; margin-bottom: 4px;
+transition: padding-left 0.3s;
 }
 .panel-evento-meta {
 font-family: 'DM Mono', monospace; font-size: 9px;
 letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+transition: padding-left 0.3s;
 }
 .panel-close {
-position: absolute; top: 16px; right: 20px;
+position: absolute; top: 0; right: 20px;
 background: none; border: none; cursor: pointer;
 color: var(--muted); font-size: 22px; line-height: 1; padding: 4px;
 transition: color 0.2s;
 }
 .panel-close:hover { color: var(--paper); }
+
+.panel-back {
+position: absolute; top: 0; left: 16px;
+background: none; border: none; cursor: pointer;
+color: var(--muted); padding: 4px; display: none;
+transition: color 0.2s; align-items: center; justify-content: center;
+}
+.panel-back:hover { color: var(--paper); }
+.panel-header.has-back .panel-evento-nombre,
+.panel-header.has-back .panel-evento-meta {
+padding-left: 32px;
+}
+.panel-header.has-back .panel-back { display: flex; }
 
 .panel-body {
 flex: 1; overflow-y: auto; padding: 16px 20px 32px;
@@ -589,6 +606,58 @@ border: 2px solid var(--border); border-top-color: var(--volt);
 animation: spin 0.8s linear infinite;
 }
 
+/* Configurador de Plan & Checkout */
+.plan-selector { display: flex; gap: 8px; margin-bottom: 20px; }
+.plan-opcion {
+flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+padding: 12px; text-align: center; cursor: pointer; border-radius: 4px;
+transition: all 0.2s;
+}
+.plan-opcion.activa {
+border-color: var(--volt); background: rgba(212,245,60,0.05);
+}
+.plan-opcion-num {
+font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--paper); line-height: 1;
+}
+.plan-opcion.activa .plan-opcion-num { color: var(--volt); }
+.plan-opcion-label {
+font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
+text-transform: uppercase; color: var(--muted); margin-top: 4px;
+}
+
+.plan-desglose {
+background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+padding: 16px; margin-bottom: 24px; border-radius: 4px;
+}
+.desglose-row {
+display: flex; justify-content: space-between; margin-bottom: 12px;
+font-size: 13px; color: var(--muted);
+}
+.desglose-row:last-child {
+margin-bottom: 0; padding-top: 12px; border-top: 1px solid var(--border);
+font-weight: 500; color: var(--paper);
+}
+.desglose-val { font-family: 'DM Mono', monospace; color: var(--paper); }
+.desglose-row:last-child .desglose-val { color: var(--volt); }
+
+.checkout-resumen {
+background: var(--card-bg); border: 1px solid var(--border);
+padding: 16px; margin-bottom: 20px; border-radius: 4px;
+}
+.ine-upload {
+border: 1px dashed var(--border); padding: 24px 16px;
+text-align: center; cursor: pointer; background: rgba(255,255,255,0.02);
+transition: border-color 0.2s; border-radius: 4px; margin-bottom: 20px;
+}
+.ine-upload:hover { border-color: var(--volt); }
+.ine-icon { font-size: 24px; margin-bottom: 8px; opacity: 0.5; }
+.ine-text { font-size: 12px; color: var(--muted); }
+.ine-preview { max-width: 100%; max-height: 140px; object-fit: contain; display: none; margin: 0 auto; }
+
+.solicitud-ok { text-align: center; padding: 40px 20px; }
+.solicitud-ok-icon { width: 48px; height: 48px; background: var(--volt); color: var(--ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px; }
+
+
 /* ═══════════════════════════
 MODAL LEGAL
 ═══════════════════════════ */
@@ -660,9 +729,7 @@ to { opacity: 1; transform: translateY(0); }
 </style>
 
 <!-- Google tag (gtag.js) -->
-
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z36FM1LNY2"></script>
-
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -819,14 +886,17 @@ to { opacity: 1; transform: translateY(0); }
 </div><!-- /mainApp -->
 
 <!-- ═══════════════════════════
-     PANEL FLOTANTE — BOLETOS
+     PANEL FLOTANTE — BOLETOS & CHECKOUT
 ═══════════════════════════ -->
 
 <div id="boletosPanel" class="panel-bg" onclick="if(event.target===this)cerrarPanel()">
   <div class="panel-sheet" onclick="event.stopPropagation()">
     <div class="panel-handle"><div class="panel-handle-bar"></div></div>
 
-    <div class="panel-header" style="position:relative;">
+    <div class="panel-header" id="panelHeader">
+      <button class="panel-back" onclick="volverPanel()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      </button>
       <div class="panel-evento-nombre" id="panelNombre">—</div>
       <div class="panel-evento-meta" id="panelMeta">—</div>
       <button class="panel-close" onclick="cerrarPanel()">×</button>
@@ -943,11 +1013,17 @@ const legalTexts = {
 };
 
 /* ════════════════════════════════════════
-   ESTADO
+   ESTADO GLOBAL
 ════════════════════════════════════════ */
 let celularDesdeWaitlist = '';
 let boletosCache = [];       // Cache del /api/marketplace
+
+// ESTADO DEL PANEL Y CHECKOUT
 let panelEventoActual = null;
+let panelBoletoActual = null;
+let panelPlanActual = 4; // Por defecto a 4 quincenas
+let panelPaso = 1; // 1: Lista, 2: Configurar Plan, 3: Checkout
+let ineFileBase64 = null;
 
 /* ════════════════════════════════════════
    ACCESO — PANTALLAS
@@ -965,7 +1041,7 @@ function entrarApp() {
 }
 
 /* ════════════════════════════════════════
-   ACCESO — CÓDIGO
+   ACCESO — CÓDIGO Y LOGIN (Igual al original)
 ════════════════════════════════════════ */
 function mostrarCodigoError(msg) {
   const el = document.getElementById('codigoError');
@@ -1009,9 +1085,6 @@ document.getElementById('codigoInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') validarCodigo();
 });
 
-/* ════════════════════════════════════════
-   ACCESO — LOGIN
-════════════════════════════════════════ */
 async function iniciarSesion() {
   const input = document.getElementById('celularLoginInput').value.trim();
   const errEl = document.getElementById('loginError');
@@ -1038,7 +1111,6 @@ async function iniciarSesion() {
     btn.disabled = false; btn.textContent = 'Entrar →';
     entrarApp();
   } catch {
-    // Fallo de red: igual dejamos pasar con lo del localStorage
     localStorage.setItem('yunus_celular', numero);
     btn.disabled = false; btn.textContent = 'Entrar →';
     entrarApp();
@@ -1049,11 +1121,6 @@ document.getElementById('celularLoginInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') iniciarSesion();
 });
 
-/* ════════════════════════════════════════
-   ACCESO — REGISTRO
-   Envía campos esenciales + defaults para
-   campos eliminados → no rompe /api/registrar
-════════════════════════════════════════ */
 async function submitRegistro() {
   const nombre = document.getElementById('r_nombre').value.trim();
   const celRaw = document.getElementById('r_celular').value.trim();
@@ -1075,12 +1142,10 @@ async function submitRegistro() {
   btn.disabled = true;
   btn.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border:2px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;"></span>Creando cuenta...';
 
-  // Payload: campos reales + defaults seguros para campos eliminados
   const payload = {
     celular:              '+52' + celRaw,
     Nombre_completo:      nombre,
     Edad:                 edad,
-    // Defaults para campos eliminados del formulario (no rompen la BD)
     Entidad_federativa:   '',
     Codigo_postal:        '',
     Ingreso_mensual:      '',
@@ -1160,17 +1225,51 @@ function buildEventoCard(ev, i) {
 }
 
 /* ════════════════════════════════════════
-   PANEL DE BOLETOS
+   FLUJO DEL PANEL (Listado, Plan, Checkout)
 ════════════════════════════════════════ */
+
+// Navegación con botón "Back" del panel
+function volverPanel() {
+  if (panelPaso === 2) {
+    // Regresar al paso 1 (Lista de Boletos)
+    panelPaso = 1;
+    document.getElementById('panelHeader').classList.remove('has-back');
+    document.getElementById('panelNombre').textContent = panelEventoActual.name;
+    document.getElementById('panelMeta').textContent = panelEventoActual.tag + ' · ' + panelEventoActual.fecha;
+    renderPanelBody(panelEventoActual, boletosCache);
+  } else if (panelPaso === 3) {
+    // Regresar al paso 2 (Configurador del plan)
+    renderStep2(panelBoletoActual);
+  }
+}
+
+function cerrarPanel() {
+  const panelBg = document.getElementById('boletosPanel');
+  panelBg.classList.remove('open');
+  document.body.style.overflow = '';
+  
+  // Limpiar estados
+  panelEventoActual = null;
+  panelBoletoActual = null;
+  panelPlanActual = 4;
+  panelPaso = 1;
+  ineFileBase64 = null;
+  document.getElementById('panelHeader').classList.remove('has-back');
+}
+
+// Paso 1: Lista de Boletos
 async function abrirPanel(eventoId) {
   const ev = EVENTOS.find(e => e.id === eventoId);
   if (!ev) return;
+  
+  // Reset al abrir
+  panelPaso = 1;
   panelEventoActual = ev;
+  document.getElementById('panelHeader').classList.remove('has-back');
 
   document.getElementById('panelNombre').textContent = ev.name;
   document.getElementById('panelMeta').textContent = ev.tag + ' · ' + ev.fecha;
 
-  // Mostrar panel con loading
   const panelBg = document.getElementById('boletosPanel');
   const panelBody = document.getElementById('panelBody');
   panelBg.classList.add('open');
@@ -1185,12 +1284,10 @@ async function abrirPanel(eventoId) {
       </span>
     </div>`;
 
-  // Cargar boletos del marketplace
   try {
     const res = await fetch('/api/marketplace');
     const data = await res.json();
     const todos = data.boletos || [];
-    // Filtrar por evento (match flexible)
     const filtrados = todos.filter(b =>
       b.evento && b.evento.toLowerCase().includes(ev.apiKey.toLowerCase().split(' ')[0])
     );
@@ -1205,7 +1302,6 @@ function renderPanelBody(ev, boletos) {
   const panelBody = document.getElementById('panelBody');
   let html = '';
 
-  // Mapa del recinto
   html += `
     <div class="panel-section-label" style="margin-top:4px;">Recinto</div>
     <div class="recinto-map">
@@ -1225,7 +1321,6 @@ function renderPanelBody(ev, boletos) {
       }
     </div>`;
 
-  // Boletos disponibles
   html += `<div class="panel-section-label">
     Boletos disponibles
     <span style="font-family:'DM Mono',monospace;font-size:9px;
@@ -1279,31 +1374,232 @@ function buildBoletoItem(b) {
   </div>`;
 }
 
+// Intercepta el click para ir al Paso 2
 function seleccionarBoleto(id) {
-  // Placeholder: aquí irá el flujo de checkout con plan de pagos
-  // Por ahora redirige a chat con contexto
-  const ev = panelEventoActual;
-  const msg = encodeURIComponent(`Quiero comprar un boleto para ${ev ? ev.name : 'el evento'}`);
-  window.location.href = `/chat?modo=chat&msg=${msg}`;
+  const boleto = boletosCache.find(b => b.id === id);
+  if (!boleto) return;
+  panelBoletoActual = boleto;
+  renderStep2(boleto);
 }
 
-function cerrarPanel() {
-  const panelBg = document.getElementById('boletosPanel');
-  panelBg.classList.remove('open');
-  document.body.style.overflow = '';
-  panelEventoActual = null;
+// Paso 2: Configurador del Plan
+function renderStep2(boleto) {
+  panelPaso = 2;
+  // Default quincenas
+  if(![4,6,8].includes(panelPlanActual)) panelPlanActual = 4;
+  
+  const panelHeader = document.getElementById('panelHeader');
+  panelHeader.classList.add('has-back');
+  
+  document.getElementById('panelNombre').textContent = 'Configurar Plan';
+  document.getElementById('panelMeta').textContent = boleto.zona || 'Zona General';
+
+  document.getElementById('panelBody').innerHTML = `
+    <div class="panel-section-label" style="margin-top:4px;">Opciones de pago</div>
+    <div class="plan-selector">
+      <div class="plan-opcion ${panelPlanActual===4 ? 'activa':''}" id="po-4" onclick="seleccionarQuincenas(4)">
+        <div class="plan-opcion-num">4</div>
+        <div class="plan-opcion-label">Quincenas</div>
+      </div>
+      <div class="plan-opcion ${panelPlanActual===6 ? 'activa':''}" id="po-6" onclick="seleccionarQuincenas(6)">
+        <div class="plan-opcion-num">6</div>
+        <div class="plan-opcion-label">Quincenas</div>
+      </div>
+      <div class="plan-opcion ${panelPlanActual===8 ? 'activa':''}" id="po-8" onclick="seleccionarQuincenas(8)">
+        <div class="plan-opcion-num">8</div>
+        <div class="plan-opcion-label">Quincenas</div>
+      </div>
+    </div>
+    
+    <div class="panel-section-label">Desglose (Sin intereses)</div>
+    <div id="planDesgloseContainer"></div>
+    
+    <button class="btn-ver-boletos" style="margin-top:16px;" onclick="confirmarPlan()">
+      Continuar →
+    </button>
+  `;
+  
+  actualizarDesglose();
 }
+
+function seleccionarQuincenas(q) {
+  panelPlanActual = q;
+  document.querySelectorAll('.plan-opcion').forEach(el => el.classList.remove('activa'));
+  document.getElementById('po-' + q).classList.add('activa');
+  actualizarDesglose();
+}
+
+function actualizarDesglose() {
+  const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
+  // Enganche 15%
+  const enganche = precio * 0.15;
+  // Restante 85% a quincenas (Sin interés)
+  const saldo = precio * 0.85;
+  const cuota = saldo / panelPlanActual;
+
+  const container = document.getElementById('planDesgloseContainer');
+  if(!container) return;
+
+  container.innerHTML = `
+    <div class="plan-desglose">
+      <div class="desglose-row">
+        <span>Precio Listado</span>
+        <span class="desglose-val">$${precio.toLocaleString('es-MX', {maximumFractionDigits:2})}</span>
+      </div>
+      <div class="desglose-row">
+        <span>Enganche (15%)</span>
+        <span class="desglose-val">$${enganche.toLocaleString('es-MX', {maximumFractionDigits:2})}</span>
+      </div>
+      <div class="desglose-row">
+        <span>${panelPlanActual} Pagos Quincenales</span>
+        <span class="desglose-val">$${cuota.toLocaleString('es-MX', {maximumFractionDigits:2})}</span>
+      </div>
+      <div class="desglose-row">
+        <span>Total a Pagar</span>
+        <span class="desglose-val">$${precio.toLocaleString('es-MX', {maximumFractionDigits:2})}</span>
+      </div>
+    </div>
+  `;
+}
+
+function confirmarPlan() {
+  renderStep3();
+}
+
+// Paso 3: Checkout (Confirmación y Subida de INE)
+function renderStep3() {
+  panelPaso = 3;
+  
+  document.getElementById('panelNombre').textContent = 'Confirmar';
+  document.getElementById('panelMeta').textContent = 'Último paso';
+
+  const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
+  const cuota = (precio * 0.85) / panelPlanActual;
+  const celGuardado = localStorage.getItem('yunus_celular') || '';
+
+  document.getElementById('panelBody').innerHTML = `
+    <div class="checkout-resumen">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Resumen de la Orden</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--paper);line-height:1;">${panelEventoActual.name}</div>
+      <div style="font-size:12px;color:var(--muted);margin:4px 0 12px;">${panelBoletoActual.zona || 'Zona General'}</div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;border-top:1px solid var(--border);padding-top:12px;">
+        <span>Plan seleccionado</span>
+        <span style="font-family:'DM Mono',monospace;color:var(--volt);">${panelPlanActual} quincenas de $${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Celular de contacto</label>
+      <input type="text" class="form-input" value="${celGuardado}" readonly style="opacity:0.6; cursor:not-allowed;">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Identidad (INE Frontal)</label>
+      <input type="file" id="chk_ine" accept="image/*" style="display:none;" onchange="handleINEUpload(event)">
+      <div class="ine-upload" id="chk_ine_trigger" onclick="document.getElementById('chk_ine').click()">
+        <div id="chk_ine_content">
+          <div class="ine-icon">📸</div>
+          <div class="ine-text">Toca para subir o tomar foto de tu INE</div>
+        </div>
+        <img id="chk_ine_preview" class="ine-preview">
+      </div>
+    </div>
+
+    <div id="chk_error" class="acc-error"></div>
+    <button class="btn-ver-boletos" id="btnSubmitCheckout" style="margin-top:10px;" onclick="submitSolicitud()">
+      Enviar Solicitud →
+    </button>
+  `;
+
+  // Restaurar preview si el usuario volvió de un paso y ya había subido foto
+  if (ineFileBase64) {
+     document.getElementById('chk_ine_content').style.display = 'none';
+     const preview = document.getElementById('chk_ine_preview');
+     preview.src = ineFileBase64;
+     preview.style.display = 'block';
+  }
+}
+
+function handleINEUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    ineFileBase64 = event.target.result;
+    document.getElementById('chk_ine_content').style.display = 'none';
+    const preview = document.getElementById('chk_ine_preview');
+    preview.src = ineFileBase64;
+    preview.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+// Envío y Redirección a WhatsApp como puente
+function submitSolicitud() {
+  if (!ineFileBase64) {
+    const err = document.getElementById('chk_error');
+    err.textContent = 'Es necesario subir una foto de tu INE para continuar.';
+    err.style.display = 'block';
+    return;
+  }
+  document.getElementById('chk_error').style.display = 'none';
+
+  const btn = document.getElementById('btnSubmitCheckout');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-sm" style="display:inline-block;width:14px;height:14px;border-width:2px;margin-right:8px;vertical-align:middle;"></span>Procesando...';
+
+  // Simulamos un leve delay para dar feedback visual antes del redirect
+  setTimeout(() => {
+    const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
+    const enganche = precio * 0.15;
+    const cuota = (precio * 0.85) / panelPlanActual;
+    const celGuardado = localStorage.getItem('yunus_celular') || 'Desconocido';
+
+    // Generamos el mensaje formateado para WhatsApp
+    const msg = `¡Hola Yunus! Quiero solicitar el siguiente boleto:
+    
+🎟 Evento: ${panelEventoActual.name}
+📍 Zona: ${panelBoletoActual.zona || 'General'}
+🗓 Plan: ${panelPlanActual} quincenas de $${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})}
+💰 Enganche a depositar: $${enganche.toLocaleString('es-MX', {maximumFractionDigits:0})}
+
+Mi celular registrado es: ${celGuardado}.
+*Ya adjunté mi INE en la plataforma web.*`;
+
+    // Abrimos el puente en una nueva pestaña (Coloca aquí el número correcto de Yunus)
+    const telYunus = '5216560000000'; // <- Reemplazar con el número de soporte real
+    window.open(`https://wa.me/${telYunus}?text=${encodeURIComponent(msg)}`, '_blank');
+
+    // Cambiamos a la pantalla de éxito
+    document.getElementById('panelHeader').classList.remove('has-back');
+    document.getElementById('panelNombre').textContent = '¡Solicitud Enviada!';
+    document.getElementById('panelMeta').textContent = 'En revisión';
+
+    document.getElementById('panelBody').innerHTML = `
+      <div class="solicitud-ok fade-up">
+        <div class="solicitud-ok-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--paper);margin-bottom:12px;letter-spacing:0.04em;">Todo en orden</h3>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:32px;">
+          Hemos preparado tu solicitud. Te atenderemos vía WhatsApp en los próximos minutos para confirmar tu enganche y asegurar tu lugar.
+        </p>
+        <button class="btn-ver-boletos" onclick="cerrarPanel()">Volver al inicio</button>
+      </div>
+    `;
+  }, 1200);
+}
+
 
 /* ════════════════════════════════════════
    CEDENTE
 ════════════════════════════════════════ */
 function irACeder() {
-  // Redirige a la página de cedente (pendiente de construir)
   window.location.href = '/ceder';
 }
 
 function listarParaEvento(eventoId, eventoNombre) {
-  // Redirige a cedente pre-seleccionando el evento
   window.location.href = `/ceder?evento=${encodeURIComponent(eventoNombre)}`;
 }
 
@@ -1335,10 +1631,8 @@ function closeLegal() {
 window.addEventListener('DOMContentLoaded', () => {
   const celular = localStorage.getItem('yunus_celular');
   if (celular) {
-    // Ya tiene sesión → entrar directo al app
     entrarApp();
   }
-  // Siempre renderizar eventos (para cuando entre al app)
   renderEventos();
 });
 </script>
