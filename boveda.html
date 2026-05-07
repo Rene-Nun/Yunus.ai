@@ -123,6 +123,38 @@ main {
   color: var(--muted); margin-top: 4px;
 }
 
+/* PILL TOGGLE */
+.toggle-wrap {
+  margin-bottom: 24px;
+}
+.toggle-pill {
+  display: flex;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+}
+.toggle-btn {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+.toggle-btn.active {
+  background: var(--volt);
+  color: var(--ink);
+}
+
 /* TICKET CARD */
 .ticket-card {
   background: var(--card-bg);
@@ -353,6 +385,109 @@ main {
   border-color: #ef4444;
 }
 
+/* CARDS DE CESIÓN */
+.cedido-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.cedido-card:hover { border-color: rgba(212,245,60,0.3); }
+
+.cedido-img {
+  width: 100%; height: 100px;
+  object-fit: cover; display: block;
+  filter: brightness(0.6);
+}
+.cedido-img-placeholder {
+  width: 100%; height: 100px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.cedido-img-placeholder span {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; color: rgba(242,239,232,0.05);
+}
+
+.cedido-body { padding: 16px 20px 20px; }
+.cedido-evento {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 0.04em;
+  color: var(--paper); line-height: 1; margin-bottom: 4px;
+}
+.cedido-zona {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px;
+}
+
+/* Progress bar de cobro — igual que ticket pero color diferente */
+.cobro-wrap { margin-bottom: 16px; }
+.cobro-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.cobro-label {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+}
+.cobro-count {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--volt); font-weight: 500;
+}
+.cobro-track {
+  width: 100%; height: 3px;
+  background: rgba(255,255,255,0.06); position: relative; overflow: hidden;
+}
+.cobro-fill {
+  height: 100%; background: var(--volt);
+  transition: width 1s ease; position: relative;
+}
+.cobro-fill::after {
+  content: ''; position: absolute; right: 0; top: -2px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--volt);
+}
+
+.cedido-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); margin-bottom: 16px;
+}
+.cedido-cell { background: var(--card-bg); padding: 12px 14px; }
+.cedido-cell-label {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 4px;
+}
+.cedido-cell-value {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 14px; color: var(--paper);
+}
+.cedido-cell-value.volt { color: var(--volt); }
+
+/* Próximo depósito */
+.proximo-deposito {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px;
+  background: rgba(212,245,60,0.04);
+  border: 1px solid rgba(212,245,60,0.12);
+  margin-bottom: 4px;
+}
+.pd-label {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+}
+.pd-value {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 13px; color: var(--volt);
+}
+
+/* Badge estados de cesión */
+.badge-listado { background: #3b82f6; color: #fff; }
+.badge-en_proceso { background: var(--volt); color: var(--ink); }
+
 /* FADE IN */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
@@ -406,16 +541,31 @@ main {
         <button onclick="window.location.href='revox/index.html'" style="background: linear-gradient(90deg, #101CBD 0%, #48A8E0 100%); color: #fff; border: none; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; padding: 8px 12px; cursor: pointer; transition: opacity 0.2s; white-space: nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Invertir →</button>
       </div>
     </div>
-    
+
     <div class="welcome-bar fade-up d1">
       <div class="welcome-sub" id="welcomeSub">0 boletos en bóveda</div>
     </div>
 
-    <div class="section-label fade-up d2">Mis boletos</div>
+    <div class="toggle-wrap fade-up d2">
+      <div class="toggle-pill">
+        <button class="toggle-btn active" id="tabCompras" onclick="switchTab('compras')">Mis boletos</button>
+        <button class="toggle-btn" id="tabCedidos" onclick="switchTab('cedidos')">Mis cedidos</button>
+      </div>
+    </div>
 
-    <div id="ticketsContainer"></div>
+    <div id="comprasView">
+      <div class="section-label fade-up d3">Mis boletos</div>
+      <div id="ticketsContainer"></div>
+    </div>
 
-    <button class="btn-salir-bottom" id="btnSalirBottom" onclick="cerrarSesion()" style="display:none;">Cerrar sesion</button>
+    <div id="cedidosView" style="display:none;">
+      <div class="section-label fade-up d3">
+        Boletos cedidos
+      </div>
+      <div id="cedidosContainer"></div>
+    </div>
+
+    <button class="btn-salir-bottom" id="btnSalirBottom" onclick="cerrarSesion()" style="display:none;">Cerrar sesión</button>
 
   </div>
 
@@ -463,8 +613,6 @@ async function cargarBoveda() {
   document.getElementById('loadingView').style.display = 'flex';
   document.getElementById('btnChat').style.display = 'inline-block';
   document.getElementById('btnSalirBottom').style.display = 'block';
-
-  // Header: ocultar logo, mostrar "Mi Bóveda"
   document.getElementById('headerLogo').style.display = 'none';
   document.getElementById('headerBovedaTitle').style.display = 'flex';
 
@@ -476,24 +624,34 @@ async function cargarBoveda() {
     document.getElementById('bovedaView').style.display = 'block';
 
     const compras = data.compras || [];
-    const nombre = data.nombre || celular;
+    const cedidos = data.cedidos || [];
+    const nombre  = data.nombre  || celular;
     nombreUsuario = nombre;
 
     if (document.getElementById('revoxNombreUsuario')) {
       document.getElementById('revoxNombreUsuario').textContent = nombreUsuario.split(' ')[0];
     }
 
+    // Welcome sub — cuenta ambos
+    const total = compras.length + cedidos.length;
     document.getElementById('welcomeSub').textContent =
-      compras.length === 0 ? 'Sin boletos activos' :
-      compras.length === 1 ? '1 boleto en bóveda' :
-      compras.length + ' boletos en bóveda';
+      total === 0 ? 'Sin actividad aún' :
+      total === 1 ? '1 boleto en bóveda' :
+      total + ' boletos en bóveda';
+
+    // Mostrar/ocultar tab de cedidos según si tiene
+    if (cedidos.length === 0) {
+      document.getElementById('tabCedidos').style.display = 'none';
+    }
 
     renderTickets(compras);
+    renderCedidos(cedidos);
 
   } catch {
     document.getElementById('loadingView').style.display = 'none';
     document.getElementById('bovedaView').style.display = 'block';
     renderTickets([]);
+    renderCedidos([]);
   }
 }
 
@@ -598,6 +756,127 @@ function buildTicketCard(c, i) {
   </div>`;
 }
 
+function switchTab(tab) {
+  const comprasView = document.getElementById('comprasView');
+  const cedidosView = document.getElementById('cedidosView');
+  const tabCompras  = document.getElementById('tabCompras');
+  const tabCedidos  = document.getElementById('tabCedidos');
+
+  if (tab === 'compras') {
+    comprasView.style.display = 'block';
+    cedidosView.style.display = 'none';
+    tabCompras.classList.add('active');
+    tabCedidos.classList.remove('active');
+  } else {
+    comprasView.style.display = 'none';
+    cedidosView.style.display = 'block';
+    tabCompras.classList.remove('active');
+    tabCedidos.classList.add('active');
+  }
+}
+
+function renderCedidos(cedidos) {
+  const container = document.getElementById('cedidosContainer');
+
+  if (cedidos.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state fade-up">
+        <div class="empty-icon">🎟</div>
+        <div class="empty-title">Sin cesiones activas</div>
+        <p class="empty-sub">Aún no has listado ningún boleto. Usa el Marketplace para poner tu boleto a trabajar.</p>
+        <button class="btn-volt" onclick="window.location.href='/marketplace'">Ir al Marketplace →</button>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = cedidos.map((c, i) => buildCedidoCard(c, i)).join('');
+}
+
+function buildCedidoCard(c, i) {
+  const img        = eventoImgs[c.evento] || null;
+  const estado     = c.estado || 'Listado';
+  const badge      = badgeClass(estado);
+  const listado    = c.precioListado  || 0;
+  const cedente    = c.precioCedente  || 0;
+  const recibido   = c.pagosRecibidos || 0;
+  const pct        = cedente > 0 ? Math.min(100, Math.round((recibido / cedente) * 100)) : 0;
+  const enProceso  = estado === 'En Proceso';
+
+  return `
+  <div class="cedido-card fade-up d${Math.min(i+1,3)}">
+
+    ${img
+      ? `<img src="${img}" alt="${c.evento}" class="cedido-img">`
+      : `<div class="cedido-img-placeholder"><span>${c.evento || 'YUNUS'}</span></div>`
+    }
+
+    <div class="ticket-status-badge ${badge}" style="top:8px;right:8px;">${estado}</div>
+
+    <div class="cedido-body">
+      <div class="cedido-evento">${c.evento || '—'}</div>
+      <div class="cedido-zona">${c.zona || 'Zona por confirmar'}</div>
+
+      ${enProceso ? `
+      <div class="cobro-wrap">
+        <div class="cobro-header">
+          <span class="cobro-label">Cobrado</span>
+          <span class="cobro-count">${fmtMXN(recibido)} de ${fmtMXN(cedente)}</span>
+        </div>
+        <div class="cobro-track">
+          <div class="cobro-fill" style="width:${pct}%"></div>
+        </div>
+      </div>` : ''}
+
+      <div class="cedido-grid">
+        <div class="cedido-cell">
+          <div class="cedido-cell-label">Precio listado</div>
+          <div class="cedido-cell-value">${fmtMXN(listado)}</div>
+        </div>
+        <div class="cedido-cell">
+          <div class="cedido-cell-label">Tú recibes</div>
+          <div class="cedido-cell-value volt">${fmtMXN(cedente)}</div>
+        </div>
+        ${enProceso ? `
+        <div class="cedido-cell">
+          <div class="cedido-cell-label">Ya cobrado</div>
+          <div class="cedido-cell-value">${fmtMXN(recibido)}</div>
+        </div>
+        <div class="cedido-cell">
+          <div class="cedido-cell-label">Por cobrar</div>
+          <div class="cedido-cell-value volt">${fmtMXN(cedente - recibido)}</div>
+        </div>` : ''}
+      </div>
+
+      ${enProceso && c.proximoDeposito ? `
+      <div class="proximo-deposito">
+        <span class="pd-label">Próximo depósito</span>
+        <span class="pd-value">${fmtFecha(c.proximoDeposito)}</span>
+      </div>` : ''}
+
+      ${estado === 'Listado' ? `
+      <div style="padding: 10px 0; font-size: 12px; color: var(--muted); line-height: 1.6;">
+        Tu boleto está publicado en el Marketplace. Te avisamos cuando alguien lo tome.
+      </div>` : ''}
+
+    </div>
+
+    <div class="ticket-perforation">
+      <div class="ticket-perf-line"></div>
+      <div class="ticket-perf-line"></div>
+    </div>
+
+    ${c.fechaEvento ? `
+    <div class="fecha-evento">
+      <div class="fecha-icon">📅</div>
+      <div class="fecha-text">
+        <div class="fecha-label">Fecha del evento</div>
+        <div class="fecha-value">${fmtFecha(c.fechaEvento)}</div>
+      </div>
+    </div>` : ''}
+
+  </div>`;
+}
+
 let reventaId = null;
 
 function abrirReventa(id, evento) {
@@ -644,22 +923,10 @@ function cerrarSesion() {
   localStorage.removeItem('yunus_celular');
   localStorage.removeItem('yunus_historial');
   celular = '';
-
-  // Header: mostrar logo, ocultar "Mi Bóveda"
-  document.getElementById('headerLogo').style.display = 'flex';
-  document.getElementById('headerBovedaTitle').style.display = 'none';
-
-  document.getElementById('bovedaView').style.display = 'none';
-}
-
-// ── AUTO LOGIN ──
-function cerrarSesion() {
-  localStorage.removeItem('yunus_celular');
-  localStorage.removeItem('yunus_historial');
-  celular = '';
   window.location.href = '/chat';
 }
 
+// ── AUTO LOGIN ──
 window.addEventListener('DOMContentLoaded', () => {
   const guardado = localStorage.getItem('yunus_celular');
   if (guardado) {
