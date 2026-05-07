@@ -11,8 +11,16 @@ export default async function handler(req, res) {
   const search = await notion.databases.query({
     database_id: DATABASE_ID,
     filter: {
-      property: "Estado",
-      select: { equals: "En Reventa" }
+      or: [
+        {
+          property: "Estado",
+          select: { equals: "En Reventa" }
+        },
+        {
+          property: "Estado",
+          select: { equals: "Listado" }
+        }
+      ]
     }
   });
 
