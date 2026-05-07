@@ -1,17 +1,17 @@
-import { Client } from “@notionhq/client”;
+import { Client } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const COMPRAS_DATABASE_ID = process.env.NOTION_COMPRAS_DATABASE_ID;
 const USERS_DATABASE_ID   = process.env.NOTION_DATABASE_ID;
 
 export default async function handler(req, res) {
-if (req.method !== “GET”) return res.status(405).end();
-res.setHeader(“Cache-Control”, “no-store”);
+if (req.method !== "GET") return res.status(405).end();
+res.setHeader("Cache-Control", "no-store");
 
 const celular = req.query.celular;
-if (!celular) return res.status(400).json({ error: “Falta celular” });
+if (!celular) return res.status(400).json({ error: "Falta celular" });
 
-const digits         = celular.replace(/\D/g, “”).slice(-10);
+const digits         = celular.replace(/\D/g, "").slice(-10);
 const celularFormato = digits;
 
 try {
@@ -19,12 +19,11 @@ try {
 const searchCompras = await notion.databases.query({
 database_id: COMPRAS_DATABASE_ID,
 filter: {
-property: “Celular”,
+property: "Celular",
 title: { contains: celularFormato }
 }
 });
 
-```
 // ── 2. Mapear cada registro ───────────────────────────────────────────
 const todos = searchCompras.results.map(page => ({
   id:             page.id,
@@ -81,10 +80,8 @@ res.status(200).json({
   cedidos,   // Tab "Mis cedidos"
   nombre: nombreUsuario
 });
-```
-
 } catch (error) {
-console.error(“Error en API Bóveda:”, error);
-res.status(500).json({ error: “Error interno del servidor” });
+console.error("Error en API Bóveda:", error);
+res.status(500).json({ error: "Error interno del servidor" });
 }
 }
