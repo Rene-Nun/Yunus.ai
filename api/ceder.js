@@ -116,8 +116,8 @@ export default async function handler(req, res) {
       }
     };
     
-    if (ineFrenteUrl)  kycProps["INE Frente"]  = { rich_text: [{ text: { content: ineFrenteUrl } }] };
-    if (ineReversoUrl) kycProps["INE Reverso"] = { rich_text: [{ text: { content: ineReversoUrl } }] };
+    if (ineFrenteUrl)  kycProps["INE frente"]  = { rich_text: [{ text: { content: ineFrenteUrl } }] };
+    if (ineReversoUrl) kycProps["INE reverso"] = { rich_text: [{ text: { content: ineReversoUrl } }] };
     if (selfieUrl)     kycProps["Selfie"]      = { rich_text: [{ text: { content: selfieUrl } }] };
 
 
