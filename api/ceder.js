@@ -110,10 +110,10 @@ export default async function handler(req, res) {
       "CLABE": {
         rich_text: [{ text: { content: clabe } }]
       },
-      "INE Frente": {
+      "INE frente": {
         rich_text: [{ text: { content: ineFrenteUrl } }]
       },
-      "INE Reverso": {
+      "INE reverso": {
         rich_text: [{ text: { content: ineReversoUrl } }]
       },
       "Selfie": {
