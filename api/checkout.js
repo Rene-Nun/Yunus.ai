@@ -41,8 +41,9 @@ export default async function handler(req, res) {
 
   const { celular, evento, zona, ineFrente, ineReverso, selfie } = req.body;
 
-  if (!celular || !ineFrente || !ineReverso || !selfie) {
-    return res.status(400).json({ error: "Faltan datos o fotografías para completar la solicitud." });
+  // MODIFICACIÓN: Ya no exigimos las fotos obligatoriamente, solo el celular
+  if (!celular) {
+    return res.status(400).json({ error: "Falta el número de celular para completar la solicitud." });
   }
 
   try {
@@ -62,32 +63,36 @@ export default async function handler(req, res) {
 
     const pageId = search.results[0].id;
 
-    // 2. Subir las 3 imágenes a Cloudinary en paralelo (ahorra tiempo de respuesta)
+    // 2. Subir las imágenes a Cloudinary en paralelo (Solo si vienen en la petición)
     const uploadOptions = { folder: `yunus/${celular}`, resource_type: "image" };
     
     const [uploadFrente, uploadReverso, uploadSelfie] = await Promise.all([
-      cloudinary.uploader.upload(ineFrente, uploadOptions),
-      cloudinary.uploader.upload(ineReverso, uploadOptions),
-      cloudinary.uploader.upload(selfie, uploadOptions)
+      ineFrente  ? cloudinary.uploader.upload(ineFrente, uploadOptions)  : Promise.resolve(null),
+      ineReverso ? cloudinary.uploader.upload(ineReverso, uploadOptions) : Promise.resolve(null),
+      selfie     ? cloudinary.uploader.upload(selfie, uploadOptions)     : Promise.resolve(null)
     ]);
 
     // 3. Generar la fecha en el formato ISO 8601 que requiere Notion
     const timestamp = new Date().toISOString();
 
-    // 4. Actualizar Notion (nota el cambio en "Fecha registro")
+    // 4. Construir las propiedades dinámicamente para no borrar las fotos existentes si no se mandaron
+    const propiedadesActualizar = {
+      "Evento interés": { rich_text: [{ text: { content: evento || "" } }] },
+      "Zona/categoría": { rich_text: [{ text: { content: zona || "" } }] },
+      "Fecha registro": { date: { start: timestamp } } // <--- ¡AQUÍ ESTÁ LA MAGIA!
+    };
+
+    if (uploadFrente)  propiedadesActualizar["INE frente"]  = { rich_text: [{ text: { content: uploadFrente.secure_url } }] };
+    if (uploadReverso) propiedadesActualizar["INE reverso"] = { rich_text: [{ text: { content: uploadReverso.secure_url } }] };
+    if (uploadSelfie)  propiedadesActualizar["Selfie"]      = { rich_text: [{ text: { content: uploadSelfie.secure_url } }] };
+
+    // 5. Actualizar Notion
     await notion.pages.update({
       page_id: pageId,
-      properties: {
-        "Evento interés": { rich_text: [{ text: { content: evento || "" } }] },
-        "Zona/categoría": { rich_text: [{ text: { content: zona || "" } }] },
-        "Fecha registro": { date: { start: timestamp } }, // <--- ¡AQUÍ ESTÁ LA MAGIA!
-        "INE frente": { rich_text: [{ text: { content: uploadFrente.secure_url } }] },
-        "INE reverso": { rich_text: [{ text: { content: uploadReverso.secure_url } }] },
-        "Selfie": { rich_text: [{ text: { content: uploadSelfie.secure_url } }] }
-      }
+      properties: propiedadesActualizar
     });
 
-    // 5. Responder éxito al frontend
+    // 6. Responder éxito al frontend
     res.status(200).json({ success: true });
 
   } catch (error) {
