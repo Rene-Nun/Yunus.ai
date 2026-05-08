@@ -738,7 +738,6 @@ to { opacity: 1; transform: translateY(0); }
 .d6 { animation-delay: 0.3s; }
 </style>
 
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z36FM1LNY2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -750,13 +749,7 @@ to { opacity: 1; transform: translateY(0); }
 </head>
 <body>
 
-<!-- ═══════════════════════════
-     ACCESS LAYER
-═══════════════════════════ -->
-
 <div id="accessLayer">
-
-  <!-- Pantalla: Código de acceso -->
 
   <div id="screenCodigo" class="access-screen active">
     <div class="codigo-inner">
@@ -769,8 +762,6 @@ to { opacity: 1; transform: translateY(0); }
       <div class="ya-tengo-link" onclick="showScreen('screenLogin')">Ya tengo cuenta</div>
     </div>
   </div>
-
-  <!-- Pantalla: Login -->
 
   <div id="screenLogin" class="access-screen">
     <div class="login-inner">
@@ -786,8 +777,6 @@ to { opacity: 1; transform: translateY(0); }
       <div id="loginError" class="acc-error"></div>
     </div>
   </div>
-
-  <!-- Pantalla: Registro (simplificado, 1 paso) -->
 
   <div id="screenRegistro" class="access-screen">
     <div class="reg-header">
@@ -835,8 +824,6 @@ to { opacity: 1; transform: translateY(0); }
     </div>
   </div>
 
-  <!-- Pantalla: Bienvenida -->
-
   <div id="screenBienvenida" class="access-screen">
     <div class="bienvenida-inner">
       <div class="check-icon">
@@ -853,13 +840,7 @@ to { opacity: 1; transform: translateY(0); }
     </div>
   </div>
 
-</div><!-- /accessLayer -->
-
-<!-- ═══════════════════════════
-     MAIN APP
-═══════════════════════════ -->
-
-<div id="mainApp">
+</div><div id="mainApp">
 
   <header>
     <div class="header-inner">
@@ -893,13 +874,7 @@ to { opacity: 1; transform: translateY(0); }
     <div class="boletos-grid" id="eventosGrid"></div>
   </main>
 
-</div><!-- /mainApp -->
-
-<!-- ═══════════════════════════
-     PANEL FLOTANTE — BOLETOS & CHECKOUT
-═══════════════════════════ -->
-
-<div id="boletosPanel" class="panel-bg" onclick="if(event.target===this)cerrarPanel()">
+</div><div id="boletosPanel" class="panel-bg" onclick="if(event.target===this)cerrarPanel()">
   <div class="panel-sheet" onclick="event.stopPropagation()">
     <div class="panel-handle"><div class="panel-handle-bar"></div></div>
 
@@ -913,14 +888,9 @@ to { opacity: 1; transform: translateY(0); }
     </div>
 
     <div class="panel-body" id="panelBody">
-      <!-- Contenido dinámico -->
-    </div>
+      </div>
   </div>
 </div>
-
-<!-- ═══════════════════════════
-     MODAL LEGAL
-═══════════════════════════ -->
 
 <div id="legalModal" class="modal-bg" onclick="if(event.target===this)closeLegal()">
   <div class="modal-panel" onclick="event.stopPropagation()">
@@ -1027,6 +997,7 @@ const legalTexts = {
 ════════════════════════════════════════ */
 let celularDesdeWaitlist = '';
 let boletosCache = [];       
+let kycCompletado = false; // <-- AÑADIDO: Estado Global para KYC
 
 // ESTADO DEL PANEL Y CHECKOUT
 let panelEventoActual = null;
@@ -1305,6 +1276,16 @@ function cerrarPanel() {
 async function abrirPanel(eventoId) {
   const ev = EVENTOS.find(e => e.id === eventoId);
   if (!ev) return;
+
+  // <-- AÑADIDO: Verificamos silenciosamente si el usuario tiene KYC completado al abrir un evento
+  const celularGuardado = localStorage.getItem('yunus_celular');
+  if (celularGuardado && !kycCompletado) {
+    try {
+      const resKyc = await fetch(`/api/verificar-kyc?celular=${celularGuardado}`);
+      const dataKyc = await resKyc.json();
+      if (dataKyc.kycCompletado) kycCompletado = true;
+    } catch (e) { console.error("Error validando KYC", e); }
+  }
   
   // Reset al abrir
   panelPaso = 1;
@@ -1514,6 +1495,7 @@ function confirmarPlan() {
   selfieBase64 = null;
   renderStep3();
 }
+
 // Paso 3: Checkout (Confirmación y Subida de Docs/Selfie con Wizard)
 function renderStep3() {
   panelPaso = 3;
@@ -1524,9 +1506,8 @@ function renderStep3() {
   const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
   const enganche = precio * 0.15;
   const cuota = (precio * 0.85) / panelPlanActual;
-  const celGuardado = localStorage.getItem('yunus_celular') || '';
 
-  document.getElementById('panelBody').innerHTML = `
+  let htmlCheckout = `
     <div class="checkout-resumen">
       <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Resumen de la Orden</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--paper);line-height:1;">${panelEventoActual.name}</div>
@@ -1548,33 +1529,54 @@ function renderStep3() {
         <span style="font-family:'DM Mono',monospace;color:var(--volt);">${panelPlanActual} quincenas de $${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
       </div>
     </div>
-
-    <div class="wizard-progress">
-      <span id="prog1" class="wizard-step-ind active">1. FRENTE</span>
-      <span id="prog2" class="wizard-step-ind">2. REVERSO</span>
-      <span id="prog3" class="wizard-step-ind">3. SELFIE</span>
-    </div>
-
-    <div class="form-group" id="wizardContainer">
-      <label class="form-label" id="wizardLabel">Identidad (1/3): INE Frontal</label>
-      <input type="file" id="chk_upload" accept="image/*" style="display:none;" onchange="handleWizardUpload(event)">
-      
-      <div class="ine-upload" id="chk_upload_trigger" onclick="document.getElementById('chk_upload').click()">
-        <div id="chk_upload_content">
-          <div class="ine-icon" id="wizardIcon">🪪</div>
-          <div class="ine-text" id="wizardText">Toca para subir o tomar foto del frente de tu INE</div>
-        </div>
-        <img id="chk_upload_preview" class="ine-preview">
-      </div>
-    </div>
-
-    <div id="chk_error" class="acc-error"></div>
-    
-    <button class="btn-ver-boletos" id="btnSubmitCheckout" style="margin-top:10px; display:none;" onclick="submitSolicitud()">
-      Enviar Solicitud →
-    </button>
   `;
+
+  // <-- AÑADIDO: Ocultamos los documentos si kycCompletado es true
+  if (kycCompletado) {
+    htmlCheckout += `
+      <div class="aviso-pago" style="margin-bottom: 24px; text-align: center; background: rgba(212,245,60,0.08); border-color: var(--volt);">
+        <div style="font-size:24px; margin-bottom:8px;">✅</div>
+        <strong style="color: var(--paper);">Identidad verificada</strong><br>
+        Tus documentos ya están validados en el sistema de Yunus.
+      </div>
+      <div id="chk_error" class="acc-error"></div>
+      <button class="btn-ver-boletos" id="btnSubmitCheckout" style="margin-top:10px;" onclick="submitSolicitud()">
+        Enviar Solicitud →
+      </button>
+    `;
+  } else {
+    // Usuario sin verificar, mostramos el Wizard normal
+    htmlCheckout += `
+      <div class="wizard-progress">
+        <span id="prog1" class="wizard-step-ind active">1. FRENTE</span>
+        <span id="prog2" class="wizard-step-ind">2. REVERSO</span>
+        <span id="prog3" class="wizard-step-ind">3. SELFIE</span>
+      </div>
+
+      <div class="form-group" id="wizardContainer">
+        <label class="form-label" id="wizardLabel">Identidad (1/3): INE Frontal</label>
+        <input type="file" id="chk_upload" accept="image/*" style="display:none;" onchange="handleWizardUpload(event)">
+        
+        <div class="ine-upload" id="chk_upload_trigger" onclick="document.getElementById('chk_upload').click()">
+          <div id="chk_upload_content">
+            <div class="ine-icon" id="wizardIcon">🪪</div>
+            <div class="ine-text" id="wizardText">Toca para subir o tomar foto del frente de tu INE</div>
+          </div>
+          <img id="chk_upload_preview" class="ine-preview">
+        </div>
+      </div>
+
+      <div id="chk_error" class="acc-error"></div>
+      
+      <button class="btn-ver-boletos" id="btnSubmitCheckout" style="margin-top:10px; display:none;" onclick="submitSolicitud()">
+        Enviar Solicitud →
+      </button>
+    `;
+  }
+
+  document.getElementById('panelBody').innerHTML = htmlCheckout;
 }
+
 // Controla los 3 pasos de las fotos
 async function handleWizardUpload(e) {
   const file = e.target.files[0];
@@ -1636,11 +1638,14 @@ async function handleWizardUpload(e) {
 
 // Envío de la solicitud a la nueva API /api/checkout
 async function submitSolicitud() {
-  if (!ineFrenteBase64 || !ineReversoBase64 || !selfieBase64) {
-    const err = document.getElementById('chk_error');
-    err.textContent = 'Es necesario completar las 3 fotos para continuar.';
-    err.style.display = 'block';
-    return;
+  // <-- AÑADIDO: Modificamos la validación para saltar las fotos si ya tiene KYC
+  if (!kycCompletado) {
+    if (!ineFrenteBase64 || !ineReversoBase64 || !selfieBase64) {
+      const err = document.getElementById('chk_error');
+      err.textContent = 'Es necesario completar las 3 fotos para continuar.';
+      err.style.display = 'block';
+      return;
+    }
   }
   document.getElementById('chk_error').style.display = 'none';
 
@@ -1729,7 +1734,7 @@ function closeLegal() {
 /* ════════════════════════════════════════
    INIT
 ════════════════════════════════════════ */
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   const celular = localStorage.getItem('yunus_celular');
   if (celular) {
     entrarApp();
