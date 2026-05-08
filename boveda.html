@@ -99,14 +99,6 @@ main {
 /* BOVEDA VIEW */
 #bovedaView { display: none; padding: 24px 20px 40px; }
 
-.section-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 20px;
-  display: flex; align-items: center; gap: 12px;
-}
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
 /* WELCOME BAR */
 .welcome-bar {
   margin-bottom: 28px; padding: 16px 0;
@@ -510,7 +502,7 @@ main {
       Mi Bóveda
     </div>
     <div class="header-actions">
-      <button class="btn-chat-circle" onclick="window.location.href='/marketplace'" id="btnChat" aria-label="Chat">
+      <button class="btn-chat-circle" onclick="window.location.href='/marketplace'" id="btnChat" aria-label="Marketplace">
         <svg width="16" height="12" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
           <line x1="1" y1="1" x2="17" y2="1"/>
           <line x1="1" y1="7" x2="17" y2="7"/>
@@ -530,18 +522,6 @@ main {
 
   <div id="bovedaView">
 
-    <div id="revoxPromoCard" class="fade-up" style="background: linear-gradient(90deg, rgba(16,28,189,0.05) 0%, rgba(72,168,224,0.05) 100%); border: 1px solid rgba(72,168,224,0.15); border-left: 3px solid #48A8E0; padding: 14px 16px; margin-bottom: 20px; position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
-      <div style="flex: 1;">
-        <div style="font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #48A8E0; margin-bottom: 4px;">Revox · 18% Anual</div>
-        <div style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--paper); line-height: 1.2; margin-bottom: 4px;"><span id="revoxNombreUsuario">Hola</span>, pon tu dinero a trabajar.</div>
-        <div style="font-size: 11px; color: var(--muted); line-height: 1.4;">Fondea boletos con colateral real.</div>
-      </div>
-      <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; height: 100%; gap: 10px;">
-        <button onclick="this.parentElement.parentElement.style.display='none'" style="background: transparent; border: none; color: var(--muted); font-size: 15px; cursor: pointer; padding: 0; line-height: 1; opacity: 0.7;" aria-label="Cerrar">✕</button>
-        <button onclick="window.location.href='revox/index.html'" style="background: linear-gradient(90deg, #101CBD 0%, #48A8E0 100%); color: #fff; border: none; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; padding: 8px 12px; cursor: pointer; transition: opacity 0.2s; white-space: nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Invertir →</button>
-      </div>
-    </div>
-
     <div class="welcome-bar fade-up d1">
       <div class="welcome-sub" id="welcomeSub">0 boletos en bóveda</div>
     </div>
@@ -554,14 +534,10 @@ main {
     </div>
 
     <div id="comprasView">
-      <div class="section-label fade-up d3">Mis boletos</div>
       <div id="ticketsContainer"></div>
     </div>
 
     <div id="cedidosView" style="display:none;">
-      <div class="section-label fade-up d3">
-        Boletos cedidos
-      </div>
       <div id="cedidosContainer"></div>
     </div>
 
@@ -628,10 +604,6 @@ async function cargarBoveda() {
     const nombre  = data.nombre  || celular;
     nombreUsuario = nombre;
 
-    if (document.getElementById('revoxNombreUsuario')) {
-      document.getElementById('revoxNombreUsuario').textContent = nombreUsuario.split(' ')[0];
-    }
-
     // Welcome sub — cuenta ambos
     const total = compras.length + cedidos.length;
     document.getElementById('welcomeSub').textContent =
@@ -664,8 +636,8 @@ function renderTickets(compras) {
       <div class="empty-state fade-up">
         <div class="empty-icon">🎟</div>
         <div class="empty-title">Bóveda vacía</div>
-        <p class="empty-sub">Aún no tienes boletos financiados. Habla con Yunus para comenzar tu plan.</p>
-        <button class="btn-volt" onclick="window.location.href='/chat'">Hablar con Yunus →</button>
+        <p class="empty-sub">Aún no tienes boletos financiados. Explora los eventos disponibles en el Marketplace y asegura tu lugar hoy mismo.</p>
+        <button class="btn-volt" onclick="window.location.href='/marketplace'">Ver eventos disponibles →</button>
       </div>`;
     return;
   }
