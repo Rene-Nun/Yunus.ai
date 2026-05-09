@@ -114,7 +114,6 @@ body::after {
   margin-right: calc(-50vw + 50%);
   margin-bottom: 48px;
   overflow: hidden;
-  border-bottom: 1px solid var(--border);
   padding: 14px 0;
   display: flex;
 }
@@ -582,7 +581,30 @@ body::after {
 
 <section class="hero reveal">
 
-  <div class="ticker-wrap">
+  <h1 class="hero-title">
+    Ve a tus eventos<br>
+    soñados aunque no<br>
+    tengas <span class="accent">todo hoy</span>
+  </h1>
+
+  <div class="carousel-wrap">
+    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;padding:0 15px;"></div>
+  </div>
+
+  <p class="hero-sub">
+    Conectamos fans que tienen boletos que no pueden usar con fans que quieren ir pero no tienen el dinero completo. <strong>Yunus custodia el boleto, garantiza el pago, y tú pagas quincena a quincena.</strong>
+  </p>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:420px;">
+    <a href="marketplace.html" class="btn-hero" style="width:100%;justify-content:center;">
+      Ver boletos disponibles →
+    </a>
+    <a href="ceder-boleto.html" class="btn-hero-ghost" style="width:100%;justify-content:center;">
+      ¿Tienes un boleto? Cédelo →
+    </a>
+  </div>
+  
+   <div class="ticker-wrap">
     <div class="ticker-track">
       
       <div class="ticker-set">
@@ -713,29 +735,6 @@ body::after {
         </div>
       </div>
     </div>
-  </div>
-
-  <h1 class="hero-title">
-    Ve a tus eventos<br>
-    soñados aunque no<br>
-    tengas <span class="accent">todo hoy</span>
-  </h1>
-
-  <div class="carousel-wrap">
-    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;padding:0 15px;"></div>
-  </div>
-
-  <p class="hero-sub">
-    Conectamos fans que tienen boletos que no pueden usar con fans que quieren ir pero no tienen el dinero completo. <strong>Yunus custodia el boleto, garantiza el pago, y tú pagas quincena a quincena.</strong>
-  </p>
-
-  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:420px;">
-    <a href="marketplace.html" class="btn-hero" style="width:100%;justify-content:center;">
-      Ver boletos disponibles →
-    </a>
-    <a href="ceder-boleto.html" class="btn-hero-ghost" style="width:100%;justify-content:center;">
-      ¿Tienes un boleto? Cédelo →
-    </a>
   </div>
 
 </section>
