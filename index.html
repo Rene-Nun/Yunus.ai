@@ -152,17 +152,21 @@ body::after {
   100% { transform: translateX(-50%); }
 }
 
-/* HERO SLIDER */
+/* HERO SLIDER REDESIGN (FULL WIDTH) */
+.hero-slider-container {
+  position: relative;
+  width: 100vw;
+  margin: 0 calc(-50vw + 50%);
+  margin-bottom: 48px;
+}
 .hero-slider-wrap {
   position: relative;
   width: 100%;
-  max-width: 800px;
-  height: 380px;
-  margin: 0 auto 48px;
-  border-radius: 16px;
+  height: 200px;
   overflow: hidden;
-  border: 1px solid rgba(242,239,232,0.1);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  background: var(--ink);
+  border-top: 1px solid rgba(242,239,232,0.05);
+  border-bottom: 1px solid rgba(242,239,232,0.05);
 }
 .hero-slider {
   display: flex;
@@ -176,85 +180,101 @@ body::after {
   background-size: cover;
   background-position: center;
   display: flex;
-  align-items: flex-end;
-  padding: 40px;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
+  padding: 0 64px;
 }
 .hero-slide-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.3) 50%, rgba(10,10,10,0.1) 100%);
+  background: linear-gradient(90deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.2) 50%, rgba(10,10,10,0.95) 100%),
+              linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 100%);
 }
 .hero-slide-content {
   position: relative;
   z-index: 2;
-  text-align: left;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-left: 4px solid var(--volt);
+  padding-left: 24px;
 }
 .hero-slide-title {
   font-family: 'Oswald', sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size: clamp(28px, 5vw, 42px);
   color: var(--paper);
-  margin-bottom: 6px;
   line-height: 1.1;
-  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.hero-slide-price-wrap {
+  text-align: right;
+}
+.hero-slide-price-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 6px;
 }
 .hero-slide-price {
   font-family: 'DM Mono', monospace;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--volt);
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  background: rgba(212,245,60,0.08);
+  padding: 8px 16px;
+  border: 1px solid rgba(212,245,60,0.2);
+  display: inline-block;
+  letter-spacing: 0.05em;
 }
 .slider-btn {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(10,10,10,0.4);
-  color: var(--paper);
-  border: 1px solid rgba(242,239,232,0.15);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+  top: 0;
+  bottom: 0;
+  background: transparent;
+  color: rgba(242,239,232,0.4);
+  border: none;
+  font-size: 32px;
+  width: 60px;
   cursor: pointer;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
-  backdrop-filter: blur(8px);
+  transition: background 0.3s, color 0.3s;
 }
 .slider-btn:hover {
-  background: var(--volt);
-  color: var(--ink);
-  border-color: var(--volt);
-  transform: translateY(-50%) scale(1.05);
+  background: rgba(10,10,10,0.7);
+  color: var(--volt);
 }
-.prev-btn { left: 20px; }
-.next-btn { right: 20px; }
+.prev-btn { left: 0; }
+.next-btn { right: 0; }
 .slider-dots {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  position: relative;
   z-index: 10;
 }
 .slider-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(242,239,232,0.2);
+  width: 32px;
+  height: 2px;
+  background: rgba(242,239,232,0.15);
   cursor: pointer;
-  transition: background 0.3s, transform 0.3s;
+  transition: background 0.3s;
 }
-.slider-dot:hover { background: rgba(242,239,232,0.6); }
+.slider-dot:hover { background: rgba(242,239,232,0.5); }
 .slider-dot.active {
   background: var(--volt);
-  transform: scale(1.2);
 }
 
 /* HERO */
@@ -286,7 +306,6 @@ body::after {
   font-weight: 300; margin-bottom: 48px;
 }
 .hero-sub strong { color: var(--paper); font-weight: 500; }
-
 
 /* SECTION DIVIDER */
 .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
@@ -624,6 +643,20 @@ body::after {
   .tl-photo { order: 2 !important; }
   .tl-photo img { min-height: 260px; height: 260px; }
   .cedente-steps { grid-template-columns: 1fr; }
+  
+  /* Ajuste de Hero Slider Móvil */
+  .hero-slide { padding: 0 44px; }
+  .hero-slide-content {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+    padding-left: 16px;
+  }
+  .hero-slide-price-wrap {
+    text-align: left;
+  }
+  .slider-btn { width: 44px; font-size: 24px; }
 }
 
 @media (max-width: 900px) {
@@ -640,11 +673,6 @@ body::after {
   .security-card { padding: 24px; }
   .bottom-cta { padding: 80px 20px; }
   .btn-hero, .btn-hero-ghost { padding: 16px 28px; font-size: 11px; }
-  .hero-slider-wrap { height: 280px; border-radius: 12px; }
-  .hero-slide { padding: 24px; }
-  .slider-btn { width: 36px; height: 36px; }
-  .prev-btn { left: 12px; }
-  .next-btn { right: 12px; }
 }
 </style>
 
@@ -684,10 +712,12 @@ body::after {
     tengas <span class="accent">todo hoy</span>
   </h1>
 
-  <div class="hero-slider-wrap">
-    <div id="heroSlider" class="hero-slider"></div>
-    <button class="slider-btn prev-btn" onclick="prevSlide()">&#10094;</button>
-    <button class="slider-btn next-btn" onclick="nextSlide()">&#10095;</button>
+  <div class="hero-slider-container">
+    <div class="hero-slider-wrap">
+      <div id="heroSlider" class="hero-slider"></div>
+      <button class="slider-btn prev-btn" onclick="prevSlide()">&#10094;</button>
+      <button class="slider-btn next-btn" onclick="nextSlide()">&#10095;</button>
+    </div>
     <div class="slider-dots" id="sliderDots"></div>
   </div>
 
@@ -1094,15 +1124,27 @@ let currentSlide = 0;
 let slideInterval;
 
 function buildSlide(e) {
-  let priceText = e.price.replace(/Desde/i, 'A partir de');
-  if (!priceText.toLowerCase().includes('a partir') && priceText.toLowerCase() !== 'x confirmar') {
-      priceText = 'A partir de ' + priceText;
+  let priceText = e.price.replace(/Desde/i, '').trim();
+  if (priceText.toLowerCase() === 'x confirmar') {
+      return `<a href="marketplace.html" class="hero-slide" style="background-image: url('${e.img}');">
+        <div class="hero-slide-overlay"></div>
+        <div class="hero-slide-content">
+          <div class="hero-slide-title">${e.name}</div>
+          <div class="hero-slide-price-wrap">
+            <div class="hero-slide-price" style="background:transparent; border-color:var(--muted); color:var(--muted);">${priceText}</div>
+          </div>
+        </div>
+      </a>`;
   }
+  
   return `<a href="marketplace.html" class="hero-slide" style="background-image: url('${e.img}');">
     <div class="hero-slide-overlay"></div>
     <div class="hero-slide-content">
       <div class="hero-slide-title">${e.name}</div>
-      <div class="hero-slide-price">${priceText}</div>
+      <div class="hero-slide-price-wrap">
+        <div class="hero-slide-price-label">A partir de</div>
+        <div class="hero-slide-price">${priceText}</div>
+      </div>
     </div>
   </a>`;
 }
