@@ -10,35 +10,37 @@
 
 <style>
 :root {
-  --ink: #0a0a0a;
-  --paper: #F2EFE8;
-  --volt: #D4F53C;
-  --muted: #5C5C5C;
-  --border: rgba(242,239,232,0.12);
+  /* TEMA CLARO */
+  --ink: #F9F9F8; /* Fondo blanco cálido */
+  --paper: #0a0a0a; /* Texto negro */
+  --volt: #9EBD00; /* Verde más oscuro para textos/íconos legibles */
+  --btn-volt: #D4F53C; /* Verde neón original para fondos de botones */
+  --muted: #666666; /* Gris intermedio para textos secundarios */
+  --border: rgba(10,10,10,0.12); /* Bordes oscuros tenues */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-::selection { background: var(--volt); color: var(--ink); }
+::selection { background: var(--btn-volt); color: #0a0a0a; }
 
 html { background: var(--ink); }
 
 body {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
+  font-weight: 400; /* Ligeramente más peso para leer mejor en blanco */
   background: var(--ink);
   color: var(--paper);
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* GRAIN OVERLAY */
+/* GRAIN OVERLAY - Más sutil en fondo claro */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.035;
+  opacity: 0.02;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px;
@@ -52,8 +54,9 @@ body::after {
 /* NAV */
 #nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(10,10,10,0.85);
+  background: rgba(249,249,248,0.85); /* Nav clara */
   backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
 }
 .nav-inner {
   max-width: 1280px; margin: 0 auto;
@@ -66,14 +69,15 @@ body::after {
   font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--muted); text-decoration: none;
   transition: color 0.2s;
+  font-weight: 500;
 }
 .nav-links a:hover { color: var(--paper); }
 .btn-primary {
   font-family: 'DM Mono', monospace;
   font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-  background: var(--volt); color: var(--ink);
+  background: var(--btn-volt); color: #0a0a0a;
   padding: 10px 20px; border: none; cursor: pointer;
-  transition: opacity 0.2s; font-weight: 500;
+  transition: opacity 0.2s; font-weight: 600;
   text-decoration: none; display: inline-block;
 }
 .btn-primary:hover { opacity: 0.85; }
@@ -81,17 +85,18 @@ body::after {
   font-family: 'DM Mono', monospace;
   font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
   background: transparent; color: var(--paper);
-  padding: 10px 20px; border: 1px solid var(--border); cursor: pointer;
+  padding: 10px 20px; border: 1px solid var(--paper); cursor: pointer;
   transition: all 0.2s; text-decoration: none; display: inline-block;
+  font-weight: 500;
 }
-.btn-ghost:hover { border-color: var(--paper); }
+.btn-ghost:hover { background: var(--paper); color: var(--ink); }
 .btn-hero {
   font-family: 'DM Mono', monospace;
   font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-  background: var(--volt); color: var(--ink);
+  background: var(--btn-volt); color: #0a0a0a;
   padding: 18px 48px; border: none; cursor: pointer;
   transition: opacity 0.2s, transform 0.2s;
-  font-weight: 500;
+  font-weight: 600;
   display: inline-flex; align-items: center; gap: 10px;
   text-decoration: none;
 }
@@ -100,12 +105,12 @@ body::after {
   font-family: 'DM Mono', monospace;
   font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
   background: transparent; color: var(--paper);
-  padding: 18px 48px; border: 1px solid var(--border); cursor: pointer;
-  transition: all 0.2s;
+  padding: 18px 48px; border: 1px solid var(--paper); cursor: pointer;
+  transition: all 0.2s; font-weight: 500;
   display: inline-flex; align-items: center; gap: 10px;
   text-decoration: none;
 }
-.btn-hero-ghost:hover { border-color: var(--volt); color: var(--volt); }
+.btn-hero-ghost:hover { background: var(--paper); color: var(--ink); }
 
 /* INFINITE TICKER (MARQUEE) */
 .ticker-wrap {
@@ -116,11 +121,13 @@ body::after {
   overflow: hidden;
   padding: 14px 0;
   display: flex;
+  background: rgba(10,10,10,0.02); /* Sutil diferenciador de fondo */
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 .ticker-track {
   display: flex;
   width: max-content;
-  /* Imparable, continuo */
   animation: ticker 30s linear infinite;
 }
 .ticker-set {
@@ -145,6 +152,7 @@ body::after {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--paper);
+  font-weight: 500;
 }
 
 @keyframes ticker {
@@ -152,7 +160,7 @@ body::after {
   100% { transform: translateX(-50%); }
 }
 
-/* HERO SLIDER REDESIGN (FULL WIDTH) */
+/* HERO SLIDER REDESIGN (SE QUEDA OSCURO PARA CONTRASTAR) */
 .hero-slider-container {
   position: relative;
   width: 100vw;
@@ -164,9 +172,7 @@ body::after {
   width: 100%;
   height: 200px;
   overflow: hidden;
-  background: var(--ink);
-  border-top: 1px solid rgba(242,239,232,0.05);
-  border-bottom: 1px solid rgba(242,239,232,0.05);
+  background: #0a0a0a; /* Fondo estricto oscuro para el slider */
 }
 .hero-slider {
   display: flex;
@@ -201,15 +207,15 @@ body::after {
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  border-left: 4px solid var(--volt);
+  border-left: 4px solid var(--btn-volt);
   padding-left: 24px;
-  margin-bottom: 12px; /* Espacio para que no choque con los dots abajo */
+  margin-bottom: 12px; 
 }
 .hero-slide-title {
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
   font-size: clamp(28px, 5vw, 42px);
-  color: var(--paper);
+  color: #F2EFE8; /* Texto blanco forzado porque el fondo es foto oscura */
   line-height: 1.1;
   text-transform: uppercase;
   letter-spacing: 0.02em;
@@ -220,7 +226,7 @@ body::after {
 .hero-slide-price-label {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
-  color: var(--muted);
+  color: rgba(242,239,232,0.7); /* Gris claro */
   text-transform: uppercase;
   letter-spacing: 0.15em;
   margin-bottom: 6px;
@@ -228,7 +234,7 @@ body::after {
 .hero-slide-price {
   font-family: 'DM Mono', monospace;
   font-size: 14px;
-  color: var(--volt);
+  color: var(--btn-volt); /* Neón vibrante resalta perfecto en lo oscuro */
   font-weight: 500;
   background: rgba(212,245,60,0.08);
   padding: 8px 16px;
@@ -241,7 +247,7 @@ body::after {
   top: 0;
   bottom: 0;
   background: transparent;
-  color: rgba(242,239,232,0.4);
+  color: rgba(242,239,232,0.6);
   border: none;
   font-size: 32px;
   width: 60px;
@@ -253,8 +259,8 @@ body::after {
   transition: background 0.3s, color 0.3s;
 }
 .slider-btn:hover {
-  background: rgba(10,10,10,0.7);
-  color: var(--volt);
+  background: rgba(10,10,10,0.5);
+  color: var(--btn-volt);
 }
 .prev-btn { left: 0; }
 .next-btn { right: 0; }
@@ -271,13 +277,13 @@ body::after {
 .slider-dot {
   width: 32px;
   height: 2px;
-  background: rgba(242,239,232,0.15);
+  background: rgba(242,239,232,0.3);
   cursor: pointer;
   transition: background 0.3s;
 }
-.slider-dot:hover { background: rgba(242,239,232,0.5); }
+.slider-dot:hover { background: rgba(242,239,232,0.7); }
 .slider-dot.active {
-  background: var(--volt);
+  background: var(--btn-volt);
 }
 
 /* HERO */
@@ -306,9 +312,9 @@ body::after {
 .hero-sub {
   font-size: 16px; line-height: 1.75;
   color: var(--muted); max-width: 600px;
-  font-weight: 300; margin-bottom: 48px;
+  margin-bottom: 48px;
 }
-.hero-sub strong { color: var(--paper); font-weight: 500; }
+.hero-sub strong { color: var(--paper); font-weight: 600; }
 
 /* SECTION DIVIDER */
 .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
@@ -316,7 +322,7 @@ body::after {
 /* CEDENTE SECTION */
 .cedente-wrap {
   padding: 120px 32px;
-  background: #0d0d0d;
+  background: #F0EEE9; /* Beige/Gris para separar secciones */
 }
 .cedente-inner { max-width: 1100px; margin: 0 auto; }
 .cedente-header { margin-bottom: 64px; }
@@ -334,9 +340,9 @@ body::after {
 }
 .cedente-header p {
   font-size: 16px; color: var(--muted); line-height: 1.75;
-  max-width: 520px; font-weight: 300;
+  max-width: 520px;
 }
-.cedente-header p strong { color: var(--paper); font-weight: 500; }
+.cedente-header p strong { color: var(--paper); font-weight: 600; }
 
 .cedente-steps {
   display: grid;
@@ -346,14 +352,14 @@ body::after {
   margin-bottom: 56px;
 }
 .cedente-step {
-  background: #0d0d0d;
+  background: var(--ink);
   padding: 40px 32px;
 }
 .cedente-step-num {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 56px;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(212,245,60,0.2);
+  -webkit-text-stroke: 1px rgba(10,10,10,0.15); /* Stroke oscuro */
   line-height: 1;
   display: block;
   margin-bottom: 12px;
@@ -376,7 +382,7 @@ body::after {
   padding: 120px 32px;
   max-width: 1100px;
   margin: 0 auto;
-  background: #0d0d0d;
+  background: #F0EEE9;
 }
 .security-inner {
   display: grid;
@@ -392,15 +398,16 @@ body::after {
   color: var(--paper); margin-bottom: 24px;
 }
 .security-copy h2 em {
-  color: transparent; -webkit-text-stroke: 2px rgba(242,239,232,0.3);
+  color: transparent; -webkit-text-stroke: 2px rgba(10,10,10,0.15);
   font-style: normal;
 }
 .security-card {
-  background: rgba(255,255,255,0.02);
+  background: var(--ink);
   border: 1px solid var(--border);
   padding: 40px;
   text-align: left;
   margin-top: 32px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03); /* Sombra elegante */
 }
 .security-row {
   display: flex;
@@ -413,20 +420,20 @@ body::after {
 .security-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
 .security-icon {
   width: 32px; height: 32px; flex-shrink: 0;
-  background: rgba(212,245,60,0.08);
-  border: 1px solid rgba(212,245,60,0.2);
+  background: rgba(158, 189, 0, 0.1);
+  border: 1px solid rgba(158, 189, 0, 0.25);
   display: flex; align-items: center; justify-content: center;
-  font-size: 13px;
+  font-size: 13px; color: var(--volt); font-weight: 600;
 }
-.security-row-title { font-family: 'Oswald', sans-serif; font-size: 14px; color: var(--paper); margin-bottom: 4px; }
+.security-row-title { font-family: 'Oswald', sans-serif; font-size: 14px; color: var(--paper); margin-bottom: 4px; font-weight: 600; }
 .security-row-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
 /* FAQ */
-.faq-wrap { padding: 120px 32px; }
+.faq-wrap { padding: 120px 32px; background: var(--ink); }
 .faq-inner { max-width: 1280px; margin: 0 auto; }
 .faq-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; }
 .faq-title { font-family: 'Oswald', sans-serif; font-size: clamp(40px, 5vw, 78px); line-height: 0.92; color: var(--paper); }
-.faq-title em { color: transparent; -webkit-text-stroke: 2px rgba(242,239,232,0.3); font-style: normal; }
+.faq-title em { color: transparent; -webkit-text-stroke: 2px rgba(10,10,10,0.15); font-style: normal; }
 .faq-q {
   width: 100%; background: none; border: none; cursor: pointer;
   padding: 24px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px;
@@ -443,7 +450,7 @@ body::after {
 
 /* CONTACT SECTION */
 .contact-wrap {
-  background: #0f0f0f; padding: 120px 32px; text-align: center;
+  background: #EAE8E3; padding: 120px 32px; text-align: center;
 }
 .contact-inner { max-width: 600px; margin: 0 auto; }
 .contact-title {
@@ -461,6 +468,7 @@ body::after {
   text-decoration: none;
   padding-bottom: 4px;
   transition: border-color 0.2s, opacity 0.2s;
+  font-weight: 500;
 }
 .contact-email:hover { opacity: 0.8; border-color: var(--volt); }
 
@@ -468,6 +476,7 @@ body::after {
 .footer {
   background: var(--ink);
   padding: 24px 32px;
+  border-top: 1px solid var(--border);
 }
 .footer-inner {
   max-width: 1280px; margin: 0 auto;
@@ -490,35 +499,36 @@ body::after {
 /* MOBILE NAV */
 #mobileMenu {
   display: none; position: absolute; top: 100%; left: 0; right: 0;
-  background: rgba(10,10,10,0.97); border-bottom: 1px solid var(--border);
+  background: rgba(249,249,248,0.98); border-bottom: 1px solid var(--border);
   padding: 20px 24px; flex-direction: column; gap: 16px;
 }
 #mobileMenu.open { display: flex; }
 #mobileMenu a {
   font-family: 'DM Mono', monospace; font-size: 12px;
   letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted); text-decoration: none; padding: 8px 0;
-  border-bottom: 1px solid var(--border);
+  color: var(--paper); text-decoration: none; padding: 8px 0;
+  border-bottom: 1px solid var(--border); font-weight: 500;
 }
 
 /* MODALS */
 .modal-bg {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(8px); z-index: 200; display: none;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px); z-index: 200; display: none;
   align-items: center; justify-content: center; padding: 24px;
 }
 .modal-bg.open { display: flex; }
 .modal-panel {
-  background: #111; border: 1px solid var(--border);
+  background: var(--ink); border: 1px solid var(--border);
   width: 100%; max-width: 480px; max-height: 90vh;
   overflow-y: auto; position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
 }
 .modal-panel::-webkit-scrollbar { width: 4px; }
 .modal-panel::-webkit-scrollbar-thumb { background: var(--border); }
 .modal-header {
   padding: 24px 28px; border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; background: #111; z-index: 1;
+  position: sticky; top: 0; background: var(--ink); z-index: 1;
 }
 .modal-title {
   font-family: 'Oswald', sans-serif; font-weight: 600;
@@ -539,7 +549,7 @@ body::after {
 .legal-content p { margin-bottom: 12px; }
 .legal-content ul { padding-left: 20px; margin-bottom: 12px; }
 .legal-content ul li { margin-bottom: 6px; }
-.legal-content strong { color: var(--paper); font-weight: 500; }
+.legal-content strong { color: var(--paper); font-weight: 600; }
 
 /* REVEAL */
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -592,8 +602,8 @@ body::after {
   padding: 56px 52px; background: var(--ink);
 }
 
-.tl-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--volt); margin-bottom: 10px; }
-.tl-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(242,239,232,0.07); display: block; margin-bottom: 8px; }
+.tl-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--volt); margin-bottom: 10px; font-weight: 500;}
+.tl-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(10,10,10,0.1); display: block; margin-bottom: 8px; }
 .tl-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 28px; color: var(--paper); margin-bottom: 14px; line-height: 1.15; letter-spacing: -0.01em; }
 .tl-body { font-size: 14px; color: var(--muted); line-height: 1.75; }
 
@@ -628,11 +638,11 @@ body::after {
 }
 .check-dot {
   width: 22px; height: 22px; border-radius: 50%;
-  background: var(--volt); color: var(--ink);
+  background: var(--btn-volt); color: #0a0a0a;
   display: flex; align-items: center; justify-content: center;
   font-size: 11px; font-weight: bold; flex-shrink: 0;
 }
-.check-label { font-size: 15px; color: var(--paper); font-weight: 400; }
+.check-label { font-size: 15px; color: var(--paper); font-weight: 500; }
 
 @media (max-width: 768px) {
   .timeline-line { left: 24px; }
@@ -700,8 +710,8 @@ body::after {
   <div id="mobileMenu">
     <a href="#como-funciona" onclick="toggleMenu()">Cómo funciona</a>
     <a href="#cedentes" onclick="toggleMenu()">Ceder boleto</a>
-    <a href="marketplace.html" style="background:var(--volt);color:var(--ink);text-align:center;padding:14px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Ver boletos →</a>
-    <a href="boveda.html" style="border:1px solid var(--border);text-align:center;padding:14px;margin-top:8px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Iniciar sesión →</a>
+    <a href="marketplace.html" style="background:var(--btn-volt);color:#0a0a0a;text-align:center;padding:14px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Ver boletos →</a>
+    <a href="boveda.html" style="border:1px solid var(--paper);text-align:center;padding:14px;margin-top:8px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Iniciar sesión →</a>
   </div>
 </nav>
 
@@ -948,7 +958,7 @@ body::after {
           </div>
         </div>
         <div class="security-row">
-          <div class="security-icon" style="background:rgba(212,245,60,0.12);border-color:rgba(212,245,60,0.3);">✓</div>
+          <div class="security-icon" style="background:rgba(158,189,0,0.1);border-color:rgba(158,189,0,0.25);">✓</div>
           <div>
             <div class="security-row-title">El cedente cobra de todas formas</div>
             <div class="security-row-body">Sin importar lo que pase con el comprador, Yunus garantiza el pago al cedente. El riesgo no lo carga quien puso el boleto.</div>
@@ -967,7 +977,7 @@ body::after {
       </div>
     </div>
     <div>
-      <img src="Reventa.jpeg" alt="Modelo de protección Yunus" style="width:100%;border:1px solid var(--border);box-shadow:0 20px 40px rgba(0,0,0,0.6);">
+      <img src="Reventa.jpeg" alt="Modelo de protección Yunus" style="width:100%;border:1px solid var(--border);box-shadow:0 20px 40px rgba(0,0,0,0.15);">
     </div>
   </div>
 </div>
@@ -1061,7 +1071,7 @@ body::after {
 </div>
 
 <div class="bottom-cta reveal">
-    <img src="Demo.png" alt="Demo de Yunus" style="max-width: 100%; width: 480px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));">
+    <img src="Demo.png" alt="Demo de Yunus" style="max-width: 100%; width: 480px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));">
     <h3>Asegura tu lugar<br><span class="accent">hoy mismo</span></h3>
     <div class="checklist">
       <div class="check-item"><div class="check-dot">✓</div><span class="check-label">Sin revisar buró</span></div>
@@ -1132,9 +1142,9 @@ function buildSlide(e) {
       return `<a href="marketplace.html" class="hero-slide" style="background-image: url('${e.img}');">
         <div class="hero-slide-overlay"></div>
         <div class="hero-slide-content">
-          <div class="hero-slide-title">${e.name}</div>
+          <div class="hero-slide-title">\${e.name}</div>
           <div class="hero-slide-price-wrap">
-            <div class="hero-slide-price" style="background:transparent; border-color:var(--muted); color:var(--muted);">${priceText}</div>
+            <div class="hero-slide-price" style="background:transparent; border-color:rgba(242,239,232,0.4); color:#F2EFE8;">\${priceText}</div>
           </div>
         </div>
       </a>`;
@@ -1145,10 +1155,10 @@ function buildSlide(e) {
   return `<a href="marketplace.html" class="hero-slide" style="background-image: url('${e.img}');">
     <div class="hero-slide-overlay"></div>
     <div class="hero-slide-content">
-      <div class="hero-slide-title">${e.name}</div>
+      <div class="hero-slide-title">\${e.name}</div>
       <div class="hero-slide-price-wrap">
         <div class="hero-slide-price-label">Desde</div>
-        <div class="hero-slide-price">${priceAmount}</div>
+        <div class="hero-slide-price">\${priceAmount}</div>
       </div>
     </div>
   </a>`;
@@ -1156,7 +1166,7 @@ function buildSlide(e) {
 
 function updateSlider() {
   const track = document.getElementById('heroSlider');
-  if (track) track.style.transform = `translateX(-${currentSlide * 100}%)`;
+  if (track) track.style.transform = `translateX(-\${currentSlide * 100}%)`;
   document.querySelectorAll('.slider-dot').forEach((dot, i) => {
     dot.classList.toggle('active', i === currentSlide);
   });
@@ -1194,7 +1204,7 @@ function resetSlideTimer() {
   const dots = document.getElementById('sliderDots');
   if (!track || !dots) return;
   track.innerHTML = events.map(buildSlide).join('');
-  dots.innerHTML = events.map((_, i) => `<div class="slider-dot ${i===0?'active':''}" onclick="goToSlide(${i})"></div>`).join('');
+  dots.innerHTML = events.map((_, i) => `<div class="slider-dot \${i===0?'active':''}" onclick="goToSlide(\${i})"></div>`).join('');
   startSlideTimer();
 })();
 
