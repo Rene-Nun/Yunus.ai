@@ -10,37 +10,36 @@
 
 <style>
 :root {
-  /* TEMA CLARO */
-  --ink: #F9F9F8; /* Fondo blanco cálido */
-  --paper: #0a0a0a; /* Texto negro */
-  --volt: #9EBD00; /* Verde más oscuro para textos/íconos legibles */
-  --btn-volt: #D4F53C; /* Verde neón original para fondos de botones */
-  --muted: #666666; /* Gris intermedio para textos secundarios */
-  --border: rgba(10,10,10,0.12); /* Bordes oscuros tenues */
+  /* INVERSIÓN DE TEMA CLARO */
+  --ink: #F2EFE8;
+  --paper: #0a0a0a;
+  --volt: #95C11E; /* Volt oscurecido para contraste sobre blanco */
+  --muted: #6B7280;
+  --border: rgba(10,10,10,0.12);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-::selection { background: var(--btn-volt); color: #0a0a0a; }
+::selection { background: var(--volt); color: #F2EFE8; }
 
 html { background: var(--ink); }
 
 body {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 400; /* Ligeramente más peso para leer mejor en blanco */
+  font-weight: 400; /* Ligeramente más peso para leer mejor en claro */
   background: var(--ink);
   color: var(--paper);
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* GRAIN OVERLAY - Más sutil en fondo claro */
+/* GRAIN OVERLAY */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.02;
+  opacity: 0.045; /* Ligero aumento para notarse en claro */
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px;
@@ -54,9 +53,8 @@ body::after {
 /* NAV */
 #nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(249,249,248,0.85); /* Nav clara */
+  background: rgba(242,239,232,0.85); /* Fondo claro difuminado */
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
 }
 .nav-inner {
   max-width: 1280px; margin: 0 auto;
@@ -69,15 +67,14 @@ body::after {
   font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--muted); text-decoration: none;
   transition: color 0.2s;
-  font-weight: 500;
 }
 .nav-links a:hover { color: var(--paper); }
 .btn-primary {
   font-family: 'DM Mono', monospace;
   font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-  background: var(--btn-volt); color: #0a0a0a;
+  background: var(--volt); color: #F2EFE8; /* Texto blanco en botón de color para destacar */
   padding: 10px 20px; border: none; cursor: pointer;
-  transition: opacity 0.2s; font-weight: 600;
+  transition: opacity 0.2s; font-weight: 500;
   text-decoration: none; display: inline-block;
 }
 .btn-primary:hover { opacity: 0.85; }
@@ -85,18 +82,17 @@ body::after {
   font-family: 'DM Mono', monospace;
   font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
   background: transparent; color: var(--paper);
-  padding: 10px 20px; border: 1px solid var(--paper); cursor: pointer;
+  padding: 10px 20px; border: 1px solid var(--border); cursor: pointer;
   transition: all 0.2s; text-decoration: none; display: inline-block;
-  font-weight: 500;
 }
-.btn-ghost:hover { background: var(--paper); color: var(--ink); }
+.btn-ghost:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
 .btn-hero {
   font-family: 'DM Mono', monospace;
   font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-  background: var(--btn-volt); color: #0a0a0a;
+  background: var(--volt); color: #F2EFE8;
   padding: 18px 48px; border: none; cursor: pointer;
   transition: opacity 0.2s, transform 0.2s;
-  font-weight: 600;
+  font-weight: 500;
   display: inline-flex; align-items: center; gap: 10px;
   text-decoration: none;
 }
@@ -105,12 +101,12 @@ body::after {
   font-family: 'DM Mono', monospace;
   font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
   background: transparent; color: var(--paper);
-  padding: 18px 48px; border: 1px solid var(--paper); cursor: pointer;
-  transition: all 0.2s; font-weight: 500;
+  padding: 18px 48px; border: 1px solid var(--border); cursor: pointer;
+  transition: all 0.2s;
   display: inline-flex; align-items: center; gap: 10px;
   text-decoration: none;
 }
-.btn-hero-ghost:hover { background: var(--paper); color: var(--ink); }
+.btn-hero-ghost:hover { border-color: var(--volt); color: var(--volt); }
 
 /* INFINITE TICKER (MARQUEE) */
 .ticker-wrap {
@@ -121,9 +117,7 @@ body::after {
   overflow: hidden;
   padding: 14px 0;
   display: flex;
-  background: rgba(10,10,10,0.02); /* Sutil diferenciador de fondo */
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.02); /* Fondo sutil oscuro */
 }
 .ticker-track {
   display: flex;
@@ -152,7 +146,6 @@ body::after {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--paper);
-  font-weight: 500;
 }
 
 @keyframes ticker {
@@ -160,7 +153,7 @@ body::after {
   100% { transform: translateX(-50%); }
 }
 
-/* HERO SLIDER REDESIGN (SE QUEDA OSCURO PARA CONTRASTAR) */
+/* HERO SLIDER REDESIGN (FULL WIDTH) */
 .hero-slider-container {
   position: relative;
   width: 100vw;
@@ -172,7 +165,9 @@ body::after {
   width: 100%;
   height: 200px;
   overflow: hidden;
-  background: #0a0a0a; /* Fondo estricto oscuro para el slider */
+  background: var(--ink);
+  border-top: 1px solid rgba(10,10,10,0.05);
+  border-bottom: 1px solid rgba(10,10,10,0.05);
 }
 .hero-slider {
   display: flex;
@@ -194,8 +189,9 @@ body::after {
 .hero-slide-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.2) 50%, rgba(10,10,10,0.95) 100%),
-              linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 100%);
+  /* Overlay claro hacia los bordes */
+  background: linear-gradient(90deg, rgba(242,239,232,0.95) 0%, rgba(242,239,232,0.2) 50%, rgba(242,239,232,0.95) 100%),
+              linear-gradient(to top, rgba(242,239,232,0.8) 0%, transparent 100%);
 }
 .hero-slide-content {
   position: relative;
@@ -207,15 +203,15 @@ body::after {
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  border-left: 4px solid var(--btn-volt);
+  border-left: 4px solid var(--volt);
   padding-left: 24px;
-  margin-bottom: 12px; 
+  margin-bottom: 12px;
 }
 .hero-slide-title {
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
   font-size: clamp(28px, 5vw, 42px);
-  color: #F2EFE8; /* Texto blanco forzado porque el fondo es foto oscura */
+  color: var(--paper);
   line-height: 1.1;
   text-transform: uppercase;
   letter-spacing: 0.02em;
@@ -226,7 +222,7 @@ body::after {
 .hero-slide-price-label {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
-  color: rgba(242,239,232,0.7); /* Gris claro */
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   margin-bottom: 6px;
@@ -234,11 +230,11 @@ body::after {
 .hero-slide-price {
   font-family: 'DM Mono', monospace;
   font-size: 14px;
-  color: var(--btn-volt); /* Neón vibrante resalta perfecto en lo oscuro */
+  color: var(--volt);
   font-weight: 500;
-  background: rgba(212,245,60,0.08);
+  background: rgba(149, 193, 30, 0.08); /* bg volt */
   padding: 8px 16px;
-  border: 1px solid rgba(212,245,60,0.2);
+  border: 1px solid rgba(149, 193, 30, 0.3);
   display: inline-block;
   letter-spacing: 0.05em;
 }
@@ -247,7 +243,7 @@ body::after {
   top: 0;
   bottom: 0;
   background: transparent;
-  color: rgba(242,239,232,0.6);
+  color: rgba(10,10,10,0.4);
   border: none;
   font-size: 32px;
   width: 60px;
@@ -259,8 +255,8 @@ body::after {
   transition: background 0.3s, color 0.3s;
 }
 .slider-btn:hover {
-  background: rgba(10,10,10,0.5);
-  color: var(--btn-volt);
+  background: rgba(242,239,232,0.8);
+  color: var(--volt);
 }
 .prev-btn { left: 0; }
 .next-btn { right: 0; }
@@ -277,13 +273,13 @@ body::after {
 .slider-dot {
   width: 32px;
   height: 2px;
-  background: rgba(242,239,232,0.3);
+  background: rgba(10,10,10,0.15); /* Gris oscuro */
   cursor: pointer;
   transition: background 0.3s;
 }
-.slider-dot:hover { background: rgba(242,239,232,0.7); }
+.slider-dot:hover { background: rgba(10,10,10,0.4); }
 .slider-dot.active {
-  background: var(--btn-volt);
+  background: var(--volt);
 }
 
 /* HERO */
@@ -312,7 +308,7 @@ body::after {
 .hero-sub {
   font-size: 16px; line-height: 1.75;
   color: var(--muted); max-width: 600px;
-  margin-bottom: 48px;
+  font-weight: 400; margin-bottom: 48px;
 }
 .hero-sub strong { color: var(--paper); font-weight: 600; }
 
@@ -322,7 +318,7 @@ body::after {
 /* CEDENTE SECTION */
 .cedente-wrap {
   padding: 120px 32px;
-  background: #F0EEE9; /* Beige/Gris para separar secciones */
+  background: #E6E2D6; /* Contraste sutil contra ink */
 }
 .cedente-inner { max-width: 1100px; margin: 0 auto; }
 .cedente-header { margin-bottom: 64px; }
@@ -340,7 +336,7 @@ body::after {
 }
 .cedente-header p {
   font-size: 16px; color: var(--muted); line-height: 1.75;
-  max-width: 520px;
+  max-width: 520px; font-weight: 400;
 }
 .cedente-header p strong { color: var(--paper); font-weight: 600; }
 
@@ -352,7 +348,7 @@ body::after {
   margin-bottom: 56px;
 }
 .cedente-step {
-  background: var(--ink);
+  background: #E6E2D6;
   padding: 40px 32px;
 }
 .cedente-step-num {
@@ -382,7 +378,7 @@ body::after {
   padding: 120px 32px;
   max-width: 1100px;
   margin: 0 auto;
-  background: #F0EEE9;
+  background: var(--ink);
 }
 .security-inner {
   display: grid;
@@ -402,12 +398,11 @@ body::after {
   font-style: normal;
 }
 .security-card {
-  background: var(--ink);
+  background: rgba(0,0,0,0.02);
   border: 1px solid var(--border);
   padding: 40px;
   text-align: left;
   margin-top: 32px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.03); /* Sombra elegante */
 }
 .security-row {
   display: flex;
@@ -420,16 +415,17 @@ body::after {
 .security-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
 .security-icon {
   width: 32px; height: 32px; flex-shrink: 0;
-  background: rgba(158, 189, 0, 0.1);
-  border: 1px solid rgba(158, 189, 0, 0.25);
+  background: rgba(149, 193, 30, 0.08);
+  border: 1px solid rgba(149, 193, 30, 0.3);
+  color: var(--volt);
   display: flex; align-items: center; justify-content: center;
-  font-size: 13px; color: var(--volt); font-weight: 600;
+  font-size: 13px;
 }
-.security-row-title { font-family: 'Oswald', sans-serif; font-size: 14px; color: var(--paper); margin-bottom: 4px; font-weight: 600; }
+.security-row-title { font-family: 'Oswald', sans-serif; font-size: 14px; color: var(--paper); margin-bottom: 4px; }
 .security-row-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
 /* FAQ */
-.faq-wrap { padding: 120px 32px; background: var(--ink); }
+.faq-wrap { padding: 120px 32px; }
 .faq-inner { max-width: 1280px; margin: 0 auto; }
 .faq-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; }
 .faq-title { font-family: 'Oswald', sans-serif; font-size: clamp(40px, 5vw, 78px); line-height: 0.92; color: var(--paper); }
@@ -450,7 +446,7 @@ body::after {
 
 /* CONTACT SECTION */
 .contact-wrap {
-  background: #EAE8E3; padding: 120px 32px; text-align: center;
+  background: #E6E2D6; padding: 120px 32px; text-align: center;
 }
 .contact-inner { max-width: 600px; margin: 0 auto; }
 .contact-title {
@@ -468,7 +464,6 @@ body::after {
   text-decoration: none;
   padding-bottom: 4px;
   transition: border-color 0.2s, opacity 0.2s;
-  font-weight: 500;
 }
 .contact-email:hover { opacity: 0.8; border-color: var(--volt); }
 
@@ -476,7 +471,6 @@ body::after {
 .footer {
   background: var(--ink);
   padding: 24px 32px;
-  border-top: 1px solid var(--border);
 }
 .footer-inner {
   max-width: 1280px; margin: 0 auto;
@@ -499,36 +493,36 @@ body::after {
 /* MOBILE NAV */
 #mobileMenu {
   display: none; position: absolute; top: 100%; left: 0; right: 0;
-  background: rgba(249,249,248,0.98); border-bottom: 1px solid var(--border);
+  background: rgba(242,239,232,0.97); border-bottom: 1px solid var(--border);
   padding: 20px 24px; flex-direction: column; gap: 16px;
 }
 #mobileMenu.open { display: flex; }
 #mobileMenu a {
   font-family: 'DM Mono', monospace; font-size: 12px;
   letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--paper); text-decoration: none; padding: 8px 0;
-  border-bottom: 1px solid var(--border); font-weight: 500;
+  color: var(--muted); text-decoration: none; padding: 8px 0;
+  border-bottom: 1px solid var(--border);
 }
 
 /* MODALS */
 .modal-bg {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px); z-index: 200; display: none;
+  position: fixed; inset: 0; background: rgba(242,239,232,0.85); /* Fondo claro en modal */
+  backdrop-filter: blur(8px); z-index: 200; display: none;
   align-items: center; justify-content: center; padding: 24px;
 }
 .modal-bg.open { display: flex; }
 .modal-panel {
-  background: var(--ink); border: 1px solid var(--border);
+  background: #FFFFFF; border: 1px solid var(--border);
   width: 100%; max-width: 480px; max-height: 90vh;
   overflow-y: auto; position: relative;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 .modal-panel::-webkit-scrollbar { width: 4px; }
 .modal-panel::-webkit-scrollbar-thumb { background: var(--border); }
 .modal-header {
   padding: 24px 28px; border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; background: var(--ink); z-index: 1;
+  position: sticky; top: 0; background: #FFFFFF; z-index: 1;
 }
 .modal-title {
   font-family: 'Oswald', sans-serif; font-weight: 600;
@@ -602,8 +596,8 @@ body::after {
   padding: 56px 52px; background: var(--ink);
 }
 
-.tl-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--volt); margin-bottom: 10px; font-weight: 500;}
-.tl-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(10,10,10,0.1); display: block; margin-bottom: 8px; }
+.tl-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--volt); margin-bottom: 10px; }
+.tl-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(10,10,10,0.15); display: block; margin-bottom: 8px; }
 .tl-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 28px; color: var(--paper); margin-bottom: 14px; line-height: 1.15; letter-spacing: -0.01em; }
 .tl-body { font-size: 14px; color: var(--muted); line-height: 1.75; }
 
@@ -638,7 +632,7 @@ body::after {
 }
 .check-dot {
   width: 22px; height: 22px; border-radius: 50%;
-  background: var(--btn-volt); color: #0a0a0a;
+  background: var(--volt); color: #F2EFE8;
   display: flex; align-items: center; justify-content: center;
   font-size: 11px; font-weight: bold; flex-shrink: 0;
 }
@@ -696,7 +690,7 @@ body::after {
 <nav id="nav">
   <div class="nav-inner">
     <div>
-      <img src="darklogo.png" alt="Yunus" style="height:145px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoNav').style.display='block'">
+      <img src="lightlogo.png" alt="Yunus" style="height:145px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoNav').style.display='block'">
       <span id="logoNav" style="display:none;font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--paper);">YUNUS</span>
     </div>
     <div class="nav-links">
@@ -710,8 +704,8 @@ body::after {
   <div id="mobileMenu">
     <a href="#como-funciona" onclick="toggleMenu()">Cómo funciona</a>
     <a href="#cedentes" onclick="toggleMenu()">Ceder boleto</a>
-    <a href="marketplace.html" style="background:var(--btn-volt);color:#0a0a0a;text-align:center;padding:14px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Ver boletos →</a>
-    <a href="boveda.html" style="border:1px solid var(--paper);text-align:center;padding:14px;margin-top:8px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Iniciar sesión →</a>
+    <a href="marketplace.html" style="background:var(--volt);color:#F2EFE8;text-align:center;padding:14px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Ver boletos →</a>
+    <a href="boveda.html" style="border:1px solid var(--border);color:var(--paper);text-align:center;padding:14px;margin-top:8px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Iniciar sesión →</a>
   </div>
 </nav>
 
@@ -958,7 +952,7 @@ body::after {
           </div>
         </div>
         <div class="security-row">
-          <div class="security-icon" style="background:rgba(158,189,0,0.1);border-color:rgba(158,189,0,0.25);">✓</div>
+          <div class="security-icon" style="background:rgba(149, 193, 30, 0.12);border-color:rgba(149, 193, 30, 0.3);">✓</div>
           <div>
             <div class="security-row-title">El cedente cobra de todas formas</div>
             <div class="security-row-body">Sin importar lo que pase con el comprador, Yunus garantiza el pago al cedente. El riesgo no lo carga quien puso el boleto.</div>
@@ -977,7 +971,7 @@ body::after {
       </div>
     </div>
     <div>
-      <img src="Reventa.jpeg" alt="Modelo de protección Yunus" style="width:100%;border:1px solid var(--border);box-shadow:0 20px 40px rgba(0,0,0,0.15);">
+      <img src="Reventa.jpeg" alt="Modelo de protección Yunus" style="width:100%;border:1px solid var(--border);box-shadow:0 20px 40px rgba(0,0,0,0.2);">
     </div>
   </div>
 </div>
@@ -1071,7 +1065,7 @@ body::after {
 </div>
 
 <div class="bottom-cta reveal">
-    <img src="Demo.png" alt="Demo de Yunus" style="max-width: 100%; width: 480px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));">
+    <img src="Demo.png" alt="Demo de Yunus" style="max-width: 100%; width: 480px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.2));">
     <h3>Asegura tu lugar<br><span class="accent">hoy mismo</span></h3>
     <div class="checklist">
       <div class="check-item"><div class="check-dot">✓</div><span class="check-label">Sin revisar buró</span></div>
@@ -1097,7 +1091,7 @@ body::after {
 <footer class="footer">
   <div class="footer-inner">
     <div>
-      <img src="darklogo.png" alt="Yunus" style="height:120px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoFooter').style.display='block'">
+      <img src="lightlogo.png" alt="Yunus" style="height:120px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoFooter').style.display='block'">
       <span id="logoFooter" style="display:none;font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--paper);">YUNUS</span>
     </div>
     <div class="footer-copy">De fans para fans · Paso del Norte Labs · Ciudad Juárez, México</div>
@@ -1142,9 +1136,9 @@ function buildSlide(e) {
       return `<a href="marketplace.html" class="hero-slide" style="background-image: url('${e.img}');">
         <div class="hero-slide-overlay"></div>
         <div class="hero-slide-content">
-          <div class="hero-slide-title">\${e.name}</div>
+          <div class="hero-slide-title">${e.name}</div>
           <div class="hero-slide-price-wrap">
-            <div class="hero-slide-price" style="background:transparent; border-color:rgba(242,239,232,0.4); color:#F2EFE8;">\${priceText}</div>
+            <div class="hero-slide-price" style="background:transparent; border-color:var(--muted); color:var(--muted);">${priceText}</div>
           </div>
         </div>
       </a>`;
@@ -1155,10 +1149,10 @@ function buildSlide(e) {
   return `<a href="marketplace.html" class="hero-slide" style="background-image: url('${e.img}');">
     <div class="hero-slide-overlay"></div>
     <div class="hero-slide-content">
-      <div class="hero-slide-title">\${e.name}</div>
+      <div class="hero-slide-title">${e.name}</div>
       <div class="hero-slide-price-wrap">
         <div class="hero-slide-price-label">Desde</div>
-        <div class="hero-slide-price">\${priceAmount}</div>
+        <div class="hero-slide-price">${priceAmount}</div>
       </div>
     </div>
   </a>`;
@@ -1166,7 +1160,7 @@ function buildSlide(e) {
 
 function updateSlider() {
   const track = document.getElementById('heroSlider');
-  if (track) track.style.transform = `translateX(-\${currentSlide * 100}%)`;
+  if (track) track.style.transform = `translateX(-${currentSlide * 100}%)`;
   document.querySelectorAll('.slider-dot').forEach((dot, i) => {
     dot.classList.toggle('active', i === currentSlide);
   });
@@ -1204,7 +1198,7 @@ function resetSlideTimer() {
   const dots = document.getElementById('sliderDots');
   if (!track || !dots) return;
   track.innerHTML = events.map(buildSlide).join('');
-  dots.innerHTML = events.map((_, i) => `<div class="slider-dot \${i===0?'active':''}" onclick="goToSlide(\${i})"></div>`).join('');
+  dots.innerHTML = events.map((_, i) => `<div class="slider-dot ${i===0?'active':''}" onclick="goToSlide(${i})"></div>`).join('');
   startSlideTimer();
 })();
 
