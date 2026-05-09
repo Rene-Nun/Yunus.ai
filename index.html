@@ -203,6 +203,7 @@ body::after {
   margin: 0 auto;
   border-left: 4px solid var(--volt);
   padding-left: 24px;
+  margin-bottom: 12px; /* Espacio para que no choque con los dots abajo */
 }
 .hero-slide-title {
   font-family: 'Oswald', sans-serif;
@@ -261,8 +262,10 @@ body::after {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-top: 16px;
-  position: relative;
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
   z-index: 10;
 }
 .slider-dot {
@@ -717,8 +720,8 @@ body::after {
       <div id="heroSlider" class="hero-slider"></div>
       <button class="slider-btn prev-btn" onclick="prevSlide()">&#10094;</button>
       <button class="slider-btn next-btn" onclick="nextSlide()">&#10095;</button>
+      <div class="slider-dots" id="sliderDots"></div>
     </div>
-    <div class="slider-dots" id="sliderDots"></div>
   </div>
 
   <p class="hero-sub">
@@ -1124,7 +1127,7 @@ let currentSlide = 0;
 let slideInterval;
 
 function buildSlide(e) {
-  let priceText = e.price.replace(/Desde/i, '').trim();
+  let priceText = e.price;
   if (priceText.toLowerCase() === 'x confirmar') {
       return `<a href="marketplace.html" class="hero-slide" style="background-image: url('${e.img}');">
         <div class="hero-slide-overlay"></div>
@@ -1137,13 +1140,15 @@ function buildSlide(e) {
       </a>`;
   }
   
+  let priceAmount = priceText.replace(/Desde/i, '').trim();
+  
   return `<a href="marketplace.html" class="hero-slide" style="background-image: url('${e.img}');">
     <div class="hero-slide-overlay"></div>
     <div class="hero-slide-content">
       <div class="hero-slide-title">${e.name}</div>
       <div class="hero-slide-price-wrap">
-        <div class="hero-slide-price-label">A partir de</div>
-        <div class="hero-slide-price">${priceText}</div>
+        <div class="hero-slide-price-label">Desde</div>
+        <div class="hero-slide-price">${priceAmount}</div>
       </div>
     </div>
   </a>`;
