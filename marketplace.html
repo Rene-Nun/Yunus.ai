@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yunus — Marketplace</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -15,851 +15,355 @@
   --card-bg: #111111;
   --red: #ef4444;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 ::selection { background: var(--volt); color: var(--ink); }
-
-html, body {
-min-height: 100dvh;
-background: var(--ink);
-color: var(--paper);
-font-family: 'DM Sans', sans-serif;
-font-weight: 300;
-overflow-x: hidden;
-}
-
+html, body { min-height: 100dvh; background: var(--ink); color: var(--paper); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
 body::after {
-content: '';
-position: fixed; inset: 0;
-pointer-events: none; z-index: 9999; opacity: 0.03;
-background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-background-size: 128px;
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 128px;
 }
 
-/* ═══════════════════════════
-ACCESS LAYER
-═══════════════════════════ */
-#accessLayer {
-position: fixed; inset: 0; z-index: 500;
-background: var(--ink);
-display: flex; flex-direction: column;
+/* ═══════ AUTH MODAL ═══════ */
+#authModal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.82);
+  backdrop-filter: blur(10px); z-index: 500;
+  display: none; align-items: flex-end; justify-content: center;
 }
-#accessLayer.hidden { display: none; }
+#authModal.open { display: flex; }
+.auth-sheet {
+  width: 100%; max-width: 480px;
+  background: #0f0f0f; border-top: 1px solid var(--border);
+  border-radius: 20px 20px 0 0;
+  max-height: 92dvh; overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+}
+#authModal.open .auth-sheet { transform: translateY(0); }
+.auth-handle { display: flex; justify-content: center; padding: 14px 0 0; }
+.auth-handle-bar { width: 36px; height: 4px; border-radius: 2px; background: rgba(242,239,232,0.15); }
+.auth-body { padding: 24px 28px 48px; }
+.auth-view { display: none; }
+.auth-view.active { display: block; }
+.auth-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--paper); letter-spacing: 0.04em; line-height: 1; margin-bottom: 6px; }
+.auth-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
 
-.access-screen {
-display: none;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-flex: 1;
-padding: 32px 24px;
-overflow-y: auto;
-}
-.access-screen.active { display: flex; }
-
-/* Código screen */
-.codigo-inner {
-position: relative; z-index: 1;
-width: 100%; max-width: 360px;
-display: flex; flex-direction: column; align-items: center;
-}
-.codigo-logo {
-width: 110px; height: 110px; object-fit: contain;
-margin-bottom: 40px;
-opacity: 0; animation: fadeUp 0.6s ease 0.1s both;
-}
-.codigo-label {
-font-family: 'DM Mono', monospace;
-font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
-color: var(--muted); margin-bottom: 16px; text-align: center;
-opacity: 0; animation: fadeUp 0.5s ease 0.2s both;
-}
-#codigoInput {
-width: 100%;
-background: transparent; border: none;
-border-bottom: 1px solid rgba(242,239,232,0.2);
-padding: 16px 0;
-font-family: 'DM Mono', monospace;
-font-size: 22px; letter-spacing: 0.25em; text-transform: uppercase;
-text-align: center; color: var(--paper); outline: none;
-transition: border-color 0.3s;
-opacity: 0; animation: fadeUp 0.5s ease 0.3s both;
-}
-#codigoInput::placeholder { color: rgba(242,239,232,0.15); }
-#codigoInput:focus { border-color: var(--volt); }
-#codigoError {
-display: none;
-font-family: 'DM Mono', monospace;
-font-size: 10px; letter-spacing: 0.1em;
-color: var(--red); margin-top: 12px; text-align: center;
-}
-#btnEntrarCodigo {
-width: 100%; margin-top: 32px;
-background: var(--volt); color: var(--ink);
-font-family: 'DM Mono', monospace;
-font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-border: none; padding: 16px; cursor: pointer;
-font-weight: 500; transition: opacity 0.2s;
-opacity: 0; animation: fadeUp 0.5s ease 0.4s both;
-}
-#btnEntrarCodigo:hover { opacity: 0.85; }
-#btnEntrarCodigo:disabled { opacity: 0.4; cursor: not-allowed; }
-.ya-tengo-link {
-margin-top: 28px;
-font-family: 'DM Mono', monospace; font-size: 10px;
-letter-spacing: 0.14em; text-transform: uppercase;
-color: var(--muted); cursor: pointer; text-align: center;
-transition: color 0.2s;
-opacity: 0; animation: fadeUp 0.5s ease 0.5s both;
-}
-.ya-tengo-link:hover { color: var(--paper); }
-
-/* Login screen */
-.login-inner {
-width: 100%; max-width: 360px;
-display: flex; flex-direction: column; align-items: center;
-}
-.back-btn {
-align-self: flex-start; margin-bottom: 32px;
-background: none; border: none; cursor: pointer;
-font-family: 'DM Mono', monospace; font-size: 10px;
-letter-spacing: 0.12em; text-transform: uppercase;
-color: var(--muted); display: flex; align-items: center; gap: 8px;
-transition: color 0.2s;
-}
-.back-btn:hover { color: var(--paper); }
-.access-title {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 40px; color: var(--paper);
-letter-spacing: 0.04em; margin-bottom: 8px; text-align: center;
-line-height: 1;
-}
-.access-sub {
-font-size: 13px; color: var(--muted); text-align: center;
-line-height: 1.65; margin-bottom: 32px;
-}
-.input-row-acc { display: flex; gap: 0; width: 100%; margin-bottom: 12px; }
-.prefix-acc {
-padding: 14px 12px;
-background: rgba(255,255,255,0.04);
-border: 1px solid var(--border); border-right: none;
-font-family: 'DM Mono', monospace; font-size: 13px;
-color: var(--muted); flex-shrink: 0;
-}
-.input-acc {
-flex: 1; padding: 14px;
-background: rgba(255,255,255,0.04);
-border: 1px solid var(--border);
-font-size: 16px; color: var(--paper);
-font-family: inherit; outline: none;
-transition: border-color 0.2s; -webkit-appearance: none;
-}
-.input-acc:focus { border-color: var(--volt); }
-.input-acc::placeholder { color: var(--muted); }
-.btn-acc-primary {
-width: 100%; background: var(--volt); color: var(--ink);
-font-family: 'DM Mono', monospace; font-size: 11px;
-letter-spacing: 0.1em; text-transform: uppercase;
-border: none; padding: 16px; cursor: pointer;
-font-weight: 500; transition: opacity 0.2s; margin-top: 4px;
-}
-.btn-acc-primary:hover { opacity: 0.85; }
-.btn-acc-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-.acc-error {
-display: none; margin-top: 10px; padding: 10px 14px;
-background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25);
-font-family: 'DM Mono', monospace; font-size: 10px;
-letter-spacing: 0.08em; color: var(--red); text-align: center; width: 100%;
+@media (min-width: 640px) {
+  #authModal { align-items: center; }
+  .auth-sheet {
+    max-width: 420px; border-radius: 16px; border: 1px solid var(--border);
+    transform: translateY(16px) scale(0.97); opacity: 0;
+    transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.28s;
+  }
+  #authModal.open .auth-sheet { transform: translateY(0) scale(1); opacity: 1; }
+  .auth-handle { display: none; }
 }
 
-/* Registro screen */
-#screenRegistro {
-display: none; flex-direction: column;
-align-items: stretch; justify-content: flex-start;
-flex: 1; overflow-y: auto; padding: 0;
-}
-#screenRegistro.active { display: flex; }
-.reg-header {
-padding: 20px 24px; border-bottom: 1px solid var(--border);
-display: flex; align-items: center; justify-content: space-between;
-background: rgba(10,10,10,0.95); backdrop-filter: blur(12px);
-flex-shrink: 0; position: sticky; top: 0; z-index: 10;
-}
-.reg-header img { height: 36px; object-fit: contain; }
-.reg-step-label {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-}
-.reg-body { flex: 1; overflow-y: auto; padding: 32px 24px 100px; }
-.reg-body::-webkit-scrollbar { display: none; }
-.reg-title {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 40px; color: var(--paper);
-letter-spacing: 0.04em; margin-bottom: 6px; line-height: 1;
-}
-.reg-sub {
-font-size: 13px; color: var(--muted); line-height: 1.6;
-margin-bottom: 28px;
-}
-.form-group { margin-bottom: 16px; }
-.form-label {
-display: block; font-family: 'DM Mono', monospace;
-font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
-color: var(--muted); margin-bottom: 8px;
-}
-.form-input {
-width: 100%; padding: 14px 16px;
-background: rgba(255,255,255,0.04);
-border: 1px solid var(--border);
-color: var(--paper); font-family: 'DM Sans', sans-serif;
-font-size: 15px; outline: none;
-transition: border-color 0.2s; -webkit-appearance: none;
-}
-.form-input:focus { border-color: var(--volt); }
-.form-input::placeholder { color: var(--muted); }
-.prefix-wrap { display: flex; }
-.prefix-tag {
-padding: 14px 12px;
-background: rgba(255,255,255,0.04);
-border: 1px solid var(--border); border-right: none;
-font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted);
-}
-.prefix-wrap .form-input { border-left: none; }
-.terms-wrap {
-display: flex; align-items: flex-start; gap: 12px;
-background: rgba(255,255,255,0.03);
-border: 1px solid var(--border); padding: 14px; margin-top: 8px;
-}
-.terms-wrap input[type=checkbox] {
-width: 16px; height: 16px; margin-top: 2px;
-flex-shrink: 0; accent-color: var(--volt);
-}
-.terms-wrap label { font-size: 12px; color: var(--muted); line-height: 1.6; cursor: pointer; }
-.terms-wrap label span { color: var(--paper); text-decoration: underline; cursor: pointer; }
-#regError {
-font-family: 'DM Mono', monospace; font-size: 10px;
-letter-spacing: 0.08em; color: var(--red);
-margin-top: 10px; display: none;
-}
-.reg-footer {
-padding: 14px 24px; background: rgba(10,10,10,0.95);
-border-top: 1px solid var(--border);
-backdrop-filter: blur(12px); flex-shrink: 0;
-position: sticky; bottom: 0;
-}
-
-/* Bienvenida screen */
-#screenBienvenida { text-align: center; }
-.bienvenida-inner {
-width: 100%; max-width: 320px;
-display: flex; flex-direction: column; align-items: center;
-}
-.check-icon {
-width: 60px; height: 60px; background: var(--volt);
-display: flex; align-items: center; justify-content: center;
-margin-bottom: 20px;
-}
-.bienvenida-title {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 48px; color: var(--paper);
-letter-spacing: 0.04em; line-height: 0.95; margin-bottom: 10px;
-}
-.bienvenida-sub { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; }
-.btn-ir {
-width: 100%; background: var(--volt); color: var(--ink);
-font-family: 'DM Mono', monospace; font-size: 11px;
-letter-spacing: 0.12em; text-transform: uppercase;
-border: none; padding: 16px; cursor: pointer;
-font-weight: 500; transition: opacity 0.2s;
-}
-.btn-ir:hover { opacity: 0.85; }
-
-/* ═══════════════════════════
-MAIN APP
-═══════════════════════════ */
-#mainApp { display: none; }
-#mainApp.visible { display: block; }
-
-/* HEADER */
+/* ═══════ HEADER ═══════ */
 header {
-position: sticky; top: 0; z-index: 100;
-background: rgba(10,10,10,0.92);
-backdrop-filter: blur(16px);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,10,0.92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
 }
 .header-inner {
-max-width: 480px; margin: 0 auto;
-padding: 0 20px; height: 60px;
-display: flex; align-items: center; justify-content: space-between;
+  max-width: 1280px; margin: 0 auto;
+  padding: 0 20px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
 }
-.header-left {
-display: flex; align-items: center; gap: 12px;
+.header-left { display: flex; align-items: center; gap: 12px; }
+.btn-session {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.05); color: var(--muted);
+  border: 1px solid var(--border); cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
 }
-.btn-boveda {
-width: 36px; height: 36px; border-radius: 50%;
-background: var(--volt); color: var(--ink);
-border: none; cursor: pointer; flex-shrink: 0;
-display: flex; align-items: center; justify-content: center;
-transition: opacity 0.2s;
-}
-.btn-boveda:hover { opacity: 0.85; }
+.btn-session:hover { border-color: var(--paper); color: var(--paper); }
+.btn-session.has-session { background: var(--volt); color: var(--ink); border-color: var(--volt); }
+.btn-session.has-session:hover { opacity: 0.85; }
 .header-logo { height: 110px; display: block; }
 .btn-ceder {
-display: flex; align-items: center; gap: 6px;
-background: transparent;
-border: 1px solid var(--border);
-color: var(--muted);
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.12em; text-transform: uppercase;
-padding: 8px 12px; cursor: pointer;
-transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+  background: transparent; border: 1px solid var(--border); color: var(--muted);
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 8px 12px; cursor: pointer; transition: all 0.2s;
 }
 .btn-ceder:hover { border-color: var(--volt); color: var(--volt); }
+@media (min-width: 640px) { .header-inner { padding: 0 32px; } .btn-ceder { font-size: 10px; padding: 9px 16px; } }
+@media (min-width: 1024px) { .header-inner { padding: 0 48px; } }
 
-/* INTRO STRIP */
-.intro-strip {
-max-width: 480px; margin: 0 auto;
-padding: 20px 20px 0;
-}
+/* ═══════ INTRO ═══════ */
+.intro-strip { max-width: 1280px; margin: 0 auto; padding: 20px 20px 0; }
 .intro-label {
-font-family: 'DM Mono', monospace;
-font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-color: var(--muted);
-display: flex; align-items: center; gap: 12px; margin-bottom: 0;
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); display: flex; align-items: center; gap: 12px;
 }
 .intro-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+@media (min-width: 640px) { .intro-strip { padding: 28px 32px 0; } }
+@media (min-width: 1024px) { .intro-strip { padding: 36px 48px 0; } }
 
-/* EVENTS GRID */
-main { max-width: 480px; margin: 0 auto; }
-.boletos-grid { padding: 16px 20px 40px; display: flex; flex-direction: column; gap: 20px; }
+/* ═══════ EVENTS GRID ═══════ */
+main { max-width: 1280px; margin: 0 auto; }
+.boletos-grid {
+  padding: 16px 20px 80px;
+  display: grid; grid-template-columns: 1fr; gap: 16px;
+}
+@media (min-width: 600px) { .boletos-grid { grid-template-columns: repeat(2, 1fr); padding: 20px 32px 80px; gap: 20px; } }
+@media (min-width: 1024px) { .boletos-grid { grid-template-columns: repeat(3, 1fr); padding: 24px 48px 100px; gap: 24px; } }
 
-/* EVENT CARD */
+/* ═══════ EVENT CARD ═══════ */
 .evento-card {
-background: var(--card-bg);
-border: 1px solid var(--border);
-overflow: hidden;
-transition: border-color 0.25s, transform 0.25s;
+  background: var(--card-bg); border: 1px solid var(--border);
+  overflow: hidden; transition: border-color 0.25s, transform 0.25s;
+  cursor: pointer; display: flex; flex-direction: column;
 }
 .evento-card:hover { border-color: rgba(212,245,60,0.3); transform: translateY(-2px); }
-
-.evento-img-wrap { position: relative; width: 100%; height: 168px; overflow: hidden; }
-.evento-img {
-width: 100%; height: 100%; object-fit: cover; display: block;
-filter: brightness(0.6) saturate(0.85);
-transition: filter 0.3s;
-}
+.evento-img-wrap { position: relative; width: 100%; height: 180px; overflow: hidden; flex-shrink: 0; }
+.evento-img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.6) saturate(0.85); transition: filter 0.3s; }
 .evento-card:hover .evento-img { filter: brightness(0.75) saturate(1); }
-
-.evento-badge {
-position: absolute; top: 12px; left: 12px;
-font-family: 'DM Mono', monospace; font-size: 8px;
-letter-spacing: 0.14em; text-transform: uppercase;
-padding: 4px 10px; background: var(--volt); color: var(--ink);
-font-weight: 500;
-}
 .evento-precio-badge {
-position: absolute; bottom: 12px; right: 12px;
-font-family: 'Bebas Neue', sans-serif; font-size: 22px;
-letter-spacing: 0.04em; color: var(--volt);
-background: rgba(10,10,10,0.82); padding: 5px 12px;
-backdrop-filter: blur(8px);
+  position: absolute; bottom: 12px; right: 12px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.04em; color: var(--volt);
+  background: rgba(10,10,10,0.82); padding: 5px 12px; backdrop-filter: blur(8px);
 }
-
-/* Indicador de boletos disponibles */
-.disponibles-dot {
-position: absolute; top: 12px; right: 12px;
-display: flex; align-items: center; gap: 6px;
-background: rgba(10,10,10,0.75); backdrop-filter: blur(8px);
-padding: 5px 10px;
-}
-.dot-pulse {
-width: 6px; height: 6px; border-radius: 50%;
-background: var(--volt);
-animation: dotPulse 2s infinite;
-}
-.dot-pulse.amber { background: #f59e0b; animation: dotPulse 2s infinite; }
-@keyframes dotPulse {
-0%, 100% { opacity: 1; transform: scale(1); }
-50% { opacity: 0.5; transform: scale(0.85); }
-}
-.disponibles-label {
-font-family: 'DM Mono', monospace; font-size: 8px;
-letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper);
-}
-
-.evento-body { padding: 18px 20px 20px; }
-.evento-nombre {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 30px; letter-spacing: 0.04em; color: var(--paper);
-line-height: 1; margin-bottom: 6px;
-}
-.evento-meta {
-display: flex; align-items: center; gap: 10px;
-margin-bottom: 16px;
-}
-.evento-tag {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-}
-.evento-fecha {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.08em; color: var(--muted);
-}
+.evento-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
+.evento-nombre { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.04em; color: var(--paper); line-height: 1; margin-bottom: 6px; }
+.evento-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.evento-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.evento-fecha { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; color: var(--muted); }
 .evento-fecha::before { content: '·'; margin-right: 10px; opacity: 0.4; }
-
-.evento-desc {
-font-size: 12px; color: var(--muted); line-height: 1.65;
-margin-bottom: 16px;
-}
-
-/* Botones de acción duales */
-.evento-actions { display: flex; flex-direction: column; gap: 8px; }
+.evento-desc { font-size: 12px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; flex: 1; }
 .btn-ver-boletos {
-width: 100%; padding: 14px;
-background: var(--volt); color: var(--ink);
-font-family: 'DM Mono', monospace; font-size: 11px;
-letter-spacing: 0.1em; text-transform: uppercase;
-border: none; cursor: pointer; font-weight: 500;
-transition: opacity 0.2s;
-display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 14px; background: var(--volt); color: var(--ink);
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  border: none; cursor: pointer; font-weight: 500; transition: opacity 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .btn-ver-boletos:hover { opacity: 0.85; }
-/* Botón de acción */
-/* Perforación decorativa */
+.btn-ver-boletos:disabled { opacity: 0.4; cursor: not-allowed; }
 .card-perf {
-display: flex; align-items: center;
-padding: 0 18px; position: relative; margin: 0 -1px;
+  display: flex; align-items: center; padding: 0 18px; position: relative; margin: 0 -1px;
 }
-.card-perf::before {
-content: ''; position: absolute; left: -7px;
-width: 14px; height: 14px; border-radius: 50%;
-background: var(--ink); border: 1px solid var(--border); z-index: 1;
-}
-.card-perf::after {
-content: ''; position: absolute; right: -7px;
-width: 14px; height: 14px; border-radius: 50%;
-background: var(--ink); border: 1px solid var(--border); z-index: 1;
-}
-.perf-line {
-flex: 1; height: 1px;
-background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 5px, transparent 5px, transparent 10px);
-}
-.perf-label {
-font-family: 'DM Mono', monospace; font-size: 8px;
-letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-padding: 8px 10px; flex-shrink: 0;
-}
+.card-perf::before { content: ''; position: absolute; left: -7px; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); border: 1px solid var(--border); z-index: 1; }
+.card-perf::after { content: ''; position: absolute; right: -7px; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); border: 1px solid var(--border); z-index: 1; }
+.perf-line { flex: 1; height: 1px; background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 5px, transparent 5px, transparent 10px); }
+.perf-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); padding: 8px 10px; flex-shrink: 0; }
 
-/* ═══════════════════════════
-PANEL FLOTANTE — BOLETOS Y CHECKOUT
-═══════════════════════════ */
+/* ═══════ PANEL ═══════ */
 .panel-bg {
-position: fixed; inset: 0;
-background: rgba(0,0,0,0.75);
-backdrop-filter: blur(8px);
-z-index: 400;
-display: none; align-items: flex-end; justify-content: center;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px); z-index: 400;
+  display: none; align-items: flex-end; justify-content: center;
 }
 .panel-bg.open { display: flex; }
-
 .panel-sheet {
-width: 100%; max-width: 480px;
-background: #0f0f0f;
-border-top: 1px solid var(--border);
-border-radius: 16px 16px 0 0;
-max-height: 90dvh;
-display: flex; flex-direction: column;
-transform: translateY(100%);
-transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  width: 100%; max-width: 480px; background: #0f0f0f;
+  border-top: 1px solid var(--border); border-radius: 20px 20px 0 0;
+  max-height: 90dvh; display: flex; flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
 }
 .panel-bg.open .panel-sheet { transform: translateY(0); }
-
-.panel-handle {
-display: flex; justify-content: center; padding: 12px 0 4px;
-flex-shrink: 0;
+@media (min-width: 640px) {
+  .panel-bg { align-items: center; }
+  .panel-sheet {
+    max-width: 520px; border-radius: 16px; border: 1px solid var(--border);
+    transform: translateY(20px) scale(0.97); opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.3s;
+  }
+  .panel-bg.open .panel-sheet { transform: translateY(0) scale(1); opacity: 1; }
 }
-.panel-handle-bar {
-width: 36px; height: 4px; border-radius: 2px;
-background: rgba(242,239,232,0.15);
-}
-
+.panel-handle { display: flex; justify-content: center; padding: 14px 0 4px; flex-shrink: 0; }
+.panel-handle-bar { width: 36px; height: 4px; border-radius: 2px; background: rgba(242,239,232,0.15); }
+@media (min-width: 640px) { .panel-handle { display: none; } }
 .panel-header {
-padding: 4px 20px 16px;
-border-bottom: 1px solid var(--border);
-flex-shrink: 0;
-position: relative;
-display: flex;
-flex-direction: column;
+  padding: 4px 20px 16px; border-bottom: 1px solid var(--border);
+  flex-shrink: 0; position: relative; display: flex; flex-direction: column;
 }
-.panel-evento-nombre {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 28px; letter-spacing: 0.04em; color: var(--paper);
-line-height: 1; margin-bottom: 4px;
-transition: padding-left 0.3s;
-}
-.panel-evento-meta {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-transition: padding-left 0.3s;
-}
-.panel-close {
-position: absolute; top: 0; right: 20px;
-background: none; border: none; cursor: pointer;
-color: var(--muted); font-size: 22px; line-height: 1; padding: 4px;
-transition: color 0.2s;
-}
+.panel-evento-nombre { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.04em; color: var(--paper); line-height: 1; margin-bottom: 4px; transition: padding-left 0.3s; }
+.panel-evento-meta { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: padding-left 0.3s; }
+.panel-close { position: absolute; top: 0; right: 20px; background: none; border: none; cursor: pointer; color: var(--muted); font-size: 22px; line-height: 1; padding: 4px; transition: color 0.2s; }
 .panel-close:hover { color: var(--paper); }
-
-.panel-back {
-position: absolute; top: 0; left: 16px;
-background: none; border: none; cursor: pointer;
-color: var(--muted); padding: 4px; display: none;
-transition: color 0.2s; align-items: center; justify-content: center;
-}
+.panel-back { position: absolute; top: 0; left: 16px; background: none; border: none; cursor: pointer; color: var(--muted); padding: 4px; display: none; transition: color 0.2s; align-items: center; }
 .panel-back:hover { color: var(--paper); }
-.panel-header.has-back .panel-evento-nombre,
-.panel-header.has-back .panel-evento-meta {
-padding-left: 32px;
-}
+.panel-header.has-back .panel-evento-nombre, .panel-header.has-back .panel-evento-meta { padding-left: 32px; }
 .panel-header.has-back .panel-back { display: flex; }
-
-.panel-body {
-flex: 1; overflow-y: auto; padding: 16px 20px 32px;
-}
+.panel-body { flex: 1; overflow-y: auto; padding: 16px 20px 32px; }
 .panel-body::-webkit-scrollbar { display: none; }
 
+/* Panel inner elements */
 .panel-section-label {
-font-family: 'DM Mono', monospace;
-font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-color: var(--muted); margin-bottom: 12px;
-display: flex; align-items: center; gap: 10px;
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
 }
 .panel-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-/* Mapa del recinto placeholder */
-.recinto-map {
-width: 100%; height: 180px;
-background: #161616;
-border: 1px solid var(--border);
-display: flex; align-items: center; justify-content: center;
-margin-bottom: 20px; position: relative; overflow: hidden;
-}
-.recinto-map img {
-width: 100%; height: 100%; object-fit: contain;
-}
-.recinto-map-placeholder {
-display: flex; flex-direction: column; align-items: center; gap: 8px;
-}
-.recinto-map-placeholder span {
-font-family: 'DM Mono', monospace; font-size: 9px;
-letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
-}
-
-/* Boletos en panel */
-.boleto-item {
-background: var(--card-bg);
-border: 1px solid var(--border);
-padding: 16px 18px;
-margin-bottom: 10px;
-display: flex; align-items: center; justify-content: space-between;
-gap: 12px;
-transition: border-color 0.2s;
-cursor: pointer;
-}
+.recinto-map { width: 100%; height: 160px; background: #161616; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; overflow: hidden; }
+.recinto-map img { width: 100%; height: 100%; object-fit: contain; }
+.boleto-item { background: var(--card-bg); border: 1px solid var(--border); padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 12px; transition: border-color 0.2s; cursor: pointer; }
 .boleto-item:hover { border-color: rgba(212,245,60,0.35); }
-.boleto-item-info { flex: 1; }
-.boleto-item-zona {
-font-family: 'DM Mono', monospace; font-size: 10px;
-letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper);
-margin-bottom: 4px;
-}
-.boleto-item-detalle {
-font-size: 12px; color: var(--muted); line-height: 1.5;
-}
-.boleto-item-precio {
-font-family: 'Bebas Neue', sans-serif; font-size: 22px;
-letter-spacing: 0.04em; color: var(--volt); text-align: right; flex-shrink: 0;
-}
-.boleto-item-sub {
-font-family: 'DM Mono', monospace; font-size: 8px;
-letter-spacing: 0.08em; text-transform: uppercase;
-color: var(--muted); text-align: right;
-}
-
-.panel-empty {
-padding: 40px 0; text-align: center;
-}
+.boleto-item-zona { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); margin-bottom: 4px; }
+.boleto-item-detalle { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.boleto-item-precio { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.04em; color: var(--volt); text-align: right; flex-shrink: 0; }
+.boleto-item-sub { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: right; }
+.panel-empty { padding: 40px 0; text-align: center; }
 .panel-empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.35; }
-.panel-empty-title {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 24px; color: var(--paper); letter-spacing: 0.04em; margin-bottom: 6px;
-}
+.panel-empty-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--paper); letter-spacing: 0.04em; margin-bottom: 6px; }
 .panel-empty-sub { font-size: 12px; color: var(--muted); line-height: 1.65; }
+.panel-loading { display: flex; flex-direction: column; align-items: center; padding: 40px 0; gap: 14px; }
+.spinner-sm { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); border-top-color: var(--volt); animation: spin 0.8s linear infinite; }
 
-.panel-loading {
-display: flex; flex-direction: column; align-items: center;
-padding: 40px 0; gap: 14px;
-}
-.spinner-sm {
-width: 22px; height: 22px; border-radius: 50%;
-border: 2px solid var(--border); border-top-color: var(--volt);
-animation: spin 0.8s linear infinite;
-}
-
-/* Configurador de Plan & Checkout */
+/* Plan selector */
 .plan-selector { display: flex; gap: 8px; margin-bottom: 20px; }
-.plan-opcion {
-flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-padding: 12px; text-align: center; cursor: pointer; border-radius: 4px;
-transition: all 0.2s;
-}
-.plan-opcion.activa {
-border-color: var(--volt); background: rgba(212,245,60,0.05);
-}
-.plan-opcion-num {
-font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--paper); line-height: 1;
-}
+.plan-opcion { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.plan-opcion.activa { border-color: var(--volt); background: rgba(212,245,60,0.05); }
+.plan-opcion-num { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: var(--paper); line-height: 1; }
 .plan-opcion.activa .plan-opcion-num { color: var(--volt); }
-.plan-opcion-label {
-font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
-text-transform: uppercase; color: var(--muted); margin-top: 4px;
-}
-
-.plan-desglose {
-background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-padding: 16px; margin-bottom: 24px; border-radius: 4px;
-}
-.desglose-row {
-display: flex; justify-content: space-between; margin-bottom: 12px;
-font-size: 13px; color: var(--muted);
-}
-.desglose-row:last-child {
-margin-bottom: 0; padding-top: 12px; border-top: 1px solid var(--border);
-font-weight: 500; color: var(--paper);
-}
+.plan-opcion-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+.plan-opcion-sub { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--muted); margin-top: 2px; opacity: 0.6; }
+.plan-desglose { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 16px; margin-bottom: 24px; }
+.desglose-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; color: var(--muted); }
+.desglose-row:last-child { margin-bottom: 0; padding-top: 12px; border-top: 1px solid var(--border); color: var(--paper); }
 .desglose-val { font-family: 'DM Mono', monospace; color: var(--paper); }
 .desglose-row:last-child .desglose-val { color: var(--volt); }
 
-.checkout-resumen {
-background: var(--card-bg); border: 1px solid var(--border);
-padding: 16px; margin-bottom: 20px; border-radius: 4px;
-}
-.ine-upload {
-border: 1px dashed var(--border); padding: 24px 16px;
-text-align: center; cursor: pointer; background: rgba(255,255,255,0.02);
-transition: border-color 0.2s; border-radius: 4px; margin-bottom: 8px;
-position: relative;
-}
-.ine-upload:hover { border-color: var(--volt); }
-.ine-icon { font-size: 24px; margin-bottom: 8px; opacity: 0.5; }
-.ine-text { font-size: 12px; color: var(--muted); }
-.ine-preview { max-width: 100%; max-height: 140px; object-fit: contain; display: none; margin: 0 auto; border-radius: 4px; }
-
-/* Indicadores de progreso del Wizard */
-.wizard-progress {
-  display: flex; gap: 12px; justify-content: center; margin-bottom: 24px;
-  font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
-}
+/* Checkout */
+.checkout-resumen { background: var(--card-bg); border: 1px solid var(--border); padding: 16px; margin-bottom: 20px; }
+.wizard-progress { display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; }
 .wizard-step-ind { color: var(--muted); transition: color 0.3s; }
 .wizard-step-ind.active { color: var(--volt); }
 .wizard-step-ind.done { color: var(--paper); }
+.ine-upload { border: 1px dashed var(--border); padding: 24px 16px; text-align: center; cursor: pointer; background: rgba(255,255,255,0.02); transition: border-color 0.2s; margin-bottom: 8px; }
+.ine-upload:hover { border-color: var(--volt); }
+.ine-icon { font-size: 24px; margin-bottom: 8px; opacity: 0.5; }
+.ine-text { font-size: 12px; color: var(--muted); }
+.ine-preview { max-width: 100%; max-height: 140px; object-fit: contain; display: none; margin: 0 auto; }
+.solicitud-ok { text-align: center; padding: 32px 20px; }
+.solicitud-ok-icon { width: 48px; height: 48px; background: var(--volt); color: var(--ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
 
-.solicitud-ok { text-align: center; padding: 40px 20px; }
-.solicitud-ok-icon { width: 48px; height: 48px; background: var(--volt); color: var(--ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px; }
+/* Form elements */
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.form-input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; border-radius: 0; }
+.form-input:focus { border-color: var(--volt); }
+.form-input::placeholder { color: var(--muted); }
+.prefix-wrap { display: flex; }
+.prefix-tag { padding: 14px 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-right: none; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted); flex-shrink: 0; }
+.prefix-wrap .form-input { border-left: none; }
+.input-row-acc { display: flex; margin-bottom: 12px; }
+.prefix-acc { padding: 14px 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-right: none; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted); flex-shrink: 0; }
+.input-acc { flex: 1; padding: 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); font-size: 16px; color: var(--paper); font-family: inherit; outline: none; transition: border-color 0.2s; -webkit-appearance: none; border-radius: 0; }
+.input-acc:focus { border-color: var(--volt); }
+.input-acc::placeholder { color: var(--muted); }
+.btn-acc-primary { width: 100%; background: var(--volt); color: var(--ink); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border: none; padding: 16px; cursor: pointer; font-weight: 500; transition: opacity 0.2s; border-radius: 0; }
+.btn-acc-primary:hover { opacity: 0.85; }
+.btn-acc-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.acc-error { display: none; margin-top: 10px; padding: 10px 14px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: var(--red); text-align: center; width: 100%; }
+.terms-wrap { display: flex; align-items: flex-start; gap: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 14px; margin-top: 4px; margin-bottom: 4px; }
+.terms-wrap input[type=checkbox] { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: var(--volt); }
+.terms-wrap label { font-size: 12px; color: var(--muted); line-height: 1.6; cursor: pointer; }
 
-
-/* ═══════════════════════════
-MODAL LEGAL
-═══════════════════════════ */
-.modal-bg {
-position: fixed; inset: 0; background: rgba(0,0,0,0.75);
-backdrop-filter: blur(8px); z-index: 600; display: none;
-align-items: center; justify-content: center; padding: 24px;
-}
+/* Legal modal */
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 600; display: none; align-items: center; justify-content: center; padding: 24px; }
 .modal-bg.open { display: flex; }
-.modal-panel {
-background: #111; border: 1px solid var(--border);
-width: 100%; max-width: 480px; max-height: 88vh;
-overflow-y: auto; position: relative; border-radius: 4px;
-}
+.modal-panel { background: #111; border: 1px solid var(--border); width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; }
 .modal-panel::-webkit-scrollbar { width: 3px; }
 .modal-panel::-webkit-scrollbar-thumb { background: var(--border); }
-.modal-header {
-padding: 20px 24px; border-bottom: 1px solid var(--border);
-display: flex; align-items: center; justify-content: space-between;
-position: sticky; top: 0; background: #111; z-index: 1;
-}
-.modal-title {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 22px; color: var(--paper); letter-spacing: 0.04em;
-}
-.modal-close {
-background: none; border: none; cursor: pointer;
-color: var(--muted); font-size: 20px; line-height: 1; padding: 4px;
-transition: color 0.2s;
-}
+.modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: #111; z-index: 1; }
+.modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--paper); letter-spacing: 0.04em; }
+.modal-close { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 20px; line-height: 1; padding: 4px; transition: color 0.2s; }
 .modal-close:hover { color: var(--paper); }
-.modal-footer {
-padding: 14px 24px; border-top: 1px solid var(--border);
-position: sticky; bottom: 0; background: #111;
-}
-.legal-content {
-padding: 24px; font-size: 12px; color: var(--muted); line-height: 1.75;
-}
-.legal-content h2 {
-font-family: 'Bebas Neue', sans-serif; font-size: 22px;
-color: var(--paper); margin: 20px 0 10px; letter-spacing: 0.04em;
-}
-.legal-content h3 {
-font-family: 'DM Mono', monospace; font-weight: 500; font-size: 10px;
-text-transform: uppercase; letter-spacing: 0.1em;
-color: var(--paper); margin: 18px 0 6px;
-}
+.modal-footer { padding: 14px 24px; border-top: 1px solid var(--border); position: sticky; bottom: 0; background: #111; }
+.legal-content { padding: 24px; font-size: 12px; color: var(--muted); line-height: 1.75; }
+.legal-content h2 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--paper); margin: 20px 0 10px; letter-spacing: 0.04em; }
+.legal-content h3 { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--paper); margin: 18px 0 6px; }
 .legal-content p { margin-bottom: 10px; }
 .legal-content ul { padding-left: 18px; margin-bottom: 10px; }
 .legal-content ul li { margin-bottom: 5px; }
 .legal-content strong { color: var(--paper); font-weight: 500; }
 
-/* ═══════════════════════════
-ANIMATIONS & UTILS
-═══════════════════════════ */
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(10px); }
-to { opacity: 1; transform: translateY(0); }
-}
+/* Animations */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes spin { to { transform: rotate(360deg); } }
-
 .fade-up { animation: fadeUp 0.4s ease both; }
-.d1 { animation-delay: 0.05s; }
-.d2 { animation-delay: 0.1s; }
-.d3 { animation-delay: 0.15s; }
-.d4 { animation-delay: 0.2s; }
-.d5 { animation-delay: 0.25s; }
-.d6 { animation-delay: 0.3s; }
+.d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}
+.d4{animation-delay:.2s}.d5{animation-delay:.25s}.d6{animation-delay:.3s}
 </style>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z36FM1LNY2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-Z36FM1LNY2');
+  gtag('js', new Date()); gtag('config', 'G-Z36FM1LNY2');
 </script>
-
 </head>
 <body>
 
-<div id="accessLayer">
+<!-- ═══════ AUTH MODAL ═══════ -->
+<div id="authModal" onclick="if(event.target===this)closeAuthModal()">
+  <div class="auth-sheet" onclick="event.stopPropagation()">
+    <div class="auth-handle"><div class="auth-handle-bar"></div></div>
+    <div class="auth-body">
 
-  <div id="screenCodigo" class="access-screen active">
-    <div class="codigo-inner">
-      <img src="darklogo.png" alt="Yunus" class="codigo-logo" onerror="this.style.opacity='0'">
-      <div class="codigo-label">Acceso anticipado</div>
-      <input id="codigoInput" type="text" placeholder="CLAVE DE ACCESO"
-        maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false">
-      <div id="codigoError"></div>
-      <button id="btnEntrarCodigo" onclick="validarCodigo()">Entrar →</button>
-      <div class="ya-tengo-link" onclick="showScreen('screenLogin')">Ya tengo cuenta</div>
-    </div>
-  </div>
-
-  <div id="screenLogin" class="access-screen">
-    <div class="login-inner">
-      <button class="back-btn" onclick="showScreen('screenCodigo')">← Volver</button>
-      <h1 class="access-title">Iniciar sesión</h1>
-      <p class="access-sub">Ingresa tu número para continuar.</p>
-      <div class="input-row-acc">
-        <span class="prefix-acc">+52</span>
-        <input id="celularLoginInput" class="input-acc" type="tel"
-          placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
-      </div>
-      <button class="btn-acc-primary" onclick="iniciarSesion()">Entrar →</button>
-      <div id="loginError" class="acc-error"></div>
-    </div>
-  </div>
-
-  <div id="screenRegistro" class="access-screen">
-    <div class="reg-header">
-      <img src="darklogo.png" alt="Yunus" onerror="this.style.display='none'">
-      <span class="reg-step-label">Crear cuenta</span>
-    </div>
-    <div class="reg-body">
-      <div class="reg-title">Regístrate</div>
-      <p class="reg-sub">Solo lo esencial. Sin buró, sin complicaciones.</p>
-
-      <div class="form-group">
-        <label class="form-label">Nombre completo</label>
-        <input type="text" id="r_nombre" class="form-input" placeholder="Tu nombre completo">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Celular</label>
-        <div class="prefix-wrap">
-          <span class="prefix-tag">+52</span>
-          <input type="tel" id="r_celular" class="form-input"
-            placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
+      <!-- Login -->
+      <div id="authLoginView" class="auth-view active">
+        <div class="auth-title">Iniciar sesión</div>
+        <div class="auth-sub">Ingresa tu número para continuar.</div>
+        <div class="input-row-acc">
+          <span class="prefix-acc">+52</span>
+          <input id="authCelularInput" class="input-acc" type="tel" placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
         </div>
+        <button class="btn-acc-primary" onclick="authIniciarSesion()">Entrar →</button>
+        <div id="authLoginError" class="acc-error"></div>
+        <p style="text-align:center;margin-top:20px;font-size:12px;color:var(--muted);">
+          ¿Sin cuenta? <span onclick="showAuthView('register')" style="color:var(--volt);cursor:pointer;text-decoration:underline;">Regístrate aquí</span>
+        </p>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Edad</label>
-        <input type="number" id="r_edad" class="form-input"
-          placeholder="Ej. 25" min="18" max="99">
+      <!-- Register -->
+      <div id="authRegisterView" class="auth-view">
+        <div class="auth-title">Crear cuenta</div>
+        <div class="auth-sub">Solo lo esencial. Sin buró, sin complicaciones.</div>
+        <div class="form-group">
+          <label class="form-label">Nombre completo</label>
+          <input type="text" id="auth_nombre" class="form-input" placeholder="Tu nombre completo" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Celular</label>
+          <div class="prefix-wrap">
+            <span class="prefix-tag">+52</span>
+            <input type="tel" id="auth_celular" class="form-input" placeholder="10 dígitos" maxlength="10" inputmode="numeric" pattern="[0-9]*">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Edad</label>
+          <input type="number" id="auth_edad" class="form-input" placeholder="Ej. 25" min="18" max="99">
+        </div>
+        <div class="terms-wrap">
+          <input type="checkbox" id="auth_terms">
+          <label for="auth_terms">Acepto los <span onclick="openLegal('terms')" style="color:var(--paper);cursor:pointer;text-decoration:underline;">Términos</span> y la <span onclick="openLegal('privacy')" style="color:var(--paper);cursor:pointer;text-decoration:underline;">Política de privacidad</span></label>
+        </div>
+        <div id="authRegError" class="acc-error"></div>
+        <button class="btn-acc-primary" onclick="authSubmitRegistro()" style="margin-top:14px;">Crear cuenta →</button>
+        <p style="text-align:center;margin-top:16px;font-size:12px;color:var(--muted);">
+          ¿Ya tienes cuenta? <span onclick="showAuthView('login')" style="color:var(--volt);cursor:pointer;text-decoration:underline;">Inicia sesión</span>
+        </p>
       </div>
 
-      <div class="terms-wrap">
-        <input type="checkbox" id="r_terms">
-        <label for="r_terms">
-          He leído y acepto los
-          <span onclick="openLegal('terms')">Términos y condiciones</span>
-          y la
-          <span onclick="openLegal('privacy')">Política de privacidad</span>.
-        </label>
-      </div>
-
-      <div id="regError"></div>
-    </div>
-    <div class="reg-footer">
-      <button class="btn-acc-primary" onclick="submitRegistro()">Crear cuenta →</button>
     </div>
   </div>
+</div>
 
-  <div id="screenBienvenida" class="access-screen">
-    <div class="bienvenida-inner">
-      <div class="check-icon">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
-          stroke="#0a0a0a" stroke-width="2.5">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-      </div>
-      <div class="bienvenida-title">¡Ya estás<br>dentro!</div>
-      <p class="bienvenida-sub">
-        Explora los eventos disponibles y asegura tus boletos hoy.
-      </p>
-      <button class="btn-ir" onclick="entrarApp()">Ver eventos →</button>
-    </div>
-  </div>
-
-</div><div id="mainApp">
+<!-- ═══════ MAIN APP ═══════ -->
+<div id="mainApp">
 
   <header>
     <div class="header-inner">
       <div class="header-left">
-        <button class="btn-boveda" onclick="window.location.href='boveda.html'" aria-label="Mi Bóveda">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <rect x="3" y="11" width="18" height="11" rx="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          </svg>
-        </button>
-        <img src="darklogo.png" alt="Yunus" class="header-logo"
-          onerror="this.style.display='none'">
+        <button class="btn-session" id="btnSession" aria-label="Sesión"></button>
+        <img src="darklogo.png" alt="Yunus" class="header-logo" onerror="this.style.display='none'">
       </div>
-      <button class="btn-ceder" onclick="window.location.href='ceder.html'" aria-label="Ceder">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="12" y1="5" x2="12" y2="19"/>
-          <line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
+      <button class="btn-ceder" onclick="handleCeder()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Ceder boleto
       </button>
     </div>
@@ -873,24 +377,25 @@ to { opacity: 1; transform: translateY(0); }
     <div class="boletos-grid" id="eventosGrid"></div>
   </main>
 
-</div><div id="boletosPanel" class="panel-bg" onclick="if(event.target===this)cerrarPanel()">
+</div>
+
+<!-- ═══════ PANEL ═══════ -->
+<div id="boletosPanel" class="panel-bg" onclick="if(event.target===this)cerrarPanel()">
   <div class="panel-sheet" onclick="event.stopPropagation()">
     <div class="panel-handle"><div class="panel-handle-bar"></div></div>
-
     <div class="panel-header" id="panelHeader">
       <button class="panel-back" onclick="volverPanel()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
       </button>
       <div class="panel-evento-nombre" id="panelNombre">—</div>
       <div class="panel-evento-meta" id="panelMeta">—</div>
       <button class="panel-close" onclick="cerrarPanel()">×</button>
     </div>
-
-    <div class="panel-body" id="panelBody">
-      </div>
+    <div class="panel-body" id="panelBody"></div>
   </div>
 </div>
 
+<!-- ═══════ LEGAL MODAL ═══════ -->
 <div id="legalModal" class="modal-bg" onclick="if(event.target===this)closeLegal()">
   <div class="modal-panel" onclick="event.stopPropagation()">
     <div class="modal-header">
@@ -899,21 +404,16 @@ to { opacity: 1; transform: translateY(0); }
     </div>
     <div id="legalContent" class="legal-content"></div>
     <div class="modal-footer">
-      <button style="width:100%;background:var(--volt);color:var(--ink);
-        font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;
-        text-transform:uppercase;border:none;padding:14px;cursor:pointer;
-        font-weight:500;transition:opacity 0.2s;"
-        onclick="closeLegal()"
-        onmouseover="this.style.opacity='0.85'"
-        onmouseout="this.style.opacity='1'">Cerrar</button>
+      <button style="width:100%;background:var(--volt);color:var(--ink);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;border:none;padding:14px;cursor:pointer;font-weight:500;" onclick="closeLegal()">Cerrar</button>
     </div>
   </div>
 </div>
 
 <script>
-/* ════════════════════════════════════════
+/* ════════════════════════════════════
    DATOS DE EVENTOS
-════════════════════════════════════════ */
+   maxQuincenas: límite por evento (opciones: 2, 4, 6)
+════════════════════════════════════ */
 const EVENTOS = [
   {
     id: 'harry-styles',
@@ -922,9 +422,10 @@ const EVENTOS = [
     fecha: '10 Ago 2026',
     precio: 'Desde $263 MXN × quinc.',
     img: 'HarryS.webp',
-    descripcion: 'El ícono global del pop/rock contemporáneo llega a México. Una noche de carisma, estilo y sus más grandes éxitos.',
+    descripcion: 'El ícono global del pop/rock llega a México. Una noche de carisma, estilo y sus más grandes éxitos.',
     mapaImg: null,
-    apiKey: 'Harry Styles'
+    apiKey: 'Harry Styles',
+    maxQuincenas: 4
   },
   {
     id: 'enjambre',
@@ -935,7 +436,8 @@ const EVENTOS = [
     img: 'Enjambre.webp',
     descripcion: 'La banda referente del rock mexicano marca un hito con su primer Estadio GNP. Sintetizadores e himnos de una generación.',
     mapaImg: null,
-    apiKey: 'Enjambre'
+    apiKey: 'Enjambre',
+    maxQuincenas: 4
   },
   {
     id: 'bruno-mars',
@@ -946,7 +448,8 @@ const EVENTOS = [
     img: 'BrunoM.jpeg',
     descripcion: 'El showman del pop y R&B moderno en el Foro Sol. Música, baile y una producción espectacular.',
     mapaImg: null,
-    apiKey: 'Bruno Mars'
+    apiKey: 'Bruno Mars',
+    maxQuincenas: 6
   },
   {
     id: 'rosalia',
@@ -955,9 +458,10 @@ const EVENTOS = [
     fecha: 'Ago 2026',
     precio: 'Desde $381 MXN × quinc.',
     img: 'Rosalia.jpeg',
-    descripcion: 'La artista española más innovadora del momento llega a México con su nuevo tour. Flamenco futurista y pop experimental.',
+    descripcion: 'La artista española más innovadora llega a México. Flamenco futurista y pop experimental de otro nivel.',
     mapaImg: null,
-    apiKey: 'Rosalía Lux Tour'
+    apiKey: 'Rosalía Lux Tour',
+    maxQuincenas: 4
   },
   {
     id: 'vans-warped',
@@ -966,9 +470,10 @@ const EVENTOS = [
     fecha: '12–13 Sep 2026',
     precio: 'Desde $381 MXN × quinc.',
     img: 'VansW.webp',
-    descripcion: 'El festival de punk rock más icónico del mundo regresa a México. 2 días de mosh pits, skate y cultura alternativa.',
+    descripcion: 'El festival de punk rock más icónico del mundo regresa a México. 2 días de mosh pits y cultura alternativa.',
     mapaImg: null,
-    apiKey: 'Vans Warped Tour'
+    apiKey: 'Vans Warped Tour',
+    maxQuincenas: 6
   },
   {
     id: 'baja-beach',
@@ -979,112 +484,118 @@ const EVENTOS = [
     img: 'BajaB.jpeg',
     descripcion: 'El festival de reggaetón más grande de Baja California. 3 días de música, playa y energía sin igual.',
     mapaImg: null,
-    apiKey: 'Baja Beach Fest'
+    apiKey: 'Baja Beach Fest',
+    maxQuincenas: 4
   }
 ];
 
-/* ════════════════════════════════════════
+/* ════════════════════════════════════
    TEXTOS LEGALES
-════════════════════════════════════════ */
+════════════════════════════════════ */
 const legalTexts = {
-  terms: `<h2>TÉRMINOS Y CONDICIONES – YUNUS</h2><p><strong>Ultima actualizacion:</strong> 20 de abril de 2026</p><h3>1. ACEPTACION</h3><p>Al utilizar yunusia.com, completar el formulario de registro, enviar documentos de identificacion, o realizar cualquier pago, usted acepta de forma expresa e irrevocable estos Terminos y Condiciones en su totalidad.</p><h3>2. NATURALEZA DEL SERVICIO</h3><p>El formulario de registro constituye unicamente una <strong>solicitud de evaluacion financiera</strong>, no una contratacion definitiva ni una reserva de boleto. Yunus se reserva el derecho de admision y podra rechazar cualquier solicitud sin necesidad de justificacion.</p><h3>3. MODELO DE FINANCIAMIENTO</h3><ul><li><strong>Enganche:</strong> 15% del valor total del boleto, pagadero mediante SPEI o efectivo en Oxxo.</li><li><strong>Saldo restante:</strong> El 85% se divide en pagos quincenales hasta la fecha del evento.</li><li><strong>CAT:</strong> 36% anual (3% mensual), incluido en las cuotas. Sin cargos ocultos.</li><li><strong>Sin buro de credito:</strong> Yunus no consulta ni reporta al Buro de Credito.</li></ul><h3>4. TITULARIDAD DE CUENTA Y DEPOSITOS</h3><p>Para mantener las tasas de interes competitivas y evitar comisiones de intermediarios durante esta fase beta, los depositos via SPEI se realizaran a la cuenta bancaria personal del fundador, <strong>Christian Nuñez</strong>. Al realizar el pago, el usuario reconoce y acepta que esta cuenta es el canal oficial de recaudacion de Yunus para la etapa actual del proyecto.</p><h3>5. LA BOVEDA Y LA REPRESENTACION DEL BOLETO</h3><p>Una vez realizado el enganche, el boleto es adquirido por Yunus y resguardado en custodia. El usuario accede a una representacion visual en su Boveda personal. <strong>Esta representacion no es el boleto original</strong> ni constituye un documento de acceso al evento. La transferencia oficial del boleto via Ticketmaster ocurrira unicamente al completar el 100% de los pagos de forma exitosa.</p><h3>6. PROPIEDAD DEL BOLETO</h3><p>Durante la vigencia del plan de pagos, el boleto es propiedad de Yunus. El usuario no adquiere titularidad sobre el boleto hasta haber liquidado la totalidad del credito.</p><h3>7. INCUMPLIMIENTO DE PAGO</h3><p>Se considera incumplimiento cuando el usuario no realiza un pago dentro de los 7 dias naturales posteriores a su fecha de vencimiento. Ante un incumplimiento, Yunus activara la reventa del boleto. Si el precio de reventa no cubre el saldo insoluto y la comision, el usuario perdera la totalidad de los pagos realizados sin derecho a reembolso.</p><h3>8. CANCELACION DEL EVENTO</h3><p>En caso de cancelacion oficial del evento, Yunus gestionara el reembolso ante Ticketmaster. El monto reembolsado se aplica primero al saldo insoluto; el remanente se devuelve al usuario.</p><h3>9. VERIFICACION DE IDENTIDAD</h3><p>El usuario acepta proporcionar documentos de identidad validos (INE/IFE vigente) al momento de confirmar una compra.</p><h3>10. LEY APLICABLE</h3><p>Estos terminos se rigen por las leyes de los Estados Unidos Mexicanos. Cualquier controversia sera resuelta ante los tribunales competentes de Ciudad Juarez, Chihuahua, Mexico.</p><h3>11. CONTACTO</h3><p>yunus.soporte@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juarez, Chihuahua, Mexico</p>`,
-  privacy: `<h2>POLITICA DE PRIVACIDAD – YUNUS</h2><p><strong>Ultima actualizacion:</strong> 19 de abril de 2026</p><h3>1. DATOS QUE RECOPILAMOS</h3><ul><li><strong>Identificacion:</strong> Nombre, numero de celular y edad.</li><li><strong>Documentos de compra:</strong> Fotografia de INE al momento de confirmar una transaccion.</li><li><strong>Datos de uso:</strong> Historial de conversacion con el agente Yunus, etapa del proceso de solicitud.</li></ul><h3>2. FINALIDAD</h3><p>Los datos recopilados se utilizan exclusivamente para: verificacion de identidad, gestion del plan de pagos, y comunicacion relacionada con el servicio. <strong>NO vendemos ni compartimos datos personales con terceros, buros de credito, ni anunciantes.</strong></p><h3>3. ALMACENAMIENTO Y SEGURIDAD</h3><p>La informacion se almacena en bases de datos internas (Notion) accesibles unicamente por el equipo operador de Paso del Norte Labs.</p><h3>4. DERECHOS ARCO</h3><p>Conforme a la LFPDPPP, usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento de sus datos personales. Contactenos en yunus.soporte@proton.me.</p><h3>5. CONTACTO</h3><p>yunus.soporte@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juarez, Chihuahua, Mexico.</p>`
+  terms: `<h2>TÉRMINOS Y CONDICIONES – YUNUS</h2><p><strong>Última actualización:</strong> Mayo 2026</p><h3>1. ACEPTACIÓN</h3><p>Al utilizar yunusia.com, completar el registro, enviar documentos de identificación, o realizar cualquier pago, usted acepta estos Términos en su totalidad.</p><h3>2. NATURALEZA DEL SERVICIO</h3><p>Yunus es un <strong>marketplace de boletos con financiamiento integrado</strong>. Actúa como intermediario de confianza (escrow): conecta cedentes con compradores, custodia el boleto, y garantiza el pago al cedente. Yunus no compra boletos ni actúa como prestamista.</p><h3>3. COMISIÓN</h3><p>Yunus cobra una comisión del <strong>6% sobre el precio del cedente</strong>, ya incluida en el precio visible. Sin CAT, sin intereses, sin cargos ocultos.</p><h3>4. PROCESO PARA EL COMPRADOR</h3><ul><li><strong>Enganche:</strong> 15% del precio vía SPEI.</li><li><strong>Saldo:</strong> El 85% en cuotas quincenales (2, 4 o 6 quincenas según disponibilidad del evento).</li><li><strong>Sin buró:</strong> El boleto es el colateral.</li><li><strong>Primer comprador:</strong> Tope de $3,500 MXN en la primera transacción.</li></ul><h3>5. INCUMPLIMIENTO</h3><p>Ante incumplimiento: (1) Yunus revende el boleto con descuento progresivo; (2) el cedente recibe su pago de todas formas; (3) el comprador pierde lo invertido o recupera hasta el 90% según el precio de reventa.</p><h3>6. CONTACTO</h3><p>yunus.soporte@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juárez, Chihuahua, México</p>`,
+  privacy: `<h2>POLÍTICA DE PRIVACIDAD – YUNUS</h2><p><strong>Última actualización:</strong> Mayo 2026</p><h3>1. DATOS QUE RECOPILAMOS</h3><ul><li>Nombre, celular y edad.</li><li>KYC (cedentes): INE frente/reverso, selfie, CLABE.</li><li>Historial de uso y estado del proceso.</li></ul><h3>2. FINALIDAD</h3><p>Verificación de identidad, gestión de pagos, y comunicación del servicio. <strong>No vendemos ni compartimos datos con terceros, burós de crédito, ni anunciantes.</strong></p><h3>3. DERECHOS ARCO</h3><p>Contacto en yunus.soporte@proton.me. Respuesta en máximo 20 días hábiles.</p><h3>4. CONTACTO</h3><p>yunus.soporte@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juárez, Chihuahua, México</p>`
 };
 
-/* ════════════════════════════════════════
+/* ════════════════════════════════════
    ESTADO GLOBAL
-════════════════════════════════════════ */
-let celularDesdeWaitlist = '';
-let boletosCache = [];       
-let kycCompletado = false; // <-- AÑADIDO: Estado Global para KYC
-
-// ESTADO DEL PANEL Y CHECKOUT
+════════════════════════════════════ */
+let boletosCache = [];
+let kycCompletado = false;
 let panelEventoActual = null;
 let panelBoletoActual = null;
-let panelPlanActual = 4; // Por defecto a 4 quincenas
-let panelPaso = 1; // 1: Lista, 2: Configurar Plan, 3: Checkout
+let panelPlanActual = null;
+let panelPaso = 1;
+let pendingAction = null; // 'checkout' | 'ceder' | 'general'
 
-// Variables para el Wizard de imágenes
 let ineFrenteBase64 = null;
 let ineReversoBase64 = null;
 let selfieBase64 = null;
-let uploadStep = 1; // 1: Frente, 2: Reverso, 3: Selfie
+let uploadStep = 1;
 
-/* ════════════════════════════════════════
-   ACCESO — PANTALLAS
-════════════════════════════════════════ */
-function showScreen(id) {
-  document.querySelectorAll('.access-screen').forEach(s => s.classList.remove('active'));
-  const el = document.getElementById(id);
-  if (el) el.classList.add('active');
-  window.scrollTo(0, 0);
+/* ════════════════════════════════════
+   SESSION HELPERS
+════════════════════════════════════ */
+function hasSession() {
+  return !!localStorage.getItem('yunus_celular');
 }
 
-function entrarApp() {
-  document.getElementById('accessLayer').classList.add('hidden');
-  document.getElementById('mainApp').classList.add('visible');
-}
-
-/* ════════════════════════════════════════
-   ACCESO — CÓDIGO Y LOGIN
-════════════════════════════════════════ */
-function mostrarCodigoError(msg) {
-  const el = document.getElementById('codigoError');
-  el.textContent = msg; el.style.display = 'block';
-}
-function ocultarCodigoError() {
-  document.getElementById('codigoError').style.display = 'none';
-}
-
-async function validarCodigo() {
-  const codigo = document.getElementById('codigoInput').value.trim();
-  if (!codigo) { mostrarCodigoError('Ingresa tu código de acceso.'); return; }
-  ocultarCodigoError();
-  const btn = document.getElementById('btnEntrarCodigo');
-  btn.disabled = true;
-  btn.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border:2px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;"></span>Verificando...';
-  try {
-    const res = await fetch('/api/validar-codigo', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ codigo })
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      mostrarCodigoError(data.error || 'Código no válido.');
-      btn.disabled = false; btn.textContent = 'Entrar →'; return;
-    }
-    celularDesdeWaitlist = data.celular || '';
-    if (celularDesdeWaitlist) {
-      document.getElementById('r_celular').value = celularDesdeWaitlist.replace('+52', '');
-    }
-    btn.disabled = false; btn.textContent = 'Entrar →';
-    showScreen('screenRegistro');
-  } catch {
-    mostrarCodigoError('Error de conexión. Intenta de nuevo.');
-    btn.disabled = false; btn.textContent = 'Entrar →';
+function updateHeader() {
+  const btn = document.getElementById('btnSession');
+  if (hasSession()) {
+    btn.classList.add('has-session');
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
+    btn.onclick = () => window.location.href = 'boveda.html';
+    btn.setAttribute('aria-label', 'Mi Bóveda');
+  } else {
+    btn.classList.remove('has-session');
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+    btn.onclick = () => openAuthModal('general');
+    btn.setAttribute('aria-label', 'Iniciar sesión');
   }
 }
 
-document.getElementById('codigoInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') validarCodigo();
-});
+function handleCeder() {
+  if (hasSession()) {
+    window.location.href = 'ceder-boleto.html';
+  } else {
+    pendingAction = 'ceder';
+    openAuthModal('ceder');
+  }
+}
 
-async function iniciarSesion() {
-  const input = document.getElementById('celularLoginInput').value.trim();
-  const errEl = document.getElementById('loginError');
+/* ════════════════════════════════════
+   AUTH MODAL
+════════════════════════════════════ */
+function openAuthModal(action) {
+  pendingAction = action || 'general';
+  showAuthView('login');
+  // Reset fields
+  document.getElementById('authCelularInput').value = '';
+  document.getElementById('authLoginError').style.display = 'none';
+  document.getElementById('authModal').classList.add('open');
+}
+
+function closeAuthModal() {
+  document.getElementById('authModal').classList.remove('open');
+}
+
+function showAuthView(view) {
+  document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('active'));
+  document.getElementById(view === 'login' ? 'authLoginView' : 'authRegisterView').classList.add('active');
+}
+
+function onAuthSuccess() {
+  closeAuthModal();
+  updateHeader();
+  const action = pendingAction;
+  pendingAction = null;
+
+  if (action === 'checkout') {
+    // Panel still open — continue to step 3
+    resetWizard();
+    renderStep3();
+  } else if (action === 'ceder') {
+    window.location.href = 'ceder-boleto.html';
+  }
+  // 'general' → just update header
+}
+
+async function authIniciarSesion() {
+  const input = document.getElementById('authCelularInput').value.trim();
+  const errEl = document.getElementById('authLoginError');
   if (input.length !== 10) {
     errEl.textContent = 'Ingresa 10 dígitos válidos.';
     errEl.style.display = 'block'; return;
   }
   errEl.style.display = 'none';
-  const btn = document.querySelector('#screenLogin .btn-acc-primary');
+  const btn = document.querySelector('#authLoginView .btn-acc-primary');
   btn.disabled = true; btn.textContent = 'Verificando...';
   const numero = '+52' + input;
   try {
     const res = await fetch('/api/historial?celular=' + encodeURIComponent(numero));
     if (res.status === 404) {
-      errEl.textContent = 'Número no registrado. Solicita tu código de acceso.';
+      errEl.textContent = 'Número no registrado. Crea tu cuenta primero.';
       errEl.style.display = 'block';
       btn.disabled = false; btn.textContent = 'Entrar →'; return;
     }
@@ -1094,24 +605,25 @@ async function iniciarSesion() {
       localStorage.setItem('yunus_historial', JSON.stringify(data.historial || []));
     }
     btn.disabled = false; btn.textContent = 'Entrar →';
-    entrarApp();
+    onAuthSuccess();
   } catch {
+    // On network error still set session optimistically
     localStorage.setItem('yunus_celular', numero);
     btn.disabled = false; btn.textContent = 'Entrar →';
-    entrarApp();
+    onAuthSuccess();
   }
 }
 
-document.getElementById('celularLoginInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') iniciarSesion();
+document.getElementById('authCelularInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') authIniciarSesion();
 });
 
-async function submitRegistro() {
-  const nombre = document.getElementById('r_nombre').value.trim();
-  const celRaw = document.getElementById('r_celular').value.trim();
-  const edad   = document.getElementById('r_edad').value.trim();
-  const terms  = document.getElementById('r_terms').checked;
-  const errEl  = document.getElementById('regError');
+async function authSubmitRegistro() {
+  const nombre = document.getElementById('auth_nombre').value.trim();
+  const celRaw = document.getElementById('auth_celular').value.trim();
+  const edad   = document.getElementById('auth_edad').value.trim();
+  const terms  = document.getElementById('auth_terms').checked;
+  const errEl  = document.getElementById('authRegError');
 
   if (!nombre || celRaw.length !== 10 || !edad || parseInt(edad) < 18) {
     errEl.textContent = 'Completa todos los campos. Debes ser mayor de 18 años.';
@@ -1123,24 +635,17 @@ async function submitRegistro() {
   }
   errEl.style.display = 'none';
 
-  const btn = document.querySelector('#screenRegistro .btn-acc-primary');
+  const btn = document.querySelector('#authRegisterView .btn-acc-primary');
   btn.disabled = true;
   btn.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border:2px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;"></span>Creando cuenta...';
 
   const payload = {
-    celular:              '+52' + celRaw,
-    Nombre_completo:      nombre,
-    Edad:                 edad,
-    Entidad_federativa:   '',
-    Codigo_postal:        '',
-    Ingreso_mensual:      '',
-    Marca_celular:        '',
-    Gastos_celular:       '',
-    Gastos_vivienda:      '',
-    Gastos_automovil:     '',
-    Dependientes:         '',
-    Historial_crediticio: '',
-    Otras_deudas:         ''
+    celular: '+52' + celRaw,
+    Nombre_completo: nombre,
+    Edad: edad,
+    Entidad_federativa: '', Codigo_postal: '', Ingreso_mensual: '',
+    Marca_celular: '', Gastos_celular: '', Gastos_vivienda: '',
+    Gastos_automovil: '', Dependientes: '', Historial_crediticio: '', Otras_deudas: ''
   };
 
   try {
@@ -1158,7 +663,7 @@ async function submitRegistro() {
     localStorage.setItem('yunus_celular', '+52' + celRaw);
     localStorage.setItem('yunus_historial', JSON.stringify([]));
     btn.disabled = false; btn.textContent = 'Crear cuenta →';
-    showScreen('screenBienvenida');
+    onAuthSuccess();
   } catch {
     errEl.textContent = 'Error de conexión. Intenta de nuevo.';
     errEl.style.display = 'block';
@@ -1166,9 +671,9 @@ async function submitRegistro() {
   }
 }
 
-/* ════════════════════════════════════════
+/* ════════════════════════════════════
    RENDER EVENTOS
-════════════════════════════════════════ */
+════════════════════════════════════ */
 function renderEventos() {
   const grid = document.getElementById('eventosGrid');
   grid.innerHTML = EVENTOS.map((ev, i) => buildEventoCard(ev, i)).join('');
@@ -1176,11 +681,9 @@ function renderEventos() {
 
 function buildEventoCard(ev, i) {
   return `
-  <div class="evento-card fade-up d${Math.min(i+1,6)}">
+  <div class="evento-card fade-up d${Math.min(i+1,6)}" onclick="abrirPanel('${ev.id}')">
     <div class="evento-img-wrap">
-      <img src="${ev.img}" alt="${ev.name}" class="evento-img"
-        onerror="this.parentElement.style.background='#1a1a1a'">
-      <div class="evento-badge">Financiamiento Yunus</div>
+      <img src="${ev.img}" alt="${ev.name}" class="evento-img" onerror="this.parentElement.style.background='#1a1a1a'">
       <div class="evento-precio-badge">${ev.precio}</div>
     </div>
     <div class="evento-body">
@@ -1190,16 +693,10 @@ function buildEventoCard(ev, i) {
         <span class="evento-fecha">${ev.fecha}</span>
       </div>
       <p class="evento-desc">${ev.descripcion}</p>
-      <div class="evento-actions">
-        <button class="btn-ver-boletos" onclick="abrirPanel('${ev.id}')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <line x1="5" y1="12" x2="19" y2="12"/>
-            <polyline points="12 5 19 12 12 19"/>
-          </svg>
-          Ver boletos disponibles
-        </button>
-      </div>
+      <button class="btn-ver-boletos">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        Ver boletos disponibles
+      </button>
     </div>
     <div class="card-perf">
       <div class="perf-line"></div>
@@ -1209,103 +706,67 @@ function buildEventoCard(ev, i) {
   </div>`;
 }
 
-/* ════════════════════════════════════════
-   COMPRIMIR IMÁGENES (HELPER DEL CHAT)
-════════════════════════════════════════ */
-function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const scale = Math.min(1, maxWidth / img.width);
-        canvas.width = img.width * scale;
-        canvas.height = img.height * scale;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL('image/jpeg', calidad));
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
+/* ════════════════════════════════════
+   PANEL — NAVEGACIÓN
+════════════════════════════════════ */
+function cerrarPanel() {
+  document.getElementById('boletosPanel').classList.remove('open');
+  document.body.style.overflow = '';
+  panelEventoActual = null;
+  panelBoletoActual = null;
+  panelPlanActual = null;
+  panelPaso = 1;
+  resetWizard();
+  document.getElementById('panelHeader').classList.remove('has-back');
 }
 
-/* ════════════════════════════════════════
-   FLUJO DEL PANEL (Listado, Plan, Checkout)
-════════════════════════════════════════ */
-
-// Navegación con botón "Back" del panel
 function volverPanel() {
   if (panelPaso === 2) {
-    // Regresar al paso 1 (Lista de Boletos)
     panelPaso = 1;
     document.getElementById('panelHeader').classList.remove('has-back');
     document.getElementById('panelNombre').textContent = panelEventoActual.name;
     document.getElementById('panelMeta').textContent = panelEventoActual.tag + ' · ' + panelEventoActual.fecha;
     renderPanelBody(panelEventoActual, boletosCache);
   } else if (panelPaso === 3) {
-    // Regresar al paso 2 (Configurador del plan)
     renderStep2(panelBoletoActual);
   }
 }
 
-function cerrarPanel() {
-  const panelBg = document.getElementById('boletosPanel');
-  panelBg.classList.remove('open');
-  document.body.style.overflow = '';
-  
-  // Limpiar estados
-  panelEventoActual = null;
-  panelBoletoActual = null;
-  panelPlanActual = 4;
-  panelPaso = 1;
-  
-  // Limpiar wizard
-  ineFrenteBase64 = null;
-  ineReversoBase64 = null;
-  selfieBase64 = null;
-  uploadStep = 1;
-
-  document.getElementById('panelHeader').classList.remove('has-back');
-}
-
-// Paso 1: Lista de Boletos
+/* ════════════════════════════════════
+   PASO 1: LISTA DE BOLETOS
+════════════════════════════════════ */
 async function abrirPanel(eventoId) {
   const ev = EVENTOS.find(e => e.id === eventoId);
   if (!ev) return;
 
-  // <-- AÑADIDO: Verificamos silenciosamente si el usuario tiene KYC completado al abrir un evento
-  const celularGuardado = localStorage.getItem('yunus_celular');
-  if (celularGuardado && !kycCompletado) {
+  // Verificar KYC silenciosamente si hay sesión
+  const celular = localStorage.getItem('yunus_celular');
+  if (celular && !kycCompletado) {
     try {
-      const resKyc = await fetch(`/api/verificar-kyc?celular=${celularGuardado}`);
-      const dataKyc = await resKyc.json();
-      if (dataKyc.kycCompletado) kycCompletado = true;
-    } catch (e) { console.error("Error validando KYC", e); }
+      const r = await fetch(`/api/verificar-kyc?celular=${encodeURIComponent(celular)}`);
+      const d = await r.json();
+      if (d.kycCompletado) kycCompletado = true;
+    } catch {}
   }
-  
-  // Reset al abrir
+
   panelPaso = 1;
   panelEventoActual = ev;
-  document.getElementById('panelHeader').classList.remove('has-back');
+  // Default al primer plan disponible
+  const opciones = [2, 4, 6].filter(q => q <= (ev.maxQuincenas || 6));
+  panelPlanActual = opciones[0];
 
+  document.getElementById('panelHeader').classList.remove('has-back');
   document.getElementById('panelNombre').textContent = ev.name;
   document.getElementById('panelMeta').textContent = ev.tag + ' · ' + ev.fecha;
 
   const panelBg = document.getElementById('boletosPanel');
-  const panelBody = document.getElementById('panelBody');
   panelBg.classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  panelBody.innerHTML = `
+  document.getElementById('panelBody').innerHTML = `
     <div class="panel-loading">
       <div class="spinner-sm"></div>
-      <span style="font-family:'DM Mono',monospace;font-size:9px;
-        letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">
-        Cargando boletos...
-      </span>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">Cargando boletos...</span>
     </div>`;
 
   try {
@@ -1323,51 +784,29 @@ async function abrirPanel(eventoId) {
 }
 
 function renderPanelBody(ev, boletos) {
-  const panelBody = document.getElementById('panelBody');
-  let html = '';
-
-  html += `
+  let html = `
     <div class="panel-section-label" style="margin-top:4px;">Recinto</div>
     <div class="recinto-map">
       ${ev.mapaImg
         ? `<img src="${ev.mapaImg}" alt="Mapa ${ev.name}">`
-        : `<div class="recinto-map-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-              stroke="rgba(242,239,232,0.15)" stroke-width="1.5">
-              <rect x="3" y="3" width="18" height="18" rx="2"/>
-              <line x1="9" y1="3" x2="9" y2="21"/>
-              <line x1="15" y1="3" x2="15" y2="21"/>
-              <line x1="3" y1="9" x2="21" y2="9"/>
-              <line x1="3" y1="15" x2="21" y2="15"/>
-            </svg>
-            <span>Mapa próximamente</span>
-           </div>`
+        : `<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(242,239,232,0.15)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">Mapa próximamente</span>
+          </div>`
       }
+    </div>
+    <div class="panel-section-label">
+      Boletos disponibles
+      <span style="font-family:'DM Mono',monospace;font-size:9px;padding:2px 8px;background:rgba(212,245,60,0.08);color:var(--volt);border:1px solid rgba(212,245,60,0.2);">${boletos.length}</span>
     </div>`;
-
-  html += `<div class="panel-section-label">
-    Boletos disponibles
-    <span style="font-family:'DM Mono',monospace;font-size:9px;
-      padding:2px 8px;background:rgba(212,245,60,0.08);
-      color:var(--volt);border:1px solid rgba(212,245,60,0.2);">
-      ${boletos.length}
-    </span>
-  </div>`;
 
   if (boletos.length === 0) {
     html += `
       <div class="panel-empty">
         <div class="panel-empty-icon">🎟</div>
         <div class="panel-empty-title">Sin boletos aún</div>
-        <p class="panel-empty-sub">
-          No hay boletos listados para este evento todavía.<br>
-          ¿Tienes uno? Ponlo a trabajar.
-        </p>
-        <button onclick="listarParaEvento('${ev.id}', '${ev.name.replace(/'/g,"\\'")}');cerrarPanel();"
-          style="margin-top:16px;padding:12px 20px;background:transparent;
-            color:var(--volt);font-family:'DM Mono',monospace;font-size:10px;
-            letter-spacing:0.1em;text-transform:uppercase;
-            border:1px solid rgba(212,245,60,0.3);cursor:pointer;">
+        <p class="panel-empty-sub">No hay boletos listados para este evento todavía.<br>¿Tienes uno? Ponlo a trabajar.</p>
+        <button onclick="handleCeder()" style="margin-top:16px;padding:12px 20px;background:transparent;color:var(--volt);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(212,245,60,0.3);cursor:pointer;">
           Listar mi boleto →
         </button>
       </div>`;
@@ -1386,10 +825,7 @@ function buildBoletoItem(b) {
   <div class="boleto-item" onclick="seleccionarBoleto('${b.id || ''}')">
     <div class="boleto-item-info">
       <div class="boleto-item-zona">${b.zona || 'Zona general'}</div>
-      <div class="boleto-item-detalle">
-        ${b.fechaEvento ? formatFecha(b.fechaEvento) : ''}
-        ${b.notas ? ' · ' + b.notas : ''}
-      </div>
+      <div class="boleto-item-detalle">${b.fechaEvento ? formatFecha(b.fechaEvento) : ''}${b.notas ? ' · ' + b.notas : ''}</div>
     </div>
     <div>
       <div class="boleto-item-precio">${precio}</div>
@@ -1398,7 +834,6 @@ function buildBoletoItem(b) {
   </div>`;
 }
 
-// Intercepta el click para ir al Paso 2
 function seleccionarBoleto(id) {
   const boleto = boletosCache.find(b => b.id === id);
   if (!boleto) return;
@@ -1406,99 +841,89 @@ function seleccionarBoleto(id) {
   renderStep2(boleto);
 }
 
-// Paso 2: Configurador del Plan
+/* ════════════════════════════════════
+   PASO 2: CONFIGURAR PLAN
+════════════════════════════════════ */
 function renderStep2(boleto) {
   panelPaso = 2;
-  // Default quincenas
-  if(![4,6,8].includes(panelPlanActual)) panelPlanActual = 4;
-  
-  const panelHeader = document.getElementById('panelHeader');
-  panelHeader.classList.add('has-back');
-  
-  document.getElementById('panelNombre').textContent = 'Configurar Plan';
+  const ev = panelEventoActual;
+  const maxQ = ev.maxQuincenas || 6;
+  const opciones = [2, 4, 6].filter(q => q <= maxQ);
+  if (!opciones.includes(panelPlanActual)) panelPlanActual = opciones[0];
+
+  const meses = { 2: '1 mes', 4: '2 meses', 6: '3 meses' };
+
+  document.getElementById('panelHeader').classList.add('has-back');
+  document.getElementById('panelNombre').textContent = 'Elegir plan';
   document.getElementById('panelMeta').textContent = boleto.zona || 'Zona General';
 
   document.getElementById('panelBody').innerHTML = `
     <div class="panel-section-label" style="margin-top:4px;">Opciones de pago</div>
     <div class="plan-selector">
-      <div class="plan-opcion ${panelPlanActual===4 ? 'activa':''}" id="po-4" onclick="seleccionarQuincenas(4)">
-        <div class="plan-opcion-num">4</div>
-        <div class="plan-opcion-label">Quincenas</div>
-      </div>
-      <div class="plan-opcion ${panelPlanActual===6 ? 'activa':''}" id="po-6" onclick="seleccionarQuincenas(6)">
-        <div class="plan-opcion-num">6</div>
-        <div class="plan-opcion-label">Quincenas</div>
-      </div>
-      <div class="plan-opcion ${panelPlanActual===8 ? 'activa':''}" id="po-8" onclick="seleccionarQuincenas(8)">
-        <div class="plan-opcion-num">8</div>
-        <div class="plan-opcion-label">Quincenas</div>
-      </div>
+      ${opciones.map(q => `
+        <div class="plan-opcion ${panelPlanActual === q ? 'activa' : ''}" id="po-${q}" onclick="seleccionarQuincenas(${q})">
+          <div class="plan-opcion-num">${q}</div>
+          <div class="plan-opcion-label">Quincenas</div>
+          <div class="plan-opcion-sub">${meses[q] || ''}</div>
+        </div>`).join('')}
     </div>
-    
-    <div class="panel-section-label">Desglose (Sin intereses)</div>
+    <div class="panel-section-label">Desglose</div>
     <div id="planDesgloseContainer"></div>
-    
     <button class="btn-ver-boletos" style="margin-top:16px;" onclick="confirmarPlan()">
       Continuar →
-    </button>
-  `;
-  
+    </button>`;
+
   actualizarDesglose();
 }
 
 function seleccionarQuincenas(q) {
   panelPlanActual = q;
-  document.querySelectorAll('.plan-opcion').forEach(el => el.classList.remove('activa'));
-  document.getElementById('po-' + q).classList.add('activa');
+  const maxQ = panelEventoActual ? panelEventoActual.maxQuincenas || 6 : 6;
+  [2, 4, 6].filter(x => x <= maxQ).forEach(x => {
+    const el = document.getElementById('po-' + x);
+    if (el) el.classList.toggle('activa', x === q);
+  });
   actualizarDesglose();
 }
 
 function actualizarDesglose() {
   const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
-  // Enganche 15%
   const enganche = precio * 0.15;
-  // Restante 85% a quincenas (Sin interés)
-  const saldo = precio * 0.85;
-  const cuota = saldo / panelPlanActual;
-
+  const cuota = (precio * 0.85) / panelPlanActual;
   const container = document.getElementById('planDesgloseContainer');
-  if(!container) return;
-
+  if (!container) return;
   container.innerHTML = `
     <div class="plan-desglose">
-      <div class="desglose-row">
-        <span>Precio Listado</span>
-        <span class="desglose-val">$${precio.toLocaleString('es-MX', {maximumFractionDigits:2})}</span>
-      </div>
-      <div class="desglose-row">
-        <span>Enganche (15%)</span>
-        <span class="desglose-val">$${enganche.toLocaleString('es-MX', {maximumFractionDigits:2})}</span>
-      </div>
-      <div class="desglose-row">
-        <span>${panelPlanActual} Pagos Quincenales</span>
-        <span class="desglose-val">$${cuota.toLocaleString('es-MX', {maximumFractionDigits:2})}</span>
-      </div>
-      <div class="desglose-row">
-        <span>Total a Pagar</span>
-        <span class="desglose-val">$${precio.toLocaleString('es-MX', {maximumFractionDigits:2})}</span>
-      </div>
-    </div>
-  `;
+      <div class="desglose-row"><span>Precio listado</span><span class="desglose-val">$${precio.toLocaleString('es-MX', {maximumFractionDigits:0})}</span></div>
+      <div class="desglose-row"><span>Enganche (15%)</span><span class="desglose-val">$${enganche.toLocaleString('es-MX', {maximumFractionDigits:0})}</span></div>
+      <div class="desglose-row"><span>${panelPlanActual} quincenas de</span><span class="desglose-val">$${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})} c/u</span></div>
+      <div class="desglose-row"><span>Total a pagar</span><span class="desglose-val">$${precio.toLocaleString('es-MX', {maximumFractionDigits:0})}</span></div>
+    </div>`;
 }
 
 function confirmarPlan() {
-  // Aseguramos que el wizard empiece siempre en el paso 1 al entrar
-  uploadStep = 1;
-  ineFrenteBase64 = null;
-  ineReversoBase64 = null;
-  selfieBase64 = null;
+  if (!hasSession()) {
+    // Guardar estado — el panel sigue abierto detrás del modal
+    pendingAction = 'checkout';
+    openAuthModal('checkout');
+    return;
+  }
+  resetWizard();
   renderStep3();
 }
 
-// Paso 3: Checkout (Confirmación y Subida de Docs/Selfie con Wizard)
+/* ════════════════════════════════════
+   PASO 3: CHECKOUT
+════════════════════════════════════ */
+function resetWizard() {
+  ineFrenteBase64 = null;
+  ineReversoBase64 = null;
+  selfieBase64 = null;
+  uploadStep = 1;
+}
+
 function renderStep3() {
   panelPaso = 3;
-  
   document.getElementById('panelNombre').textContent = 'Confirmar';
   document.getElementById('panelMeta').textContent = 'Último paso';
 
@@ -1506,84 +931,87 @@ function renderStep3() {
   const enganche = precio * 0.15;
   const cuota = (precio * 0.85) / panelPlanActual;
 
-  let htmlCheckout = `
+  let html = `
     <div class="checkout-resumen">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Resumen de la Orden</div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Resumen de tu orden</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--paper);line-height:1;">${panelEventoActual.name}</div>
       <div style="font-size:12px;color:var(--muted);margin:4px 0 12px;">${panelBoletoActual.zona || 'Zona General'}</div>
-      
-      <div style="border-top:1px solid var(--border);padding-top:12px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px;">
+      <div style="border-top:1px solid var(--border);padding-top:12px;display:flex;flex-direction:column;gap:8px;">
         <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);">
           <span>Precio listado</span>
           <span style="font-family:'DM Mono',monospace;color:var(--paper);">$${precio.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);">
-          <span>Anticipo (15%)</span>
+          <span>Enganche (15%)</span>
           <span style="font-family:'DM Mono',monospace;color:var(--paper);">$${enganche.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
         </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;border-top:1px solid var(--border);padding-top:10px;">
+          <span style="color:var(--muted);">Plan elegido</span>
+          <span style="font-family:'DM Mono',monospace;color:var(--volt);">${panelPlanActual} × $${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
+        </div>
       </div>
+    </div>`;
 
-      <div style="display:flex;justify-content:space-between;font-size:13px;border-top:1px solid var(--border);padding-top:12px;">
-        <span>Plan seleccionado</span>
-        <span style="font-family:'DM Mono',monospace;color:var(--volt);">${panelPlanActual} quincenas de $${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
-      </div>
-    </div>
-  `;
-
-  // <-- AÑADIDO: Ocultamos los documentos si kycCompletado es true
   if (kycCompletado) {
-    htmlCheckout += `
-      <div class="aviso-pago" style="margin-bottom: 24px; text-align: center; background: rgba(212,245,60,0.08); border-color: var(--volt);">
-        <div style="font-size:24px; margin-bottom:8px;">✅</div>
-        <strong style="color: var(--paper);">Identidad verificada</strong><br>
-        Tus documentos ya están validados en el sistema de Yunus.
+    html += `
+      <div style="margin-bottom:24px;padding:20px;text-align:center;background:rgba(212,245,60,0.06);border:1px solid rgba(212,245,60,0.2);">
+        <div style="font-size:28px;margin-bottom:8px;">✅</div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--volt);">Identidad verificada</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;">Tus documentos ya están en el sistema de Yunus.</div>
       </div>
       <div id="chk_error" class="acc-error"></div>
-      <button class="btn-ver-boletos" id="btnSubmitCheckout" style="margin-top:10px;" onclick="submitSolicitud()">
-        Enviar Solicitud →
-      </button>
-    `;
+      <button class="btn-ver-boletos" id="btnSubmitCheckout" onclick="submitSolicitud()">Enviar solicitud →</button>`;
   } else {
-    // Usuario sin verificar, mostramos el Wizard normal
-    htmlCheckout += `
+    html += `
       <div class="wizard-progress">
         <span id="prog1" class="wizard-step-ind active">1. FRENTE</span>
         <span id="prog2" class="wizard-step-ind">2. REVERSO</span>
         <span id="prog3" class="wizard-step-ind">3. SELFIE</span>
       </div>
-
-      <div class="form-group" id="wizardContainer">
-        <label class="form-label" id="wizardLabel">Identidad (1/3): INE Frontal</label>
+      <div class="form-group">
+        <label class="form-label" id="wizardLabel">Verificación (1/3): INE Frontal</label>
         <input type="file" id="chk_upload" accept="image/*" style="display:none;" onchange="handleWizardUpload(event)">
-        
         <div class="ine-upload" id="chk_upload_trigger" onclick="document.getElementById('chk_upload').click()">
           <div id="chk_upload_content">
-            <div class="ine-icon" id="wizardIcon">🪪</div>
-            <div class="ine-text" id="wizardText">Toca para subir o tomar foto del frente de tu INE</div>
+            <div class="ine-icon">🪪</div>
+            <div class="ine-text">Toca para subir o tomar foto del frente de tu INE</div>
           </div>
           <img id="chk_upload_preview" class="ine-preview">
         </div>
       </div>
-
       <div id="chk_error" class="acc-error"></div>
-      
-      <button class="btn-ver-boletos" id="btnSubmitCheckout" style="margin-top:10px; display:none;" onclick="submitSolicitud()">
-        Enviar Solicitud →
-      </button>
-    `;
+      <button class="btn-ver-boletos" id="btnSubmitCheckout" style="display:none;" onclick="submitSolicitud()">Enviar solicitud →</button>`;
   }
 
-  document.getElementById('panelBody').innerHTML = htmlCheckout;
+  document.getElementById('panelBody').innerHTML = html;
 }
 
-// Controla los 3 pasos de las fotos
+/* ════════════════════════════════════
+   WIZARD DE IMÁGENES
+════════════════════════════════════ */
+function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const scale = Math.min(1, maxWidth / img.width);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', calidad));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 async function handleWizardUpload(e) {
   const file = e.target.files[0];
   if (!file) return;
-
-  // Mostramos indicador de carga en lo que se comprime la imagen
-  document.getElementById('chk_upload_content').innerHTML = `<div class="spinner-sm" style="margin: 0 auto;"></div>`;
-
+  document.getElementById('chk_upload_content').innerHTML = `<div class="spinner-sm" style="margin:0 auto;"></div>`;
   const base64 = await comprimirImagen(file);
 
   if (uploadStep === 1) {
@@ -1591,63 +1019,39 @@ async function handleWizardUpload(e) {
     document.getElementById('prog1').classList.remove('active');
     document.getElementById('prog1').classList.add('done');
     document.getElementById('prog2').classList.add('active');
-    
     uploadStep = 2;
-    document.getElementById('wizardLabel').textContent = 'Identidad (2/3): INE Reverso';
-    document.getElementById('chk_upload_content').innerHTML = `
-      <div class="ine-icon">🪪</div>
-      <div class="ine-text">¡Listo! Ahora toca para el reverso del INE</div>`;
-    
+    document.getElementById('wizardLabel').textContent = 'Verificación (2/3): INE Reverso';
+    document.getElementById('chk_upload_content').innerHTML = `<div class="ine-icon">🪪</div><div class="ine-text">¡Listo! Ahora el reverso del INE</div>`;
   } else if (uploadStep === 2) {
     ineReversoBase64 = base64;
     document.getElementById('prog2').classList.remove('active');
     document.getElementById('prog2').classList.add('done');
     document.getElementById('prog3').classList.add('active');
-    
     uploadStep = 3;
-    document.getElementById('wizardLabel').textContent = 'Identidad (3/3): Selfie';
-    // Activamos la cámara frontal si se usa en móvil
+    document.getElementById('wizardLabel').textContent = 'Verificación (3/3): Selfie';
     document.getElementById('chk_upload').setAttribute('capture', 'user');
-    document.getElementById('chk_upload_content').innerHTML = `
-      <div class="ine-icon">🤳</div>
-      <div class="ine-text">¡Casi terminamos! Toca para tomarte una selfie</div>`;
-      
+    document.getElementById('chk_upload_content').innerHTML = `<div class="ine-icon">🤳</div><div class="ine-text">¡Casi! Toca para tomarte una selfie</div>`;
   } else if (uploadStep === 3) {
     selfieBase64 = base64;
     document.getElementById('prog3').classList.remove('active');
     document.getElementById('prog3').classList.add('done');
-    
-    // Ocultar recuadro de subida y mostrar preview final
     document.getElementById('chk_upload_content').style.display = 'none';
     const preview = document.getElementById('chk_upload_preview');
-    preview.src = selfieBase64;
-    preview.style.display = 'block';
-    
+    preview.src = selfieBase64; preview.style.display = 'block';
     document.getElementById('wizardLabel').textContent = '¡Documentos completados!';
     document.getElementById('chk_upload_trigger').style.borderColor = 'var(--volt)';
-    document.getElementById('chk_upload_trigger').onclick = null; // deshabilitar más clicks
-
-    // Habilitar el botón de envío
+    document.getElementById('chk_upload_trigger').onclick = null;
     document.getElementById('btnSubmitCheckout').style.display = 'block';
   }
-
-  // Reset del input para permitir subir el mismo archivo si se equivocaron
   e.target.value = '';
 }
 
-// Envío de la solicitud a la nueva API /api/checkout
 async function submitSolicitud() {
-  // <-- AÑADIDO: Modificamos la validación para saltar las fotos si ya tiene KYC
-  if (!kycCompletado) {
-    if (!ineFrenteBase64 || !ineReversoBase64 || !selfieBase64) {
-      const err = document.getElementById('chk_error');
-      err.textContent = 'Es necesario completar las 3 fotos para continuar.';
-      err.style.display = 'block';
-      return;
-    }
+  if (!kycCompletado && (!ineFrenteBase64 || !ineReversoBase64 || !selfieBase64)) {
+    document.getElementById('chk_error').textContent = 'Completa las 3 fotos para continuar.';
+    document.getElementById('chk_error').style.display = 'block'; return;
   }
   document.getElementById('chk_error').style.display = 'none';
-
   const btn = document.getElementById('btnSubmitCheckout');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner-sm" style="display:inline-block;width:14px;height:14px;border-width:2px;margin-right:8px;vertical-align:middle;"></span>Procesando...';
@@ -1667,80 +1071,54 @@ async function submitSolicitud() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Error al procesar solicitud');
+    if (!res.ok) throw new Error(data.error || 'Error');
 
-    // Cambiamos a la pantalla de éxito
     document.getElementById('panelHeader').classList.remove('has-back');
-    document.getElementById('panelNombre').textContent = '¡Solicitud Enviada!';
+    document.getElementById('panelNombre').textContent = 'Solicitud enviada';
     document.getElementById('panelMeta').textContent = 'En revisión';
-
     document.getElementById('panelBody').innerHTML = `
       <div class="solicitud-ok fade-up">
         <div class="solicitud-ok-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
-        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--paper);margin-bottom:12px;letter-spacing:0.04em;">Todo en orden</h3>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:32px;">
-          Hemos recibido tus documentos. Te contactaremos vía WhatsApp en los próximos minutos para confirmar tu enganche y asegurar tu lugar.
-        </p>
-        <button class="btn-ver-boletos" onclick="cerrarPanel()">Volver al inicio</button>
-      </div>
-    `;
-  } catch (error) {
-    const err = document.getElementById('chk_error');
-    err.textContent = 'Hubo un error de conexión. Intenta de nuevo.';
-    err.style.display = 'block';
-    btn.disabled = false;
-    btn.innerHTML = 'Enviar Solicitud →';
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--paper);margin-bottom:12px;letter-spacing:0.04em;">¡Todo en orden!</h3>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:32px;">Recibimos tus documentos. Te contactaremos vía WhatsApp para confirmar tu enganche y asegurar tu lugar.</p>
+        <button class="btn-ver-boletos" onclick="cerrarPanel()">Volver al marketplace</button>
+      </div>`;
+  } catch {
+    document.getElementById('chk_error').textContent = 'Error de conexión. Intenta de nuevo.';
+    document.getElementById('chk_error').style.display = 'block';
+    btn.disabled = false; btn.innerHTML = 'Enviar solicitud →';
   }
 }
 
-/* ════════════════════════════════════════
-   CEDENTE
-════════════════════════════════════════ */
-function irACeder() {
-  window.location.href = '/ceder';
+/* ════════════════════════════════════
+   LEGAL
+════════════════════════════════════ */
+function openLegal(type) {
+  document.getElementById('legalTitle').textContent = type === 'terms' ? 'Términos y Condiciones' : 'Política de Privacidad';
+  document.getElementById('legalContent').innerHTML = legalTexts[type];
+  document.getElementById('legalModal').classList.add('open');
 }
+function closeLegal() { document.getElementById('legalModal').classList.remove('open'); }
 
-function listarParaEvento(eventoId, eventoNombre) {
-  window.location.href = `/ceder?evento=${encodeURIComponent(eventoNombre)}`;
-}
-
-/* ════════════════════════════════════════
+/* ════════════════════════════════════
    HELPERS
-════════════════════════════════════════ */
+════════════════════════════════════ */
 function formatFecha(str) {
   if (!str) return '';
   const d = new Date(str + 'T12:00:00');
   return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-/* ════════════════════════════════════════
-   LEGAL
-════════════════════════════════════════ */
-function openLegal(type) {
-  document.getElementById('legalTitle').textContent =
-    type === 'terms' ? 'Términos y Condiciones' : 'Política de Privacidad';
-  document.getElementById('legalContent').innerHTML = legalTexts[type];
-  document.getElementById('legalModal').classList.add('open');
-}
-function closeLegal() {
-  document.getElementById('legalModal').classList.remove('open');
-}
-
-/* ════════════════════════════════════════
+/* ════════════════════════════════════
    INIT
-════════════════════════════════════════ */
-window.addEventListener('DOMContentLoaded', async () => {
-  const celular = localStorage.getItem('yunus_celular');
-  if (celular) {
-    entrarApp();
-  }
+════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  updateHeader();
   renderEventos();
 });
 </script>
-
 </body>
 </html>
