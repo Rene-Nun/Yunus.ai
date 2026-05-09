@@ -152,19 +152,110 @@ body::after {
   100% { transform: translateX(-50%); }
 }
 
-/* CAROUSEL */
-.carousel-wrap {
-  overflow-x: auto;
+/* HERO SLIDER */
+.hero-slider-wrap {
   position: relative;
-  width: 100vw;
-  margin: 0 calc(-50vw + 50%);
-  padding: 16px 0;
-  margin-bottom: 48px;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  width: 100%;
+  max-width: 800px;
+  height: 380px;
+  margin: 0 auto 48px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(242,239,232,0.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
-.carousel-wrap::-webkit-scrollbar { display: none; }
+.hero-slider {
+  display: flex;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.hero-slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 40px;
+  text-decoration: none;
+}
+.hero-slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.3) 50%, rgba(10,10,10,0.1) 100%);
+}
+.hero-slide-content {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+  width: 100%;
+}
+.hero-slide-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: clamp(28px, 5vw, 42px);
+  color: var(--paper);
+  margin-bottom: 6px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.hero-slide-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--volt);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(10,10,10,0.4);
+  color: var(--paper);
+  border: 1px solid rgba(242,239,232,0.15);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  backdrop-filter: blur(8px);
+}
+.slider-btn:hover {
+  background: var(--volt);
+  color: var(--ink);
+  border-color: var(--volt);
+  transform: translateY(-50%) scale(1.05);
+}
+.prev-btn { left: 20px; }
+.next-btn { right: 20px; }
+.slider-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+.slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(242,239,232,0.2);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+.slider-dot:hover { background: rgba(242,239,232,0.6); }
+.slider-dot.active {
+  background: var(--volt);
+  transform: scale(1.2);
+}
 
 /* HERO */
 .hero {
@@ -549,6 +640,11 @@ body::after {
   .security-card { padding: 24px; }
   .bottom-cta { padding: 80px 20px; }
   .btn-hero, .btn-hero-ghost { padding: 16px 28px; font-size: 11px; }
+  .hero-slider-wrap { height: 280px; border-radius: 12px; }
+  .hero-slide { padding: 24px; }
+  .slider-btn { width: 36px; height: 36px; }
+  .prev-btn { left: 12px; }
+  .next-btn { right: 12px; }
 }
 </style>
 
@@ -588,8 +684,11 @@ body::after {
     tengas <span class="accent">todo hoy</span>
   </h1>
 
-  <div class="carousel-wrap">
-    <div id="evTrack" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:12px;width:max-content;padding:0 15px;"></div>
+  <div class="hero-slider-wrap">
+    <div id="heroSlider" class="hero-slider"></div>
+    <button class="slider-btn prev-btn" onclick="prevSlide()">&#10094;</button>
+    <button class="slider-btn next-btn" onclick="nextSlide()">&#10095;</button>
+    <div class="slider-dots" id="sliderDots"></div>
   </div>
 
   <p class="hero-sub">
@@ -983,34 +1082,73 @@ body::after {
 <script>
 // ── EVENT CARDS ──
 const events = [
-  { name:'Harry Styles', tag:'Concierto · CDMX', date:'10 Ago 2026', price:'Desde $283 MXN × quincena', img:'HarryS.webp', accent:'#2563eb' },
-  { name:'Bruno Mars', tag:'Concierto · CDMX', date:'4-7-8 Dic 2026', price:'Desde $169 MXN × quincena', img:'BrunoM.jpeg', accent:'#16a34a' },
-  { name:'Vans Warped Tour', tag:'Festival · CDMX', date:'12-13 Sep 2026', price:'Desde $381 MXN × quincena', img:'VansW.webp', accent:'#ea580c' },
-  { name:'Baja Beach Fest', tag:'Festival · Rosarito', date:'7-9 Ago 2026', price:'Desde $525 MXN × quincena', img:'BajaB.jpeg', accent:'#2563eb' },
-  { name:'Rosalía: Lux Tour', tag:'Concierto · CDMX / GDL', date:'Ago 2026', price:'Desde $381 MXN × quincena', img:'Rosalia.jpeg', accent:'#be185d' },
-  { name:'Enjambre E. GNP', tag:'Concierto · CDMX', date:'30 Ago 2026', price:'x confirmar', img:'Enjambre.webp', accent:'#be165d' },
+  { name:'Harry Styles', price:'Desde $283 MXN × quincena', img:'HarryS.webp' },
+  { name:'Bruno Mars', price:'Desde $169 MXN × quincena', img:'BrunoM.jpeg' },
+  { name:'Vans Warped Tour', price:'Desde $381 MXN × quincena', img:'VansW.webp' },
+  { name:'Baja Beach Fest', price:'Desde $525 MXN × quincena', img:'BajaB.jpeg' },
+  { name:'Rosalía: Lux Tour', price:'Desde $381 MXN × quincena', img:'Rosalia.jpeg' },
+  { name:'Enjambre E. GNP', price:'x confirmar', img:'Enjambre.webp' },
 ];
 
-function buildEventCard(e) {
-  return `<a href="marketplace.html" style="width:200px;flex-shrink:0;border:1px solid rgba(242,239,232,0.1);background:#111;cursor:pointer;display:flex;flex-direction:column;transition:border-color .2s,transform .2s;text-decoration:none;" onmouseover="this.style.borderColor='var(--volt)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(242,239,232,0.1)';this.style.transform='none'">
-    <div style="width:100%;height:90px;overflow:hidden;background:${e.accent}20;flex-shrink:0;">
-      <img src="${e.img}" alt="${e.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.style.background='${e.accent}30'">
-    </div>
-    <div style="padding:12px 14px;">
-      <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">${e.tag}</div>
-      <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;color:var(--paper);line-height:1.2;margin-bottom:8px;">${e.name}</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);">${e.date}</span>
-        <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--volt);font-weight:500;">${e.price}</span>
-      </div>
+let currentSlide = 0;
+let slideInterval;
+
+function buildSlide(e) {
+  let priceText = e.price.replace(/Desde/i, 'A partir de');
+  if (!priceText.toLowerCase().includes('a partir') && priceText.toLowerCase() !== 'x confirmar') {
+      priceText = 'A partir de ' + priceText;
+  }
+  return `<a href="marketplace.html" class="hero-slide" style="background-image: url('${e.img}');">
+    <div class="hero-slide-overlay"></div>
+    <div class="hero-slide-content">
+      <div class="hero-slide-title">${e.name}</div>
+      <div class="hero-slide-price">${priceText}</div>
     </div>
   </a>`;
 }
 
+function updateSlider() {
+  const track = document.getElementById('heroSlider');
+  if (track) track.style.transform = `translateX(-${currentSlide * 100}%)`;
+  document.querySelectorAll('.slider-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentSlide);
+  });
+}
+
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % events.length;
+  updateSlider();
+  resetSlideTimer();
+}
+
+function prevSlide() {
+  currentSlide = (currentSlide - 1 + events.length) % events.length;
+  updateSlider();
+  resetSlideTimer();
+}
+
+function goToSlide(index) {
+  currentSlide = index;
+  updateSlider();
+  resetSlideTimer();
+}
+
+function startSlideTimer() {
+  slideInterval = setInterval(nextSlide, 4500);
+}
+
+function resetSlideTimer() {
+  clearInterval(slideInterval);
+  startSlideTimer();
+}
+
 (function() {
-  const track = document.getElementById('evTrack');
-  if (!track) return;
-  track.innerHTML = events.map(buildEventCard).join('');
+  const track = document.getElementById('heroSlider');
+  const dots = document.getElementById('sliderDots');
+  if (!track || !dots) return;
+  track.innerHTML = events.map(buildSlide).join('');
+  dots.innerHTML = events.map((_, i) => `<div class="slider-dot ${i===0?'active':''}" onclick="goToSlide(${i})"></div>`).join('');
+  startSlideTimer();
 })();
 
 // ── LEGAL TEXTS ──
