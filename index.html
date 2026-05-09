@@ -10,22 +10,21 @@
 
 <style>
 :root {
-  /* INVERSIÓN DE TEMA CLARO */
-  --ink: #F2EFE8;
-  --paper: #0a0a0a;
-  --volt: #95C11E; /* Volt oscurecido para contraste sobre blanco */
-  --muted: #6B7280;
-  --border: rgba(10,10,10,0.12);
+  --ink: #0a0a0a;
+  --paper: #F2EFE8;
+  --volt: #D4F53C;
+  --muted: #5C5C5C;
+  --border: rgba(242,239,232,0.12);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-::selection { background: var(--volt); color: #F2EFE8; }
+::selection { background: var(--volt); color: var(--ink); }
 
 html { background: var(--ink); }
 
 body {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 400; /* Ligeramente más peso para leer mejor en claro */
+  font-weight: 300;
   background: var(--ink);
   color: var(--paper);
   min-height: 100vh;
@@ -39,7 +38,7 @@ body::after {
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.045; /* Ligero aumento para notarse en claro */
+  opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px;
@@ -53,7 +52,7 @@ body::after {
 /* NAV */
 #nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(242,239,232,0.85); /* Fondo claro difuminado */
+  background: rgba(10,10,10,0.85);
   backdrop-filter: blur(16px);
 }
 .nav-inner {
@@ -72,7 +71,7 @@ body::after {
 .btn-primary {
   font-family: 'DM Mono', monospace;
   font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-  background: var(--volt); color: #F2EFE8; /* Texto blanco en botón de color para destacar */
+  background: var(--volt); color: var(--ink);
   padding: 10px 20px; border: none; cursor: pointer;
   transition: opacity 0.2s; font-weight: 500;
   text-decoration: none; display: inline-block;
@@ -85,11 +84,11 @@ body::after {
   padding: 10px 20px; border: 1px solid var(--border); cursor: pointer;
   transition: all 0.2s; text-decoration: none; display: inline-block;
 }
-.btn-ghost:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.btn-ghost:hover { border-color: var(--paper); }
 .btn-hero {
   font-family: 'DM Mono', monospace;
   font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-  background: var(--volt); color: #F2EFE8;
+  background: var(--volt); color: var(--ink);
   padding: 18px 48px; border: none; cursor: pointer;
   transition: opacity 0.2s, transform 0.2s;
   font-weight: 500;
@@ -117,11 +116,11 @@ body::after {
   overflow: hidden;
   padding: 14px 0;
   display: flex;
-  background: rgba(0,0,0,0.02); /* Fondo sutil oscuro */
 }
 .ticker-track {
   display: flex;
   width: max-content;
+  /* Imparable, continuo */
   animation: ticker 30s linear infinite;
 }
 .ticker-set {
@@ -166,8 +165,8 @@ body::after {
   height: 200px;
   overflow: hidden;
   background: var(--ink);
-  border-top: 1px solid rgba(10,10,10,0.05);
-  border-bottom: 1px solid rgba(10,10,10,0.05);
+  border-top: 1px solid rgba(242,239,232,0.05);
+  border-bottom: 1px solid rgba(242,239,232,0.05);
 }
 .hero-slider {
   display: flex;
@@ -189,9 +188,8 @@ body::after {
 .hero-slide-overlay {
   position: absolute;
   inset: 0;
-  /* Overlay claro hacia los bordes */
-  background: linear-gradient(90deg, rgba(242,239,232,0.95) 0%, rgba(242,239,232,0.2) 50%, rgba(242,239,232,0.95) 100%),
-              linear-gradient(to top, rgba(242,239,232,0.8) 0%, transparent 100%);
+  background: linear-gradient(90deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.2) 50%, rgba(10,10,10,0.95) 100%),
+              linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 100%);
 }
 .hero-slide-content {
   position: relative;
@@ -205,7 +203,7 @@ body::after {
   margin: 0 auto;
   border-left: 4px solid var(--volt);
   padding-left: 24px;
-  margin-bottom: 12px;
+  margin-bottom: 12px; /* Espacio para que no choque con los dots abajo */
 }
 .hero-slide-title {
   font-family: 'Oswald', sans-serif;
@@ -232,9 +230,9 @@ body::after {
   font-size: 14px;
   color: var(--volt);
   font-weight: 500;
-  background: rgba(149, 193, 30, 0.08); /* bg volt */
+  background: rgba(212,245,60,0.08);
   padding: 8px 16px;
-  border: 1px solid rgba(149, 193, 30, 0.3);
+  border: 1px solid rgba(212,245,60,0.2);
   display: inline-block;
   letter-spacing: 0.05em;
 }
@@ -243,7 +241,7 @@ body::after {
   top: 0;
   bottom: 0;
   background: transparent;
-  color: rgba(10,10,10,0.4);
+  color: rgba(242,239,232,0.4);
   border: none;
   font-size: 32px;
   width: 60px;
@@ -255,7 +253,7 @@ body::after {
   transition: background 0.3s, color 0.3s;
 }
 .slider-btn:hover {
-  background: rgba(242,239,232,0.8);
+  background: rgba(10,10,10,0.7);
   color: var(--volt);
 }
 .prev-btn { left: 0; }
@@ -273,11 +271,11 @@ body::after {
 .slider-dot {
   width: 32px;
   height: 2px;
-  background: rgba(10,10,10,0.15); /* Gris oscuro */
+  background: rgba(242,239,232,0.15);
   cursor: pointer;
   transition: background 0.3s;
 }
-.slider-dot:hover { background: rgba(10,10,10,0.4); }
+.slider-dot:hover { background: rgba(242,239,232,0.5); }
 .slider-dot.active {
   background: var(--volt);
 }
@@ -308,9 +306,9 @@ body::after {
 .hero-sub {
   font-size: 16px; line-height: 1.75;
   color: var(--muted); max-width: 600px;
-  font-weight: 400; margin-bottom: 48px;
+  font-weight: 300; margin-bottom: 48px;
 }
-.hero-sub strong { color: var(--paper); font-weight: 600; }
+.hero-sub strong { color: var(--paper); font-weight: 500; }
 
 /* SECTION DIVIDER */
 .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
@@ -318,7 +316,7 @@ body::after {
 /* CEDENTE SECTION */
 .cedente-wrap {
   padding: 120px 32px;
-  background: #E6E2D6; /* Contraste sutil contra ink */
+  background: #0d0d0d;
 }
 .cedente-inner { max-width: 1100px; margin: 0 auto; }
 .cedente-header { margin-bottom: 64px; }
@@ -336,9 +334,9 @@ body::after {
 }
 .cedente-header p {
   font-size: 16px; color: var(--muted); line-height: 1.75;
-  max-width: 520px; font-weight: 400;
+  max-width: 520px; font-weight: 300;
 }
-.cedente-header p strong { color: var(--paper); font-weight: 600; }
+.cedente-header p strong { color: var(--paper); font-weight: 500; }
 
 .cedente-steps {
   display: grid;
@@ -348,14 +346,14 @@ body::after {
   margin-bottom: 56px;
 }
 .cedente-step {
-  background: #E6E2D6;
+  background: #0d0d0d;
   padding: 40px 32px;
 }
 .cedente-step-num {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 56px;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(10,10,10,0.15); /* Stroke oscuro */
+  -webkit-text-stroke: 1px rgba(212,245,60,0.2);
   line-height: 1;
   display: block;
   margin-bottom: 12px;
@@ -378,7 +376,7 @@ body::after {
   padding: 120px 32px;
   max-width: 1100px;
   margin: 0 auto;
-  background: var(--ink);
+  background: #0d0d0d;
 }
 .security-inner {
   display: grid;
@@ -394,11 +392,11 @@ body::after {
   color: var(--paper); margin-bottom: 24px;
 }
 .security-copy h2 em {
-  color: transparent; -webkit-text-stroke: 2px rgba(10,10,10,0.15);
+  color: transparent; -webkit-text-stroke: 2px rgba(242,239,232,0.3);
   font-style: normal;
 }
 .security-card {
-  background: rgba(0,0,0,0.02);
+  background: rgba(255,255,255,0.02);
   border: 1px solid var(--border);
   padding: 40px;
   text-align: left;
@@ -415,9 +413,8 @@ body::after {
 .security-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
 .security-icon {
   width: 32px; height: 32px; flex-shrink: 0;
-  background: rgba(149, 193, 30, 0.08);
-  border: 1px solid rgba(149, 193, 30, 0.3);
-  color: var(--volt);
+  background: rgba(212,245,60,0.08);
+  border: 1px solid rgba(212,245,60,0.2);
   display: flex; align-items: center; justify-content: center;
   font-size: 13px;
 }
@@ -429,7 +426,7 @@ body::after {
 .faq-inner { max-width: 1280px; margin: 0 auto; }
 .faq-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; }
 .faq-title { font-family: 'Oswald', sans-serif; font-size: clamp(40px, 5vw, 78px); line-height: 0.92; color: var(--paper); }
-.faq-title em { color: transparent; -webkit-text-stroke: 2px rgba(10,10,10,0.15); font-style: normal; }
+.faq-title em { color: transparent; -webkit-text-stroke: 2px rgba(242,239,232,0.3); font-style: normal; }
 .faq-q {
   width: 100%; background: none; border: none; cursor: pointer;
   padding: 24px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px;
@@ -446,7 +443,7 @@ body::after {
 
 /* CONTACT SECTION */
 .contact-wrap {
-  background: #E6E2D6; padding: 120px 32px; text-align: center;
+  background: #0f0f0f; padding: 120px 32px; text-align: center;
 }
 .contact-inner { max-width: 600px; margin: 0 auto; }
 .contact-title {
@@ -493,7 +490,7 @@ body::after {
 /* MOBILE NAV */
 #mobileMenu {
   display: none; position: absolute; top: 100%; left: 0; right: 0;
-  background: rgba(242,239,232,0.97); border-bottom: 1px solid var(--border);
+  background: rgba(10,10,10,0.97); border-bottom: 1px solid var(--border);
   padding: 20px 24px; flex-direction: column; gap: 16px;
 }
 #mobileMenu.open { display: flex; }
@@ -506,23 +503,22 @@ body::after {
 
 /* MODALS */
 .modal-bg {
-  position: fixed; inset: 0; background: rgba(242,239,232,0.85); /* Fondo claro en modal */
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
   backdrop-filter: blur(8px); z-index: 200; display: none;
   align-items: center; justify-content: center; padding: 24px;
 }
 .modal-bg.open { display: flex; }
 .modal-panel {
-  background: #FFFFFF; border: 1px solid var(--border);
+  background: #111; border: 1px solid var(--border);
   width: 100%; max-width: 480px; max-height: 90vh;
   overflow-y: auto; position: relative;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 .modal-panel::-webkit-scrollbar { width: 4px; }
 .modal-panel::-webkit-scrollbar-thumb { background: var(--border); }
 .modal-header {
   padding: 24px 28px; border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; background: #FFFFFF; z-index: 1;
+  position: sticky; top: 0; background: #111; z-index: 1;
 }
 .modal-title {
   font-family: 'Oswald', sans-serif; font-weight: 600;
@@ -543,7 +539,7 @@ body::after {
 .legal-content p { margin-bottom: 12px; }
 .legal-content ul { padding-left: 20px; margin-bottom: 12px; }
 .legal-content ul li { margin-bottom: 6px; }
-.legal-content strong { color: var(--paper); font-weight: 600; }
+.legal-content strong { color: var(--paper); font-weight: 500; }
 
 /* REVEAL */
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -597,7 +593,7 @@ body::after {
 }
 
 .tl-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--volt); margin-bottom: 10px; }
-.tl-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(10,10,10,0.15); display: block; margin-bottom: 8px; }
+.tl-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(242,239,232,0.07); display: block; margin-bottom: 8px; }
 .tl-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 28px; color: var(--paper); margin-bottom: 14px; line-height: 1.15; letter-spacing: -0.01em; }
 .tl-body { font-size: 14px; color: var(--muted); line-height: 1.75; }
 
@@ -632,11 +628,11 @@ body::after {
 }
 .check-dot {
   width: 22px; height: 22px; border-radius: 50%;
-  background: var(--volt); color: #F2EFE8;
+  background: var(--volt); color: var(--ink);
   display: flex; align-items: center; justify-content: center;
   font-size: 11px; font-weight: bold; flex-shrink: 0;
 }
-.check-label { font-size: 15px; color: var(--paper); font-weight: 500; }
+.check-label { font-size: 15px; color: var(--paper); font-weight: 400; }
 
 @media (max-width: 768px) {
   .timeline-line { left: 24px; }
@@ -690,7 +686,7 @@ body::after {
 <nav id="nav">
   <div class="nav-inner">
     <div>
-      <img src="lightlogo.png" alt="Yunus" style="height:145px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoNav').style.display='block'">
+      <img src="darklogo.png" alt="Yunus" style="height:145px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoNav').style.display='block'">
       <span id="logoNav" style="display:none;font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--paper);">YUNUS</span>
     </div>
     <div class="nav-links">
@@ -704,8 +700,8 @@ body::after {
   <div id="mobileMenu">
     <a href="#como-funciona" onclick="toggleMenu()">Cómo funciona</a>
     <a href="#cedentes" onclick="toggleMenu()">Ceder boleto</a>
-    <a href="marketplace.html" style="background:var(--volt);color:#F2EFE8;text-align:center;padding:14px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Ver boletos →</a>
-    <a href="boveda.html" style="border:1px solid var(--border);color:var(--paper);text-align:center;padding:14px;margin-top:8px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Iniciar sesión →</a>
+    <a href="marketplace.html" style="background:var(--volt);color:var(--ink);text-align:center;padding:14px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Ver boletos →</a>
+    <a href="boveda.html" style="border:1px solid var(--border);text-align:center;padding:14px;margin-top:8px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Iniciar sesión →</a>
   </div>
 </nav>
 
@@ -952,7 +948,7 @@ body::after {
           </div>
         </div>
         <div class="security-row">
-          <div class="security-icon" style="background:rgba(149, 193, 30, 0.12);border-color:rgba(149, 193, 30, 0.3);">✓</div>
+          <div class="security-icon" style="background:rgba(212,245,60,0.12);border-color:rgba(212,245,60,0.3);">✓</div>
           <div>
             <div class="security-row-title">El cedente cobra de todas formas</div>
             <div class="security-row-body">Sin importar lo que pase con el comprador, Yunus garantiza el pago al cedente. El riesgo no lo carga quien puso el boleto.</div>
@@ -971,7 +967,7 @@ body::after {
       </div>
     </div>
     <div>
-      <img src="Reventa.jpeg" alt="Modelo de protección Yunus" style="width:100%;border:1px solid var(--border);box-shadow:0 20px 40px rgba(0,0,0,0.2);">
+      <img src="Reventa.jpeg" alt="Modelo de protección Yunus" style="width:100%;border:1px solid var(--border);box-shadow:0 20px 40px rgba(0,0,0,0.6);">
     </div>
   </div>
 </div>
@@ -1065,7 +1061,7 @@ body::after {
 </div>
 
 <div class="bottom-cta reveal">
-    <img src="Demo.png" alt="Demo de Yunus" style="max-width: 100%; width: 480px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.2));">
+    <img src="Demo.png" alt="Demo de Yunus" style="max-width: 100%; width: 480px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));">
     <h3>Asegura tu lugar<br><span class="accent">hoy mismo</span></h3>
     <div class="checklist">
       <div class="check-item"><div class="check-dot">✓</div><span class="check-label">Sin revisar buró</span></div>
@@ -1091,7 +1087,7 @@ body::after {
 <footer class="footer">
   <div class="footer-inner">
     <div>
-      <img src="lightlogo.png" alt="Yunus" style="height:120px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoFooter').style.display='block'">
+      <img src="darklogo.png" alt="Yunus" style="height:120px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('logoFooter').style.display='block'">
       <span id="logoFooter" style="display:none;font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--paper);">YUNUS</span>
     </div>
     <div class="footer-copy">De fans para fans · Paso del Norte Labs · Ciudad Juárez, México</div>
