@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fandom — Compra en quincenas. Vende sin riesgo. De fan a fan.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,600&family=Oswald:wght@500;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -15,7 +15,7 @@
   --muted: #5C5C5C;
   --border: rgba(242,239,232,0.1);
   --card: rgba(255,255,255,0.03);
-  /* Color de fondo del Hero: Azul sólido, no oscuro */
+  /* Color de fondo del Hero: Azul sólido */
   --bg-hero: #41708C; 
 }
 
@@ -24,7 +24,7 @@
 html { background: var(--ink); scroll-behavior: smooth; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Manrope', sans-serif;
   font-weight: 300;
   background: var(--ink);
   color: var(--paper);
@@ -43,7 +43,7 @@ body::after {
 
 /* OOO DECORATIVE */
 .ooo {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
   font-style: italic;
   letter-spacing: -0.04em;
@@ -64,7 +64,7 @@ body::after {
   display: flex; align-items: center; justify-content: space-between;
 }
 .nav-login {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--muted); text-decoration: none;
   border: 1px solid var(--border);
@@ -75,44 +75,38 @@ body::after {
 
 
 /* ==================================================
-   HERO CARD - ZALANDO STYLE (FONDO COLOR SÓLIDO)
+   HERO CARD - ZALANDO STYLE
    ================================================== */
 
-/* 1. SECCIÓN CONTENEDORA - Fondo full-width */
 .z-hero-section {
   width: 100%;
   background-color: var(--bg-hero);
-  padding-top: 68px; /* Compensar Nav fijo */
+  padding-top: 68px; 
   border-bottom: 1px solid var(--border);
 }
 
-/* 2. LIMITADOR DE CONTENIDO */
 .z-hero-wrapper {
   padding: 60px 32px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* 3. LA TARJETA EN SÍ */
 .z-hero-card {
   display: flex;
-  flex-direction: column; /* Móvil por defecto: apilado */
+  flex-direction: column; 
   overflow: hidden;
 }
 
-/* --- ELEMENTOS HIJOS (MÓVIL STACK) --- */
-
+/* --- ELEMENTOS HIJOS --- */
 .z-hero-actions {
   order: 1;
-  padding: 0 0 40px 0;
+  /* Espaciado en móvil modificado más abajo en el Media Query */
 }
 
-/* MODIFICADO: Contenedor de imagen CUADRADO */
 .z-hero-image {
   order: 2;
   width: 100%;
-  /* min-height: 380px; REMOVIDO para permitir que se ajuste */
-  aspect-ratio: 1 / 1; /* FUERZA PROPORCIÓN CUADRADA - NUEVO */
+  aspect-ratio: 1 / 1; /* Imagen forzada a cuadrada */
   position: relative;
 }
 .z-hero-image img {
@@ -130,19 +124,20 @@ body::after {
 
 /* --- ESTILOS INTERNOS DE TEXTO --- */
 .z-hero-question {
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 18px;
   color: #FFFFFF;
   margin-bottom: 20px;
 }
 .z-hero-title {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600;
-  font-size: clamp(36px, 5vw, 64px);
-  line-height: 1.05;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(34px, 5vw, 60px);
+  line-height: 1.1;
   color: #FFFFFF;
   margin-bottom: 16px;
+  letter-spacing: -0.02em;
 }
 .z-hero-sub {
   font-size: 16px;
@@ -153,11 +148,11 @@ body::after {
 }
 
 /* ==================================================
-   REDISEÑO DE BOTONES (CERO SLIDERS, 100% FUNCIONALES)
+   BOTONES NEGROS FIJOS
    ================================================== */
 .z-btn-group {
   display: flex;
-  gap: 16px; /* Separación clara entre botones */
+  gap: 16px; 
   width: 100%;
   max-width: 420px;
 }
@@ -165,30 +160,23 @@ body::after {
 .z-btn {
   flex: 1;
   padding: 18px 12px;
-  font-family: 'DM Mono', monospace;
-  font-size: 13px;
-  font-weight: 600;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   text-align: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease;
   
-  /* ESTILO INACTIVO: Totalmente visible y estético */
-  background: transparent;
-  color: #FFFFFF;
-  border: 2px solid #FFFFFF;
-}
-
-.z-btn:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* ESTILO ACTIVO: Negro puro, contraste máximo con el azul */
-.z-btn.active {
+  /* ESTILO NEGRO PURO UNIFICADO PARA AMBOS */
   background: var(--ink);
   color: var(--paper);
-  border: 2px solid var(--ink);
+  border: 1px solid var(--ink);
+}
+
+.z-btn:hover {
+  opacity: 0.85; /* Solo un sutil cambio de opacidad para saber que es cliqueable */
 }
 /* ================================================== */
 
@@ -209,10 +197,9 @@ body::after {
     gap: 0 60px;
   }
   
-  /* MODIFICADO: Removida altura mínima en escritorio para respetar aspect-ratio */
-  .z-hero-image { grid-area: img; /* min-height: 580px; REMOVIDO - NUEVO */ }
+  .z-hero-image { grid-area: img; }
   .z-hero-text { grid-area: text; padding: 60px 0 30px 0; align-self: end; }
-  .z-hero-actions { grid-area: actions; padding: 0 0 60px 0; align-self: start; }
+  .z-hero-actions { grid-area: actions; padding: 0; align-self: start; }
 }
 
 
@@ -234,63 +221,63 @@ body::after {
 }
 
 .panel-header { text-align: center; padding-bottom: 72px; border-bottom: 1px solid var(--border); margin-bottom: 72px; }
-.panel-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--volt); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.panel-tag { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--volt); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
 .panel-tag::before, .panel-tag::after { content: ''; display: block; width: 24px; height: 1px; background: rgba(212,245,60,0.3); }
-.panel-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: clamp(32px, 5vw, 60px); line-height: 1.0; color: var(--paper); margin-bottom: 20px; }
+.panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(32px, 5vw, 60px); line-height: 1.0; color: var(--paper); margin-bottom: 20px; letter-spacing: -0.02em; }
 .panel-title em { color: var(--volt); font-style: normal; }
 .panel-sub { font-size: 15px; color: var(--muted); line-height: 1.75; max-width: 500px; margin: 0 auto; }
-.panel-sub strong { color: var(--paper); font-weight: 500; }
+.panel-sub strong { color: var(--paper); font-weight: 600; }
 
-.steps-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+.steps-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
 .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--border); margin-bottom: 72px; }
 .step { background: var(--ink); padding: 40px 32px 36px; position: relative; }
-.step-num { font-family: 'Poppins', sans-serif; font-weight: 600; font-style: italic; font-size: 48px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(212,245,60,0.15); display: block; margin-bottom: 16px; }
-.step-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 17px; color: var(--paper); margin-bottom: 10px; }
+.step-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-style: italic; font-size: 48px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(212,245,60,0.15); display: block; margin-bottom: 16px; }
+.step-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: var(--paper); margin-bottom: 10px; }
 .step-body { font-size: 13px; color: var(--muted); line-height: 1.75; }
 
 .highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 72px; }
 .highlight { background: var(--card); border: 1px solid var(--border); padding: 32px 28px; display: flex; gap: 20px; align-items: flex-start; }
-.highlight-icon { width: 36px; height: 36px; flex-shrink: 0; border: 1px solid rgba(212,245,60,0.25); background: rgba(212,245,60,0.06); display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 600; font-style: italic; font-size: 13px; color: var(--volt); letter-spacing: -0.06em; }
-.highlight-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px; color: var(--paper); margin-bottom: 6px; }
+.highlight-icon { width: 36px; height: 36px; flex-shrink: 0; border: 1px solid rgba(212,245,60,0.25); background: rgba(212,245,60,0.06); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-style: italic; font-size: 13px; color: var(--volt); letter-spacing: -0.06em; }
+.highlight-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--paper); margin-bottom: 6px; }
 .highlight-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
 .risk-box { border: 1px solid var(--border); background: rgba(212,245,60,0.03); padding: 40px; margin-bottom: 72px; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: center; }
-.risk-label { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: clamp(22px, 3vw, 34px); line-height: 1.1; color: var(--paper); }
+.risk-label { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(22px, 3vw, 34px); line-height: 1.1; color: var(--paper); }
 .risk-label em { color: var(--volt); font-style: normal; }
 .risk-rows { display: flex; flex-direction: column; gap: 0; }
 .risk-row { display: flex; gap: 16px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid var(--border); }
 .risk-row:first-child { padding-top: 0; }
 .risk-row:last-child { border-bottom: none; padding-bottom: 0; }
 .risk-dot { width: 28px; height: 28px; flex-shrink: 0; background: rgba(212,245,60,0.08); border: 1px solid rgba(212,245,60,0.2); display: flex; align-items: center; justify-content: center; font-size: 11px; }
-.risk-row-title { font-family: 'Oswald', sans-serif; font-size: 14px; color: var(--paper); margin-bottom: 4px; }
+.risk-row-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: var(--paper); margin-bottom: 4px; }
 .risk-row-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
-.faq-title-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
+.faq-title-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
 .faq-list { margin-bottom: 72px; }
 .faq-item { border-top: 1px solid var(--border); }
 .faq-item:last-child { border-bottom: 1px solid var(--border); }
 .faq-q { width: 100%; background: none; border: none; cursor: pointer; padding: 22px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; text-align: left; }
-.faq-q-text { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px; color: var(--paper); }
-.faq-icon { font-family: 'DM Mono', monospace; font-size: 18px; color: var(--muted); flex-shrink: 0; transition: transform 0.3s, color 0.3s; }
+.faq-q-text { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--paper); }
+.faq-icon { font-family: 'Space Mono', monospace; font-size: 18px; color: var(--muted); flex-shrink: 0; transition: transform 0.3s, color 0.3s; }
 .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--volt); }
 .faq-a { display: none; padding-bottom: 22px; font-size: 14px; color: var(--muted); line-height: 1.75; max-width: 680px; }
 .faq-a.open { display: block; }
 
 .cta-block { display: flex; align-items: center; gap: 32px; padding: 48px; background: var(--card); border: 1px solid var(--border); flex-wrap: wrap; }
 .cta-copy { flex: 1; min-width: 240px; }
-.cta-copy h3 { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: clamp(24px, 3vw, 36px); line-height: 1.05; color: var(--paper); margin-bottom: 10px; }
+.cta-copy h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(24px, 3vw, 36px); line-height: 1.05; color: var(--paper); margin-bottom: 10px; }
 .cta-copy h3 em { color: var(--volt); font-style: normal; }
 .cta-copy p { font-size: 14px; color: var(--muted); line-height: 1.65; }
-.btn-cta { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--volt); color: var(--ink); padding: 18px 40px; border: none; cursor: pointer; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; }
+.btn-cta { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--volt); color: var(--ink); padding: 18px 40px; border: none; cursor: pointer; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; }
 .btn-cta:hover { opacity: 0.88; transform: translateY(-1px); }
 
 .footer { padding: 40px 32px; }
 .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-.footer-ooo { font-family: 'Poppins', sans-serif; font-weight: 600; font-style: italic; font-size: 28px; letter-spacing: -0.06em; color: var(--muted); line-height: 1; }
+.footer-ooo { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-style: italic; font-size: 28px; letter-spacing: -0.06em; color: var(--muted); line-height: 1; }
 .footer-links { display: flex; gap: 24px; }
-.footer-links button { background: none; border: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: underline; text-underline-offset: 4px; transition: color 0.2s; }
+.footer-links button { background: none; border: none; cursor: pointer; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: underline; text-underline-offset: 4px; transition: color 0.2s; }
 .footer-links button:hover { color: var(--paper); }
-.footer-copy { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: var(--muted); text-align: center; }
+.footer-copy { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: var(--muted); text-align: center; }
 
 .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 24px; }
 .modal-bg.open { display: flex; }
@@ -298,19 +285,24 @@ body::after {
 .modal-panel::-webkit-scrollbar { width: 4px; }
 .modal-panel::-webkit-scrollbar-thumb { background: var(--border); }
 .modal-header { padding: 22px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: #111; z-index: 1; }
-.modal-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 17px; color: var(--paper); }
+.modal-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: var(--paper); }
 .modal-close { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 22px; line-height: 1; transition: color 0.2s; padding: 4px; }
 .modal-close:hover { color: var(--paper); }
 .legal-content { padding: 28px; font-size: 13px; color: var(--muted); line-height: 1.8; }
-.legal-content h2 { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 17px; color: var(--paper); margin: 24px 0 10px; }
-.legal-content h3 { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 14px; color: var(--paper); margin: 18px 0 8px; }
+.legal-content h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: var(--paper); margin: 24px 0 10px; }
+.legal-content h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 14px; color: var(--paper); margin: 18px 0 8px; }
 .legal-content p { margin-bottom: 10px; }
 .legal-content ul { padding-left: 18px; margin-bottom: 10px; }
 .legal-content ul li { margin-bottom: 5px; }
-.legal-content strong { color: var(--paper); font-weight: 500; }
+.legal-content strong { color: var(--paper); font-weight: 600; }
 
 @media (max-width: 768px) {
   .z-hero-wrapper { padding: 40px 20px; }
+  
+  /* AQUÍ MODIFICAS EL ESPACIO ENTRE LOS BOTONES Y LA IMAGEN EN MÓVIL */
+  /* El tercer valor (12px) es el espacio hacia abajo. Si quieres que se pegue más, ponle 0px o 4px. Si quieres más, ponle 20px. */
+  .z-hero-actions { padding: 0 0 12px 0; }
+  
   .panel-wrap { padding: 0 20px 80px; }
   .risk-box { grid-template-columns: 1fr; gap: 28px; }
   .cta-block { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
@@ -318,9 +310,9 @@ body::after {
   .highlights { grid-template-columns: 1fr; }
   .nav-inner { padding: 0 20px; }
   
-  /* AQUÍ ES DONDE LOS BOTONES QUEDAN UNO AL LADO DEL OTRO EN MÓVIL */
+  /* Botones lado a lado en móvil con ajuste de texto */
   .z-btn-group { flex-direction: row; max-width: 100%; gap: 8px; }
-  .z-btn { padding: 14px 6px; font-size: 11px; letter-spacing: 0.05em; }
+  .z-btn { padding: 16px 8px; font-size: 10px; letter-spacing: 0.02em; }
 }
 
 @media (max-width: 480px) {
@@ -335,7 +327,7 @@ body::after {
   <div class="nav-inner">
     <img src="darklogo.PNG" alt="Fandoom" style="height:130px;width:auto;object-fit:contain;"
       onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span style="display:none;font-family:'Poppins',sans-serif;font-weight:600;font-style:italic;font-size:22px;color:var(--paper);letter-spacing:-0.04em;">fandoom</span>
+    <span style="display:none;font-family:'Space Grotesk',sans-serif;font-weight:700;font-style:italic;font-size:22px;color:var(--paper);letter-spacing:-0.04em;">fandoom</span>
     <a href="boveda.html" class="nav-login">Iniciar sesión →</a>
   </div>
 </nav>
@@ -353,7 +345,7 @@ body::after {
         <div class="z-hero-question">¿Qué quieres hacer?</div>
         
         <div class="z-btn-group">
-          <button class="z-btn active" id="btnComprar" onclick="switchPanel('comprar')">
+          <button class="z-btn" id="btnComprar" onclick="switchPanel('comprar')">
             Comprar un boleto
           </button>
           <button class="z-btn" id="btnVender" onclick="switchPanel('vender')">
@@ -576,24 +568,21 @@ body::after {
     </div>
     <div id="legalContent" class="legal-content"></div>
     <div style="padding:16px 28px;border-top:1px solid var(--border);">
-      <button onclick="closeLegal()" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;background:var(--volt);color:var(--ink);padding:12px 28px;border:none;cursor:pointer;">Cerrar</button>
+      <button onclick="closeLegal()" style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;background:var(--volt);color:var(--ink);padding:12px 28px;border:none;cursor:pointer;">Cerrar</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── LOGICA DE BOTONES SIMPLIFICADA ──
+// ── LÓGICA DE PANELES ──
 let activePanel = null;
 
 function switchPanel(which) {
-  const btnComprar = document.getElementById('btnComprar');
-  const btnVender  = document.getElementById('btnVender');
   const pC = document.getElementById('panelComprar');
   const pV = document.getElementById('panelVender');
 
+  // Si toca el que ya está abierto, lo cierra.
   if (which === activePanel) {
-    btnComprar.classList.remove('active');
-    btnVender.classList.remove('active');
     pC.classList.remove('active');
     pV.classList.remove('active');
     activePanel = null;
@@ -601,9 +590,6 @@ function switchPanel(which) {
   }
 
   activePanel = which;
-
-  btnComprar.classList.toggle('active', which === 'comprar');
-  btnVender.classList.toggle('active',  which === 'vender');
 
   pC.classList.remove('active');
   pV.classList.remove('active');
