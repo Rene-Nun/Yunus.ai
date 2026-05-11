@@ -15,6 +15,8 @@
   --muted: #5C5C5C;
   --border: rgba(242,239,232,0.1);
   --card: rgba(255,255,255,0.03);
+  /* Nuevo color para fondo Hero - Night vibe */
+  --bg-hero: #141416; 
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -73,20 +75,26 @@ body::after {
 
 
 /* ==================================================
-   HERO CARD EXACTO A ZALANDO
+   HERO CARD EXACTO A ZALANDO - ACTUALIZADO
    ================================================== */
 
-/* Envoltorio para separar la tarjeta del menú y de las orillas */
+/* 1. SECCIÓN CONTENEDORA - Ocupa todo el ancho horizontal */
+.z-hero-section {
+  width: 100%;
+  background-color: var(--bg-hero); /* Nuevo color Night */
+  padding-top: 68px; /* Compensar Nav fijo */
+  border-bottom: 1px solid var(--border);
+}
+
+/* 2. LIMITADOR DE CONTENIDO - Centra la tarjeta */
 .z-hero-wrapper {
-  padding: 100px 32px 64px; /* El 100px compensa el nav fijo */
+  padding: 60px 32px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* LA CAJA / EL FONDO DE COLOR (Aquí vive todo adentro) */
+/* 3. LA TARJETA (Sin fondo propio, lo toma de la sección) */
 .z-hero-card {
-  background: #18181b; /* COLOR LISO DE FONDO */
-  border: 1px solid var(--border);
   display: flex;
   flex-direction: column; /* Móvil por defecto: apilado */
   overflow: hidden;
@@ -94,13 +102,13 @@ body::after {
 
 /* --- ELEMENTOS HIJOS (MÓVIL STACK) --- */
 
-/* 1. Botones (Arriba en móvil) */
+/* Botones (Arriba en móvil) */
 .z-hero-actions {
   order: 1;
-  padding: 32px 24px;
+  padding: 0 0 40px 0; /* Espaciado inferior en móvil */
 }
 
-/* 2. Imagen (En medio en móvil) */
+/* Imagen (En medio en móvil) */
 .z-hero-image {
   order: 2;
   width: 100%;
@@ -115,19 +123,19 @@ body::after {
   object-fit: cover;
 }
 
-/* 3. Textos (Abajo en móvil) */
+/* Textos (Abajo en móvil) */
 .z-hero-text {
   order: 3;
-  padding: 32px 24px 40px;
+  padding: 40px 0 0 0;
 }
 
-/* --- ESTILOS INTERNOS DE TEXTO Y BOTONES --- */
+/* --- ESTILOS INTERNOS DE TEXTO --- */
 .z-hero-question {
   font-family: 'Oswald', sans-serif;
   font-weight: 500;
   font-size: 20px;
   color: var(--paper);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 .z-hero-title {
   font-family: 'Oswald', sans-serif;
@@ -140,43 +148,69 @@ body::after {
 .z-hero-sub {
   font-size: 16px;
   line-height: 1.6;
-  color: var(--muted);
+  color: rgba(242, 239, 232, 0.7); /* Muted legible contra el nuevo fondo */
   max-width: 420px;
 }
 
-/* Adaptación del Pill Switcher para que quepa en la caja */
+/* ==================================================
+   REDISERÑO DE BOTONES CTA (Pill Switcher)
+   ================================================== */
 .z-pill-wrapper { padding: 0 !important; justify-content: flex-start !important; width: 100%; }
+
 .z-pill {
-  background: rgba(0,0,0,0.5); 
-  border: 1px solid rgba(255,255,255,0.08); 
-  padding: 5px; 
+  background: rgba(0,0,0,0.7); /* Fondo más oscuro y nítido */
+  border: 1px solid rgba(255,255,255,0.15); /* Borde más visible */
+  padding: 6px; /* Un poco más de aire */
   gap: 4px; 
   display: flex; 
   width: 100%; 
-  max-width: 400px; 
+  max-width: 440px; 
   position: relative;
 }
+
 .z-pill-btn {
   font-family: 'DM Mono', monospace; 
   font-size: 11px !important; 
-  letter-spacing: 0.05em; 
+  letter-spacing: 0.08em; 
   text-transform: uppercase; 
   flex: 1; 
-  padding: 16px 10px !important; 
+  padding: 17px 10px !important; /* Más altos */
   font-weight: 500 !important; 
-  background: none; border: none; cursor: pointer; color: var(--muted); position: relative; z-index: 1; text-align: center;
+  background: none; border: none; cursor: pointer; 
+  position: relative; z-index: 1; text-align: center;
+  transition: color 0.3s;
+  
+  /* ESTILO INACTIVO: Legible pero secundario */
+  color: rgba(242, 239, 232, 0.6); /* Color paper con opacidad media */
 }
-.z-pill-btn.active { color: var(--ink) !important; }
+
+/* Hover en inactivo para feedback estético */
+.z-pill-btn:not(.active):hover {
+  color: var(--paper);
+}
+
+/* ESTILO ACTIVO: Contraste máximo */
+.z-pill-btn.active { 
+  color: var(--ink) !important; /* Negro sobre verde */
+  font-weight: 600 !important;
+}
+
 .z-pill-slider {
-  position: absolute; top: 5px; left: 5px; height: calc(100% - 10px);
+  position: absolute; top: 6px; left: 6px; height: calc(100% - 12px);
   background: var(--volt);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), width 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s;
   z-index: 0; opacity: 0;
 }
 .z-pill-slider.visible { opacity: 1; }
+/* ================================================== */
+
 
 /* --- DESKTOP (Split exacto de Zalando) --- */
 @media (min-width: 769px) {
+  .z-hero-wrapper {
+    padding: 80px 32px; /* Un poco más de aire arriba/abajo */
+  }
+  
   .z-hero-card {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -184,25 +218,27 @@ body::after {
     grid-template-areas:
       "img text"
       "img actions";
+    gap: 0 60px; /* Espacio entre columnas */
   }
   
   .z-hero-image { 
     grid-area: img; 
-    min-height: 540px; 
+    min-height: 580px; 
   }
   
   .z-hero-text { 
     grid-area: text; 
-    padding: 64px 48px 24px; 
+    padding: 60px 0 30px 0; 
     align-self: end; 
   }
   
   .z-hero-actions { 
     grid-area: actions; 
-    padding: 0 48px 64px; 
+    padding: 0 0 60px 0; 
     align-self: start; 
   }
 }
+
 /* ================================================== */
 
 /* CONTENT PANELS */
@@ -496,9 +532,9 @@ body::after {
 .legal-content ul li { margin-bottom: 5px; }
 .legal-content strong { color: var(--paper); font-weight: 500; }
 
-/* RESPONSIVE */
+/* RESPONSIVE CORREGIDO */
 @media (max-width: 768px) {
-  .z-hero-wrapper { padding: 88px 20px 48px; }
+  .z-hero-wrapper { padding: 40px 20px; } /* Menos padding lateral en móvil */
   .panel-wrap { padding: 0 20px 80px; }
   .risk-box { grid-template-columns: 1fr; gap: 28px; }
   .cta-block { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
@@ -523,41 +559,44 @@ body::after {
   </div>
 </nav>
 
-<section class="z-hero-wrapper">
+<section class="z-hero-section">
   
-  <div class="z-hero-card">
+  <div class="z-hero-wrapper">
     
-    <div class="z-hero-image">
-      <img src="heroimage.PNG" alt="Experiencia Fandom" />
-    </div>
-
-    <div class="z-hero-actions">
-      <div class="z-hero-question">¿Por dónde quieres empezar?</div>
+    <div class="z-hero-card">
       
-      <div class="pill-zone z-pill-wrapper">
-        <div class="pill z-pill" id="pill">
-          <div class="z-pill-slider" id="pillSlider"></div>
-          <button class="pill-btn z-pill-btn active" id="btnComprar" onclick="switchPanel('comprar')">
-            Comprar
-          </button>
-          <button class="pill-btn z-pill-btn" id="btnVender" onclick="switchPanel('vender')">
-            Vender
-          </button>
+      <div class="z-hero-image">
+        <img src="heroimage.PNG" alt="Experiencia Fandom" />
+      </div>
+
+      <div class="z-hero-actions">
+        <div class="z-hero-question">¿Qué quieres hacer?</div>
+        
+        <div class="pill-zone z-pill-wrapper">
+          <div class="pill z-pill" id="pill">
+            <div class="z-pill-slider" id="pillSlider"></div>
+            <button class="pill-btn z-pill-btn active" id="btnComprar" onclick="switchPanel('comprar')">
+              Comprar
+            </button>
+            <button class="pill-btn z-pill-btn" id="btnVender" onclick="switchPanel('vender')">
+              Vender
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="z-hero-text">
-      <div class="ooo" style="font-size:28px; margin-bottom:12px;">ooo</div>
-      <h1 class="z-hero-title">
-        Compra en quincenas.<br>
-        <span style="color:var(--volt)">Vende sin riesgo.</span>
-      </h1>
-      <p class="z-hero-sub">
-        Sin revendedores abusivos, sin estafas de Marketplace. Solo fans ayudando fans.
-      </p>
-    </div>
+      <div class="z-hero-text">
+        <div class="ooo" style="font-size:28px; margin-bottom:12px;">ooo</div>
+        <h1 class="z-hero-title">
+          Compra en quincenas.<br>
+          <span style="color:var(--volt)">Vende sin riesgo.</span>
+        </h1>
+        <p class="z-hero-sub">
+          Sin revendedores abusivos, sin estafas de Marketplace. Solo fans ayudando fans.
+        </p>
+      </div>
 
+    </div>
   </div>
 </section>
 
