@@ -182,11 +182,11 @@ body::after {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* ESTILO ACTIVO: Verde volt, resalta de inmediato */
+/* ESTILO ACTIVO: Negro puro, contraste máximo con el azul */
 .z-btn.active {
-  background: var(--volt);
-  color: var(--ink);
-  border: 2px solid var(--volt);
+  background: var(--ink);
+  color: var(--paper);
+  border: 2px solid var(--ink);
 }
 /* ================================================== */
 
@@ -314,8 +314,12 @@ body::after {
   .steps { grid-template-columns: 1fr; }
   .highlights { grid-template-columns: 1fr; }
   .nav-inner { padding: 0 20px; }
-  .z-btn-group { flex-direction: column; max-width: 100%; gap: 12px; }
+  
+  /* AQUÍ ES DONDE LOS BOTONES QUEDAN UNO AL LADO DEL OTRO EN MÓVIL */
+  .z-btn-group { flex-direction: row; max-width: 100%; gap: 8px; }
+  .z-btn { padding: 14px 6px; font-size: 11px; letter-spacing: 0.05em; }
 }
+
 @media (max-width: 480px) {
   .btn-cta { padding: 16px 24px; width: 100%; justify-content: center; }
 }
@@ -358,7 +362,7 @@ body::after {
       <div class="z-hero-text">
         <h1 class="z-hero-title">
           Compra en quincenas.<br>
-          <span style="color:var(--volt)">Vende sin riesgo.</span>
+          <span style="color:var(--ink)">Vende sin riesgo.</span>
         </h1>
         <p class="z-hero-sub">
           Sin revendedores abusivos, sin estafas de Marketplace. Solo fans ayudando fans.
