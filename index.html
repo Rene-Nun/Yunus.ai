@@ -107,10 +107,12 @@ body::after {
   padding: 0 0 40px 0;
 }
 
+/* MODIFICADO: Contenedor de imagen CUADRADO */
 .z-hero-image {
   order: 2;
   width: 100%;
-  min-height: 380px;
+  /* min-height: 380px; REMOVIDO para permitir que se ajuste */
+  aspect-ratio: 1 / 1; /* FUERZA PROPORCIÓN CUADRADA - NUEVO */
   position: relative;
 }
 .z-hero-image img {
@@ -207,7 +209,8 @@ body::after {
     gap: 0 60px;
   }
   
-  .z-hero-image { grid-area: img; min-height: 580px; }
+  /* MODIFICADO: Removida altura mínima en escritorio para respetar aspect-ratio */
+  .z-hero-image { grid-area: img; /* min-height: 580px; REMOVIDO - NUEVO */ }
   .z-hero-text { grid-area: text; padding: 60px 0 30px 0; align-self: end; }
   .z-hero-actions { grid-area: actions; padding: 0 0 60px 0; align-self: start; }
 }
