@@ -3,18 +3,495 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fandom — Compra en quincenas. Vende sin riesgo. De fan a fan.</title>
+<title>Fandoom — Compra en quincenas. Vende sin riesgo. De fan a fan.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,600&family=Oswald:wght@500;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&di[...]</head>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,600&family=Oswald:wght@500;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink: #0a0a0a;
+  --paper: #F2EFE8;
+  --volt: #D4F53C;
+  --muted: #5C5C5C;
+  --border: rgba(242,239,232,0.1);
+  --card: rgba(255,255,255,0.03);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+::selection { background: var(--volt); color: var(--ink); }
+html { background: var(--ink); scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  background: var(--ink);
+  color: var(--paper);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* GRAIN */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999; opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat; background-size: 128px;
+}
+
+/* OOO DECORATIVE — Poppins SemiBold Italic, exactly like the icon */
+.ooo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: -0.04em;
+  color: var(--volt);
+  line-height: 1;
+  display: inline-block;
+}
+
+/* NAV */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,10,10,0.9);
+  backdrop-filter: blur(20px);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 32px; height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-login {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  border: 1px solid var(--border);
+  padding: 9px 20px;
+  transition: all 0.2s;
+}
+.nav-login:hover { border-color: var(--paper); color: var(--paper); }
+
+/* HERO */
+.hero {
+  padding: 140px 32px 0;
+  max-width: 860px; margin: 0 auto;
+  text-align: center;
+}
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 28px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: ''; display: block;
+  width: 32px; height: 1px;
+  background: var(--border);
+}
+.hero-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: clamp(40px, 7vw, 80px);
+  line-height: 1.0;
+  color: var(--paper);
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
+}
+.hero-title .break { display: block; }
+.hero-title .accent { color: var(--volt); }
+
+.hero-sub {
+  font-size: 16px; line-height: 1.75;
+  color: var(--muted); max-width: 520px;
+  margin: 0 auto 72px;
+  font-weight: 300;
+}
+.hero-sub strong { color: var(--paper); font-weight: 500; }
+
+/* PILL SWITCHER */
+.pill-zone {
+  padding: 0 16px 80px;
+  display: flex; justify-content: center;
+}
+.pill {
+  display: inline-flex;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  padding: 5px;
+  gap: 4px;
+  position: relative;
+  border-radius: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+.pill-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 14px 20px;
+  background: none; border: none; cursor: pointer;
+  color: var(--muted);
+  transition: color 0.25s;
+  position: relative; z-index: 1;
+  white-space: normal;
+  text-align: center;
+  min-width: 0;
+  flex: 1 1 auto;
+  line-height: 1.3;
+}
+.pill-btn.active { color: var(--ink); }
+.pill-slider {
+  position: absolute;
+  top: 5px; left: 5px;
+  height: calc(100% - 10px);
+  background: var(--volt);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), width 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s;
+  z-index: 0;
+  opacity: 0;
+}
+.pill-slider.visible {
+  opacity: 1;
+}
+
+/* CONTENT PANELS */
+.panel-wrap {
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 32px 120px;
+  overflow: hidden;
+}
+.panel {
+  display: none;
+  animation: fadeUp 0.5s ease forwards;
+}
+.panel.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* PANEL HEADER */
+.panel-header {
+  text-align: center;
+  padding-bottom: 72px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 72px;
+}
+.panel-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--volt); margin-bottom: 20px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.panel-tag::before, .panel-tag::after {
+  content: ''; display: block;
+  width: 24px; height: 1px; background: rgba(212,245,60,0.3);
+}
+.panel-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: clamp(32px, 5vw, 60px);
+  line-height: 1.0;
+  color: var(--paper); margin-bottom: 20px;
+}
+.panel-title em { color: var(--volt); font-style: normal; }
+.panel-sub {
+  font-size: 15px; color: var(--muted);
+  line-height: 1.75; max-width: 500px; margin: 0 auto;
+}
+.panel-sub strong { color: var(--paper); font-weight: 500; }
+
+/* STEPS GRID */
+.steps-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 32px;
+}
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin-bottom: 72px;
+}
+.step {
+  background: var(--ink);
+  padding: 40px 32px 36px;
+  position: relative;
+}
+.step-num {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600; font-style: italic;
+  font-size: 48px; line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(212,245,60,0.15);
+  display: block; margin-bottom: 16px;
+}
+.step-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600; font-size: 17px;
+  color: var(--paper); margin-bottom: 10px;
+}
+.step-body {
+  font-size: 13px; color: var(--muted); line-height: 1.75;
+}
+.step-connector {
+  display: none;
+}
+
+/* HIGHLIGHTS GRID */
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 72px;
+}
+.highlight {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+  display: flex; gap: 20px; align-items: flex-start;
+}
+.highlight-icon {
+  width: 36px; height: 36px; flex-shrink: 0;
+  border: 1px solid rgba(212,245,60,0.25);
+  background: rgba(212,245,60,0.06);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600; font-style: italic;
+  font-size: 13px; color: var(--volt);
+  letter-spacing: -0.06em;
+}
+.highlight-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600; font-size: 15px;
+  color: var(--paper); margin-bottom: 6px;
+}
+.highlight-body {
+  font-size: 13px; color: var(--muted); line-height: 1.65;
+}
+
+/* RISK BOX (vendedor) */
+.risk-box {
+  border: 1px solid var(--border);
+  background: rgba(212,245,60,0.03);
+  padding: 40px;
+  margin-bottom: 72px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 48px;
+  align-items: center;
+}
+.risk-label {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: clamp(22px, 3vw, 34px);
+  line-height: 1.1;
+  color: var(--paper);
+}
+.risk-label em { color: var(--volt); font-style: normal; }
+.risk-rows { display: flex; flex-direction: column; gap: 0; }
+.risk-row {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.risk-row:first-child { padding-top: 0; }
+.risk-row:last-child { border-bottom: none; padding-bottom: 0; }
+.risk-dot {
+  width: 28px; height: 28px; flex-shrink: 0;
+  background: rgba(212,245,60,0.08);
+  border: 1px solid rgba(212,245,60,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+}
+.risk-row-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px; color: var(--paper); margin-bottom: 4px;
+}
+.risk-row-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* FAQ */
+.faq-title-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 24px;
+}
+.faq-list { margin-bottom: 72px; }
+.faq-item { border-top: 1px solid var(--border); }
+.faq-item:last-child { border-bottom: 1px solid var(--border); }
+.faq-q {
+  width: 100%; background: none; border: none; cursor: pointer;
+  padding: 22px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  text-align: left;
+}
+.faq-q-text {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600; font-size: 15px; color: var(--paper);
+}
+.faq-icon {
+  font-family: 'DM Mono', monospace; font-size: 18px;
+  color: var(--muted); flex-shrink: 0;
+  transition: transform 0.3s, color 0.3s;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); color: var(--volt); }
+.faq-a {
+  display: none; padding-bottom: 22px;
+  font-size: 14px; color: var(--muted); line-height: 1.75;
+  max-width: 680px;
+}
+.faq-a.open { display: block; }
+
+/* CTA BLOCK */
+.cta-block {
+  display: flex; align-items: center; gap: 32px;
+  padding: 48px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.cta-copy { flex: 1; min-width: 240px; }
+.cta-copy h3 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600; font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.05; color: var(--paper); margin-bottom: 10px;
+}
+.cta-copy h3 em { color: var(--volt); font-style: normal; }
+.cta-copy p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+.btn-cta {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  background: var(--volt); color: var(--ink);
+  padding: 18px 40px; border: none; cursor: pointer;
+  font-weight: 500; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: opacity 0.2s, transform 0.2s;
+  white-space: nowrap;
+}
+.btn-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-cta-ghost {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  background: transparent; color: var(--paper);
+  padding: 18px 40px; border: 1px solid var(--border); cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.btn-cta-ghost:hover { border-color: var(--volt); color: var(--volt); }
+
+/* FOOTER */
+.footer {
+  padding: 40px 32px;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+.footer-ooo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600; font-style: italic;
+  font-size: 28px; letter-spacing: -0.06em;
+  color: var(--muted); line-height: 1;
+}
+.footer-links { display: flex; gap: 24px; }
+.footer-links button {
+  background: none; border: none; cursor: pointer;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); text-decoration: underline; text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+.footer-links button:hover { color: var(--paper); }
+.footer-copy {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.06em; color: var(--muted); text-align: center;
+}
+
+/* MODALS */
+.modal-bg {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(10px); z-index: 200; display: none;
+  align-items: center; justify-content: center; padding: 24px;
+}
+.modal-bg.open { display: flex; }
+.modal-panel {
+  background: #111; border: 1px solid var(--border);
+  width: 100%; max-width: 640px; max-height: 88vh;
+  overflow-y: auto;
+}
+.modal-panel::-webkit-scrollbar { width: 4px; }
+.modal-panel::-webkit-scrollbar-thumb { background: var(--border); }
+.modal-header {
+  padding: 22px 28px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: #111; z-index: 1;
+}
+.modal-title {
+  font-family: 'Oswald', sans-serif; font-weight: 600;
+  font-size: 17px; color: var(--paper);
+}
+.modal-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: 22px; line-height: 1;
+  transition: color 0.2s; padding: 4px;
+}
+.modal-close:hover { color: var(--paper); }
+.legal-content { padding: 28px; font-size: 13px; color: var(--muted); line-height: 1.8; }
+.legal-content h2 { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 17px; color: var(--paper); margin: 24px 0 10px; }
+.legal-content h3 { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 14px; color: var(--paper); margin: 18px 0 8px; }
+.legal-content p { margin-bottom: 10px; }
+.legal-content ul { padding-left: 18px; margin-bottom: 10px; }
+.legal-content ul li { margin-bottom: 5px; }
+.legal-content strong { color: var(--paper); font-weight: 500; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero { padding: 120px 20px 0; }
+  .pill-zone { padding: 0 12px 64px; }
+  .pill { 
+    padding: 4px;
+    gap: 3px;
+  }
+  .pill-btn { 
+    padding: 13px 14px; 
+    font-size: 10px; 
+    letter-spacing: 0.05em;
+  }
+  .panel-wrap { padding: 0 20px 80px; }
+  .risk-box { grid-template-columns: 1fr; gap: 28px; }
+  .cta-block { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
+  .steps { grid-template-columns: 1fr; }
+  .highlights { grid-template-columns: 1fr; }
+  .nav-inner { padding: 0 20px; }
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: 36px; }
+  .pill-zone { padding: 0 10px 56px; }
+  .pill { 
+    padding: 3px;
+    gap: 2px;
+    width: 100%;
+  }
+  .pill-btn { 
+    padding: 12px 10px; 
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .btn-cta, .btn-cta-ghost { padding: 16px 24px; width: 100%; justify-content: center; }
+}
+</style>
+</head>
 
 <body>
 
 <!-- NAV -->
 <nav id="nav">
   <div class="nav-inner">
-    <img src="darklogo.PNG" alt="Fandom" style="height:130px;width:auto;object-fit:contain;"
+    <img src="darklogo.PNG" alt="Fandoom" style="height:130px;width:auto;object-fit:contain;"
       onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span style="display:none;font-family:'Poppins',sans-serif;font-weight:600;font-style:italic;font-size:22px;color:var(--paper);letter-spacing:-0.04em;">fandom</span>
+    <span style="display:none;font-family:'Poppins',sans-serif;font-weight:600;font-style:italic;font-size:22px;color:var(--paper);letter-spacing:-0.04em;">fandoom</span>
     <a href="boveda.html" class="nav-login">Iniciar sesión →</a>
   </div>
 </nav>
@@ -92,14 +569,14 @@
         <div class="highlight-icon">oo</div>
         <div>
           <div class="highlight-title">Precio de fan, no de revendedor</div>
-          <div class="highlight-body">Los boletos se listan al precio original. La comisión de Fandom es solo el 3% — ya incluida en lo que ves.</div>
+          <div class="highlight-body">Los boletos se listan al precio original. La comisión de Fandoom es solo el 3% — ya incluida en lo que ves.</div>
         </div>
       </div>
       <div class="highlight">
         <div class="highlight-icon">oo</div>
         <div>
           <div class="highlight-title">Boleto custodiado</div>
-          <div class="highlight-body">Fandom coordina la transferencia en Ticketmaster y guarda el boleto hasta que liquidas tu plan. Nunca pagas a un extraño.</div>
+          <div class="highlight-body">Fandoom coordina la transferencia en Ticketmaster y guarda el boleto hasta que liquidas tu plan. Nunca pagas a un extraño.</div>
         </div>
       </div>
     </div>
@@ -125,7 +602,7 @@
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-          <span class="faq-q-text">¿Cuánto me cobra Fandom?</span>
+          <span class="faq-q-text">¿Cuánto me cobra Fandoom?</span>
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-a">Solo el 3% sobre el precio original del boleto, ya incluido en el precio que ves en el marketplace. Sin intereses, sin CAT, sin cargos ocultos.</div>
@@ -136,7 +613,7 @@
           <span class="faq-q-text">¿Qué pasa si no puedo terminar de pagar?</span>
           <span class="faq-icon">+</span>
         </button>
-        <div class="faq-a">El boleto regresa al cedente y lo que pagaste hasta ese momento queda con él — ese es el trato desde el inicio, para los dos lados. Por eso elige un plan que se adapte a tu flujo de efectivo sin riesgos.</div>
+        <div class="faq-a">El boleto regresa al cedente y lo que pagaste hasta ese momento queda con él — ese es el trato desde el inicio, para los dos lados. Por eso elige un plan que se adapte bien a tu quincena antes de apartar.</div>
       </div>
 
       <div class="faq-item">
@@ -144,7 +621,7 @@
           <span class="faq-q-text">¿Cómo sé que el boleto es real?</span>
           <span class="faq-icon">+</span>
         </button>
-        <div class="faq-a">Verificamos el comprobante de compra original del cedente antes de publicar cualquier boleto. Además coordinamos la transferencia directamente en Ticketmaster — nunca quedarás desprotegido.</div>
+        <div class="faq-a">Verificamos el comprobante de compra original del cedente antes de publicar cualquier boleto. Además coordinamos la transferencia directamente en Ticketmaster — nunca recibes un PDF o captura de pantalla.</div>
       </div>
 
     </div>
@@ -159,8 +636,119 @@
 
   </div>
 
+  <!-- ─── PANEL VENDEDOR ─── -->
+  <div class="panel" id="panelVender">
+
+    <div class="panel-header">
+      <h2 class="panel-title">Lista tu boleto sin<br><em>perder nada</em></h2>
+      <p class="panel-sub">
+        ¿No puedes ir? Ponlo en Fandoom. <strong>Cobras quincena a quincena</strong> — y si el trato no se completa, tu boleto regresa a ti intacto con lo que ya te pagaron.
+      </p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div class="step-title">Lista tu boleto</div>
+        <div class="step-body">Sube el comprobante de compra y completa tu verificación en 3 pasos: INE frente y reverso, selfie, y tu CLABE para recibir depósitos.</div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div class="step-title">Fandoom custodia</div>
+        <div class="step-body">Coordinamos la transferencia en Ticketmaster. El boleto queda bajo custodia mientras el comprador paga su plan. Tú no haces nada más.</div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div class="step-title">Cobras quincena a quincena</div>
+        <div class="step-body">Cada pago del comprador llega directo a tu CLABE. Sin esperar al final, sin intermediarios de efectivo.</div>
+      </div>
+    </div>
+
+    <div class="risk-box">
+      <div class="risk-label">¿Y si el<br>comprador<br><em>falla</em>?</div>
+      <div class="risk-rows">
+        <div class="risk-row">
+          <div class="risk-dot">↩</div>
+          <div>
+            <div class="risk-row-title">Tu boleto regresa a ti intacto</div>
+            <div class="risk-row-body">Si el comprador deja de pagar, Fandoom te devuelve el boleto íntegro. Sin trámites, sin esperar. Puedes volver a listarlo o venderlo como quieras.</div>
+          </div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-dot">✓</div>
+          <div>
+            <div class="risk-row-title">Te quedas con lo que ya te pagaron</div>
+            <div class="risk-row-body">Todo lo abonado por el comprador hasta ese momento es tuyo. Es la contraprestación por haber cedido tu boleto y esperado — completamente justo.</div>
+          </div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-dot" style="font-size:9px;">ooo</div>
+          <div>
+            <div class="risk-row-title">Solo trabajamos con eventos de alta demanda</div>
+            <div class="risk-row-body">Es nuestro filtro de calidad. Si el boleto regresa, siempre hay otro fan dispuesto a comprarlo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-title-label">Preguntas frecuentes</div>
+    <div class="faq-list" id="faqVender">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
+          <span class="faq-q-text">¿Cuánto le cobra Fandoom al vendedor?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Nada directamente. La comisión del 3% la absorbe el comprador — está incluida en el precio que paga él. Tú recibes el precio que defines sin descuento.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
+          <span class="faq-q-text">¿Cuándo empiezo a recibir pagos?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Desde la primera quincena del comprador. Cada pago que él realiza se transfiere directamente a tu CLABE — no tienes que esperar a que liquide el plan completo.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
+          <span class="faq-q-text">¿Qué documentos necesito para listar?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Tu comprobante de compra original (PDF o captura de Ticketmaster), INE frente y reverso, una selfie de verificación, y tu CLABE interbancaria para recibir depósitos.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
+          <span class="faq-q-text">¿Puedo definir yo el precio?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Sí. El precio lo defines tú. Solo pedimos que sea el precio original de compra — Fandoom no es una plataforma de reventa con markup. Es un marketplace de fan a fan.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
+          <span class="faq-q-text">¿Cuánto tarda en publicarse mi boleto?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Revisamos cada listado manualmente — normalmente en menos de 24 horas. Te notificamos cuando esté activo.</div>
+      </div>
+
+    </div>
+
+    <div class="cta-block">
+      <div class="cta-copy">
+        <h3>Tu boleto merece<br><em>un buen trato</em></h3>
+        <p>Lista en minutos. Sin riesgo. Cobras aunque el comprador falle a medias.</p>
+      </div>
+      <a href="ceder-boleto.html" class="btn-cta">Ceder mi boleto →</a>
+    </div>
+
+  </div>
+
 </div><!-- /panel-wrap -->
 
+<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-ooo">ooo</div>
@@ -169,8 +757,177 @@
       <button onclick="openLegal('terms')">Términos y condiciones</button>
       <button onclick="openLegal('privacy')">Política de privacidad</button>
     </div>
-    <div class="footer-copy">© 2026 Fandom · Paso del Norte Labs</div>
+    <div class="footer-copy">© 2026 Fandoom · Paso del Norte Labs</div>
   </div>
 </footer>
 
+<!-- LEGAL MODAL -->
+<div id="legalModal" class="modal-bg" onclick="if(event.target===this)closeLegal()">
+  <div class="modal-panel" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-title" id="legalTitle"></span>
+      <button class="modal-close" onclick="closeLegal()">×</button>
+    </div>
+    <div id="legalContent" class="legal-content"></div>
+    <div style="padding:16px 28px;border-top:1px solid var(--border);">
+      <button onclick="closeLegal()" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;background:var(--volt);color:var(--ink);padding:12px 28px;border:none;cursor:pointer;">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── PILL SWITCHER ──
+let activePanel = null;
+
+function switchPanel(which) {
+  const btnComprar = document.getElementById('btnComprar');
+  const btnVender  = document.getElementById('btnVender');
+  const slider     = document.getElementById('pillSlider');
+  const pC = document.getElementById('panelComprar');
+  const pV = document.getElementById('panelVender');
+
+  // If clicking the same panel that's already active, deselect everything
+  if (which === activePanel) {
+    // Deselect: hide slider, remove active classes, hide panels
+    slider.classList.remove('visible');
+    btnComprar.classList.remove('active');
+    btnVender.classList.remove('active');
+    pC.classList.remove('active');
+    pV.classList.remove('active');
+    activePanel = null;
+    return;
+  }
+
+  // Activate the clicked panel
+  activePanel = which;
+
+  // Show slider and set its position/size
+  slider.classList.add('visible');
+  
+  const activeBtn = which === 'comprar' ? btnComprar : btnVender;
+  slider.style.width  = activeBtn.offsetWidth + 'px';
+  slider.style.transform = which === 'comprar'
+    ? 'translateX(0)'
+    : `translateX(${btnComprar.offsetWidth + 4}px)`;
+
+  btnComprar.classList.toggle('active', which === 'comprar');
+  btnVender.classList.toggle('active',  which === 'vender');
+
+  pC.classList.remove('active');
+  pV.classList.remove('active');
+
+  // slight delay so animation feels intentional
+  setTimeout(() => {
+    if (which === 'comprar') pC.classList.add('active');
+    else pV.classList.add('active');
+    // scroll to content smoothly
+    document.querySelector('.panel-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+}
+
+// Init: slider hidden, no panel active
+window.addEventListener('load', () => {
+  const slider  = document.getElementById('pillSlider');
+  const btnC    = document.getElementById('btnComprar');
+  // Set initial width but keep it hidden (opacity: 0 via CSS, no .visible class)
+  slider.style.width = btnC.offsetWidth + 'px';
+  slider.style.transform = 'translateX(0)';
+  // Ensure slider is hidden on load
+  slider.classList.remove('visible');
+});
+
+window.addEventListener('resize', () => {
+  if (!activePanel) return;
+  const slider = document.getElementById('pillSlider');
+  const btnC   = document.getElementById('btnComprar');
+  const btnV   = document.getElementById('btnVender');
+  if (activePanel === 'comprar') {
+    slider.style.width = btnC.offsetWidth + 'px';
+    slider.style.transform = 'translateX(0)';
+  } else {
+    slider.style.width = btnV.offsetWidth + 'px';
+    slider.style.transform = `translateX(${btnC.offsetWidth + 4}px)`;
+  }
+});
+
+// ── FAQ ──
+function toggleFaq(el) {
+  const a    = el.querySelector('.faq-a');
+  const open = el.classList.contains('open');
+  // close all in same list
+  const list = el.closest('.faq-list');
+  list.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-a').classList.remove('open');
+  });
+  if (!open) { el.classList.add('open'); a.classList.add('open'); }
+}
+
+// ── LEGAL ──
+const legalTexts = {
+  terms: `<h2>TÉRMINOS Y CONDICIONES – FANDOOM</h2>
+<p><strong>Última actualización:</strong> Mayo 2026</p>
+<h3>1. ACEPTACIÓN</h3>
+<p>Al utilizar Fandoom, completar el registro, enviar documentos, o realizar cualquier pago, aceptas estos Términos de forma expresa e irrevocable.</p>
+<h3>2. NATURALEZA DEL SERVICIO</h3>
+<p>Fandoom es un <strong>marketplace de cesión de boletos entre particulares</strong>. Actúa exclusivamente como intermediario de custodia: conecta cedentes con compradores y custodia el boleto durante el plan de pagos. Fandoom no compra boletos, no presta dinero y no garantiza el pago al cedente en caso de incumplimiento del comprador.</p>
+<h3>3. COMISIÓN</h3>
+<p>Fandoom cobra un <strong>3% sobre el precio definido por el cedente</strong>, absorbido por el comprador e incluido en el precio visible en el marketplace. Sin cargos ocultos ni intereses.</p>
+<h3>4. PROCESO PARA EL COMPRADOR</h3>
+<ul>
+<li><strong>Enganche:</strong> 15% del precio vía SPEI para apartar el boleto.</li>
+<li><strong>Saldo:</strong> El 85% restante se divide en cuotas quincenales (2, 4 o 6 quincenas).</li>
+<li><strong>Sin buró:</strong> No se consulta ni reporta al Buró de Crédito.</li>
+<li><strong>Tope inicial:</strong> $4,500 MXN en la primera transacción; aumenta al completar un plan sin incumplimientos.</li>
+</ul>
+<h3>5. PROCESO PARA EL CEDENTE</h3>
+<p>El cedente lista su boleto mediante el flujo "Ceder boleto", que incluye verificación de identidad y CLABE. El boleto no aparece en el marketplace hasta aprobación manual de Fandoom. Los depósitos se realizan conforme el comprador paga cada quincena.</p>
+<h3>6. CUSTODIA</h3>
+<p>Fandoom coordina la transferencia en Ticketmaster y mantiene el boleto en custodia durante la vigencia del plan. El comprador no recibe el boleto hasta liquidar el plan completo.</p>
+<h3>7. INCUMPLIMIENTO DE PAGO</h3>
+<p>Incumplimiento: pago no realizado en los 7 días naturales posteriores al vencimiento. Consecuencias: (1) el boleto regresa íntegramente al cedente; (2) el cedente retiene todos los pagos recibidos; (3) el comprador no tiene derecho a devolución. Ambas partes conocen y aceptan estas condiciones desde el inicio.</p>
+<h3>8. CANCELACIÓN DEL EVENTO</h3>
+<p>En caso de cancelación oficial, Fandoom gestiona el reembolso ante Ticketmaster. El monto recuperado se distribuye proporcionalmente según pagos realizados (plazo: 30–90 días hábiles de Ticketmaster).</p>
+<h3>9. VERIFICACIÓN DE IDENTIDAD</h3>
+<p>Se requiere INE/IFE vigente. Documentos falsos o alterados = rechazo inmediato sin derecho a reembolso.</p>
+<h3>10. LIMITACIÓN DE RESPONSABILIDAD</h3>
+<p>Fandoom no es responsable por cambios en el evento ni fallas de plataformas de terceros. La responsabilidad máxima de Fandoom se limita a la correcta custodia del boleto y su devolución al cedente ante incumplimiento.</p>
+<h3>11. LEY APLICABLE</h3>
+<p>Leyes de los Estados Unidos Mexicanos. Jurisdicción: tribunales de Ciudad Juárez, Chihuahua.</p>
+<h3>12. CONTACTO</h3>
+<p>fandoom.soporte@proton.me · Paso del Norte Labs · Ciudad Juárez, Chihuahua, México</p>`,
+  privacy: `<h2>POLÍTICA DE PRIVACIDAD – FANDOOM</h2>
+<p><strong>Última actualización:</strong> Mayo 2026</p>
+<h3>1. DATOS QUE RECOPILAMOS</h3>
+<ul>
+<li><strong>Identificación:</strong> Nombre, número de celular, edad.</li>
+<li><strong>KYC (cedentes):</strong> INE frente y reverso, selfie de verificación, CLABE bancaria.</li>
+<li><strong>Documentos de boleto:</strong> Comprobante de compra original.</li>
+<li><strong>Datos de uso:</strong> Estado del proceso de compra o cesión, historial de pagos.</li>
+</ul>
+<h3>2. FINALIDAD</h3>
+<p>Datos usados exclusivamente para: verificación de identidad, gestión del plan de pagos, coordinación de transferencias en Ticketmaster, y depósitos a cedentes. <strong>No vendemos ni compartimos datos con terceros, burós ni anunciantes.</strong></p>
+<h3>3. ALMACENAMIENTO</h3>
+<p>Bases de datos internas accesibles solo por el equipo de Paso del Norte Labs. Imágenes de documentos en servidores con acceso restringido.</p>
+<h3>4. RETENCIÓN</h3>
+<p>Datos conservados durante la vigencia del plan y 12 meses adicionales con fines de auditoría.</p>
+<h3>5. DERECHOS ARCO</h3>
+<p>Conforme a la LFPDPPP, tienes derecho a Acceder, Rectificar, Cancelar u Oponerte al tratamiento. Escríbenos a fandoom.soporte@proton.me — respondemos en máximo 20 días hábiles.</p>
+<h3>6. COOKIES</h3>
+<p>Fandoom puede usar localStorage para mantener la sesión activa. No se usan cookies de rastreo ni publicidad.</p>
+<h3>7. CONTACTO</h3>
+<p>fandoom.soporte@proton.me · Paso del Norte Labs · Ciudad Juárez, Chihuahua, México</p>`
+};
+
+function openLegal(type) {
+  document.getElementById('legalTitle').textContent = type === 'terms' ? 'Términos y Condiciones' : 'Política de Privacidad';
+  document.getElementById('legalContent').innerHTML = legalTexts[type];
+  document.getElementById('legalModal').classList.add('open');
+}
+function closeLegal() {
+  document.getElementById('legalModal').classList.remove('open');
+}
+</script>
+
+</body>
 </html>
