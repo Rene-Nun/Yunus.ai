@@ -15,8 +15,8 @@
   --muted: #5C5C5C;
   --border: rgba(242,239,232,0.1);
   --card: rgba(255,255,255,0.03);
-  /* Color de fondo del Hero: Azul sólido */
   --bg-hero: #41708C; 
+  --rat-gray: #5A5A5A; /* Gris rata para acentos en modo claro */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,7 +52,7 @@ body::after {
   display: inline-block;
 }
 
-/* NAV */
+/* NAV REDISEÑADO */
 #nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: rgba(10,10,10,0.9);
@@ -63,21 +63,44 @@ body::after {
   padding: 0 32px; height: 68px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.nav-login {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted); text-decoration: none;
-  border: 1px solid var(--border);
-  padding: 9px 20px;
-  transition: all 0.2s;
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
-.nav-login:hover { border-color: var(--paper); color: var(--paper); }
+.nav-btn-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--paper);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.2s;
+}
+.nav-btn-text:hover {
+  opacity: 0.7;
+}
+.nav-btn-solid {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 10px 24px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+.nav-btn-solid:hover {
+  background: #ccc;
+}
 
 
 /* ==================================================
    HERO CARD - ZALANDO STYLE
    ================================================== */
-
 .z-hero-section {
   width: 100%;
   background-color: var(--bg-hero);
@@ -97,16 +120,14 @@ body::after {
   overflow: hidden;
 }
 
-/* --- ELEMENTOS HIJOS --- */
 .z-hero-actions {
   order: 1;
-  /* Espaciado en móvil modificado más abajo en el Media Query */
 }
 
 .z-hero-image {
   order: 2;
   width: 100%;
-  aspect-ratio: 1 / 1; /* Imagen forzada a cuadrada */
+  aspect-ratio: 1 / 1; 
   position: relative;
 }
 .z-hero-image img {
@@ -122,7 +143,6 @@ body::after {
   padding: 40px 0 0 0;
 }
 
-/* --- ESTILOS INTERNOS DE TEXTO --- */
 .z-hero-question {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 500;
@@ -147,16 +167,12 @@ body::after {
   max-width: 420px;
 }
 
-/* ==================================================
-   BOTONES NEGROS FIJOS
-   ================================================== */
 .z-btn-group {
   display: flex;
   gap: 16px; 
   width: 100%;
   max-width: 420px;
 }
-
 .z-btn {
   flex: 1;
   padding: 18px 12px;
@@ -168,17 +184,13 @@ body::after {
   text-align: center;
   cursor: pointer;
   transition: opacity 0.2s ease;
-  
-  /* ESTILO NEGRO PURO UNIFICADO PARA AMBOS */
   background: var(--ink);
   color: var(--paper);
   border: 1px solid var(--ink);
 }
-
 .z-btn:hover {
-  opacity: 0.85; /* Solo un sutil cambio de opacidad para saber que es cliqueable */
+  opacity: 0.85; 
 }
-/* ================================================== */
 
 
 /* --- DESKTOP --- */
@@ -186,7 +198,6 @@ body::after {
   .z-hero-wrapper {
     padding: 80px 32px;
   }
-  
   .z-hero-card {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -196,14 +207,22 @@ body::after {
       "img actions";
     gap: 0 60px;
   }
-  
   .z-hero-image { grid-area: img; }
   .z-hero-text { grid-area: text; padding: 60px 0 30px 0; align-self: end; }
   .z-hero-actions { grid-area: actions; padding: 0; align-self: start; }
 }
 
 
-/* CONTENT PANELS */
+/* ==================================================
+   PANELES BLANCOS (NUEVA SECCIÓN CLARA)
+   ================================================== */
+.panels-section {
+  width: 100%;
+  background-color: #FFFFFF; /* Fondo Blanco */
+  color: var(--ink); /* Letras Negras */
+  padding-top: 80px;
+}
+
 .panel-wrap {
   max-width: 1100px; margin: 0 auto;
   padding: 0 32px 120px;
@@ -220,58 +239,70 @@ body::after {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.panel-header { text-align: center; padding-bottom: 72px; border-bottom: 1px solid var(--border); margin-bottom: 72px; }
-.panel-tag { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--volt); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-.panel-tag::before, .panel-tag::after { content: ''; display: block; width: 24px; height: 1px; background: rgba(212,245,60,0.3); }
-.panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(32px, 5vw, 60px); line-height: 1.0; color: var(--paper); margin-bottom: 20px; letter-spacing: -0.02em; }
-.panel-title em { color: var(--volt); font-style: normal; }
-.panel-sub { font-size: 15px; color: var(--muted); line-height: 1.75; max-width: 500px; margin: 0 auto; }
-.panel-sub strong { color: var(--paper); font-weight: 600; }
+.panel-header { text-align: center; padding-bottom: 72px; border-bottom: 1px solid #E5E5E5; margin-bottom: 72px; }
+.panel-tag { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rat-gray); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.panel-tag::before, .panel-tag::after { content: ''; display: block; width: 24px; height: 1px; background: rgba(90,90,90,0.3); }
 
-.steps-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
-.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--border); margin-bottom: 72px; }
-.step { background: var(--ink); padding: 40px 32px 36px; position: relative; }
-.step-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-style: italic; font-size: 48px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(212,245,60,0.15); display: block; margin-bottom: 16px; }
-.step-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: var(--paper); margin-bottom: 10px; }
-.step-body { font-size: 13px; color: var(--muted); line-height: 1.75; }
+/* Títulos negros, resaltados Gris Rata */
+.panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(32px, 5vw, 60px); line-height: 1.0; color: var(--ink); margin-bottom: 20px; letter-spacing: -0.02em; }
+.panel-title em { color: var(--rat-gray); font-style: normal; }
+.panel-sub { font-size: 15px; color: var(--rat-gray); line-height: 1.75; max-width: 500px; margin: 0 auto; }
+.panel-sub strong { color: var(--ink); font-weight: 600; }
+
+.steps-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rat-gray); margin-bottom: 32px; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: #E5E5E5; margin-bottom: 72px; }
+
+/* IMÁGENES DE FONDO EN LOS PASOS Y TARJETAS DE INVERSIÓN */
+.step { padding: 40px 32px 36px; position: relative; background-color: #F9F9F9; }
+#panelComprar .step, #panelComprar .highlight {
+  background: #F9F9F9 url('Paso5.png') center/cover no-repeat;
+}
+#panelVender .step, #panelVender .risk-box {
+  background: #F9F9F9 url('Paso1.png') center/cover no-repeat;
+}
+
+.step-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-style: italic; font-size: 48px; line-height: 1; color: transparent; -webkit-text-stroke: 1px var(--rat-gray); display: block; margin-bottom: 16px; }
+.step-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: var(--ink); margin-bottom: 10px; }
+.step-body { font-size: 13px; color: var(--rat-gray); line-height: 1.75; }
 
 .highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 72px; }
-.highlight { background: var(--card); border: 1px solid var(--border); padding: 32px 28px; display: flex; gap: 20px; align-items: flex-start; }
-.highlight-icon { width: 36px; height: 36px; flex-shrink: 0; border: 1px solid rgba(212,245,60,0.25); background: rgba(212,245,60,0.06); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-style: italic; font-size: 13px; color: var(--volt); letter-spacing: -0.06em; }
-.highlight-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--paper); margin-bottom: 6px; }
-.highlight-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
+.highlight { border: 1px solid #E5E5E5; padding: 32px 28px; display: flex; gap: 20px; align-items: flex-start; }
+.highlight-icon { width: 36px; height: 36px; flex-shrink: 0; border: 1px solid #ccc; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-style: italic; font-size: 13px; color: var(--ink); letter-spacing: -0.06em; }
+.highlight-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--ink); margin-bottom: 6px; }
+.highlight-body { font-size: 13px; color: var(--rat-gray); line-height: 1.65; }
 
-.risk-box { border: 1px solid var(--border); background: rgba(212,245,60,0.03); padding: 40px; margin-bottom: 72px; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: center; }
-.risk-label { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(22px, 3vw, 34px); line-height: 1.1; color: var(--paper); }
-.risk-label em { color: var(--volt); font-style: normal; }
+.risk-box { border: 1px solid #E5E5E5; padding: 40px; margin-bottom: 72px; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: center; }
+.risk-label { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(22px, 3vw, 34px); line-height: 1.1; color: var(--ink); }
+.risk-label em { color: var(--rat-gray); font-style: normal; }
 .risk-rows { display: flex; flex-direction: column; gap: 0; }
-.risk-row { display: flex; gap: 16px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid var(--border); }
+.risk-row { display: flex; gap: 16px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid #E5E5E5; }
 .risk-row:first-child { padding-top: 0; }
 .risk-row:last-child { border-bottom: none; padding-bottom: 0; }
-.risk-dot { width: 28px; height: 28px; flex-shrink: 0; background: rgba(212,245,60,0.08); border: 1px solid rgba(212,245,60,0.2); display: flex; align-items: center; justify-content: center; font-size: 11px; }
-.risk-row-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: var(--paper); margin-bottom: 4px; }
-.risk-row-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
+.risk-dot { width: 28px; height: 28px; flex-shrink: 0; background: #f0f0f0; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--ink); }
+.risk-row-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: var(--ink); margin-bottom: 4px; }
+.risk-row-body { font-size: 13px; color: var(--rat-gray); line-height: 1.65; }
 
-.faq-title-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
+.faq-title-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rat-gray); margin-bottom: 24px; }
 .faq-list { margin-bottom: 72px; }
-.faq-item { border-top: 1px solid var(--border); }
-.faq-item:last-child { border-bottom: 1px solid var(--border); }
+.faq-item { border-top: 1px solid #E5E5E5; }
+.faq-item:last-child { border-bottom: 1px solid #E5E5E5; }
 .faq-q { width: 100%; background: none; border: none; cursor: pointer; padding: 22px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; text-align: left; }
-.faq-q-text { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--paper); }
-.faq-icon { font-family: 'Space Mono', monospace; font-size: 18px; color: var(--muted); flex-shrink: 0; transition: transform 0.3s, color 0.3s; }
-.faq-item.open .faq-icon { transform: rotate(45deg); color: var(--volt); }
-.faq-a { display: none; padding-bottom: 22px; font-size: 14px; color: var(--muted); line-height: 1.75; max-width: 680px; }
+.faq-q-text { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--ink); }
+.faq-icon { font-family: 'Space Mono', monospace; font-size: 18px; color: var(--rat-gray); flex-shrink: 0; transition: transform 0.3s, color 0.3s; }
+.faq-item.open .faq-icon { transform: rotate(45deg); color: var(--ink); }
+.faq-a { display: none; padding-bottom: 22px; font-size: 14px; color: var(--rat-gray); line-height: 1.75; max-width: 680px; }
 .faq-a.open { display: block; }
 
-.cta-block { display: flex; align-items: center; gap: 32px; padding: 48px; background: var(--card); border: 1px solid var(--border); flex-wrap: wrap; }
+.cta-block { display: flex; align-items: center; gap: 32px; padding: 48px; background: #F9F9F9; border: 1px solid #E5E5E5; flex-wrap: wrap; }
 .cta-copy { flex: 1; min-width: 240px; }
-.cta-copy h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(24px, 3vw, 36px); line-height: 1.05; color: var(--paper); margin-bottom: 10px; }
-.cta-copy h3 em { color: var(--volt); font-style: normal; }
-.cta-copy p { font-size: 14px; color: var(--muted); line-height: 1.65; }
-.btn-cta { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--volt); color: var(--ink); padding: 18px 40px; border: none; cursor: pointer; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; }
+.cta-copy h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(24px, 3vw, 36px); line-height: 1.05; color: var(--ink); margin-bottom: 10px; }
+.cta-copy h3 em { color: var(--rat-gray); font-style: normal; }
+.cta-copy p { font-size: 14px; color: var(--rat-gray); line-height: 1.65; }
+.btn-cta { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: #FFFFFF; padding: 18px 40px; border: none; cursor: pointer; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; }
 .btn-cta:hover { opacity: 0.88; transform: translateY(-1px); }
 
-.footer { padding: 40px 32px; }
+/* FOOTER INTACTO MODO OSCURO */
+.footer { padding: 40px 32px; background: var(--ink); }
 .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 .footer-ooo { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-style: italic; font-size: 28px; letter-spacing: -0.06em; color: var(--muted); line-height: 1; }
 .footer-links { display: flex; gap: 24px; }
@@ -299,8 +330,6 @@ body::after {
 @media (max-width: 768px) {
   .z-hero-wrapper { padding: 40px 20px; }
   
-  /* AQUÍ MODIFICAS EL ESPACIO ENTRE LOS BOTONES Y LA IMAGEN EN MÓVIL */
-  /* El tercer valor (12px) es el espacio hacia abajo. Si quieres que se pegue más, ponle 0px o 4px. Si quieres más, ponle 20px. */
   .z-hero-actions { padding: 0 0 12px 0; }
   
   .panel-wrap { padding: 0 20px 80px; }
@@ -310,9 +339,12 @@ body::after {
   .highlights { grid-template-columns: 1fr; }
   .nav-inner { padding: 0 20px; }
   
-  /* Botones lado a lado en móvil con ajuste de texto */
   .z-btn-group { flex-direction: row; max-width: 100%; gap: 8px; }
   .z-btn { padding: 16px 8px; font-size: 10px; letter-spacing: 0.02em; }
+
+  .nav-btn-text span { display: none; } /* Oculta texto de login en móvil para salvar espacio */
+  .nav-btn-solid { padding: 8px 16px; font-size: 11px; }
+  .nav-actions { gap: 12px; }
 }
 
 @media (max-width: 480px) {
@@ -328,7 +360,14 @@ body::after {
     <img src="darklogo.PNG" alt="Fandoom" style="height:130px;width:auto;object-fit:contain;"
       onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
     <span style="display:none;font-family:'Space Grotesk',sans-serif;font-weight:700;font-style:italic;font-size:22px;color:var(--paper);letter-spacing:-0.04em;">fandoom</span>
-    <a href="boveda.html" class="nav-login">Iniciar sesión →</a>
+    
+    <div class="nav-actions">
+      <a href="boveda.html" class="nav-btn-text">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span>Entrar</span>
+      </a>
+      <a href="registro.html" class="nav-btn-solid">Regístrate</a>
+    </div>
   </div>
 </nav>
 
@@ -368,187 +407,191 @@ body::after {
   </div>
 </section>
 
-<div class="panel-wrap">
+<section class="panels-section">
+  <div class="panel-wrap">
 
-  <div class="panel" id="panelComprar">
+    <div class="panel" id="panelComprar">
 
-    <div class="panel-header">
-      <h2 class="panel-title">Ve al concierto aunque<br><em>no tengas todo hoy</em></h2>
-      <p class="panel-sub">
-        Aparta tu boleto con el 15% y paga el resto <strong>quincena a quincena</strong> — sin tarjeta, sin buró, sin complicaciones.
-      </p>
-    </div>
+      <div class="panel-header">
+        <h2 class="panel-title">Ve al concierto aunque<br><em>no tengas todo hoy</em></h2>
+        <p class="panel-sub">
+          Aparta tu boleto con el 15% y paga el resto <strong>quincena a quincena</strong> — sin tarjeta, sin buró, sin complicaciones.
+        </p>
+      </div>
 
-    <div class="steps">
-      <div class="step">
-        <span class="step-num">01</span>
-        <div class="step-title">Encuentra tu boleto</div>
-        <div class="step-body">Explora el marketplace y elige el boleto que quieres: evento, zona y plan de pago — 2, 4 o 6 quincenas según tu ritmo.</div>
-      </div>
-      <div class="step">
-        <span class="step-num">02</span>
-        <div class="step-title">Aparta con el 15%</div>
-        <div class="step-body">Paga el enganche vía SPEI. Sin tarjeta de crédito, sin historial crediticio. El boleto queda custodiado en tu Bóveda.</div>
-      </div>
-      <div class="step">
-        <span class="step-num">03</span>
-        <div class="step-title">Paga quincena a quincena</div>
-        <div class="step-body">Cada dos semanas pagas tu cuota. Monitoreas tu avance en la Bóveda en todo momento.</div>
-      </div>
-      <div class="step">
-        <span class="step-num">04</span>
-        <div class="step-title">Desbloquea tu boleto</div>
-        <div class="step-body">Al completar el plan, el boleto es transferido a tu cuenta de Ticketmaster. A disfrutar.</div>
-      </div>
-    </div>
-
-    <div class="highlights">
-      <div class="highlight">
-        <div class="highlight-icon">oo</div>
-        <div>
-          <div class="highlight-title">Sin buró ni tarjeta</div>
-          <div class="highlight-body">No consultamos historial crediticio. Solo tu número de celular y el boleto como colateral.</div>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">01</span>
+          <div class="step-title">Encuentra tu boleto</div>
+          <div class="step-body">Explora el marketplace y elige el boleto que quieres: evento, zona y plan de pago — 2, 4 o 6 quincenas según tu ritmo.</div>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <div class="step-title">Aparta con el 15%</div>
+          <div class="step-body">Paga el enganche vía SPEI. Sin tarjeta de crédito, sin historial crediticio. El boleto queda custodiado en tu Bóveda.</div>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <div class="step-title">Paga quincena a quincena</div>
+          <div class="step-body">Cada dos semanas pagas tu cuota. Monitoreas tu avance en la Bóveda en todo momento.</div>
+        </div>
+        <div class="step">
+          <span class="step-num">04</span>
+          <div class="step-title">Desbloquea tu boleto</div>
+          <div class="step-body">Al completar el plan, el boleto es transferido a tu cuenta de Ticketmaster. A disfrutar.</div>
         </div>
       </div>
-      <div class="highlight">
-        <div class="highlight-icon">oo</div>
-        <div>
-          <div class="highlight-title">Precio de fan, no de revendedor</div>
-          <div class="highlight-body">Los boletos se listan al precio original. La comisión de Fandom es solo el 3% — ya incluida en lo que ves.</div>
+
+      <div class="highlights">
+        <div class="highlight">
+          <div class="highlight-icon">oo</div>
+          <div>
+            <div class="highlight-title">Sin buró ni tarjeta</div>
+            <div class="highlight-body">No consultamos historial crediticio. Solo tu número de celular y el boleto como colateral.</div>
+          </div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon">oo</div>
+          <div>
+            <div class="highlight-title">Precio de fan, no de revendedor</div>
+            <div class="highlight-body">Los boletos se listan al precio original. La comisión de Fandom es solo el 3% — ya incluida en lo que ves.</div>
+          </div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon">oo</div>
+          <div>
+            <div class="highlight-title">Boleto custodiado</div>
+            <div class="highlight-body">Fandom coordina la transferencia en Ticketmaster y guarda el boleto hasta que liquidas tu plan. Nunca pagas a un extraño.</div>
+          </div>
         </div>
       </div>
-      <div class="highlight">
-        <div class="highlight-icon">oo</div>
-        <div>
-          <div class="highlight-title">Boleto custodiado</div>
-          <div class="highlight-body">Fandom coordina la transferencia en Ticketmaster y guarda el boleto hasta que liquidas tu plan. Nunca pagas a un extraño.</div>
+
+      <div class="faq-title-label">Preguntas frecuentes</div>
+      <div class="faq-list" id="faqComprar">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Necesito tarjeta de crédito o historial crediticio?</span><span class="faq-icon">+</span></button>
+          <div class="faq-a">No. Solo necesitas tu número de celular. No consultamos el Buró de Crédito y no necesitas tarjeta. El boleto mismo es el colateral del trato.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto pago para apartar el boleto?</span><span class="faq-icon">+</span></button>
+          <div class="faq-a">El 15% del precio total, pagadero vía SPEI. Con eso el boleto queda reservado exclusivamente para ti mientras completas el plan.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto me cobra Fandom?</span><span class="faq-icon">+</span></button>
+          <div class="faq-a">Solo el 3% sobre el precio original del boleto, ya incluido en el precio que ves en el marketplace. Sin intereses, sin CAT, sin cargos ocultos.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Qué pasa si no puedo terminar de pagar?</span><span class="faq-icon">+</span></button>
+          <div class="faq-a">El boleto regresa al cedente y lo que pagaste hasta ese momento queda con él — ese es el trato desde el inicio, para los dos lados. Por eso elige un plan que se adapte bien a tu quincena antes de apartar.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cómo sé que el boleto es real?</span><span class="faq-icon">+</span></button>
+          <div class="faq-a">Verificamos el comprobante de compra original del cedente antes de publicar cualquier boleto. Además coordinamos la transferencia directamente en Ticketmaster — nunca recibes un PDF o captura de pantalla.</div>
         </div>
       </div>
+
+      <div class="cta-block">
+        <div class="cta-copy">
+          <h3>Tu lugar en el concierto<br><em>te está esperando</em></h3>
+          <p>Boletos verificados, precios de fan, pagos quincenales. Sin excusas.</p>
+        </div>
+        <a href="marketplace.html" class="btn-cta">Ver boletos disponibles →</a>
+      </div>
+
     </div>
 
-    <div class="faq-title-label">Preguntas frecuentes</div>
-    <div class="faq-list" id="faqComprar">
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Necesito tarjeta de crédito o historial crediticio?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a">No. Solo necesitas tu número de celular. No consultamos el Buró de Crédito y no necesitas tarjeta. El boleto mismo es el colateral del trato.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto pago para apartar el boleto?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a">El 15% del precio total, pagadero vía SPEI. Con eso el boleto queda reservado exclusivamente para ti mientras completas el plan.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto me cobra Fandom?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a">Solo el 3% sobre el precio original del boleto, ya incluido en el precio que ves en el marketplace. Sin intereses, sin CAT, sin cargos ocultos.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Qué pasa si no puedo terminar de pagar?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a">El boleto regresa al cedente y lo que pagaste hasta ese momento queda con él — ese es el trato desde el inicio, para los dos lados. Por eso elige un plan que se adapte bien a tu quincena antes de apartar.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cómo sé que el boleto es real?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a">Verificamos el comprobante de compra original del cedente antes de publicar cualquier boleto. Además coordinamos la transferencia directamente en Ticketmaster — nunca recibes un PDF o captura de pantalla.</div>
-      </div>
-    </div>
+    <div class="panel" id="panelVender">
 
-    <div class="cta-block">
-      <div class="cta-copy">
-        <h3>Tu lugar en el concierto<br><em>te está esperando</em></h3>
-        <p>Boletos verificados, precios de fan, pagos quincenales. Sin excusas.</p>
+      <div class="panel-header">
+        <h2 class="panel-title">Lista tu boleto sin<br><em>perder nada</em></h2>
+        <p class="panel-sub">
+          ¿No puedes ir? Ponlo en Fandom. <strong>Cobras quincena a quincena</strong> — y si el trato no se completa, tu boleto regresa a ti intacto con lo que ya te pagaron.
+        </p>
       </div>
-      <a href="marketplace.html" class="btn-cta">Ver boletos disponibles →</a>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">01</span>
+          <div class="step-title">Lista tu boleto</div>
+          <div class="step-body">Sube el comprobante de compra y completa tu verificación en 3 pasos: INE frente y reverso, selfie, y tu CLABE para recibir depósitos.</div>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <div class="step-title">Fandom custodia</div>
+          <div class="step-body">Coordinamos la transferencia en Ticketmaster. El boleto queda bajo custodia mientras el comprador paga su plan. Tú no haces nada más.</div>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <div class="step-title">Cobras quincena a quincena</div>
+          <div class="step-body">Cada pago del comprador llega directo a tu CLABE. Sin esperar al final, sin intermediarios de efectivo.</div>
+        </div>
+      </div>
+
+      <div class="risk-box">
+        <div class="risk-label">¿Y si el<br>comprador<br><em>falla</em>?</div>
+        <div class="risk-rows">
+          <div class="risk-row">
+            <div class="risk-dot">↩</div>
+            <div>
+              <div class="risk-row-title">Tu boleto regresa a ti intacto</div>
+              <div class="risk-row-body">Si el comprador deja de pagar, Fandom te devuelve el boleto íntegro. Sin trámites, sin esperar. Puedes volver a listarlo o venderlo como quieras.</div>
+            </div>
+          </div>
+          <div class="risk-row">
+            <div class="risk-dot">✓</div>
+            <div>
+              <div class="risk-row-title">Te quedas con lo que ya te pagaron</div>
+              <div class="risk-row-body">Todo lo abonado por el comprador hasta ese momento es tuyo. Es la contraprestación por haber cedido tu boleto y esperado — completamente justo.</div>
+            </div>
+          </div>
+          <div class="risk-row">
+            <div class="risk-dot" style="font-size:9px;">ooo</div>
+            <div>
+              <div class="risk-row-title">Solo trabajamos con eventos de alta demanda</div>
+              <div class="risk-row-body">Es nuestro filtro de calidad. Si el boleto regresa, siempre hay otro fan dispuesto a comprarlo.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-title-label">Preguntas frecuentes</div>
+      <div class="faq-list" id="faqVender">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto le cobra Fandom al vendedor?</span><span class="faq-icon">+</span></button>
+          <div class="faq-a">Nada directamente. La comisión del 3% la absorbe el comprador — está incluida en el precio que paga él. Tú recibes el precio que defines sin descuento.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuándo empiezo a recibir pagos?</span><span class="faq-icon">+</span></button>
+          <div class="faq-a">Desde la primera quincena del comprador. Cada pago que él realiza se transfiere directamente a tu CLABE — no tienes que esperar a que liquide el plan completo.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Qué documentos necesito para listar?</span><span class="faq-icon">+</span></button>
+          <div class="faq-a">Tu comprobante de compra original (PDF o captura de Ticketmaster), INE frente y reverso, una selfie de verificación, y tu CLABE interbancaria para recibir depósitos.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Puedo definir yo el precio?</span><span class="faq-icon">+</span></button>
+          <div class="faq-a">Sí. El precio lo defines tú. Solo pedimos que sea el precio original de compra — Fandom no es una plataforma de reventa con markup. Es un marketplace de fan a fan.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto tarda en publicarse mi boleto?</span><span class="faq-icon">+</span></button>
+          <div class="faq-a">Revisamos cada listado manualmente — normalmente en menos de 24 horas. Te notificamos cuando esté activo.</div>
+        </div>
+      </div>
+
+      <div class="cta-block">
+        <div class="cta-copy">
+          <h3>Tu boleto merece<br><em>un buen trato</em></h3>
+          <p>Lista en minutos. Sin riesgo. Cobras aunque el comprador falle a medias.</p>
+        </div>
+        <a href="ceder-boleto.html" class="btn-cta">Ceder mi boleto →</a>
+      </div>
+
     </div>
 
   </div>
+</section>
 
-  <div class="panel" id="panelVender">
-
-    <div class="panel-header">
-      <h2 class="panel-title">Lista tu boleto sin<br><em>perder nada</em></h2>
-      <p class="panel-sub">
-        ¿No puedes ir? Ponlo en Fandom. <strong>Cobras quincena a quincena</strong> — y si el trato no se completa, tu boleto regresa a ti intacto con lo que ya te pagaron.
-      </p>
-    </div>
-
-    <div class="steps">
-      <div class="step">
-        <span class="step-num">01</span>
-        <div class="step-title">Lista tu boleto</div>
-        <div class="step-body">Sube el comprobante de compra y completa tu verificación en 3 pasos: INE frente y reverso, selfie, y tu CLABE para recibir depósitos.</div>
-      </div>
-      <div class="step">
-        <span class="step-num">02</span>
-        <div class="step-title">Fandom custodia</div>
-        <div class="step-body">Coordinamos la transferencia en Ticketmaster. El boleto queda bajo custodia mientras el comprador paga su plan. Tú no haces nada más.</div>
-      </div>
-      <div class="step">
-        <span class="step-num">03</span>
-        <div class="step-title">Cobras quincena a quincena</div>
-        <div class="step-body">Cada pago del comprador llega directo a tu CLABE. Sin esperar al final, sin intermediarios de efectivo.</div>
-      </div>
-    </div>
-
-    <div class="risk-box">
-      <div class="risk-label">¿Y si el<br>comprador<br><em>falla</em>?</div>
-      <div class="risk-rows">
-        <div class="risk-row">
-          <div class="risk-dot">↩</div>
-          <div>
-            <div class="risk-row-title">Tu boleto regresa a ti intacto</div>
-            <div class="risk-row-body">Si el comprador deja de pagar, Fandom te devuelve el boleto íntegro. Sin trámites, sin esperar. Puedes volver a listarlo o venderlo como quieras.</div>
-          </div>
-        </div>
-        <div class="risk-row">
-          <div class="risk-dot">✓</div>
-          <div>
-            <div class="risk-row-title">Te quedas con lo que ya te pagaron</div>
-            <div class="risk-row-body">Todo lo abonado por el comprador hasta ese momento es tuyo. Es la contraprestación por haber cedido tu boleto y esperado — completamente justo.</div>
-          </div>
-        </div>
-        <div class="risk-row">
-          <div class="risk-dot" style="font-size:9px;">ooo</div>
-          <div>
-            <div class="risk-row-title">Solo trabajamos con eventos de alta demanda</div>
-            <div class="risk-row-body">Es nuestro filtro de calidad. Si el boleto regresa, siempre hay otro fan dispuesto a comprarlo.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="faq-title-label">Preguntas frecuentes</div>
-    <div class="faq-list" id="faqVender">
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto le cobra Fandom al vendedor?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a">Nada directamente. La comisión del 3% la absorbe el comprador — está incluida en el precio que paga él. Tú recibes el precio que defines sin descuento.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuándo empiezo a recibir pagos?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a">Desde la primera quincena del comprador. Cada pago que él realiza se transfiere directamente a tu CLABE — no tienes que esperar a que liquide el plan completo.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Qué documentos necesito para listar?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a">Tu comprobante de compra original (PDF o captura de Ticketmaster), INE frente y reverso, una selfie de verificación, y tu CLABE interbancaria para recibir depósitos.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Puedo definir yo el precio?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a">Sí. El precio lo defines tú. Solo pedimos que sea el precio original de compra — Fandom no es una plataforma de reventa con markup. Es un marketplace de fan a fan.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto tarda en publicarse mi boleto?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a">Revisamos cada listado manualmente — normalmente en menos de 24 horas. Te notificamos cuando esté activo.</div>
-      </div>
-    </div>
-
-    <div class="cta-block">
-      <div class="cta-copy">
-        <h3>Tu boleto merece<br><em>un buen trato</em></h3>
-        <p>Lista en minutos. Sin riesgo. Cobras aunque el comprador falle a medias.</p>
-      </div>
-      <a href="ceder-boleto.html" class="btn-cta">Ceder mi boleto →</a>
-    </div>
-
-  </div>
-
-</div><footer class="footer">
+<footer class="footer">
   <div class="footer-inner">
     <div class="footer-ooo">ooo</div>
     <div class="footer-copy">De fans para fans · Paso del Norte Labs · Ciudad Juárez, México</div>
@@ -574,14 +617,12 @@ body::after {
 </div>
 
 <script>
-// ── LÓGICA DE PANELES ──
 let activePanel = null;
 
 function switchPanel(which) {
   const pC = document.getElementById('panelComprar');
   const pV = document.getElementById('panelVender');
 
-  // Si toca el que ya está abierto, lo cierra.
   if (which === activePanel) {
     pC.classList.remove('active');
     pV.classList.remove('active');
@@ -601,7 +642,6 @@ function switchPanel(which) {
   }, 80);
 }
 
-// ── FAQ ──
 function toggleFaq(el) {
   const a    = el.querySelector('.faq-a');
   const open = el.classList.contains('open');
@@ -613,7 +653,6 @@ function toggleFaq(el) {
   if (!open) { el.classList.add('open'); a.classList.add('open'); }
 }
 
-// ── LEGAL ──
 const legalTexts = {
   terms: `<h2>TÉRMINOS Y CONDICIONES – FANDOM</h2>
 <p><strong>Última actualización:</strong> Mayo 2026</p>
