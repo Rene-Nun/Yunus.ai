@@ -112,35 +112,46 @@ body::after {
 
 /* PILL SWITCHER */
 .pill-zone {
-  padding: 0 32px 80px;
+  padding: 0 16px 80px;
   display: flex; justify-content: center;
 }
 .pill {
   display: inline-flex;
   background: rgba(255,255,255,0.04);
   border: 1px solid var(--border);
-  padding: 6px;
+  padding: 5px;
   gap: 4px;
   position: relative;
+  border-radius: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
 }
 .pill-btn {
   font-family: 'DM Mono', monospace;
-  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 16px 40px;
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 14px 20px;
   background: none; border: none; cursor: pointer;
   color: var(--muted);
   transition: color 0.25s;
   position: relative; z-index: 1;
-  white-space: nowrap;
+  white-space: normal;
+  text-align: center;
+  min-width: 0;
+  flex: 1 1 auto;
+  line-height: 1.3;
 }
 .pill-btn.active { color: var(--ink); }
 .pill-slider {
   position: absolute;
-  top: 6px; left: 6px;
-  height: calc(100% - 12px);
+  top: 5px; left: 5px;
+  height: calc(100% - 10px);
   background: var(--volt);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), width 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s;
   z-index: 0;
+  opacity: 0;
+}
+.pill-slider.visible {
+  opacity: 1;
 }
 
 /* CONTENT PANELS */
@@ -438,8 +449,16 @@ body::after {
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .hero { padding: 120px 20px 0; }
-  .pill-zone { padding: 0 20px 64px; }
-  .pill-btn { padding: 14px 24px; font-size: 11px; }
+  .pill-zone { padding: 0 12px 64px; }
+  .pill { 
+    padding: 4px;
+    gap: 3px;
+  }
+  .pill-btn { 
+    padding: 13px 14px; 
+    font-size: 10px; 
+    letter-spacing: 0.05em;
+  }
   .panel-wrap { padding: 0 20px 80px; }
   .risk-box { grid-template-columns: 1fr; gap: 28px; }
   .cta-block { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
@@ -449,6 +468,19 @@ body::after {
 }
 @media (max-width: 480px) {
   .hero-title { font-size: 36px; }
+  .pill-zone { padding: 0 10px 56px; }
+  .pill { 
+    padding: 3px;
+    gap: 2px;
+    width: 100%;
+  }
+  .pill-btn { 
+    padding: 12px 10px; 
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    flex: 1 1 0;
+    min-width: 0;
+  }
   .btn-cta, .btn-cta-ghost { padding: 16px 24px; width: 100%; justify-content: center; }
 }
 </style>
@@ -559,7 +591,7 @@ body::after {
     <div class="faq-list" id="faqComprar">
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement, 'comprar')">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
           <span class="faq-q-text">¿Necesito tarjeta de crédito o historial crediticio?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -567,7 +599,7 @@ body::after {
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement, 'comprar')">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
           <span class="faq-q-text">¿Cuánto pago para apartar el boleto?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -575,7 +607,7 @@ body::after {
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement, 'comprar')">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
           <span class="faq-q-text">¿Cuánto me cobra Fandoom?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -583,7 +615,7 @@ body::after {
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement, 'comprar')">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
           <span class="faq-q-text">¿Qué pasa si no puedo terminar de pagar?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -591,7 +623,7 @@ body::after {
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement, 'comprar')">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
           <span class="faq-q-text">¿Cómo sé que el boleto es real?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -671,7 +703,7 @@ body::after {
     <div class="faq-list" id="faqVender">
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement, 'vender')">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
           <span class="faq-q-text">¿Cuánto le cobra Fandoom al vendedor?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -679,7 +711,7 @@ body::after {
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement, 'vender')">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
           <span class="faq-q-text">¿Cuándo empiezo a recibir pagos?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -687,7 +719,7 @@ body::after {
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement, 'vender')">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
           <span class="faq-q-text">¿Qué documentos necesito para listar?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -695,7 +727,7 @@ body::after {
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement, 'vender')">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
           <span class="faq-q-text">¿Puedo definir yo el precio?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -703,7 +735,7 @@ body::after {
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement, 'vender')">
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
           <span class="faq-q-text">¿Cuánto tarda en publicarse mi boleto?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -762,7 +794,24 @@ function switchPanel(which) {
   const pC = document.getElementById('panelComprar');
   const pV = document.getElementById('panelVender');
 
-  // Size slider to active button
+  // If clicking the same panel that's already active, deselect everything
+  if (which === activePanel) {
+    // Deselect: hide slider, remove active classes, hide panels
+    slider.classList.remove('visible');
+    btnComprar.classList.remove('active');
+    btnVender.classList.remove('active');
+    pC.classList.remove('active');
+    pV.classList.remove('active');
+    activePanel = null;
+    return;
+  }
+
+  // Activate the clicked panel
+  activePanel = which;
+
+  // Show slider and set its position/size
+  slider.classList.add('visible');
+  
   const activeBtn = which === 'comprar' ? btnComprar : btnVender;
   slider.style.width  = activeBtn.offsetWidth + 'px';
   slider.style.transform = which === 'comprar'
@@ -775,12 +824,6 @@ function switchPanel(which) {
   pC.classList.remove('active');
   pV.classList.remove('active');
 
-  if (which === activePanel) {
-    activePanel = null;
-    return;
-  }
-  activePanel = which;
-
   // slight delay so animation feels intentional
   setTimeout(() => {
     if (which === 'comprar') pC.classList.add('active');
@@ -790,13 +833,17 @@ function switchPanel(which) {
   }, 80);
 }
 
-// Init slider width on load
+// Init: slider hidden, no panel active
 window.addEventListener('load', () => {
   const slider  = document.getElementById('pillSlider');
   const btnC    = document.getElementById('btnComprar');
+  // Set initial width but keep it hidden (opacity: 0 via CSS, no .visible class)
   slider.style.width = btnC.offsetWidth + 'px';
   slider.style.transform = 'translateX(0)';
+  // Ensure slider is hidden on load
+  slider.classList.remove('visible');
 });
+
 window.addEventListener('resize', () => {
   if (!activePanel) return;
   const slider = document.getElementById('pillSlider');
