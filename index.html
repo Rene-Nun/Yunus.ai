@@ -16,7 +16,6 @@
   --border: rgba(242,239,232,0.1);
   --card: rgba(255,255,255,0.03);
   --bg-hero: #41708C; 
-  --rat-gray: #5A5A5A; /* Gris rata para acentos en modo claro */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,7 +51,7 @@ body::after {
   display: inline-block;
 }
 
-/* NAV REDISEÑADO */
+/* NAV */
 #nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: rgba(10,10,10,0.9);
@@ -79,9 +78,7 @@ body::after {
   gap: 8px;
   transition: opacity 0.2s;
 }
-.nav-btn-text:hover {
-  opacity: 0.7;
-}
+.nav-btn-text:hover { opacity: 0.7; }
 .nav-btn-solid {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 12px;
@@ -93,13 +90,11 @@ body::after {
   text-transform: uppercase;
   transition: background 0.2s;
 }
-.nav-btn-solid:hover {
-  background: #ccc;
-}
+.nav-btn-solid:hover { background: #ccc; }
 
 
 /* ==================================================
-   HERO CARD - ZALANDO STYLE
+   HERO CARD
    ================================================== */
 .z-hero-section {
   width: 100%;
@@ -107,23 +102,18 @@ body::after {
   padding-top: 68px; 
   border-bottom: 1px solid var(--border);
 }
-
 .z-hero-wrapper {
   padding: 60px 32px;
   max-width: 1200px;
   margin: 0 auto;
 }
-
 .z-hero-card {
   display: flex;
   flex-direction: column; 
   overflow: hidden;
 }
 
-.z-hero-actions {
-  order: 1;
-}
-
+.z-hero-actions { order: 1; }
 .z-hero-image {
   order: 2;
   width: 100%;
@@ -137,7 +127,6 @@ body::after {
   height: 100%;
   object-fit: cover;
 }
-
 .z-hero-text {
   order: 3;
   padding: 40px 0 0 0;
@@ -188,16 +177,11 @@ body::after {
   color: var(--paper);
   border: 1px solid var(--ink);
 }
-.z-btn:hover {
-  opacity: 0.85; 
-}
+.z-btn:hover { opacity: 0.85; }
 
-
-/* --- DESKTOP --- */
+/* DESKTOP HERO */
 @media (min-width: 769px) {
-  .z-hero-wrapper {
-    padding: 80px 32px;
-  }
+  .z-hero-wrapper { padding: 80px 32px; }
   .z-hero-card {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -214,22 +198,18 @@ body::after {
 
 
 /* ==================================================
-   PANELES BLANCOS (NUEVA SECCIÓN CLARA)
+   PANELES (MUNDO CON IMÁGENES FULL BLEED)
    ================================================== */
 .panels-section {
   width: 100%;
-  background-color: #FFFFFF; /* Fondo Blanco */
-  color: var(--ink); /* Letras Negras */
-  padding-top: 80px;
+  background: transparent; /* Permite que el espacio se elimine si está vacío */
 }
 
-.panel-wrap {
-  max-width: 1100px; margin: 0 auto;
-  padding: 0 32px 120px;
-  overflow: hidden;
-}
+/* El panel ahora ocupa todo el ancho para la imagen */
 .panel {
   display: none;
+  position: relative;
+  width: 100%;
   animation: fadeUp 0.5s ease forwards;
 }
 .panel.active { display: block; }
@@ -239,69 +219,82 @@ body::after {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.panel-header { text-align: center; padding-bottom: 72px; border-bottom: 1px solid #E5E5E5; margin-bottom: 72px; }
-.panel-tag { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rat-gray); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-.panel-tag::before, .panel-tag::after { content: ''; display: block; width: 24px; height: 1px; background: rgba(90,90,90,0.3); }
+/* Fondos de imagen para cada panel */
+#panelComprar { background: url('Paso5.png') center/cover no-repeat; }
+#panelVender  { background: url('Paso1.png') center/cover no-repeat; }
 
-/* Títulos negros, resaltados Gris Rata */
-.panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(32px, 5vw, 60px); line-height: 1.0; color: var(--ink); margin-bottom: 20px; letter-spacing: -0.02em; }
-.panel-title em { color: var(--rat-gray); font-style: normal; }
-.panel-sub { font-size: 15px; color: var(--rat-gray); line-height: 1.75; max-width: 500px; margin: 0 auto; }
-.panel-sub strong { color: var(--ink); font-weight: 600; }
-
-.steps-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rat-gray); margin-bottom: 32px; }
-.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: #E5E5E5; margin-bottom: 72px; }
-
-/* IMÁGENES DE FONDO EN LOS PASOS Y TARJETAS DE INVERSIÓN */
-.step { padding: 40px 32px 36px; position: relative; background-color: #F9F9F9; }
-#panelComprar .step, #panelComprar .highlight {
-  background: #F9F9F9 url('Paso5.png') center/cover no-repeat;
+/* Overlay de Color para legibilidad */
+.panel-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
-#panelVender .step, #panelVender .risk-box {
-  background: #F9F9F9 url('Paso1.png') center/cover no-repeat;
+.panel-overlay-orange { background: rgba(220, 95, 35, 0.85); } /* Naranja/Terracota */
+.panel-overlay-green  { background: rgba(40, 120, 75, 0.85); }  /* Verde técnico */
+
+/* Contenedor central interno */
+.panel-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px; 
+  margin: 0 auto;
+  padding: 80px 32px 120px; /* Aquí vive el padding ahora */
 }
 
-.step-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-style: italic; font-size: 48px; line-height: 1; color: transparent; -webkit-text-stroke: 1px var(--rat-gray); display: block; margin-bottom: 16px; }
-.step-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: var(--ink); margin-bottom: 10px; }
-.step-body { font-size: 13px; color: var(--rat-gray); line-height: 1.75; }
+/* Textos adaptados para fondos oscuros */
+.panel-header { text-align: center; padding-bottom: 72px; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 72px; }
+.panel-tag { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--volt); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.panel-tag::before, .panel-tag::after { content: ''; display: block; width: 24px; height: 1px; background: rgba(212,245,60,0.4); }
+.panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(32px, 5vw, 60px); line-height: 1.0; color: #FFFFFF; margin-bottom: 20px; letter-spacing: -0.02em; }
+.panel-title em { color: var(--volt); font-style: normal; }
+.panel-sub { font-size: 15px; color: rgba(255,255,255,0.9); line-height: 1.75; max-width: 500px; margin: 0 auto; }
+.panel-sub strong { color: #FFFFFF; font-weight: 600; }
+
+/* TARJETAS INTERNAS (GLASSMORPHISM) */
+.steps-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 32px; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 72px; }
+.step { background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); padding: 40px 32px 36px; position: relative; }
+.step-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-style: italic; font-size: 48px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.4); display: block; margin-bottom: 16px; }
+.step-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: #FFFFFF; margin-bottom: 10px; }
+.step-body { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.75; }
 
 .highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 72px; }
-.highlight { border: 1px solid #E5E5E5; padding: 32px 28px; display: flex; gap: 20px; align-items: flex-start; }
-.highlight-icon { width: 36px; height: 36px; flex-shrink: 0; border: 1px solid #ccc; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-style: italic; font-size: 13px; color: var(--ink); letter-spacing: -0.06em; }
-.highlight-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--ink); margin-bottom: 6px; }
-.highlight-body { font-size: 13px; color: var(--rat-gray); line-height: 1.65; }
+.highlight { background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); padding: 32px 28px; display: flex; gap: 20px; align-items: flex-start; }
+.highlight-icon { width: 36px; height: 36px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-style: italic; font-size: 13px; color: var(--volt); letter-spacing: -0.06em; }
+.highlight-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: #FFFFFF; margin-bottom: 6px; }
+.highlight-body { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.65; }
 
-.risk-box { border: 1px solid #E5E5E5; padding: 40px; margin-bottom: 72px; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: center; }
-.risk-label { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(22px, 3vw, 34px); line-height: 1.1; color: var(--ink); }
-.risk-label em { color: var(--rat-gray); font-style: normal; }
+.risk-box { background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); padding: 40px; margin-bottom: 72px; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: center; }
+.risk-label { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(22px, 3vw, 34px); line-height: 1.1; color: #FFFFFF; }
+.risk-label em { color: var(--volt); font-style: normal; }
 .risk-rows { display: flex; flex-direction: column; gap: 0; }
-.risk-row { display: flex; gap: 16px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid #E5E5E5; }
+.risk-row { display: flex; gap: 16px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.15); }
 .risk-row:first-child { padding-top: 0; }
 .risk-row:last-child { border-bottom: none; padding-bottom: 0; }
-.risk-dot { width: 28px; height: 28px; flex-shrink: 0; background: #f0f0f0; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--ink); }
-.risk-row-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: var(--ink); margin-bottom: 4px; }
-.risk-row-body { font-size: 13px; color: var(--rat-gray); line-height: 1.65; }
+.risk-dot { width: 28px; height: 28px; flex-shrink: 0; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 11px; color: #FFFFFF; }
+.risk-row-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: #FFFFFF; margin-bottom: 4px; }
+.risk-row-body { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.65; }
 
-.faq-title-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rat-gray); margin-bottom: 24px; }
+.faq-title-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 24px; }
 .faq-list { margin-bottom: 72px; }
-.faq-item { border-top: 1px solid #E5E5E5; }
-.faq-item:last-child { border-bottom: 1px solid #E5E5E5; }
+.faq-item { border-top: 1px solid rgba(255,255,255,0.15); }
+.faq-item:last-child { border-bottom: 1px solid rgba(255,255,255,0.15); }
 .faq-q { width: 100%; background: none; border: none; cursor: pointer; padding: 22px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; text-align: left; }
-.faq-q-text { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--ink); }
-.faq-icon { font-family: 'Space Mono', monospace; font-size: 18px; color: var(--rat-gray); flex-shrink: 0; transition: transform 0.3s, color 0.3s; }
-.faq-item.open .faq-icon { transform: rotate(45deg); color: var(--ink); }
-.faq-a { display: none; padding-bottom: 22px; font-size: 14px; color: var(--rat-gray); line-height: 1.75; max-width: 680px; }
+.faq-q-text { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: #FFFFFF; }
+.faq-icon { font-family: 'Space Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.7); flex-shrink: 0; transition: transform 0.3s, color 0.3s; }
+.faq-item.open .faq-icon { transform: rotate(45deg); color: var(--volt); }
+.faq-a { display: none; padding-bottom: 22px; font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.75; max-width: 680px; }
 .faq-a.open { display: block; }
 
-.cta-block { display: flex; align-items: center; gap: 32px; padding: 48px; background: #F9F9F9; border: 1px solid #E5E5E5; flex-wrap: wrap; }
+.cta-block { display: flex; align-items: center; gap: 32px; padding: 48px; background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); flex-wrap: wrap; }
 .cta-copy { flex: 1; min-width: 240px; }
-.cta-copy h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(24px, 3vw, 36px); line-height: 1.05; color: var(--ink); margin-bottom: 10px; }
-.cta-copy h3 em { color: var(--rat-gray); font-style: normal; }
-.cta-copy p { font-size: 14px; color: var(--rat-gray); line-height: 1.65; }
-.btn-cta { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: #FFFFFF; padding: 18px 40px; border: none; cursor: pointer; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; }
+.cta-copy h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(24px, 3vw, 36px); line-height: 1.05; color: #FFFFFF; margin-bottom: 10px; }
+.cta-copy h3 em { color: var(--volt); font-style: normal; }
+.cta-copy p { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.65; }
+.btn-cta { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--volt); color: var(--ink); padding: 18px 40px; border: none; cursor: pointer; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; }
 .btn-cta:hover { opacity: 0.88; transform: translateY(-1px); }
 
-/* FOOTER INTACTO MODO OSCURO */
+/* FOOTER */
 .footer { padding: 40px 32px; background: var(--ink); }
 .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 .footer-ooo { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-style: italic; font-size: 28px; letter-spacing: -0.06em; color: var(--muted); line-height: 1; }
@@ -329,10 +322,9 @@ body::after {
 
 @media (max-width: 768px) {
   .z-hero-wrapper { padding: 40px 20px; }
-  
   .z-hero-actions { padding: 0 0 12px 0; }
   
-  .panel-wrap { padding: 0 20px 80px; }
+  .panel-inner { padding: 60px 20px 80px; }
   .risk-box { grid-template-columns: 1fr; gap: 28px; }
   .cta-block { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
   .steps { grid-template-columns: 1fr; }
@@ -342,7 +334,7 @@ body::after {
   .z-btn-group { flex-direction: row; max-width: 100%; gap: 8px; }
   .z-btn { padding: 16px 8px; font-size: 10px; letter-spacing: 0.02em; }
 
-  .nav-btn-text span { display: none; } /* Oculta texto de login en móvil para salvar espacio */
+  .nav-btn-text span { display: none; }
   .nav-btn-solid { padding: 8px 16px; font-size: 11px; }
   .nav-actions { gap: 12px; }
 }
@@ -373,16 +365,12 @@ body::after {
 
 <section class="z-hero-section">
   <div class="z-hero-wrapper">
-    
     <div class="z-hero-card">
-      
       <div class="z-hero-image">
         <img src="heroimage.PNG" alt="Experiencia Fandom" />
       </div>
-
       <div class="z-hero-actions">
         <div class="z-hero-question">¿Qué quieres hacer?</div>
-        
         <div class="z-btn-group">
           <button class="z-btn" id="btnComprar" onclick="switchPanel('comprar')">
             Comprar un boleto
@@ -392,7 +380,6 @@ body::after {
           </button>
         </div>
       </div>
-
       <div class="z-hero-text">
         <h1 class="z-hero-title">
           Compra en quincenas.<br>
@@ -402,15 +389,15 @@ body::after {
           Sin revendedores abusivos, sin estafas de Marketplace. Solo fans ayudando fans.
         </p>
       </div>
-
     </div>
   </div>
 </section>
 
 <section class="panels-section">
-  <div class="panel-wrap">
 
-    <div class="panel" id="panelComprar">
+  <div class="panel" id="panelComprar">
+    <div class="panel-overlay panel-overlay-orange"></div>
+    <div class="panel-inner">
 
       <div class="panel-header">
         <h2 class="panel-title">Ve al concierto aunque<br><em>no tengas todo hoy</em></h2>
@@ -499,8 +486,11 @@ body::after {
       </div>
 
     </div>
+  </div>
 
-    <div class="panel" id="panelVender">
+  <div class="panel" id="panelVender">
+    <div class="panel-overlay panel-overlay-green"></div>
+    <div class="panel-inner">
 
       <div class="panel-header">
         <h2 class="panel-title">Lista tu boleto sin<br><em>perder nada</em></h2>
@@ -587,8 +577,8 @@ body::after {
       </div>
 
     </div>
-
   </div>
+
 </section>
 
 <footer class="footer">
@@ -638,7 +628,8 @@ function switchPanel(which) {
   setTimeout(() => {
     if (which === 'comprar') pC.classList.add('active');
     else pV.classList.add('active');
-    document.querySelector('.panel-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Scroll directo al panel activo
+    document.querySelector('.panels-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 80);
 }
 
