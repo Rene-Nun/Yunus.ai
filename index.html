@@ -15,8 +15,8 @@
   --muted: #5C5C5C;
   --border: rgba(242,239,232,0.1);
   --card: rgba(255,255,255,0.03);
-  /* Nuevo color para fondo Hero - Night vibe */
-  --bg-hero: #141416; 
+  /* Color de fondo del Hero: Azul sólido, no oscuro */
+  --bg-hero: #41708C; 
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -75,25 +75,25 @@ body::after {
 
 
 /* ==================================================
-   HERO CARD EXACTO A ZALANDO - ACTUALIZADO
+   HERO CARD - ZALANDO STYLE (FONDO COLOR SÓLIDO)
    ================================================== */
 
-/* 1. SECCIÓN CONTENEDORA - Ocupa todo el ancho horizontal */
+/* 1. SECCIÓN CONTENEDORA - Fondo full-width */
 .z-hero-section {
   width: 100%;
-  background-color: var(--bg-hero); /* Nuevo color Night */
+  background-color: var(--bg-hero);
   padding-top: 68px; /* Compensar Nav fijo */
   border-bottom: 1px solid var(--border);
 }
 
-/* 2. LIMITADOR DE CONTENIDO - Centra la tarjeta */
+/* 2. LIMITADOR DE CONTENIDO */
 .z-hero-wrapper {
   padding: 60px 32px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* 3. LA TARJETA (Sin fondo propio, lo toma de la sección) */
+/* 3. LA TARJETA EN SÍ */
 .z-hero-card {
   display: flex;
   flex-direction: column; /* Móvil por defecto: apilado */
@@ -102,13 +102,11 @@ body::after {
 
 /* --- ELEMENTOS HIJOS (MÓVIL STACK) --- */
 
-/* Botones (Arriba en móvil) */
 .z-hero-actions {
   order: 1;
-  padding: 0 0 40px 0; /* Espaciado inferior en móvil */
+  padding: 0 0 40px 0;
 }
 
-/* Imagen (En medio en móvil) */
 .z-hero-image {
   order: 2;
   width: 100%;
@@ -123,7 +121,6 @@ body::after {
   object-fit: cover;
 }
 
-/* Textos (Abajo en móvil) */
 .z-hero-text {
   order: 3;
   padding: 40px 0 0 0;
@@ -134,7 +131,7 @@ body::after {
   font-family: 'Oswald', sans-serif;
   font-weight: 500;
   font-size: 20px;
-  color: var(--paper);
+  color: #FFFFFF;
   margin-bottom: 20px;
 }
 .z-hero-title {
@@ -142,73 +139,62 @@ body::after {
   font-weight: 600;
   font-size: clamp(36px, 5vw, 64px);
   line-height: 1.05;
-  color: var(--paper);
+  color: #FFFFFF;
   margin-bottom: 16px;
 }
 .z-hero-sub {
   font-size: 16px;
   line-height: 1.6;
-  color: rgba(242, 239, 232, 0.7); /* Muted legible contra el nuevo fondo */
+  color: #FFFFFF;
+  opacity: 0.9;
   max-width: 420px;
 }
 
 /* ==================================================
-   REDISERÑO DE BOTONES CTA (Pill Switcher)
+   REDISEÑO DE BOTONES (CERO SLIDERS, 100% FUNCIONALES)
    ================================================== */
-.z-pill-wrapper { padding: 0 !important; justify-content: flex-start !important; width: 100%; }
-
-.z-pill {
-  background: rgba(0,0,0,0.7); /* Fondo más oscuro y nítido */
-  border: 1px solid rgba(255,255,255,0.15); /* Borde más visible */
-  padding: 6px; /* Un poco más de aire */
-  gap: 4px; 
-  display: flex; 
-  width: 100%; 
-  max-width: 440px; 
-  position: relative;
+.z-btn-group {
+  display: flex;
+  gap: 16px; /* Separación clara entre botones */
+  width: 100%;
+  max-width: 420px;
 }
 
-.z-pill-btn {
-  font-family: 'DM Mono', monospace; 
-  font-size: 11px !important; 
-  letter-spacing: 0.08em; 
-  text-transform: uppercase; 
-  flex: 1; 
-  padding: 17px 10px !important; /* Más altos */
-  font-weight: 500 !important; 
-  background: none; border: none; cursor: pointer; 
-  position: relative; z-index: 1; text-align: center;
-  transition: color 0.3s;
+.z-btn {
+  flex: 1;
+  padding: 18px 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
   
-  /* ESTILO INACTIVO: Legible pero secundario */
-  color: rgba(242, 239, 232, 0.6); /* Color paper con opacidad media */
+  /* ESTILO INACTIVO: Totalmente visible y estético */
+  background: transparent;
+  color: #FFFFFF;
+  border: 2px solid #FFFFFF;
 }
 
-/* Hover en inactivo para feedback estético */
-.z-pill-btn:not(.active):hover {
-  color: var(--paper);
+.z-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* ESTILO ACTIVO: Contraste máximo */
-.z-pill-btn.active { 
-  color: var(--ink) !important; /* Negro sobre verde */
-  font-weight: 600 !important;
-}
-
-.z-pill-slider {
-  position: absolute; top: 6px; left: 6px; height: calc(100% - 12px);
+/* ESTILO ACTIVO: Verde volt, resalta de inmediato */
+.z-btn.active {
   background: var(--volt);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s;
-  z-index: 0; opacity: 0;
+  color: var(--ink);
+  border: 2px solid var(--volt);
 }
-.z-pill-slider.visible { opacity: 1; }
 /* ================================================== */
 
 
-/* --- DESKTOP (Split exacto de Zalando) --- */
+/* --- DESKTOP --- */
 @media (min-width: 769px) {
   .z-hero-wrapper {
-    padding: 80px 32px; /* Un poco más de aire arriba/abajo */
+    padding: 80px 32px;
   }
   
   .z-hero-card {
@@ -218,28 +204,14 @@ body::after {
     grid-template-areas:
       "img text"
       "img actions";
-    gap: 0 60px; /* Espacio entre columnas */
+    gap: 0 60px;
   }
   
-  .z-hero-image { 
-    grid-area: img; 
-    min-height: 580px; 
-  }
-  
-  .z-hero-text { 
-    grid-area: text; 
-    padding: 60px 0 30px 0; 
-    align-self: end; 
-  }
-  
-  .z-hero-actions { 
-    grid-area: actions; 
-    padding: 0 0 60px 0; 
-    align-self: start; 
-  }
+  .z-hero-image { grid-area: img; min-height: 580px; }
+  .z-hero-text { grid-area: text; padding: 60px 0 30px 0; align-self: end; }
+  .z-hero-actions { grid-area: actions; padding: 0 0 60px 0; align-self: start; }
 }
 
-/* ================================================== */
 
 /* CONTENT PANELS */
 .panel-wrap {
@@ -258,271 +230,73 @@ body::after {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* PANEL HEADER */
-.panel-header {
-  text-align: center;
-  padding-bottom: 72px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 72px;
-}
-.panel-tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--volt); margin-bottom: 20px;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-}
-.panel-tag::before, .panel-tag::after {
-  content: ''; display: block;
-  width: 24px; height: 1px; background: rgba(212,245,60,0.3);
-}
-.panel-title {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600;
-  font-size: clamp(32px, 5vw, 60px);
-  line-height: 1.0;
-  color: var(--paper); margin-bottom: 20px;
-}
+.panel-header { text-align: center; padding-bottom: 72px; border-bottom: 1px solid var(--border); margin-bottom: 72px; }
+.panel-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--volt); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.panel-tag::before, .panel-tag::after { content: ''; display: block; width: 24px; height: 1px; background: rgba(212,245,60,0.3); }
+.panel-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: clamp(32px, 5vw, 60px); line-height: 1.0; color: var(--paper); margin-bottom: 20px; }
 .panel-title em { color: var(--volt); font-style: normal; }
-.panel-sub {
-  font-size: 15px; color: var(--muted);
-  line-height: 1.75; max-width: 500px; margin: 0 auto;
-}
+.panel-sub { font-size: 15px; color: var(--muted); line-height: 1.75; max-width: 500px; margin: 0 auto; }
 .panel-sub strong { color: var(--paper); font-weight: 500; }
 
-/* STEPS GRID */
-.steps-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 32px;
-}
-.steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1px;
-  background: var(--border);
-  margin-bottom: 72px;
-}
-.step {
-  background: var(--ink);
-  padding: 40px 32px 36px;
-  position: relative;
-}
-.step-num {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600; font-style: italic;
-  font-size: 48px; line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(212,245,60,0.15);
-  display: block; margin-bottom: 16px;
-}
-.step-title {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600; font-size: 17px;
-  color: var(--paper); margin-bottom: 10px;
-}
-.step-body {
-  font-size: 13px; color: var(--muted); line-height: 1.75;
-}
-.step-connector {
-  display: none;
-}
+.steps-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--border); margin-bottom: 72px; }
+.step { background: var(--ink); padding: 40px 32px 36px; position: relative; }
+.step-num { font-family: 'Poppins', sans-serif; font-weight: 600; font-style: italic; font-size: 48px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(212,245,60,0.15); display: block; margin-bottom: 16px; }
+.step-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 17px; color: var(--paper); margin-bottom: 10px; }
+.step-body { font-size: 13px; color: var(--muted); line-height: 1.75; }
 
-/* HIGHLIGHTS GRID */
-.highlights {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-  margin-bottom: 72px;
-}
-.highlight {
-  background: var(--card);
-  border: 1px solid var(--border);
-  padding: 32px 28px;
-  display: flex; gap: 20px; align-items: flex-start;
-}
-.highlight-icon {
-  width: 36px; height: 36px; flex-shrink: 0;
-  border: 1px solid rgba(212,245,60,0.25);
-  background: rgba(212,245,60,0.06);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600; font-style: italic;
-  font-size: 13px; color: var(--volt);
-  letter-spacing: -0.06em;
-}
-.highlight-title {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600; font-size: 15px;
-  color: var(--paper); margin-bottom: 6px;
-}
-.highlight-body {
-  font-size: 13px; color: var(--muted); line-height: 1.65;
-}
+.highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 72px; }
+.highlight { background: var(--card); border: 1px solid var(--border); padding: 32px 28px; display: flex; gap: 20px; align-items: flex-start; }
+.highlight-icon { width: 36px; height: 36px; flex-shrink: 0; border: 1px solid rgba(212,245,60,0.25); background: rgba(212,245,60,0.06); display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 600; font-style: italic; font-size: 13px; color: var(--volt); letter-spacing: -0.06em; }
+.highlight-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px; color: var(--paper); margin-bottom: 6px; }
+.highlight-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
-/* RISK BOX (vendedor) */
-.risk-box {
-  border: 1px solid var(--border);
-  background: rgba(212,245,60,0.03);
-  padding: 40px;
-  margin-bottom: 72px;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 48px;
-  align-items: center;
-}
-.risk-label {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600;
-  font-size: clamp(22px, 3vw, 34px);
-  line-height: 1.1;
-  color: var(--paper);
-}
+.risk-box { border: 1px solid var(--border); background: rgba(212,245,60,0.03); padding: 40px; margin-bottom: 72px; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: center; }
+.risk-label { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: clamp(22px, 3vw, 34px); line-height: 1.1; color: var(--paper); }
 .risk-label em { color: var(--volt); font-style: normal; }
 .risk-rows { display: flex; flex-direction: column; gap: 0; }
-.risk-row {
-  display: flex; gap: 16px; align-items: flex-start;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--border);
-}
+.risk-row { display: flex; gap: 16px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid var(--border); }
 .risk-row:first-child { padding-top: 0; }
 .risk-row:last-child { border-bottom: none; padding-bottom: 0; }
-.risk-dot {
-  width: 28px; height: 28px; flex-shrink: 0;
-  background: rgba(212,245,60,0.08);
-  border: 1px solid rgba(212,245,60,0.2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px;
-}
-.risk-row-title {
-  font-family: 'Oswald', sans-serif;
-  font-size: 14px; color: var(--paper); margin-bottom: 4px;
-}
+.risk-dot { width: 28px; height: 28px; flex-shrink: 0; background: rgba(212,245,60,0.08); border: 1px solid rgba(212,245,60,0.2); display: flex; align-items: center; justify-content: center; font-size: 11px; }
+.risk-row-title { font-family: 'Oswald', sans-serif; font-size: 14px; color: var(--paper); margin-bottom: 4px; }
 .risk-row-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
-/* FAQ */
-.faq-title-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 24px;
-}
+.faq-title-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
 .faq-list { margin-bottom: 72px; }
 .faq-item { border-top: 1px solid var(--border); }
 .faq-item:last-child { border-bottom: 1px solid var(--border); }
-.faq-q {
-  width: 100%; background: none; border: none; cursor: pointer;
-  padding: 22px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px;
-  text-align: left;
-}
-.faq-q-text {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600; font-size: 15px; color: var(--paper);
-}
-.faq-icon {
-  font-family: 'DM Mono', monospace; font-size: 18px;
-  color: var(--muted); flex-shrink: 0;
-  transition: transform 0.3s, color 0.3s;
-}
+.faq-q { width: 100%; background: none; border: none; cursor: pointer; padding: 22px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; text-align: left; }
+.faq-q-text { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px; color: var(--paper); }
+.faq-icon { font-family: 'DM Mono', monospace; font-size: 18px; color: var(--muted); flex-shrink: 0; transition: transform 0.3s, color 0.3s; }
 .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--volt); }
-.faq-a {
-  display: none; padding-bottom: 22px;
-  font-size: 14px; color: var(--muted); line-height: 1.75;
-  max-width: 680px;
-}
+.faq-a { display: none; padding-bottom: 22px; font-size: 14px; color: var(--muted); line-height: 1.75; max-width: 680px; }
 .faq-a.open { display: block; }
 
-/* CTA BLOCK */
-.cta-block {
-  display: flex; align-items: center; gap: 32px;
-  padding: 48px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  flex-wrap: wrap;
-}
+.cta-block { display: flex; align-items: center; gap: 32px; padding: 48px; background: var(--card); border: 1px solid var(--border); flex-wrap: wrap; }
 .cta-copy { flex: 1; min-width: 240px; }
-.cta-copy h3 {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600; font-size: clamp(24px, 3vw, 36px);
-  line-height: 1.05; color: var(--paper); margin-bottom: 10px;
-}
+.cta-copy h3 { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: clamp(24px, 3vw, 36px); line-height: 1.05; color: var(--paper); margin-bottom: 10px; }
 .cta-copy h3 em { color: var(--volt); font-style: normal; }
 .cta-copy p { font-size: 14px; color: var(--muted); line-height: 1.65; }
-.btn-cta {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-  background: var(--volt); color: var(--ink);
-  padding: 18px 40px; border: none; cursor: pointer;
-  font-weight: 500; text-decoration: none;
-  display: inline-flex; align-items: center; gap: 8px;
-  transition: opacity 0.2s, transform 0.2s;
-  white-space: nowrap;
-}
+.btn-cta { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--volt); color: var(--ink); padding: 18px 40px; border: none; cursor: pointer; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; }
 .btn-cta:hover { opacity: 0.88; transform: translateY(-1px); }
-.btn-cta-ghost {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-  background: transparent; color: var(--paper);
-  padding: 18px 40px; border: 1px solid var(--border); cursor: pointer;
-  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-  transition: all 0.2s; white-space: nowrap;
-}
-.btn-cta-ghost:hover { border-color: var(--volt); color: var(--volt); }
 
-/* FOOTER */
-.footer {
-  padding: 40px 32px;
-}
-.footer-inner {
-  max-width: 1100px; margin: 0 auto;
-  display: flex; flex-direction: column; align-items: center; gap: 20px;
-}
-.footer-ooo {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600; font-style: italic;
-  font-size: 28px; letter-spacing: -0.06em;
-  color: var(--muted); line-height: 1;
-}
+.footer { padding: 40px 32px; }
+.footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.footer-ooo { font-family: 'Poppins', sans-serif; font-weight: 600; font-style: italic; font-size: 28px; letter-spacing: -0.06em; color: var(--muted); line-height: 1; }
 .footer-links { display: flex; gap: 24px; }
-.footer-links button {
-  background: none; border: none; cursor: pointer;
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted); text-decoration: underline; text-underline-offset: 4px;
-  transition: color 0.2s;
-}
+.footer-links button { background: none; border: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: underline; text-underline-offset: 4px; transition: color 0.2s; }
 .footer-links button:hover { color: var(--paper); }
-.footer-copy {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.06em; color: var(--muted); text-align: center;
-}
+.footer-copy { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: var(--muted); text-align: center; }
 
-/* MODALS */
-.modal-bg {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(10px); z-index: 200; display: none;
-  align-items: center; justify-content: center; padding: 24px;
-}
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 24px; }
 .modal-bg.open { display: flex; }
-.modal-panel {
-  background: #111; border: 1px solid var(--border);
-  width: 100%; max-width: 640px; max-height: 88vh;
-  overflow-y: auto;
-}
+.modal-panel { background: #111; border: 1px solid var(--border); width: 100%; max-width: 640px; max-height: 88vh; overflow-y: auto; }
 .modal-panel::-webkit-scrollbar { width: 4px; }
 .modal-panel::-webkit-scrollbar-thumb { background: var(--border); }
-.modal-header {
-  padding: 22px 28px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; background: #111; z-index: 1;
-}
-.modal-title {
-  font-family: 'Oswald', sans-serif; font-weight: 600;
-  font-size: 17px; color: var(--paper);
-}
-.modal-close {
-  background: none; border: none; cursor: pointer;
-  color: var(--muted); font-size: 22px; line-height: 1;
-  transition: color 0.2s; padding: 4px;
-}
+.modal-header { padding: 22px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: #111; z-index: 1; }
+.modal-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 17px; color: var(--paper); }
+.modal-close { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 22px; line-height: 1; transition: color 0.2s; padding: 4px; }
 .modal-close:hover { color: var(--paper); }
 .legal-content { padding: 28px; font-size: 13px; color: var(--muted); line-height: 1.8; }
 .legal-content h2 { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 17px; color: var(--paper); margin: 24px 0 10px; }
@@ -532,18 +306,18 @@ body::after {
 .legal-content ul li { margin-bottom: 5px; }
 .legal-content strong { color: var(--paper); font-weight: 500; }
 
-/* RESPONSIVE CORREGIDO */
 @media (max-width: 768px) {
-  .z-hero-wrapper { padding: 40px 20px; } /* Menos padding lateral en móvil */
+  .z-hero-wrapper { padding: 40px 20px; }
   .panel-wrap { padding: 0 20px 80px; }
   .risk-box { grid-template-columns: 1fr; gap: 28px; }
   .cta-block { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
   .steps { grid-template-columns: 1fr; }
   .highlights { grid-template-columns: 1fr; }
   .nav-inner { padding: 0 20px; }
+  .z-btn-group { flex-direction: column; max-width: 100%; gap: 12px; }
 }
 @media (max-width: 480px) {
-  .btn-cta, .btn-cta-ghost { padding: 16px 24px; width: 100%; justify-content: center; }
+  .btn-cta { padding: 16px 24px; width: 100%; justify-content: center; }
 }
 </style>
 </head>
@@ -560,7 +334,6 @@ body::after {
 </nav>
 
 <section class="z-hero-section">
-  
   <div class="z-hero-wrapper">
     
     <div class="z-hero-card">
@@ -572,21 +345,18 @@ body::after {
       <div class="z-hero-actions">
         <div class="z-hero-question">¿Qué quieres hacer?</div>
         
-        <div class="pill-zone z-pill-wrapper">
-          <div class="pill z-pill" id="pill">
-            <div class="z-pill-slider" id="pillSlider"></div>
-            <button class="pill-btn z-pill-btn active" id="btnComprar" onclick="switchPanel('comprar')">
-              Comprar
-            </button>
-            <button class="pill-btn z-pill-btn" id="btnVender" onclick="switchPanel('vender')">
-              Vender
-            </button>
-          </div>
+        <div class="z-btn-group">
+          <button class="z-btn active" id="btnComprar" onclick="switchPanel('comprar')">
+            Comprar un boleto
+          </button>
+          <button class="z-btn" id="btnVender" onclick="switchPanel('vender')">
+            Vender un boleto
+          </button>
         </div>
       </div>
 
       <div class="z-hero-text">
-        <div class="ooo" style="font-size:28px; margin-bottom:12px;">ooo</div>
+        <div class="ooo" style="font-size:28px; margin-bottom:12px; color: #FFFFFF;">ooo</div>
         <h1 class="z-hero-title">
           Compra en quincenas.<br>
           <span style="color:var(--volt)">Vende sin riesgo.</span>
@@ -660,47 +430,26 @@ body::after {
 
     <div class="faq-title-label">Preguntas frecuentes</div>
     <div class="faq-list" id="faqComprar">
-
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-          <span class="faq-q-text">¿Necesito tarjeta de crédito o historial crediticio?</span>
-          <span class="faq-icon">+</span>
-        </button>
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Necesito tarjeta de crédito o historial crediticio?</span><span class="faq-icon">+</span></button>
         <div class="faq-a">No. Solo necesitas tu número de celular. No consultamos el Buró de Crédito y no necesitas tarjeta. El boleto mismo es el colateral del trato.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-          <span class="faq-q-text">¿Cuánto pago para apartar el boleto?</span>
-          <span class="faq-icon">+</span>
-        </button>
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto pago para apartar el boleto?</span><span class="faq-icon">+</span></button>
         <div class="faq-a">El 15% del precio total, pagadero vía SPEI. Con eso el boleto queda reservado exclusivamente para ti mientras completas el plan.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-          <span class="faq-q-text">¿Cuánto me cobra Fandom?</span>
-          <span class="faq-icon">+</span>
-        </button>
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto me cobra Fandom?</span><span class="faq-icon">+</span></button>
         <div class="faq-a">Solo el 3% sobre el precio original del boleto, ya incluido en el precio que ves en el marketplace. Sin intereses, sin CAT, sin cargos ocultos.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-          <span class="faq-q-text">¿Qué pasa si no puedo terminar de pagar?</span>
-          <span class="faq-icon">+</span>
-        </button>
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Qué pasa si no puedo terminar de pagar?</span><span class="faq-icon">+</span></button>
         <div class="faq-a">El boleto regresa al cedente y lo que pagaste hasta ese momento queda con él — ese es el trato desde el inicio, para los dos lados. Por eso elige un plan que se adapte bien a tu quincena antes de apartar.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-          <span class="faq-q-text">¿Cómo sé que el boleto es real?</span>
-          <span class="faq-icon">+</span>
-        </button>
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cómo sé que el boleto es real?</span><span class="faq-icon">+</span></button>
         <div class="faq-a">Verificamos el comprobante de compra original del cedente antes de publicar cualquier boleto. Además coordinamos la transferencia directamente en Ticketmaster — nunca recibes un PDF o captura de pantalla.</div>
       </div>
-
     </div>
 
     <div class="cta-block">
@@ -769,47 +518,26 @@ body::after {
 
     <div class="faq-title-label">Preguntas frecuentes</div>
     <div class="faq-list" id="faqVender">
-
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-          <span class="faq-q-text">¿Cuánto le cobra Fandom al vendedor?</span>
-          <span class="faq-icon">+</span>
-        </button>
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto le cobra Fandom al vendedor?</span><span class="faq-icon">+</span></button>
         <div class="faq-a">Nada directamente. La comisión del 3% la absorbe el comprador — está incluida en el precio que paga él. Tú recibes el precio que defines sin descuento.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-          <span class="faq-q-text">¿Cuándo empiezo a recibir pagos?</span>
-          <span class="faq-icon">+</span>
-        </button>
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuándo empiezo a recibir pagos?</span><span class="faq-icon">+</span></button>
         <div class="faq-a">Desde la primera quincena del comprador. Cada pago que él realiza se transfiere directamente a tu CLABE — no tienes que esperar a que liquide el plan completo.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-          <span class="faq-q-text">¿Qué documentos necesito para listar?</span>
-          <span class="faq-icon">+</span>
-        </button>
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Qué documentos necesito para listar?</span><span class="faq-icon">+</span></button>
         <div class="faq-a">Tu comprobante de compra original (PDF o captura de Ticketmaster), INE frente y reverso, una selfie de verificación, y tu CLABE interbancaria para recibir depósitos.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-          <span class="faq-q-text">¿Puedo definir yo el precio?</span>
-          <span class="faq-icon">+</span>
-        </button>
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Puedo definir yo el precio?</span><span class="faq-icon">+</span></button>
         <div class="faq-a">Sí. El precio lo defines tú. Solo pedimos que sea el precio original de compra — Fandom no es una plataforma de reventa con markup. Es un marketplace de fan a fan.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this.parentElement)">
-          <span class="faq-q-text">¿Cuánto tarda en publicarse mi boleto?</span>
-          <span class="faq-icon">+</span>
-        </button>
+        <button class="faq-q" onclick="toggleFaq(this.parentElement)"><span class="faq-q-text">¿Cuánto tarda en publicarse mi boleto?</span><span class="faq-icon">+</span></button>
         <div class="faq-a">Revisamos cada listado manualmente — normalmente en menos de 24 horas. Te notificamos cuando esté activo.</div>
       </div>
-
     </div>
 
     <div class="cta-block">
@@ -848,18 +576,16 @@ body::after {
 </div>
 
 <script>
-// ── PILL SWITCHER ──
+// ── LOGICA DE BOTONES SIMPLIFICADA ──
 let activePanel = null;
 
 function switchPanel(which) {
   const btnComprar = document.getElementById('btnComprar');
   const btnVender  = document.getElementById('btnVender');
-  const slider     = document.getElementById('pillSlider');
   const pC = document.getElementById('panelComprar');
   const pV = document.getElementById('panelVender');
 
   if (which === activePanel) {
-    slider.classList.remove('visible');
     btnComprar.classList.remove('active');
     btnVender.classList.remove('active');
     pC.classList.remove('active');
@@ -869,13 +595,6 @@ function switchPanel(which) {
   }
 
   activePanel = which;
-  slider.classList.add('visible');
-
-  const activeBtn = which === 'comprar' ? btnComprar : btnVender;
-  slider.style.width  = activeBtn.offsetWidth + 'px';
-  slider.style.transform = which === 'comprar'
-    ? 'translateX(0)'
-    : `translateX(${btnComprar.offsetWidth + 4}px)`;
 
   btnComprar.classList.toggle('active', which === 'comprar');
   btnVender.classList.toggle('active',  which === 'vender');
@@ -889,28 +608,6 @@ function switchPanel(which) {
     document.querySelector('.panel-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 80);
 }
-
-window.addEventListener('load', () => {
-  const slider = document.getElementById('pillSlider');
-  const btnC   = document.getElementById('btnComprar');
-  slider.style.width = btnC.offsetWidth + 'px';
-  slider.style.transform = 'translateX(0)';
-  slider.classList.remove('visible');
-});
-
-window.addEventListener('resize', () => {
-  if (!activePanel) return;
-  const slider = document.getElementById('pillSlider');
-  const btnC   = document.getElementById('btnComprar');
-  const btnV   = document.getElementById('btnVender');
-  if (activePanel === 'comprar') {
-    slider.style.width = btnC.offsetWidth + 'px';
-    slider.style.transform = 'translateX(0)';
-  } else {
-    slider.style.width = btnV.offsetWidth + 'px';
-    slider.style.transform = `translateX(${btnC.offsetWidth + 4}px)`;
-  }
-});
 
 // ── FAQ ──
 function toggleFaq(el) {
