@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Yunus — Mi Bóveda</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Fandoom — Mi Bóveda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,600&family=Oswald:wght@500;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink: #0a0a0a;
@@ -27,6 +28,7 @@ html, body {
   overflow-x: hidden;
 }
 
+/* GRAIN */
 body::after {
   content: '';
   position: fixed; inset: 0;
@@ -35,11 +37,23 @@ body::after {
   background-size: 128px;
 }
 
+/* OOO DECORATIVE */
+.ooo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: -0.04em;
+  color: var(--volt);
+  line-height: 1;
+  display: inline-block;
+}
+
 /* HEADER */
 header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: rgba(10,10,10,0.9);
   backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
 }
 .header-inner {
   max-width: 480px; margin: 0 auto;
@@ -47,17 +61,24 @@ header {
   display: flex; align-items: center; justify-content: space-between;
 }
 .header-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px; letter-spacing: 0.08em; color: var(--paper);
   display: flex; align-items: center; gap: 8px;
 }
 .header-logo img { height: 120px; width: auto; object-fit: contain; }
 .header-boveda-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px; letter-spacing: 0.08em; color: var(--paper);
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 20px; letter-spacing: -0.01em; color: var(--paper);
   display: none;
   align-items: center;
   gap: 8px;
+}
+.header-boveda-title .ooo-header {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--volt);
+  letter-spacing: -0.04em;
 }
 .header-title {
   font-family: 'DM Mono', monospace;
@@ -104,8 +125,9 @@ main {
   border-bottom: 1px solid var(--border);
 }
 .welcome-name {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 36px; letter-spacing: 0.04em; color: var(--paper);
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 36px; letter-spacing: -0.01em; color: var(--paper);
   line-height: 1;
 }
 .welcome-sub {
@@ -122,24 +144,23 @@ main {
   display: flex;
   background: rgba(255,255,255,0.04);
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 4px;
+  padding: 5px;
   gap: 4px;
 }
 .toggle-btn {
   flex: 1;
   padding: 10px 20px;
   border: none;
-  border-radius: 999px;
   background: transparent;
   color: var(--muted);
   font-family: 'DM Mono', monospace;
   font-size: 10px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 500;
+  white-space: nowrap;
 }
 .toggle-btn.active {
   background: var(--volt);
@@ -168,8 +189,9 @@ main {
   display: flex; align-items: center; justify-content: center;
 }
 .ticket-img-placeholder span {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 48px; color: rgba(242,239,232,0.05); letter-spacing: 0.1em;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 48px; color: rgba(242,239,232,0.05); letter-spacing: -0.01em;
 }
 .ticket-status-badge {
   position: absolute; top: 12px; right: 12px;
@@ -184,8 +206,9 @@ main {
 
 .ticket-body { padding: 20px; }
 .ticket-evento {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px; letter-spacing: 0.04em; color: var(--paper);
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 28px; letter-spacing: -0.01em; color: var(--paper);
   line-height: 1; margin-bottom: 4px;
 }
 .ticket-zona {
@@ -238,8 +261,10 @@ main {
   margin-bottom: 4px;
 }
 .ticket-cell-value {
-  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
   font-size: 15px; color: var(--paper);
+  letter-spacing: -0.01em;
 }
 .ticket-cell-value.volt { color: var(--volt); }
 
@@ -286,12 +311,15 @@ main {
   margin-bottom: 2px;
 }
 .fecha-value {
-  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
   font-size: 14px; color: var(--volt);
+  letter-spacing: -0.01em;
 }
 .dias-restantes {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px; letter-spacing: 0.04em;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 32px; letter-spacing: -0.01em;
   color: var(--volt); text-align: right; line-height: 1;
 }
 .dias-restantes span {
@@ -311,8 +339,10 @@ main {
   letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
 }
 .pp-value {
-  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
   font-size: 14px; color: var(--paper);
+  letter-spacing: -0.01em;
 }
 
 /* EMPTY STATE */
@@ -324,8 +354,9 @@ main {
   font-size: 48px; margin-bottom: 20px; opacity: 0.4;
 }
 .empty-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px; letter-spacing: 0.04em; color: var(--paper);
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 32px; letter-spacing: -0.01em; color: var(--paper);
   margin-bottom: 8px;
 }
 .empty-sub { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
@@ -397,14 +428,17 @@ main {
   display: flex; align-items: center; justify-content: center;
 }
 .cedido-img-placeholder span {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
   font-size: 36px; color: rgba(242,239,232,0.05);
+  letter-spacing: -0.01em;
 }
 
 .cedido-body { padding: 16px 20px 20px; }
 .cedido-evento {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 24px; letter-spacing: 0.04em;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 24px; letter-spacing: -0.01em;
   color: var(--paper); line-height: 1; margin-bottom: 4px;
 }
 .cedido-zona {
@@ -413,7 +447,7 @@ main {
   color: var(--muted); margin-bottom: 16px;
 }
 
-/* Progress bar de cobro — igual que ticket pero color diferente */
+/* Progress bar de cobro */
 .cobro-wrap { margin-bottom: 16px; }
 .cobro-header {
   display: flex; justify-content: space-between; align-items: center;
@@ -453,8 +487,10 @@ main {
   color: var(--muted); margin-bottom: 4px;
 }
 .cedido-cell-value {
-  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
   font-size: 14px; color: var(--paper);
+  letter-spacing: -0.01em;
 }
 .cedido-cell-value.volt { color: var(--volt); }
 
@@ -471,13 +507,51 @@ main {
   letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
 }
 .pd-value {
-  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
   font-size: 13px; color: var(--volt);
+  letter-spacing: -0.01em;
 }
 
 /* Badge estados de cesión */
 .badge-listado { background: #3b82f6; color: #fff; }
 .badge-en_proceso { background: var(--volt); color: var(--ink); }
+
+/* REVENTA SHEET */
+#reventaOverlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 200;
+  backdrop-filter: blur(4px);
+}
+#reventaSheet {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 201;
+  max-width: 480px; margin: 0 auto;
+  background: #111;
+  border-top: 1px solid var(--border);
+  padding: 28px 24px 40px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+.reventa-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--volt);
+  margin-bottom: 16px;
+}
+.reventa-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 28px; letter-spacing: -0.01em;
+  color: var(--paper); margin-bottom: 10px;
+}
+.reventa-body {
+  font-size: 13px; color: var(--muted);
+  line-height: 1.7; margin-bottom: 28px;
+}
 
 /* FADE IN */
 @keyframes fadeUp {
@@ -495,10 +569,10 @@ main {
 <header>
   <div class="header-inner">
     <div class="header-logo" id="headerLogo">
-      <img src="darklogo.png" alt="Yunus" onerror="this.style.display='none'">
+      <img src="darklogo.PNG" alt="Fandoom" onerror="this.style.display='none'">
     </div>
     <div class="header-boveda-title" id="headerBovedaTitle">
-      Mi Bóveda
+      <span class="ooo-header">ooo</span> Mi Bóveda
     </div>
     <div class="header-actions">
       <button class="btn-chat-circle" onclick="window.location.href='/marketplace'" id="btnChat" aria-label="Marketplace">
@@ -527,7 +601,7 @@ main {
 
     <div class="toggle-wrap fade-up d2">
       <div class="toggle-pill">
-        <button class="toggle-btn active" id="tabCompras" onclick="switchTab('compras')">Mis boletos</button>
+        <button class="toggle-btn" id="tabCompras" onclick="switchTab('compras')">Mis boletos</button>
         <button class="toggle-btn" id="tabCedidos" onclick="switchTab('cedidos')">Mis cedidos</button>
       </div>
     </div>
@@ -546,9 +620,23 @@ main {
 
 </main>
 
+<!-- REVENTA OVERLAY & SHEET -->
+<div id="reventaOverlay" onclick="cerrarReventa()"></div>
+
+<div id="reventaSheet">
+  <div class="reventa-eyebrow">⚠ Acción irreversible</div>
+  <div class="reventa-title" id="reventaEvento">Revender boleto</div>
+  <p class="reventa-body">Tu boleto será publicado en el Marketplace de Fandoom. Una vez confirmado, Fandoom gestionará la venta y liquidará tu deuda pendiente. Esta acción no puede deshacerse.</p>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <button id="btnConfirmarReventa" onclick="confirmarReventa()" style="width:100%;padding:14px;background:#f59e0b;color:#0a0a0a;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;font-weight:500;transition:opacity 0.2s;">Confirmar reventa →</button>
+    <button onclick="cerrarReventa()" style="width:100%;padding:14px;background:transparent;color:#5C5C5C;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid rgba(242,239,232,0.1);cursor:pointer;">Cancelar</button>
+  </div>
+</div>
+
 <script>
 let celular = '';
 let nombreUsuario = '';
+let tabActiva = null;
 
 // ── EVENTOS CONFIG ──
 const eventoImgs = {
@@ -583,6 +671,38 @@ function badgeClass(estado) {
   return 'badge-' + e;
 }
 
+// ── SWITCH TAB (sin selección inicial) ──
+function switchTab(tab) {
+  const comprasView = document.getElementById('comprasView');
+  const cedidosView = document.getElementById('cedidosView');
+  const tabCompras  = document.getElementById('tabCompras');
+  const tabCedidos  = document.getElementById('tabCedidos');
+
+  // Si ya está activa, deseleccionar
+  if (tab === tabActiva) {
+    tabActiva = null;
+    tabCompras.classList.remove('active');
+    tabCedidos.classList.remove('active');
+    comprasView.style.display = 'none';
+    cedidosView.style.display = 'none';
+    return;
+  }
+
+  tabActiva = tab;
+
+  if (tab === 'compras') {
+    comprasView.style.display = 'block';
+    cedidosView.style.display = 'none';
+    tabCompras.classList.add('active');
+    tabCedidos.classList.remove('active');
+  } else {
+    comprasView.style.display = 'none';
+    cedidosView.style.display = 'block';
+    tabCompras.classList.remove('active');
+    tabCedidos.classList.add('active');
+  }
+}
+
 // ── CARGAR BÓVEDA ──
 async function cargarBoveda() {
   document.getElementById('loadingView').style.display = 'flex';
@@ -613,16 +733,27 @@ async function cargarBoveda() {
     // Mostrar/ocultar tab de cedidos según si tiene
     if (cedidos.length === 0) {
       document.getElementById('tabCedidos').style.display = 'none';
+    } else {
+      document.getElementById('tabCedidos').style.display = '';
     }
 
     renderTickets(compras);
     renderCedidos(cedidos);
+
+    // Sin selección inicial: ocultar ambos paneles
+    document.getElementById('comprasView').style.display = 'none';
+    document.getElementById('cedidosView').style.display = 'none';
+    document.getElementById('tabCompras').classList.remove('active');
+    document.getElementById('tabCedidos').classList.remove('active');
+    tabActiva = null;
 
   } catch {
     document.getElementById('loadingView').style.display = 'none';
     document.getElementById('bovedaView').style.display = 'block';
     renderTickets([]);
     renderCedidos([]);
+    document.getElementById('comprasView').style.display = 'none';
+    document.getElementById('cedidosView').style.display = 'none';
   }
 }
 
@@ -658,7 +789,7 @@ function buildTicketCard(c, i) {
 
     ${img
       ? `<img src="${img}" alt="${c.evento}" class="ticket-img">`
-      : `<div class="ticket-img-placeholder"><span>${c.evento || 'YUNUS'}</span></div>`
+      : `<div class="ticket-img-placeholder"><span>${c.evento || 'FANDOOM'}</span></div>`
     }
 
     <div class="ticket-status-badge ${badge}">${estado}</div>
@@ -727,25 +858,7 @@ function buildTicketCard(c, i) {
   </div>`;
 }
 
-function switchTab(tab) {
-  const comprasView = document.getElementById('comprasView');
-  const cedidosView = document.getElementById('cedidosView');
-  const tabCompras  = document.getElementById('tabCompras');
-  const tabCedidos  = document.getElementById('tabCedidos');
-
-  if (tab === 'compras') {
-    comprasView.style.display = 'block';
-    cedidosView.style.display = 'none';
-    tabCompras.classList.add('active');
-    tabCedidos.classList.remove('active');
-  } else {
-    comprasView.style.display = 'none';
-    cedidosView.style.display = 'block';
-    tabCompras.classList.remove('active');
-    tabCedidos.classList.add('active');
-  }
-}
-
+// ── RENDER CEDIDOS ──
 function renderCedidos(cedidos) {
   const container = document.getElementById('cedidosContainer');
 
@@ -778,7 +891,7 @@ function buildCedidoCard(c, i) {
 
     ${img
       ? `<img src="${img}" alt="${c.evento}" class="cedido-img">`
-      : `<div class="cedido-img-placeholder"><span>${c.evento || 'YUNUS'}</span></div>`
+      : `<div class="cedido-img-placeholder"><span>${c.evento || 'FANDOOM'}</span></div>`
     }
 
     <div class="ticket-status-badge ${badge}" style="top:8px;right:8px;">${estado}</div>
@@ -848,6 +961,7 @@ function buildCedidoCard(c, i) {
   </div>`;
 }
 
+// ── REVENTA ──
 let reventaId = null;
 
 function abrirReventa(id, evento) {
@@ -908,16 +1022,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
-<div id="reventaOverlay" onclick="cerrarReventa()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;backdrop-filter:blur(4px);"></div>
 
-<div id="reventaSheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:201;max-width:480px;margin:0 auto;background:#111;border-top:1px solid rgba(242,239,232,0.1);padding:28px 24px 40px;transform:translateY(100%);transition:transform 0.3s ease;">
-  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#D4F53C;margin-bottom:16px;">⚠ Acción irreversible</div>
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.04em;color:#F2EFE8;margin-bottom:10px;" id="reventaEvento">Revender boleto</div>
-  <p style="font-size:13px;color:#5C5C5C;line-height:1.7;margin-bottom:28px;">Tu boleto será publicado en el Marketplace de Yunus. Una vez confirmado, Yunus gestionará la venta y liquidará tu deuda pendiente. Esta acción no puede deshacerse.</p>
-  <div style="display:flex;flex-direction:column;gap:10px;">
-    <button id="btnConfirmarReventa" onclick="confirmarReventa()" style="width:100%;padding:14px;background:#f59e0b;color:#0a0a0a;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;font-weight:500;transition:opacity 0.2s;">Confirmar reventa →</button>
-    <button onclick="cerrarReventa()" style="width:100%;padding:14px;background:transparent;color:#5C5C5C;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid rgba(242,239,232,0.1);cursor:pointer;">Cancelar</button>
-  </div>
-</div>
 </body>
 </html>
