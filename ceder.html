@@ -3,34 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Yunus — Ceder boleto</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Fandom — Ceder boleto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink: #0a0a0a;
-  --paper: #F2EFE8;
-  --volt: #D4F53C;
-  --muted: #5C5C5C;
-  --border: rgba(242,239,232,0.1);
-  --card-bg: #111111;
+  --paper: #ffffff;
+  --muted: #6b6b6b;
+  --border: rgba(0,0,0,0.1);
+  --card-bg: #ffffff;
   --red: #ef4444;
+  --bg-hero: #ffffff;
+  --brand-orange: #0a0a0a;
+  --brand-green: #0a0a0a;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-::selection { background: var(--volt); color: var(--ink); }
+::selection { background: var(--ink); color: var(--paper); }
 
 html, body {
   min-height: 100dvh;
-  background: var(--ink);
-  color: var(--paper);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Manrope', sans-serif;
+  font-weight: 400;
   overflow-x: hidden;
 }
 
 body::after {
   content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.03;
+  position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.02;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-size: 128px;
 }
@@ -38,26 +41,25 @@ body::after {
 /* HEADER */
 header {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(10,10,10,0.92);
-  backdrop-filter: blur(16px);
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
 }
 .header-inner {
   max-width: 480px; margin: 0 auto;
-  padding: 0 20px; height: 60px;
+  padding: 0 20px; height: 68px;
   display: flex; align-items: center; justify-content: space-between;
 }
 .btn-back {
   width: 36px; height: 36px; border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--border);
-  color: var(--muted); cursor: pointer;
+  background: var(--ink);
+  border: none;
+  color: var(--paper); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
+  transition: opacity 0.2s;
 }
-.btn-back:hover { border-color: var(--paper); color: var(--paper); }
-.header-logo { height: 110px; display: block; }
+.btn-back:hover { opacity: 0.85; }
 .header-step-label {
-  font-family: 'DM Mono', monospace; font-size: 9px;
+  font-family: 'Space Mono', monospace; font-size: 9px;
   letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
 }
 
@@ -69,11 +71,11 @@ header {
 }
 .progress-step {
   flex: 1; height: 2px;
-  background: rgba(255,255,255,0.08);
+  background: #f0f0f0;
   transition: background 0.4s ease;
 }
-.progress-step.done { background: rgba(212,245,60,0.4); }
-.progress-step.active { background: var(--volt); }
+.progress-step.done { background: #a0a0a0; }
+.progress-step.active { background: var(--ink); }
 
 /* MAIN */
 #app {
@@ -88,9 +90,9 @@ header {
 /* STEP CONTENT */
 .step-body { padding: 28px 20px; }
 .step-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 40px; letter-spacing: 0.04em;
-  color: var(--paper); line-height: 1; margin-bottom: 6px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 40px; letter-spacing: -0.02em;
+  color: var(--ink); line-height: 1; margin-bottom: 6px;
 }
 .step-sub {
   font-size: 13px; color: var(--muted);
@@ -100,28 +102,28 @@ header {
 /* FORM ELEMENTS */
 .form-group { margin-bottom: 16px; }
 .form-label {
-  display: block; font-family: 'DM Mono', monospace;
+  display: block; font-family: 'Space Mono', monospace;
   font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--muted); margin-bottom: 8px;
 }
 .form-input {
   width: 100%; padding: 14px 16px;
-  background: rgba(255,255,255,0.04);
+  background: #fafafa;
   border: 1px solid var(--border);
-  color: var(--paper); font-family: 'DM Sans', sans-serif;
+  color: var(--ink); font-family: 'Manrope', sans-serif;
   font-size: 15px; outline: none;
   transition: border-color 0.2s; -webkit-appearance: none;
 }
-.form-input:focus { border-color: var(--volt); }
+.form-input:focus { border-color: var(--ink); }
 .form-input::placeholder { color: var(--muted); }
-.form-input option { background: #111; }
+.form-input option { background: #fff; }
 .form-input:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* Precio preview */
 .precio-preview {
   margin-top: 8px; padding: 12px 14px;
-  background: rgba(212,245,60,0.05);
-  border: 1px solid rgba(212,245,60,0.15);
+  background: #fafafa;
+  border: 1px solid var(--border);
   display: none;
 }
 .precio-preview.visible { display: block; }
@@ -130,21 +132,21 @@ header {
   align-items: center; padding: 4px 0;
 }
 .precio-preview-label {
-  font-family: 'DM Mono', monospace; font-size: 9px;
+  font-family: 'Space Mono', monospace; font-size: 9px;
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
 }
 .precio-preview-val {
-  font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: 14px; color: var(--paper);
+  font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+  font-size: 14px; color: var(--ink);
 }
-.precio-preview-val.volt { color: var(--volt); }
+.precio-preview-val.destacado { color: var(--ink); font-weight: 700; }
 
 /* Aviso de precio */
 .precio-aviso {
   margin-top: 8px; padding: 10px 12px;
-  background: rgba(245,158,11,0.07);
-  border-left: 3px solid #f59e0b;
-  font-size: 11px; color: #f59e0b; line-height: 1.6;
+  background: #fafafa;
+  border-left: 3px solid var(--ink);
+  font-size: 11px; color: var(--muted); line-height: 1.6;
 }
 
 /* UPLOAD AREAS */
@@ -154,17 +156,17 @@ header {
 }
 .upload-area {
   position: relative; height: 110px;
-  border: 1px dashed rgba(242,239,232,0.15);
-  background: rgba(255,255,255,0.02);
+  border: 1px dashed var(--border);
+  background: #fafafa;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: 6px; cursor: pointer; transition: border-color 0.2s;
   overflow: hidden;
 }
-.upload-area:hover { border-color: rgba(212,245,60,0.3); }
+.upload-area:hover { border-color: var(--ink); }
 .upload-area.has-img {
   border-style: solid;
-  border-color: rgba(212,245,60,0.4);
+  border-color: var(--ink);
 }
 .upload-area img.preview {
   position: absolute; inset: 0;
@@ -172,7 +174,7 @@ header {
   object-fit: cover; opacity: 0.65;
 }
 .upload-area-label {
-  font-family: 'DM Mono', monospace; font-size: 8px;
+  font-family: 'Space Mono', monospace; font-size: 8px;
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--muted); text-align: center;
   position: relative; z-index: 1; padding: 0 8px;
@@ -181,7 +183,7 @@ header {
 .upload-area input { display: none; }
 .upload-check {
   position: absolute; top: 6px; right: 6px;
-  width: 18px; height: 18px; background: var(--volt);
+  width: 18px; height: 18px; background: var(--ink);
   border-radius: 50%; display: none;
   align-items: center; justify-content: center; z-index: 2;
 }
@@ -190,16 +192,16 @@ header {
 /* Screenshot full width */
 .upload-area-full {
   position: relative; height: 100px; width: 100%;
-  border: 1px dashed rgba(242,239,232,0.15);
-  background: rgba(255,255,255,0.02);
+  border: 1px dashed var(--border);
+  background: #fafafa;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: 6px; cursor: pointer; transition: border-color 0.2s;
   overflow: hidden; margin-bottom: 4px;
 }
-.upload-area-full:hover { border-color: rgba(212,245,60,0.3); }
+.upload-area-full:hover { border-color: var(--ink); }
 .upload-area-full.has-img {
-  border-style: solid; border-color: rgba(212,245,60,0.4);
+  border-style: solid; border-color: var(--ink);
 }
 .upload-area-full img.preview {
   position: absolute; inset: 0;
@@ -210,7 +212,7 @@ header {
 }
 .upload-area-full .upload-check {
   position: absolute; top: 6px; right: 6px;
-  width: 18px; height: 18px; background: var(--volt);
+  width: 18px; height: 18px; background: var(--ink);
   border-radius: 50%; display: none;
   align-items: center; justify-content: center; z-index: 2;
 }
@@ -226,25 +228,24 @@ header {
 .resumen-evento-img {
   width: 100%; height: 100px;
   object-fit: cover; display: block;
-  filter: brightness(0.6);
 }
 .resumen-evento-img-placeholder {
   width: 100%; height: 100px;
-  background: linear-gradient(135deg, #1a1a1a, #222);
+  background: #f5f5f5;
   display: flex; align-items: center; justify-content: center;
 }
 .resumen-evento-img-placeholder span {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px; color: rgba(242,239,232,0.06);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 32px; color: rgba(0,0,0,0.06);
 }
 .resumen-body { padding: 16px 18px 18px; }
 .resumen-evento-nombre {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px; letter-spacing: 0.04em;
-  color: var(--paper); line-height: 1; margin-bottom: 4px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px; letter-spacing: -0.02em;
+  color: var(--ink); line-height: 1; margin-bottom: 4px;
 }
 .resumen-meta {
-  font-family: 'DM Mono', monospace; font-size: 9px;
+  font-family: 'Space Mono', monospace; font-size: 9px;
   letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--muted); margin-bottom: 16px;
 }
@@ -253,65 +254,70 @@ header {
   gap: 1px; background: var(--border);
   border: 1px solid var(--border); margin-bottom: 16px;
 }
-.resumen-cell { background: var(--card-bg); padding: 12px 14px; }
+.resumen-cell { background: #fafafa; padding: 12px 14px; }
 .resumen-cell-label {
-  font-family: 'DM Mono', monospace; font-size: 9px;
+  font-family: 'Space Mono', monospace; font-size: 9px;
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--muted); margin-bottom: 4px;
 }
 .resumen-cell-val {
-  font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: 14px; color: var(--paper);
+  font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+  font-size: 14px; color: var(--ink);
 }
-.resumen-cell-val.volt { color: var(--volt); }
+.resumen-cell-val.destacado { color: var(--ink); font-weight: 700; }
 
 /* Aviso pago */
 .aviso-pago {
-  background: rgba(212,245,60,0.04);
-  border: 1px solid rgba(212,245,60,0.15);
+  background: #fafafa;
+  border: 1px solid var(--border);
   padding: 12px 14px; margin-bottom: 16px;
   font-size: 12px; color: var(--muted); line-height: 1.7;
 }
-.aviso-pago strong { color: var(--paper); }
+.aviso-pago strong { color: var(--ink); }
 
 /* Terms */
 .terms-wrap {
   display: flex; align-items: flex-start; gap: 12px;
-  background: rgba(255,255,255,0.03);
+  background: #fafafa;
   border: 1px solid var(--border); padding: 14px;
 }
 .terms-wrap input[type=checkbox] {
   width: 16px; height: 16px; margin-top: 2px;
-  flex-shrink: 0; accent-color: var(--volt);
+  flex-shrink: 0; accent-color: var(--ink);
 }
 .terms-wrap label {
   font-size: 12px; color: var(--muted);
   line-height: 1.6; cursor: pointer;
 }
-.terms-wrap label strong { color: var(--paper); }
+.terms-wrap label strong { color: var(--ink); }
+
+/* Radio buttons para CLABE */
+.terms-wrap input[type=radio] {
+  width: 16px; height: 16px; margin-top: 2px;
+  flex-shrink: 0; accent-color: var(--ink);
+}
 
 /* ERROR */
 .form-error {
   display: none; margin-top: 10px; padding: 10px 14px;
   background: rgba(239,68,68,0.08);
   border: 1px solid rgba(239,68,68,0.25);
-  font-family: 'DM Mono', monospace; font-size: 10px;
+  font-family: 'Space Mono', monospace; font-size: 10px;
   letter-spacing: 0.08em; color: var(--red);
 }
 
 /* FOOTER CTA */
 .step-footer {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
-  background: rgba(10,10,10,0.95);
-  backdrop-filter: blur(12px);
+  background: #ffffff;
   border-top: 1px solid var(--border);
   padding: 14px 20px;
 }
 .step-footer-inner { max-width: 480px; margin: 0 auto; }
 .btn-primary {
   width: 100%; padding: 16px;
-  background: var(--volt); color: var(--ink);
-  font-family: 'DM Mono', monospace; font-size: 11px;
+  background: var(--ink); color: var(--paper);
+  font-family: 'Space Mono', monospace; font-size: 11px;
   letter-spacing: 0.12em; text-transform: uppercase;
   border: none; cursor: pointer; font-weight: 500;
   transition: opacity 0.2s;
@@ -321,21 +327,21 @@ header {
 
 /* SUCCESS */
 #screenExito {
-  display: none; min-height: calc(100dvh - 60px);
+  display: none; min-height: calc(100dvh - 68px);
   flex-direction: column; align-items: center;
   justify-content: center; padding: 40px 24px;
   text-align: center;
 }
 #screenExito.active { display: flex; }
 .exito-icon {
-  width: 64px; height: 64px; background: var(--volt);
+  width: 64px; height: 64px; background: var(--ink);
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 24px;
 }
 .exito-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 48px; letter-spacing: 0.04em;
-  color: var(--paper); line-height: 0.95; margin-bottom: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 48px; letter-spacing: -0.02em;
+  color: var(--ink); line-height: 0.95; margin-bottom: 12px;
 }
 .exito-sub {
   font-size: 13px; color: var(--muted);
@@ -344,7 +350,7 @@ header {
 }
 .exito-pasos {
   width: 100%; max-width: 360px;
-  background: rgba(255,255,255,0.03);
+  background: #fafafa;
   border: 1px solid var(--border);
   padding: 20px; text-align: left;
   display: flex; flex-direction: column; gap: 14px;
@@ -352,21 +358,20 @@ header {
 }
 .exito-paso { display: flex; gap: 12px; align-items: flex-start; }
 .exito-paso-n {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  color: var(--volt); flex-shrink: 0; padding-top: 2px;
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  color: var(--ink); flex-shrink: 0; padding-top: 2px;
 }
 .exito-paso-t { font-size: 12px; color: var(--muted); line-height: 1.6; }
 .btn-ir-marketplace {
   padding: 14px 28px;
-  background: transparent; color: var(--volt);
-  font-family: 'DM Mono', monospace; font-size: 10px;
+  background: transparent; color: var(--ink);
+  font-family: 'Space Mono', monospace; font-size: 10px;
   letter-spacing: 0.12em; text-transform: uppercase;
-  border: 1px solid rgba(212,245,60,0.3); cursor: pointer;
+  border: 1px solid var(--ink); cursor: pointer;
   transition: all 0.2s;
 }
 .btn-ir-marketplace:hover {
-  background: rgba(212,245,60,0.06);
-  border-color: var(--volt);
+  background: #f5f5f5;
 }
 
 /* ANIMATIONS */
@@ -447,19 +452,19 @@ header {
           oninput="onPrecioInput()">
         <div class="precio-aviso">
           El precio no puede ser mayor al que pagaste originalmente.
-          Yunus lo verificará con tu comprobante de compra.
+          Fandom lo verificará con tu comprobante de compra.
         </div>
         <div class="precio-preview" id="precioPreview">
           <div class="precio-preview-row">
             <span class="precio-preview-label">Tú recibirás</span>
-            <span class="precio-preview-val volt" id="previewCedente">—</span>
+            <span class="precio-preview-val destacado" id="previewCedente">—</span>
           </div>
           <div class="precio-preview-row">
             <span class="precio-preview-label">Precio en marketplace</span>
             <span class="precio-preview-val" id="previewListado">—</span>
           </div>
           <div class="precio-preview-row">
-            <span class="precio-preview-label">Comisión Yunus (6%)</span>
+            <span class="precio-preview-label">Comisión Fandom (3%)</span>
             <span class="precio-preview-val" id="previewComision">—</span>
           </div>
         </div>
@@ -474,12 +479,12 @@ header {
           <img class="preview" id="screenshotPreview" style="display:none;">
           <div class="upload-check">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-              stroke="#0a0a0a" stroke-width="3">
+              stroke="#ffffff" stroke-width="3">
               <polyline points="20 6 9 17 4 12"/>
             </svg>
           </div>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-            stroke="rgba(242,239,232,0.25)" stroke-width="1.5">
+            stroke="rgba(0,0,0,0.2)" stroke-width="1.5">
             <rect x="3" y="3" width="18" height="18" rx="2"/>
             <polyline points="8.5 10 12 6.5 15.5 10"/>
             <line x1="12" y1="6.5" x2="12" y2="17.5"/>
@@ -497,16 +502,16 @@ header {
       <div class="step-title">Verificación</div>
       <p class="step-sub">
         Necesitamos confirmar tu identidad y tu cuenta de depósito.
-        Tus datos están protegidos y solo los usa Yunus.
+        Tus datos están protegidos y solo los usa Fandom.
       </p>
 
       <div class="form-group">
         <label class="form-label">Cuenta de depósito (CLABE)</label>
         
         <div id="savedClabeContainer" style="display:none; margin-bottom: 12px;">
-          <div class="terms-wrap" style="background: rgba(212,245,60,0.08); border-color: var(--volt);">
+          <div class="terms-wrap" style="background: #f0f0f0; border-color: var(--ink);">
             <input type="radio" id="useSavedClabe" name="clabeOption" checked onclick="toggleClabeInput(false)">
-            <label for="useSavedClabe" id="savedClabeLabel" style="color: var(--paper);">
+            <label for="useSavedClabe" id="savedClabeLabel" style="color: var(--ink);">
               Usar CLABE guardada (***1234)
             </label>
           </div>
@@ -531,12 +536,12 @@ header {
             <img class="preview" id="ineFrentePreview" style="display:none;">
             <div class="upload-check">
               <svg width="9" height="9" viewBox="0 0 24 24" fill="none"
-                stroke="#0a0a0a" stroke-width="3">
+                stroke="#ffffff" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </div>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="rgba(242,239,232,0.2)" stroke-width="1.5">
+              stroke="rgba(0,0,0,0.2)" stroke-width="1.5">
               <rect x="2" y="5" width="20" height="14" rx="2"/>
               <circle cx="8" cy="12" r="2.5"/>
               <line x1="13" y1="10" x2="19" y2="10"/>
@@ -552,12 +557,12 @@ header {
             <img class="preview" id="ineReversoPreview" style="display:none;">
             <div class="upload-check">
               <svg width="9" height="9" viewBox="0 0 24 24" fill="none"
-                stroke="#0a0a0a" stroke-width="3">
+                stroke="#ffffff" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </div>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="rgba(242,239,232,0.2)" stroke-width="1.5">
+              stroke="rgba(0,0,0,0.2)" stroke-width="1.5">
               <rect x="2" y="5" width="20" height="14" rx="2"/>
               <line x1="6" y1="10" x2="10" y2="10"/>
               <line x1="6" y1="13" x2="14" y2="13"/>
@@ -572,12 +577,12 @@ header {
             <img class="preview" id="selfiePreview" style="display:none;">
             <div class="upload-check">
               <svg width="9" height="9" viewBox="0 0 24 24" fill="none"
-                stroke="#0a0a0a" stroke-width="3">
+                stroke="#ffffff" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </div>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="rgba(242,239,232,0.2)" stroke-width="1.5">
+              stroke="rgba(0,0,0,0.2)" stroke-width="1.5">
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
               <circle cx="12" cy="13" r="4"/>
             </svg>
@@ -601,7 +606,7 @@ header {
 
       <div class="aviso-pago">
         <strong>¿Cómo recibes tu dinero?</strong><br>
-        Una vez que el comprador pague su anticipo, Yunus te contactará
+        Una vez que el comprador pague su anticipo, Fandom te contactará
         para coordinar la transferencia del boleto en Ticketmaster.
         A partir de ese momento, recibirás depósitos quincenales a tu CLABE
         conforme el comprador vaya liquidando su plan.
@@ -612,7 +617,7 @@ header {
         <label for="s3_terms">
           Confirmo que el boleto me pertenece, que el precio listado
           no supera el precio original de compra, y acepto los
-          <strong>términos de cesión de Yunus</strong>.
+          <strong>términos de cesión de Fandom</strong>.
         </label>
       </div>
 
@@ -623,19 +628,19 @@ header {
   <div id="screenExito">
     <div class="exito-icon">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
-        stroke="#0a0a0a" stroke-width="2.5">
+        stroke="#ffffff" stroke-width="2.5">
         <polyline points="20 6 9 17 4 12"/>
       </svg>
     </div>
     <div class="exito-title">Boleto<br>enviado</div>
     <p class="exito-sub">
-      Recibimos tu solicitud. Yunus revisará tu boleto y comprobante
+      Recibimos tu solicitud. Fandom revisará tu boleto y comprobante
       en las próximas horas.
     </p>
     <div class="exito-pasos">
       <div class="exito-paso">
         <span class="exito-paso-n">01</span>
-        <span class="exito-paso-t">Yunus verifica tu boleto y comprobante de compra.</span>
+        <span class="exito-paso-t">Fandom verifica tu boleto y comprobante de compra.</span>
       </div>
       <div class="exito-paso">
         <span class="exito-paso-n">02</span>
@@ -668,7 +673,7 @@ header {
 /* ════════════════════════════════════════
    CONFIG
 ════════════════════════════════════════ */
-const COMISION_YUNUS = 0.06;
+const COMISION_FANDOM = 0.03;
 
 const FECHAS_EVENTOS = {
   'Harry Styles': [
@@ -716,7 +721,7 @@ const EVENTO_IMGS = {
 let currentStep = 1;
 let celular     = '';
 let kycCompletado = false; 
-let clabeEnBD = ""; // <-- AÑADIDO: Para guardar la CLABE original
+let clabeEnBD = "";
 
 // Imágenes en base64 (se llenan con handleUpload)
 const imgs = {
@@ -769,7 +774,6 @@ function volverOSalir() {
   }
 }
 
-// <-- AÑADIDO: Función para alternar entre CLABE guardada y nueva
 function toggleClabeInput(show) {
   const input = document.getElementById('s2_clabe');
   if (show) {
@@ -778,7 +782,7 @@ function toggleClabeInput(show) {
     input.focus();
   } else {
     input.style.display = "none";
-    input.value = clabeEnBD; // Si usa la guardada, el valor del input vuelve a ser la original
+    input.value = clabeEnBD;
   }
 }
 
@@ -858,7 +862,7 @@ async function submitCesion() {
   btn.innerHTML = spinner() + 'Enviando...';
 
   const precio    = parseFloat(document.getElementById('s1_precio').value);
-  const listado   = Math.round(precio * (1 + COMISION_YUNUS));
+  const listado   = Math.round(precio * (1 + COMISION_FANDOM));
 
   const payload = {
     celular,
@@ -915,7 +919,7 @@ function buildResumen() {
   const fecha   = document.getElementById('s1_fecha').selectedOptions[0]?.text || '';
   const zona    = document.getElementById('s1_zona').value.trim();
   const precio  = parseFloat(document.getElementById('s1_precio').value) || 0;
-  const listado = Math.round(precio * (1 + COMISION_YUNUS));
+  const listado = Math.round(precio * (1 + COMISION_FANDOM));
   const img     = EVENTO_IMGS[evento] || null;
 
   document.getElementById('resumenCard').innerHTML = `
@@ -929,14 +933,14 @@ function buildResumen() {
       <div class="resumen-grid">
         <div class="resumen-cell">
           <div class="resumen-cell-label">Tú recibes</div>
-          <div class="resumen-cell-val volt">${fmtMXN(precio)}</div>
+          <div class="resumen-cell-val destacado">${fmtMXN(precio)}</div>
         </div>
         <div class="resumen-cell">
           <div class="resumen-cell-label">Precio en marketplace</div>
           <div class="resumen-cell-val">${fmtMXN(listado)}</div>
         </div>
         <div class="resumen-cell">
-          <div class="resumen-cell-label">Comisión Yunus</div>
+          <div class="resumen-cell-label">Comisión Fandom</div>
           <div class="resumen-cell-val">${fmtMXN(listado - precio)}</div>
         </div>
         <div class="resumen-cell">
@@ -974,7 +978,7 @@ function onPrecioInput() {
     return;
   }
 
-  const listado  = Math.round(precio * (1 + COMISION_YUNUS));
+  const listado  = Math.round(precio * (1 + COMISION_FANDOM));
   const comision = listado - precio;
 
   document.getElementById('previewCedente').textContent  = fmtMXN(precio);
@@ -1037,7 +1041,7 @@ function fmtMXN(n) {
 }
 
 function spinner() {
-  return '<span style="display:inline-block;width:11px;height:11px;border:2px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;"></span>';
+  return '<span style="display:inline-block;width:11px;height:11px;border:2px solid #ffffff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;"></span>';
 }
 
 /* ════════════════════════════════════════
@@ -1054,14 +1058,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     const res = await fetch(`/api/verificar-kyc?celular=${celular}`);
     const data = await res.json();
     
-    // <-- AÑADIDO: Lógica para manejar la CLABE guardada
     if (data.kycCompletado && data.clabeExistente) {
       kycCompletado = true;
       clabeEnBD = data.clabeExistente;
       
       document.getElementById('kycContainer').style.display = 'none';
       document.getElementById('savedClabeContainer').style.display = 'block';
-      document.getElementById('s2_clabe').style.display = 'none'; // Oculto inicialmente
+      document.getElementById('s2_clabe').style.display = 'none';
       document.getElementById('s2_clabe').value = clabeEnBD;
       
       const last4 = clabeEnBD.slice(-4);
