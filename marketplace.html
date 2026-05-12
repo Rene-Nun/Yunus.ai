@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Yunus — Marketplace</title>
+<title>Fandom — Marketplace</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -359,7 +359,7 @@ main { max-width: 1280px; margin: 0 auto; }
     <div class="header-inner">
       <div class="header-left">
         <button class="btn-session" id="btnSession" aria-label="Sesión"></button>
-        <img src="darkicon.PNG" alt="Yunus" class="header-logo" onerror="this.style.display='none'">
+        <img src="darkicon.PNG" alt="Fandom" class="header-logo" onerror="this.style.display='none'">
       </div>
       <button class="btn-ceder" onclick="handleCeder()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -411,7 +411,7 @@ main { max-width: 1280px; margin: 0 auto; }
 <script>
 /* ════════════════════════════════════
    DATOS DE EVENTOS
-   maxQuincenas: límite por evento (opciones: 2, 4, 6)
+   maxQuincenas: límite por evento (opciones: 2, 3, 4)
 ════════════════════════════════════ */
 const EVENTOS = [
   {
@@ -448,7 +448,7 @@ const EVENTOS = [
     descripcion: 'El showman del pop y R&B moderno en el Foro Sol. Música, baile y una producción espectacular.',
     mapaImg: null,
     apiKey: 'Bruno Mars',
-    maxQuincenas: 6
+    maxQuincenas: 4
   },
   {
     id: 'rosalia',
@@ -472,7 +472,7 @@ const EVENTOS = [
     descripcion: 'El festival de punk rock más icónico del mundo regresa a México. 2 días de mosh pits y cultura alternativa.',
     mapaImg: null,
     apiKey: 'Vans Warped Tour',
-    maxQuincenas: 6
+    maxQuincenas: 4
   },
   {
     id: 'baja-beach',
@@ -492,8 +492,8 @@ const EVENTOS = [
    TEXTOS LEGALES
 ════════════════════════════════════ */
 const legalTexts = {
-  terms: `<h2>TÉRMINOS Y CONDICIONES – YUNUS</h2><p><strong>Última actualización:</strong> Mayo 2026</p><h3>1. ACEPTACIÓN</h3><p>Al utilizar yunusia.com, completar el registro, enviar documentos de identificación, o realizar cualquier pago, usted acepta estos Términos en su totalidad.</p><h3>2. NATURALEZA DEL SERVICIO</h3><p>Yunus es un <strong>marketplace de boletos con financiamiento integrado</strong>. Actúa como intermediario de confianza (escrow): conecta cedentes con compradores, custodia el boleto, y garantiza el pago al cedente. Yunus no compra boletos ni actúa como prestamista.</p><h3>3. COMISIÓN</h3><p>Yunus cobra una comisión del <strong>6% sobre el precio del cedente</strong>, ya incluida en el precio visible. Sin CAT, sin intereses, sin cargos ocultos.</p><h3>4. PROCESO PARA EL COMPRADOR</h3><ul><li><strong>Enganche:</strong> 15% del precio vía SPEI.</li><li><strong>Saldo:</strong> El 85% en cuotas quincenales (2, 4 o 6 quincenas según disponibilidad del evento).</li><li><strong>Sin buró:</strong> El boleto es el colateral.</li><li><strong>Primer comprador:</strong> Tope de $3,500 MXN en la primera transacción.</li></ul><h3>5. INCUMPLIMIENTO</h3><p>Ante incumplimiento: (1) Yunus revende el boleto con descuento progresivo; (2) el cedente recibe su pago de todas formas; (3) el comprador pierde lo invertido o recupera hasta el 90% según el precio de reventa.</p><h3>6. CONTACTO</h3><p>yunus.soporte@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juárez, Chihuahua, México</p>`,
-  privacy: `<h2>POLÍTICA DE PRIVACIDAD – YUNUS</h2><p><strong>Última actualización:</strong> Mayo 2026</p><h3>1. DATOS QUE RECOPILAMOS</h3><ul><li>Nombre, celular y edad.</li><li>KYC (cedentes): INE frente/reverso, selfie, CLABE.</li><li>Historial de uso y estado del proceso.</li></ul><h3>2. FINALIDAD</h3><p>Verificación de identidad, gestión de pagos, y comunicación del servicio. <strong>No vendemos ni compartimos datos con terceros, burós de crédito, ni anunciantes.</strong></p><h3>3. DERECHOS ARCO</h3><p>Contacto en yunus.soporte@proton.me. Respuesta en máximo 20 días hábiles.</p><h3>4. CONTACTO</h3><p>yunus.soporte@proton.me · yunusia.com · Paso del Norte Labs · Ciudad Juárez, Chihuahua, México</p>`
+  terms: `<h2>TÉRMINOS Y CONDICIONES – FANDOM</h2><p><strong>Última actualización:</strong> Mayo 2026</p><h3>1. ACEPTACIÓN</h3><p>Al utilizar [dominio], completar el registro, enviar documentos de identificación, o realizar cualquier pago, usted acepta estos Términos en su totalidad.</p><h3>2. NATURALEZA DEL SERVICIO</h3><p>Fandom es un <strong>marketplace de boletos con financiamiento integrado</strong>. Actúa como intermediario de confianza (escrow): conecta cedentes con compradores, custodia el boleto, y garantiza el pago al cedente. Fandom no compra boletos ni actúa como prestamista.</p><h3>3. COMISIÓN</h3><p>Fandom cobra una comisión del <strong>3% sobre el precio del comprador</strong>, ya incluida en el precio visible. Sin CAT, sin intereses, sin cargos ocultos.</p><h3>4. PROCESO PARA EL COMPRADOR</h3><ul><li><strong>Enganche:</strong> 15% del precio vía SPEI.</li><li><strong>Saldo:</strong> El 85% en cuotas quincenales (2, 3 o 4 quincenas según disponibilidad del evento).</li><li><strong>Sin buró:</strong> El boleto es el colateral.</li><li><strong>Primer comprador:</strong> Tope de $4,500 MXN en la primera transacción.</li></ul><h3>5. INCUMPLIMIENTO</h3><p>Ante incumplimiento: (1) Fandom revende el boleto con descuento progresivo; (2) el cedente recibe su pago de todas formas; (3) el comprador pierde lo invertido o recupera hasta el 90% según el precio de reventa.</p><h3>6. CONTACTO</h3><p>fandom.soporte@proton.me · [dominio] · Paso del Norte Labs · Ciudad Juárez, Chihuahua, México</p>`,
+  privacy: `<h2>POLÍTICA DE PRIVACIDAD – FANDOM</h2><p><strong>Última actualización:</strong> Mayo 2026</p><h3>1. DATOS QUE RECOPILAMOS</h3><ul><li>Nombre, celular y edad.</li><li>KYC (cedentes): INE frente/reverso, selfie, CLABE.</li><li>Historial de uso y estado del proceso.</li></ul><h3>2. FINALIDAD</h3><p>Verificación de identidad, gestión de pagos, y comunicación del servicio. <strong>No vendemos ni compartimos datos con terceros, burós de crédito, ni anunciantes.</strong></p><h3>3. DERECHOS ARCO</h3><p>Contacto en fandom.soporte@proton.me. Respuesta en máximo 20 días hábiles.</p><h3>4. CONTACTO</h3><p>fandom.soporte@proton.me · [dominio] · Paso del Norte Labs · Ciudad Juárez, Chihuahua, México</p>`
 };
 
 /* ════════════════════════════════════
@@ -699,7 +699,7 @@ function buildEventoCard(ev, i) {
     </div>
     <div class="card-perf">
       <div class="perf-line"></div>
-      <span class="perf-label">Marketplace Yunus</span>
+      <span class="perf-label">Marketplace Fandom</span>
       <div class="perf-line"></div>
     </div>
   </div>`;
@@ -751,7 +751,7 @@ async function abrirPanel(eventoId) {
   panelPaso = 1;
   panelEventoActual = ev;
   // Default al primer plan disponible
-  const opciones = [2, 4, 6].filter(q => q <= (ev.maxQuincenas || 6));
+  const opciones = [2, 3, 4].filter(q => q <= (ev.maxQuincenas || 4));
   panelPlanActual = opciones[0];
 
   document.getElementById('panelHeader').classList.remove('has-back');
@@ -846,11 +846,11 @@ function seleccionarBoleto(id) {
 function renderStep2(boleto) {
   panelPaso = 2;
   const ev = panelEventoActual;
-  const maxQ = ev.maxQuincenas || 6;
-  const opciones = [2, 4, 6].filter(q => q <= maxQ);
+  const maxQ = ev.maxQuincenas || 4;
+  const opciones = [2, 3, 4].filter(q => q <= maxQ);
   if (!opciones.includes(panelPlanActual)) panelPlanActual = opciones[0];
 
-  const meses = { 2: '1 mes', 4: '2 meses', 6: '3 meses' };
+  const meses = { 2: '1 mes', 3: '~1.5 meses', 4: '2 meses' };
 
   document.getElementById('panelHeader').classList.add('has-back');
   document.getElementById('panelNombre').textContent = 'Elegir plan';
@@ -877,8 +877,8 @@ function renderStep2(boleto) {
 
 function seleccionarQuincenas(q) {
   panelPlanActual = q;
-  const maxQ = panelEventoActual ? panelEventoActual.maxQuincenas || 6 : 6;
-  [2, 4, 6].filter(x => x <= maxQ).forEach(x => {
+  const maxQ = panelEventoActual ? panelEventoActual.maxQuincenas || 4 : 4;
+  [2, 3, 4].filter(x => x <= maxQ).forEach(x => {
     const el = document.getElementById('po-' + x);
     if (el) el.classList.toggle('activa', x === q);
   });
@@ -956,7 +956,7 @@ function renderStep3() {
       <div style="margin-bottom:24px;padding:20px;text-align:center;background:rgba(212,245,60,0.06);border:1px solid rgba(212,245,60,0.2);">
         <div style="font-size:28px;margin-bottom:8px;">✅</div>
         <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--volt);">Identidad verificada</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:6px;">Tus documentos ya están en el sistema de Yunus.</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;">Tus documentos ya están en el sistema de Fandom.</div>
       </div>
       <div id="chk_error" class="acc-error"></div>
       <button class="btn-ver-boletos" id="btnSubmitCheckout" onclick="submitSolicitud()">Enviar solicitud →</button>`;
@@ -1084,6 +1084,9 @@ async function submitSolicitud() {
         <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--paper);margin-bottom:12px;letter-spacing:0.04em;">¡Todo en orden!</h3>
         <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:32px;">Recibimos tus documentos. Te contactaremos vía WhatsApp para confirmar tu enganche y asegurar tu lugar.</p>
         <button class="btn-ver-boletos" onclick="cerrarPanel()">Volver al marketplace</button>
+        <button onclick="cerrarPanel()" style="margin-top:12px;width:100%;padding:14px;background:transparent;color:var(--volt);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(212,245,60,0.25);cursor:pointer;">
+          + Agregar otro boleto
+        </button>
       </div>`;
   } catch {
     document.getElementById('chk_error').textContent = 'Error de conexión. Intenta de nuevo.';
