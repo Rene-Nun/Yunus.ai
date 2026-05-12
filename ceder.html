@@ -15,8 +15,6 @@
   --card-bg: #ffffff;
   --red: #ef4444;
   --bg-hero: #ffffff;
-  --brand-orange: #0a0a0a;
-  --brand-green: #0a0a0a;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,35 +36,44 @@ body::after {
   background-size: 128px;
 }
 
-/* HEADER */
+/* ─── HEADER ─── */
 header {
   position: sticky; top: 0; z-index: 100;
   background: #ffffff;
   border-bottom: 1px solid var(--border);
 }
 .header-inner {
-  max-width: 600px; margin: 0 auto;
-  padding: 0 20px; height: 68px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 5vw, 32px);
+  height: clamp(56px, 8vw, 72px);
   display: flex; align-items: center; justify-content: space-between;
 }
 .btn-back {
-  width: 36px; height: 36px; border-radius: 50%;
+  width: clamp(32px, 5vw, 40px);
+  height: clamp(32px, 5vw, 40px);
+  border-radius: 50%;
   background: var(--ink);
   border: none;
   color: var(--paper); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: opacity 0.2s;
+  flex-shrink: 0;
 }
 .btn-back:hover { opacity: 0.85; }
 .header-step-label {
-  font-family: 'Space Mono', monospace; font-size: 9px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(8px, 1.5vw, 10px);
   letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
 }
 
-/* PROGRESS BAR */
+/* ─── PROGRESS BAR ─── */
 .progress-steps {
-  max-width: 600px; margin: 0 auto;
-  padding: 16px 20px 0;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: clamp(12px, 3vw, 20px) clamp(16px, 5vw, 32px) 0;
   display: flex; gap: 6px;
 }
 .progress-step {
@@ -77,51 +84,67 @@ header {
 .progress-step.done { background: #a0a0a0; }
 .progress-step.active { background: var(--ink); }
 
-/* MAIN */
+/* ─── MAIN ─── */
 #app {
-  max-width: 600px; margin: 0 auto;
-  padding: 0 0 80px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 0 clamp(80px, 15vw, 100px);
 }
 
-/* SCREENS */
+/* ─── SCREENS ─── */
 .screen { display: none; }
 .screen.active { display: block; }
 
-/* STEP CONTENT */
-.step-body { padding: 28px 20px; }
+/* ─── STEP CONTENT ─── */
+.step-body {
+  padding: clamp(20px, 5vw, 36px) clamp(16px, 5vw, 32px);
+}
 .step-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 40px; letter-spacing: -0.02em;
+  font-size: clamp(28px, 8vw, 48px);
+  letter-spacing: -0.02em;
   color: var(--ink); line-height: 1; margin-bottom: 6px;
 }
 .step-sub {
-  font-size: 13px; color: var(--muted);
-  line-height: 1.65; margin-bottom: 28px;
+  font-size: clamp(12px, 2.5vw, 14px);
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: clamp(20px, 5vw, 32px);
 }
 
-/* FORM ELEMENTS */
-.form-group { margin-bottom: 16px; }
+/* ─── FORM ELEMENTS ─── */
+.form-group { margin-bottom: clamp(12px, 3vw, 18px); }
 .form-label {
-  display: block; font-family: 'Space Mono', monospace;
-  font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 8px;
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(8px, 1.5vw, 10px);
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: clamp(6px, 1.5vw, 10px);
 }
 .form-input {
-  width: 100%; padding: 14px 16px;
+  width: 100%;
+  padding: clamp(12px, 2.5vw, 16px) clamp(12px, 3vw, 18px);
   background: #fafafa;
   border: 1px solid var(--border);
-  color: var(--ink); font-family: 'Manrope', sans-serif;
-  font-size: 15px; outline: none;
-  transition: border-color 0.2s; -webkit-appearance: none;
+  color: var(--ink);
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(14px, 2.5vw, 16px);
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  border-radius: 0;
 }
 .form-input:focus { border-color: var(--ink); }
 .form-input::placeholder { color: var(--muted); }
 .form-input option { background: #fff; }
 .form-input:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* Precio preview */
+/* ─── PRECIO PREVIEW ─── */
 .precio-preview {
-  margin-top: 8px; padding: 12px 14px;
+  margin-top: 8px;
+  padding: clamp(10px, 2.5vw, 14px) clamp(12px, 3vw, 16px);
   background: #fafafa;
   border: 1px solid var(--border);
   display: none;
@@ -132,84 +155,91 @@ header {
   align-items: center; padding: 4px 0;
 }
 .precio-preview-label {
-  font-family: 'Space Mono', monospace; font-size: 9px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(8px, 1.5vw, 10px);
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
 }
 .precio-preview-val {
   font-family: 'Space Grotesk', sans-serif; font-weight: 600;
-  font-size: 14px; color: var(--ink);
+  font-size: clamp(13px, 2.5vw, 15px); color: var(--ink);
 }
-.precio-preview-val.destacado { color: var(--ink); font-weight: 700; }
+.precio-preview-val.destacado { font-weight: 700; }
 
-/* Aviso de precio */
 .precio-aviso {
-  margin-top: 8px; padding: 10px 12px;
+  margin-top: 8px;
+  padding: clamp(8px, 2vw, 12px) clamp(10px, 2.5vw, 14px);
   background: #fafafa;
   border-left: 3px solid var(--ink);
-  font-size: 11px; color: var(--muted); line-height: 1.6;
+  font-size: clamp(10px, 2vw, 12px);
+  color: var(--muted); line-height: 1.6;
 }
 
-/* UPLOAD AREAS */
+/* ─── UPLOAD AREAS ─── */
 .upload-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px; margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(8px, 2vw, 12px);
+  margin-bottom: clamp(12px, 3vw, 18px);
 }
 .upload-area {
-  position: relative; height: 110px;
+  position: relative;
+  height: clamp(90px, 18vw, 130px);
   border: 1px dashed var(--border);
   background: #fafafa;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  gap: 6px; cursor: pointer; transition: border-color 0.2s;
+  gap: 6px; cursor: pointer;
+  transition: border-color 0.2s;
   overflow: hidden;
 }
 .upload-area:hover { border-color: var(--ink); }
-.upload-area.has-img {
-  border-style: solid;
-  border-color: var(--ink);
-}
+.upload-area.has-img { border-style: solid; border-color: var(--ink); }
 .upload-area img.preview {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover; opacity: 0.65;
 }
 .upload-area-label {
-  font-family: 'Space Mono', monospace; font-size: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(7px, 1.5vw, 9px);
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--muted); text-align: center;
-  position: relative; z-index: 1; padding: 0 8px;
+  position: relative; z-index: 1;
+  padding: 0 clamp(4px, 1vw, 8px);
 }
 .upload-area svg { position: relative; z-index: 1; }
 .upload-area input { display: none; }
 .upload-check {
   position: absolute; top: 6px; right: 6px;
-  width: 18px; height: 18px; background: var(--ink);
+  width: 18px; height: 18px;
+  background: var(--ink);
   border-radius: 50%; display: none;
   align-items: center; justify-content: center; z-index: 2;
 }
 .upload-area.has-img .upload-check { display: flex; }
 
-/* Screenshot full width */
+/* Full-width upload */
 .upload-area-full {
-  position: relative; height: 100px; width: 100%;
+  position: relative;
+  height: clamp(80px, 16vw, 110px);
+  width: 100%;
   border: 1px dashed var(--border);
   background: #fafafa;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  gap: 6px; cursor: pointer; transition: border-color 0.2s;
-  overflow: hidden; margin-bottom: 4px;
+  gap: 6px; cursor: pointer;
+  transition: border-color 0.2s;
+  overflow: hidden;
+  margin-bottom: 4px;
 }
 .upload-area-full:hover { border-color: var(--ink); }
-.upload-area-full.has-img {
-  border-style: solid; border-color: var(--ink);
-}
+.upload-area-full.has-img { border-style: solid; border-color: var(--ink); }
 .upload-area-full img.preview {
   position: absolute; inset: 0;
-  width: 100%; height: 100%; object-fit: cover; opacity: 0.65;
+  width: 100%; height: 100%;
+  object-fit: cover; opacity: 0.65;
 }
-.upload-area-full .upload-area-label {
-  position: relative; z-index: 1;
-}
+.upload-area-full .upload-area-label { position: relative; z-index: 1; }
 .upload-area-full .upload-check {
   position: absolute; top: 6px; right: 6px;
   width: 18px; height: 18px; background: var(--ink);
@@ -219,105 +249,121 @@ header {
 .upload-area-full.has-img .upload-check { display: flex; }
 .upload-area-full input { display: none; }
 
-/* RESUMEN */
+/* ─── RESUMEN ─── */
 .resumen-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  margin-bottom: 20px; overflow: hidden;
+  margin-bottom: clamp(14px, 3.5vw, 22px);
+  overflow: hidden;
 }
 .resumen-evento-img {
-  width: 100%; height: 100px;
+  width: 100%;
+  height: clamp(80px, 20vw, 120px);
   object-fit: cover; display: block;
 }
 .resumen-evento-img-placeholder {
-  width: 100%; height: 100px;
+  width: 100%;
+  height: clamp(80px, 20vw, 120px);
   background: #f5f5f5;
   display: flex; align-items: center; justify-content: center;
 }
 .resumen-evento-img-placeholder span {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 32px; color: rgba(0,0,0,0.06);
+  font-size: clamp(24px, 6vw, 36px); color: rgba(0,0,0,0.06);
 }
-.resumen-body { padding: 16px 18px 18px; }
+.resumen-body {
+  padding: clamp(14px, 3.5vw, 20px) clamp(14px, 4vw, 22px) clamp(16px, 4vw, 22px);
+}
 .resumen-evento-nombre {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 28px; letter-spacing: -0.02em;
+  font-size: clamp(20px, 5.5vw, 32px);
+  letter-spacing: -0.02em;
   color: var(--ink); line-height: 1; margin-bottom: 4px;
 }
 .resumen-meta {
-  font-family: 'Space Mono', monospace; font-size: 9px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(8px, 1.5vw, 10px);
   letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 16px;
+  color: var(--muted); margin-bottom: clamp(12px, 3vw, 18px);
 }
 .resumen-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1px; background: var(--border);
-  border: 1px solid var(--border); margin-bottom: 16px;
+  border: 1px solid var(--border);
+  margin-bottom: clamp(12px, 3vw, 18px);
 }
-.resumen-cell { background: #fafafa; padding: 12px 14px; }
+.resumen-cell { background: #fafafa; padding: clamp(10px, 2.5vw, 14px) clamp(10px, 3vw, 16px); }
 .resumen-cell-label {
-  font-family: 'Space Mono', monospace; font-size: 9px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(7px, 1.5vw, 9px);
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--muted); margin-bottom: 4px;
 }
 .resumen-cell-val {
   font-family: 'Space Grotesk', sans-serif; font-weight: 600;
-  font-size: 14px; color: var(--ink);
+  font-size: clamp(12px, 2.5vw, 15px); color: var(--ink);
 }
-.resumen-cell-val.destacado { color: var(--ink); font-weight: 700; }
+.resumen-cell-val.destacado { font-weight: 700; }
 
-/* Aviso pago */
+/* ─── AVISO PAGO ─── */
 .aviso-pago {
   background: #fafafa;
   border: 1px solid var(--border);
-  padding: 12px 14px; margin-bottom: 16px;
-  font-size: 12px; color: var(--muted); line-height: 1.7;
+  padding: clamp(10px, 2.5vw, 14px) clamp(12px, 3vw, 16px);
+  margin-bottom: clamp(12px, 3vw, 18px);
+  font-size: clamp(11px, 2vw, 13px);
+  color: var(--muted); line-height: 1.7;
 }
 .aviso-pago strong { color: var(--ink); }
 
-/* Terms */
+/* ─── TERMS / RADIO ─── */
 .terms-wrap {
-  display: flex; align-items: flex-start; gap: 12px;
+  display: flex; align-items: flex-start; gap: clamp(8px, 2vw, 14px);
   background: #fafafa;
-  border: 1px solid var(--border); padding: 14px;
+  border: 1px solid var(--border);
+  padding: clamp(10px, 3vw, 16px);
 }
-.terms-wrap input[type=checkbox] {
-  width: 16px; height: 16px; margin-top: 2px;
-  flex-shrink: 0; accent-color: var(--ink);
-}
-.terms-wrap label {
-  font-size: 12px; color: var(--muted);
-  line-height: 1.6; cursor: pointer;
-}
-.terms-wrap label strong { color: var(--ink); }
-
-/* Radio buttons para CLABE */
+.terms-wrap input[type=checkbox],
 .terms-wrap input[type=radio] {
   width: 16px; height: 16px; margin-top: 2px;
   flex-shrink: 0; accent-color: var(--ink);
 }
+.terms-wrap label {
+  font-size: clamp(11px, 2vw, 13px);
+  color: var(--muted);
+  line-height: 1.6; cursor: pointer;
+}
+.terms-wrap label strong { color: var(--ink); }
 
-/* ERROR */
+/* ─── ERROR ─── */
 .form-error {
-  display: none; margin-top: 10px; padding: 10px 14px;
+  display: none; margin-top: 10px;
+  padding: clamp(8px, 2vw, 12px) clamp(10px, 2.5vw, 14px);
   background: rgba(239,68,68,0.08);
   border: 1px solid rgba(239,68,68,0.25);
-  font-family: 'Space Mono', monospace; font-size: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(9px, 1.8vw, 11px);
   letter-spacing: 0.08em; color: var(--red);
 }
 
-/* FOOTER CTA */
+/* ─── FOOTER CTA ─── */
 .step-footer {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
   background: #ffffff;
   border-top: 1px solid var(--border);
-  padding: 14px 20px;
+  padding: clamp(10px, 2.5vw, 16px) clamp(16px, 5vw, 32px);
 }
-.step-footer-inner { max-width: 600px; margin: 0 auto; }
+.step-footer-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
 .btn-primary {
-  width: 100%; padding: 16px;
+  width: 100%;
+  padding: clamp(13px, 3vw, 17px);
   background: var(--ink); color: var(--paper);
-  font-family: 'Space Mono', monospace; font-size: 11px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(10px, 2vw, 12px);
   letter-spacing: 0.12em; text-transform: uppercase;
   border: none; cursor: pointer; font-weight: 500;
   transition: opacity 0.2s;
@@ -325,56 +371,69 @@ header {
 .btn-primary:hover { opacity: 0.85; }
 .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* SUCCESS */
+/* ─── SUCCESS ─── */
 #screenExito {
-  display: none; min-height: calc(100dvh - 68px);
+  display: none;
+  min-height: calc(100dvh - clamp(56px, 8vw, 72px));
   flex-direction: column; align-items: center;
-  justify-content: center; padding: 40px 24px;
+  justify-content: center;
+  padding: clamp(24px, 6vw, 48px) clamp(16px, 5vw, 32px);
   text-align: center;
 }
 #screenExito.active { display: flex; }
 .exito-icon {
-  width: 64px; height: 64px; background: var(--ink);
+  width: clamp(48px, 10vw, 68px);
+  height: clamp(48px, 10vw, 68px);
+  background: var(--ink);
   display: flex; align-items: center; justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: clamp(16px, 4vw, 28px);
 }
 .exito-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 48px; letter-spacing: -0.02em;
-  color: var(--ink); line-height: 0.95; margin-bottom: 12px;
+  font-size: clamp(36px, 10vw, 56px);
+  letter-spacing: -0.02em;
+  color: var(--ink); line-height: 0.95;
+  margin-bottom: clamp(8px, 2vw, 14px);
 }
 .exito-sub {
-  font-size: 13px; color: var(--muted);
-  line-height: 1.7; margin-bottom: 32px;
-  max-width: 320px;
+  font-size: clamp(12px, 2.5vw, 14px);
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: clamp(20px, 5vw, 36px);
+  max-width: 340px;
 }
 .exito-pasos {
-  width: 100%; max-width: 360px;
+  width: 100%; max-width: 400px;
   background: #fafafa;
   border: 1px solid var(--border);
-  padding: 20px; text-align: left;
-  display: flex; flex-direction: column; gap: 14px;
-  margin-bottom: 28px;
+  padding: clamp(14px, 4vw, 22px);
+  text-align: left;
+  display: flex; flex-direction: column;
+  gap: clamp(10px, 3vw, 16px);
+  margin-bottom: clamp(20px, 5vw, 32px);
 }
-.exito-paso { display: flex; gap: 12px; align-items: flex-start; }
+.exito-paso { display: flex; gap: clamp(8px, 2.5vw, 14px); align-items: flex-start; }
 .exito-paso-n {
-  font-family: 'Space Mono', monospace; font-size: 9px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(8px, 1.5vw, 10px);
   color: var(--ink); flex-shrink: 0; padding-top: 2px;
 }
-.exito-paso-t { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.exito-paso-t {
+  font-size: clamp(11px, 2vw, 13px);
+  color: var(--muted); line-height: 1.6;
+}
 .btn-ir-marketplace {
-  padding: 14px 28px;
+  padding: clamp(10px, 2.5vw, 14px) clamp(20px, 5vw, 30px);
   background: transparent; color: var(--ink);
-  font-family: 'Space Mono', monospace; font-size: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(9px, 1.8vw, 11px);
   letter-spacing: 0.12em; text-transform: uppercase;
   border: 1px solid var(--ink); cursor: pointer;
   transition: all 0.2s;
 }
-.btn-ir-marketplace:hover {
-  background: #f5f5f5;
-}
+.btn-ir-marketplace:hover { background: #f5f5f5; }
 
-/* ANIMATIONS */
+/* ─── ANIMATIONS ─── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -382,23 +441,36 @@ header {
 .fade-up { animation: fadeUp 0.4s ease both; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* RESPONSIVE MEDIA QUERIES */
-@media (max-width: 500px) {
+/* ─── RESPONSIVE: tablet/desktop ─── */
+@media (min-width: 480px) {
   .upload-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
-  #selfieArea {
-    grid-column: span 1 !important;
+  /* on wider screens the selfie spans full row */
+  .upload-area[style*="grid-column: span 2"] {
+    grid-column: span 2;
   }
-  .resumen-grid {
-    grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+  /* center everything with a card feel on large screens */
+  #app {
+    padding-top: 8px;
   }
-  .step-title {
-    font-size: 32px;
-  }
-  .exito-title {
-    font-size: 38px;
-  }
+}
+
+/* ─── SMALL PHONES (≤ 360px) ─── */
+@media (max-width: 360px) {
+  .step-title { font-size: 26px; }
+  .upload-area { height: 80px; }
+  .upload-area-full { height: 72px; }
+  .upload-grid { gap: 8px; }
+  .resumen-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── SAFE AREA (notch/home bar) ─── */
+.step-footer {
+  padding-bottom: calc(clamp(10px, 2.5vw, 16px) + env(safe-area-inset-bottom, 0px));
 }
 </style>
 
@@ -433,6 +505,7 @@ header {
 
 <div id="app">
 
+  <!-- STEP 1 -->
   <div id="step1" class="screen active">
     <div class="step-body fade-up">
       <div class="step-title">Tu boleto</div>
@@ -516,6 +589,7 @@ header {
     </div>
   </div>
 
+  <!-- STEP 2 -->
   <div id="step2" class="screen">
     <div class="step-body fade-up">
       <div class="step-title">Verificación</div>
@@ -526,7 +600,7 @@ header {
 
       <div class="form-group">
         <label class="form-label">Cuenta de depósito (CLABE)</label>
-        
+
         <div id="savedClabeContainer" style="display:none; margin-bottom: 12px;">
           <div class="terms-wrap" style="background: #f0f0f0; border-color: var(--ink);">
             <input type="radio" id="useSavedClabe" name="clabeOption" checked onclick="toggleClabeInput(false)">
@@ -540,7 +614,7 @@ header {
           </div>
         </div>
 
-        <input type="tel" id="s2_clabe" class="form-input" 
+        <input type="tel" id="s2_clabe" class="form-input"
           placeholder="000000000000000000" maxlength="18" inputmode="numeric">
       </div>
 
@@ -589,7 +663,7 @@ header {
             <span class="upload-area-label">INE Reverso</span>
           </div>
 
-          <div class="upload-area" id="selfieArea" style="grid-column: span 2; height: 110px;"
+          <div class="upload-area" id="selfieArea" style="grid-column: span 2; height: clamp(90px,18vw,120px);"
             onclick="document.getElementById('selfieInput').click()">
             <input type="file" id="selfieInput" accept="image/*"
               onchange="handleUpload(this, 'selfieArea', 'selfiePreview')">
@@ -615,13 +689,13 @@ header {
     </div>
   </div>
 
+  <!-- STEP 3 -->
   <div id="step3" class="screen">
     <div class="step-body fade-up">
       <div class="step-title">Confirmar</div>
       <p class="step-sub">Revisa que todo esté correcto antes de enviar.</p>
 
-      <div class="resumen-card" id="resumenCard">
-        </div>
+      <div class="resumen-card" id="resumenCard"></div>
 
       <div class="aviso-pago">
         <strong>¿Cómo recibes tu dinero?</strong><br>
@@ -644,6 +718,7 @@ header {
     </div>
   </div>
 
+  <!-- SUCCESS -->
   <div id="screenExito">
     <div class="exito-icon">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
@@ -680,7 +755,9 @@ header {
     </button>
   </div>
 
-</div><div class="step-footer" id="stepFooter">
+</div>
+
+<div class="step-footer" id="stepFooter">
   <div class="step-footer-inner">
     <button class="btn-primary" id="btnContinuar" onclick="continuar()">
       Continuar →
@@ -739,10 +816,9 @@ const EVENTO_IMGS = {
 ════════════════════════════════════════ */
 let currentStep = 1;
 let celular     = '';
-let kycCompletado = false; 
+let kycCompletado = false;
 let clabeEnBD = "";
 
-// Imágenes en base64 (se llenan con handleUpload)
 const imgs = {
   screenshot: null,
   ineFrente:  null,
@@ -750,7 +826,6 @@ const imgs = {
   selfie:     null
 };
 
-// Mapa de inputId → clave en imgs
 const IMG_MAP = {
   screenshotInput: 'screenshot',
   ineFrenteInput:  'ineFrente',
@@ -768,17 +843,14 @@ function setStep(n) {
   const stepEl = document.getElementById('step' + n);
   if (stepEl) stepEl.classList.add('active');
 
-  // Progress bar
   [1,2,3].forEach(i => {
     const el = document.getElementById('prog' + i);
     el.className = 'progress-step' +
       (i < n ? ' done' : i === n ? ' active' : '');
   });
 
-  // Header label
   document.getElementById('headerStepLabel').textContent = 'Paso ' + n + ' de 3';
 
-  // Botón footer
   const btn = document.getElementById('btnContinuar');
   btn.textContent = n < 3 ? 'Continuar →' : 'Enviar solicitud →';
 
@@ -815,11 +887,11 @@ function validarStep1() {
   const precio = parseFloat(document.getElementById('s1_precio').value);
   const errEl  = document.getElementById('error1');
 
-  if (!evento)          { mostrarError(errEl, 'Selecciona el evento.'); return false; }
-  if (!fecha)           { mostrarError(errEl, 'Selecciona la fecha.'); return false; }
-  if (!zona)            { mostrarError(errEl, 'Indica la zona o tipo de boleto.'); return false; }
-  if (!precio || precio <= 0) { mostrarError(errEl, 'Ingresa el precio de venta.'); return false; }
-  if (!imgs.screenshot) { mostrarError(errEl, 'Sube el comprobante de compra.'); return false; }
+  if (!evento)               { mostrarError(errEl, 'Selecciona el evento.'); return false; }
+  if (!fecha)                { mostrarError(errEl, 'Selecciona la fecha.'); return false; }
+  if (!zona)                 { mostrarError(errEl, 'Indica la zona o tipo de boleto.'); return false; }
+  if (!precio || precio <= 0){ mostrarError(errEl, 'Ingresa el precio de venta.'); return false; }
+  if (!imgs.screenshot)      { mostrarError(errEl, 'Sube el comprobante de compra.'); return false; }
 
   errEl.style.display = 'none';
   return true;
@@ -830,11 +902,11 @@ function validarStep2() {
   const errEl = document.getElementById('error2');
 
   if (clabe.length !== 18) { mostrarError(errEl, 'La CLABE debe tener exactamente 18 dígitos.'); return false; }
-  
+
   if (!kycCompletado) {
-    if (!imgs.ineFrente)     { mostrarError(errEl, 'Sube la foto del frente de tu INE.'); return false; }
-    if (!imgs.ineReverso)    { mostrarError(errEl, 'Sube la foto del reverso de tu INE.'); return false; }
-    if (!imgs.selfie)        { mostrarError(errEl, 'Sube tu selfie sosteniendo la INE.'); return false; }
+    if (!imgs.ineFrente)  { mostrarError(errEl, 'Sube la foto del frente de tu INE.'); return false; }
+    if (!imgs.ineReverso) { mostrarError(errEl, 'Sube la foto del reverso de tu INE.'); return false; }
+    if (!imgs.selfie)     { mostrarError(errEl, 'Sube tu selfie sosteniendo la INE.'); return false; }
   }
 
   errEl.style.display = 'none';
@@ -880,24 +952,21 @@ async function submitCesion() {
   btn.disabled = true;
   btn.innerHTML = spinner() + 'Enviando...';
 
-  const precio    = parseFloat(document.getElementById('s1_precio').value);
-  const listado   = Math.round(precio * (1 + COMISION_FANDOM));
+  const precio  = parseFloat(document.getElementById('s1_precio').value);
+  const listado = Math.round(precio * (1 + COMISION_FANDOM));
 
   const payload = {
     celular,
-    // Boleto
-    evento:           document.getElementById('s1_evento').value,
-    fechaEvento:      document.getElementById('s1_fecha').value,
-    zona:             document.getElementById('s1_zona').value.trim(),
-    precioCedente:    precio,
-    precioListado:    listado,
-    // KYC / pago
-    clabe:            document.getElementById('s2_clabe').value.trim(),
-    // Imágenes en base64
-    screenshot:       imgs.screenshot,
-    ineFrente:        imgs.ineFrente,
-    ineReverso:       imgs.ineReverso,
-    selfie:           imgs.selfie
+    evento:        document.getElementById('s1_evento').value,
+    fechaEvento:   document.getElementById('s1_fecha').value,
+    zona:          document.getElementById('s1_zona').value.trim(),
+    precioCedente: precio,
+    precioListado: listado,
+    clabe:         document.getElementById('s2_clabe').value.trim(),
+    screenshot:    imgs.screenshot,
+    ineFrente:     imgs.ineFrente,
+    ineReverso:    imgs.ineReverso,
+    selfie:        imgs.selfie
   };
 
   try {
@@ -917,7 +986,6 @@ async function submitCesion() {
       return;
     }
 
-    // Éxito
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('stepFooter').style.display = 'none';
     document.getElementById('screenExito').classList.add('active');
@@ -989,7 +1057,7 @@ function onEventoChange() {
 }
 
 function onPrecioInput() {
-  const precio = parseFloat(document.getElementById('s1_precio').value);
+  const precio  = parseFloat(document.getElementById('s1_precio').value);
   const preview = document.getElementById('precioPreview');
 
   if (!precio || precio <= 0) {
@@ -1015,15 +1083,12 @@ async function handleUpload(input, areaId, previewId) {
 
   const base64 = await comprimirImagen(file);
 
-  // Guardar en estado
   const clave = IMG_MAP[input.id];
   if (clave) imgs[clave] = base64;
 
-  // Mostrar preview
   const preview = document.getElementById(previewId);
   if (preview) { preview.src = base64; preview.style.display = 'block'; }
 
-  // Marcar área como completada
   const area = document.getElementById(areaId);
   if (area) area.classList.add('has-img');
 
@@ -1076,16 +1141,16 @@ window.addEventListener('DOMContentLoaded', async () => {
   try {
     const res = await fetch(`/api/verificar-kyc?celular=${celular}`);
     const data = await res.json();
-    
+
     if (data.kycCompletado && data.clabeExistente) {
       kycCompletado = true;
       clabeEnBD = data.clabeExistente;
-      
+
       document.getElementById('kycContainer').style.display = 'none';
       document.getElementById('savedClabeContainer').style.display = 'block';
       document.getElementById('s2_clabe').style.display = 'none';
       document.getElementById('s2_clabe').value = clabeEnBD;
-      
+
       const last4 = clabeEnBD.slice(-4);
       document.getElementById('savedClabeLabel').textContent = `Usar CLABE guardada (***${last4})`;
     }
@@ -1093,7 +1158,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     console.error("Error verificando KYC, se pedirá de nuevo.", e);
   }
 
-  // Si viene con ?evento= desde el marketplace
   const params = new URLSearchParams(window.location.search);
   const eventoParam = params.get('evento');
   if (eventoParam) {
@@ -1106,4 +1170,4 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 </script>
 </body>
-      </html>
+</html>
