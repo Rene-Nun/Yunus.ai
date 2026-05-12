@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fandom — Marketplace</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink: #0a0a0a;
@@ -14,10 +15,13 @@
   --border: rgba(242,239,232,0.1);
   --card-bg: #111111;
   --red: #ef4444;
+  --bg-hero: #41708C;
+  --brand-orange: #D97330;
+  --brand-green: #358266;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 ::selection { background: var(--volt); color: var(--ink); }
-html, body { min-height: 100dvh; background: var(--ink); color: var(--paper); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+html, body { min-height: 100dvh; background: var(--ink); color: var(--paper); font-family: 'Manrope', sans-serif; font-weight: 300; overflow-x: hidden; }
 body::after {
   content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
@@ -45,7 +49,7 @@ body::after {
 .auth-body { padding: 24px 28px 48px; }
 .auth-view { display: none; }
 .auth-view.active { display: block; }
-.auth-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--paper); letter-spacing: 0.04em; line-height: 1; margin-bottom: 6px; }
+.auth-title { font-family: 'Space Grotesk', sans-serif; font-size: 36px; color: var(--paper); letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px; }
 .auth-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
 
 @media (min-width: 640px) {
@@ -62,11 +66,11 @@ body::after {
 /* ═══════ HEADER ═══════ */
 header {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(10,10,10,0.92); backdrop-filter: blur(16px);
+  background: var(--bg-hero); backdrop-filter: blur(16px);
 }
 .header-inner {
   max-width: 1280px; margin: 0 auto;
-  padding: 0 20px; height: 60px;
+  padding: 0 20px; height: 68px;
   display: flex; align-items: center; justify-content: space-between;
 }
 .header-left { display: flex; align-items: center; gap: 12px; }
@@ -84,7 +88,7 @@ header {
 .btn-ceder {
   display: flex; align-items: center; gap: 6px;
   background: transparent; border: 1px solid var(--border); color: var(--muted);
-  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
   padding: 8px 12px; cursor: pointer; transition: all 0.2s;
 }
 .btn-ceder:hover { border-color: var(--volt); color: var(--volt); }
@@ -94,7 +98,7 @@ header {
 /* ═══════ INTRO ═══════ */
 .intro-strip { max-width: 1280px; margin: 0 auto; padding: 20px 20px 0; }
 .intro-label {
-  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--muted); display: flex; align-items: center; gap: 12px;
 }
 .intro-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
@@ -122,19 +126,19 @@ main { max-width: 1280px; margin: 0 auto; }
 .evento-card:hover .evento-img { filter: brightness(0.75) saturate(1); }
 .evento-precio-badge {
   position: absolute; bottom: 12px; right: 12px;
-  font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.04em; color: var(--volt);
+  font-family: 'Space Grotesk', sans-serif; font-size: 20px; letter-spacing: 0.04em; color: var(--brand-orange);
   background: rgba(10,10,10,0.82); padding: 5px 12px; backdrop-filter: blur(8px);
 }
 .evento-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
-.evento-nombre { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.04em; color: var(--paper); line-height: 1; margin-bottom: 6px; }
+.evento-nombre { font-family: 'Space Grotesk', sans-serif; font-size: 28px; letter-spacing: 0.04em; color: var(--paper); line-height: 1; margin-bottom: 6px; }
 .evento-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.evento-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-.evento-fecha { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; color: var(--muted); }
+.evento-tag { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.evento-fecha { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.08em; color: var(--muted); }
 .evento-fecha::before { content: '·'; margin-right: 10px; opacity: 0.4; }
 .evento-desc { font-size: 12px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; flex: 1; }
 .btn-ver-boletos {
-  width: 100%; padding: 14px; background: var(--volt); color: var(--ink);
-  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  width: 100%; padding: 14px; background: var(--brand-orange); color: #fff;
+  font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
   border: none; cursor: pointer; font-weight: 500; transition: opacity 0.2s;
   display: flex; align-items: center; justify-content: center; gap: 8px;
 }
@@ -146,7 +150,7 @@ main { max-width: 1280px; margin: 0 auto; }
 .card-perf::before { content: ''; position: absolute; left: -7px; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); border: 1px solid var(--border); z-index: 1; }
 .card-perf::after { content: ''; position: absolute; right: -7px; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); border: 1px solid var(--border); z-index: 1; }
 .perf-line { flex: 1; height: 1px; background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 5px, transparent 5px, transparent 10px); }
-.perf-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); padding: 8px 10px; flex-shrink: 0; }
+.perf-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brand-orange); opacity: 0.7; padding: 8px 10px; flex-shrink: 0; }
 
 /* ═══════ PANEL ═══════ */
 .panel-bg {
@@ -179,8 +183,8 @@ main { max-width: 1280px; margin: 0 auto; }
   padding: 4px 20px 16px; border-bottom: 1px solid var(--border);
   flex-shrink: 0; position: relative; display: flex; flex-direction: column;
 }
-.panel-evento-nombre { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.04em; color: var(--paper); line-height: 1; margin-bottom: 4px; transition: padding-left 0.3s; }
-.panel-evento-meta { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: padding-left 0.3s; }
+.panel-evento-nombre { font-family: 'Space Grotesk', sans-serif; font-size: 28px; letter-spacing: 0.04em; color: var(--paper); line-height: 1; margin-bottom: 4px; transition: padding-left 0.3s; }
+.panel-evento-meta { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: padding-left 0.3s; }
 .panel-close { position: absolute; top: 0; right: 20px; background: none; border: none; cursor: pointer; color: var(--muted); font-size: 22px; line-height: 1; padding: 4px; transition: color 0.2s; }
 .panel-close:hover { color: var(--paper); }
 .panel-back { position: absolute; top: 0; left: 16px; background: none; border: none; cursor: pointer; color: var(--muted); padding: 4px; display: none; transition: color 0.2s; align-items: center; }
@@ -192,7 +196,7 @@ main { max-width: 1280px; margin: 0 auto; }
 
 /* Panel inner elements */
 .panel-section-label {
-  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
 }
 .panel-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
@@ -200,13 +204,13 @@ main { max-width: 1280px; margin: 0 auto; }
 .recinto-map img { width: 100%; height: 100%; object-fit: contain; }
 .boleto-item { background: var(--card-bg); border: 1px solid var(--border); padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 12px; transition: border-color 0.2s; cursor: pointer; }
 .boleto-item:hover { border-color: rgba(212,245,60,0.35); }
-.boleto-item-zona { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); margin-bottom: 4px; }
+.boleto-item-zona { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); margin-bottom: 4px; }
 .boleto-item-detalle { font-size: 12px; color: var(--muted); line-height: 1.5; }
-.boleto-item-precio { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.04em; color: var(--volt); text-align: right; flex-shrink: 0; }
-.boleto-item-sub { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: right; }
+.boleto-item-precio { font-family: 'Space Grotesk', sans-serif; font-size: 22px; letter-spacing: 0.04em; color: var(--volt); text-align: right; flex-shrink: 0; }
+.boleto-item-sub { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: right; }
 .panel-empty { padding: 40px 0; text-align: center; }
 .panel-empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.35; }
-.panel-empty-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--paper); letter-spacing: 0.04em; margin-bottom: 6px; }
+.panel-empty-title { font-family: 'Space Grotesk', sans-serif; font-size: 24px; color: var(--paper); letter-spacing: 0.04em; margin-bottom: 6px; }
 .panel-empty-sub { font-size: 12px; color: var(--muted); line-height: 1.65; }
 .panel-loading { display: flex; flex-direction: column; align-items: center; padding: 40px 0; gap: 14px; }
 .spinner-sm { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); border-top-color: var(--volt); animation: spin 0.8s linear infinite; }
@@ -214,20 +218,20 @@ main { max-width: 1280px; margin: 0 auto; }
 /* Plan selector */
 .plan-selector { display: flex; gap: 8px; margin-bottom: 20px; }
 .plan-opcion { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
-.plan-opcion.activa { border-color: var(--volt); background: rgba(212,245,60,0.05); }
-.plan-opcion-num { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: var(--paper); line-height: 1; }
-.plan-opcion.activa .plan-opcion-num { color: var(--volt); }
-.plan-opcion-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
-.plan-opcion-sub { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--muted); margin-top: 2px; opacity: 0.6; }
+.plan-opcion.activa { border-color: var(--brand-orange); background: rgba(217,115,48,0.07); }
+.plan-opcion-num { font-family: 'Space Grotesk', sans-serif; font-size: 30px; color: var(--paper); line-height: 1; }
+.plan-opcion.activa .plan-opcion-num { color: var(--brand-orange); }
+.plan-opcion-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+.plan-opcion-sub { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); margin-top: 2px; opacity: 0.6; }
 .plan-desglose { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 16px; margin-bottom: 24px; }
 .desglose-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; color: var(--muted); }
 .desglose-row:last-child { margin-bottom: 0; padding-top: 12px; border-top: 1px solid var(--border); color: var(--paper); }
-.desglose-val { font-family: 'DM Mono', monospace; color: var(--paper); }
+.desglose-val { font-family: 'Space Mono', monospace; color: var(--paper); }
 .desglose-row:last-child .desglose-val { color: var(--volt); }
 
 /* Checkout */
 .checkout-resumen { background: var(--card-bg); border: 1px solid var(--border); padding: 16px; margin-bottom: 20px; }
-.wizard-progress { display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; }
+.wizard-progress { display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; font-family: 'Space Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; }
 .wizard-step-ind { color: var(--muted); transition: color 0.3s; }
 .wizard-step-ind.active { color: var(--volt); }
 .wizard-step-ind.done { color: var(--paper); }
@@ -241,22 +245,22 @@ main { max-width: 1280px; margin: 0 auto; }
 
 /* Form elements */
 .form-group { margin-bottom: 16px; }
-.form-label { display: block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-.form-input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; border-radius: 0; }
+.form-label { display: block; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.form-input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--paper); font-family: 'Manrope', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; border-radius: 0; }
 .form-input:focus { border-color: var(--volt); }
 .form-input::placeholder { color: var(--muted); }
 .prefix-wrap { display: flex; }
-.prefix-tag { padding: 14px 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-right: none; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted); flex-shrink: 0; }
+.prefix-tag { padding: 14px 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-right: none; font-family: 'Space Mono', monospace; font-size: 13px; color: var(--muted); flex-shrink: 0; }
 .prefix-wrap .form-input { border-left: none; }
 .input-row-acc { display: flex; margin-bottom: 12px; }
-.prefix-acc { padding: 14px 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-right: none; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted); flex-shrink: 0; }
+.prefix-acc { padding: 14px 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-right: none; font-family: 'Space Mono', monospace; font-size: 13px; color: var(--muted); flex-shrink: 0; }
 .input-acc { flex: 1; padding: 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); font-size: 16px; color: var(--paper); font-family: inherit; outline: none; transition: border-color 0.2s; -webkit-appearance: none; border-radius: 0; }
 .input-acc:focus { border-color: var(--volt); }
 .input-acc::placeholder { color: var(--muted); }
-.btn-acc-primary { width: 100%; background: var(--volt); color: var(--ink); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border: none; padding: 16px; cursor: pointer; font-weight: 500; transition: opacity 0.2s; border-radius: 0; }
+.btn-acc-primary { width: 100%; background: var(--volt); color: var(--ink); font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border: none; padding: 16px; cursor: pointer; font-weight: 500; transition: opacity 0.2s; border-radius: 0; }
 .btn-acc-primary:hover { opacity: 0.85; }
 .btn-acc-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-.acc-error { display: none; margin-top: 10px; padding: 10px 14px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: var(--red); text-align: center; width: 100%; }
+.acc-error { display: none; margin-top: 10px; padding: 10px 14px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: var(--red); text-align: center; width: 100%; }
 .terms-wrap { display: flex; align-items: flex-start; gap: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 14px; margin-top: 4px; margin-bottom: 4px; }
 .terms-wrap input[type=checkbox] { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: var(--volt); }
 .terms-wrap label { font-size: 12px; color: var(--muted); line-height: 1.6; cursor: pointer; }
@@ -268,13 +272,13 @@ main { max-width: 1280px; margin: 0 auto; }
 .modal-panel::-webkit-scrollbar { width: 3px; }
 .modal-panel::-webkit-scrollbar-thumb { background: var(--border); }
 .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: #111; z-index: 1; }
-.modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--paper); letter-spacing: 0.04em; }
+.modal-title { font-family: 'Space Grotesk', sans-serif; font-size: 22px; color: var(--paper); letter-spacing: 0.04em; }
 .modal-close { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 20px; line-height: 1; padding: 4px; transition: color 0.2s; }
 .modal-close:hover { color: var(--paper); }
 .modal-footer { padding: 14px 24px; border-top: 1px solid var(--border); position: sticky; bottom: 0; background: #111; }
 .legal-content { padding: 24px; font-size: 12px; color: var(--muted); line-height: 1.75; }
-.legal-content h2 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--paper); margin: 20px 0 10px; letter-spacing: 0.04em; }
-.legal-content h3 { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--paper); margin: 18px 0 6px; }
+.legal-content h2 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; color: var(--paper); margin: 20px 0 10px; letter-spacing: 0.04em; }
+.legal-content h3 { font-family: 'Space Mono', monospace; font-weight: 500; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--paper); margin: 18px 0 6px; }
 .legal-content p { margin-bottom: 10px; }
 .legal-content ul { padding-left: 18px; margin-bottom: 10px; }
 .legal-content ul li { margin-bottom: 5px; }
@@ -403,7 +407,7 @@ main { max-width: 1280px; margin: 0 auto; }
     </div>
     <div id="legalContent" class="legal-content"></div>
     <div class="modal-footer">
-      <button style="width:100%;background:var(--volt);color:var(--ink);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;border:none;padding:14px;cursor:pointer;font-weight:500;" onclick="closeLegal()">Cerrar</button>
+      <button style="width:100%;background:var(--volt);color:var(--ink);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;border:none;padding:14px;cursor:pointer;font-weight:500;" onclick="closeLegal()">Cerrar</button>
     </div>
   </div>
 </div>
@@ -765,7 +769,7 @@ async function abrirPanel(eventoId) {
   document.getElementById('panelBody').innerHTML = `
     <div class="panel-loading">
       <div class="spinner-sm"></div>
-      <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">Cargando boletos...</span>
+      <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">Cargando boletos...</span>
     </div>`;
 
   try {
@@ -790,13 +794,13 @@ function renderPanelBody(ev, boletos) {
         ? `<img src="${ev.mapaImg}" alt="Mapa ${ev.name}">`
         : `<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(242,239,232,0.15)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
-            <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">Mapa próximamente</span>
+            <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">Mapa próximamente</span>
           </div>`
       }
     </div>
     <div class="panel-section-label">
       Boletos disponibles
-      <span style="font-family:'DM Mono',monospace;font-size:9px;padding:2px 8px;background:rgba(212,245,60,0.08);color:var(--volt);border:1px solid rgba(212,245,60,0.2);">${boletos.length}</span>
+      <span style="font-family:'Space Mono',monospace;font-size:9px;padding:2px 8px;background:rgba(212,245,60,0.08);color:var(--volt);border:1px solid rgba(212,245,60,0.2);">${boletos.length}</span>
     </div>`;
 
   if (boletos.length === 0) {
@@ -805,7 +809,7 @@ function renderPanelBody(ev, boletos) {
         <div class="panel-empty-icon">🎟</div>
         <div class="panel-empty-title">Sin boletos aún</div>
         <p class="panel-empty-sub">No hay boletos listados para este evento todavía.<br>¿Tienes uno? Ponlo a trabajar.</p>
-        <button onclick="handleCeder()" style="margin-top:16px;padding:12px 20px;background:transparent;color:var(--volt);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(212,245,60,0.3);cursor:pointer;">
+        <button onclick="handleCeder()" style="margin-top:16px;padding:12px 20px;background:transparent;color:var(--volt);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(212,245,60,0.3);cursor:pointer;">
           Listar mi boleto →
         </button>
       </div>`;
@@ -932,21 +936,21 @@ function renderStep3() {
 
   let html = `
     <div class="checkout-resumen">
-      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Resumen de tu orden</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--paper);line-height:1;">${panelEventoActual.name}</div>
+      <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Resumen de tu orden</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;color:var(--paper);line-height:1;">${panelEventoActual.name}</div>
       <div style="font-size:12px;color:var(--muted);margin:4px 0 12px;">${panelBoletoActual.zona || 'Zona General'}</div>
       <div style="border-top:1px solid var(--border);padding-top:12px;display:flex;flex-direction:column;gap:8px;">
         <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);">
           <span>Precio listado</span>
-          <span style="font-family:'DM Mono',monospace;color:var(--paper);">$${precio.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
+          <span style="font-family:'Space Mono',monospace;color:var(--paper);">$${precio.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);">
           <span>Enganche (15%)</span>
-          <span style="font-family:'DM Mono',monospace;color:var(--paper);">$${enganche.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
+          <span style="font-family:'Space Mono',monospace;color:var(--paper);">$${enganche.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:13px;border-top:1px solid var(--border);padding-top:10px;">
           <span style="color:var(--muted);">Plan elegido</span>
-          <span style="font-family:'DM Mono',monospace;color:var(--volt);">${panelPlanActual} × $${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
+          <span style="font-family:'Space Mono',monospace;color:var(--volt);">${panelPlanActual} × $${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
         </div>
       </div>
     </div>`;
@@ -955,7 +959,7 @@ function renderStep3() {
     html += `
       <div style="margin-bottom:24px;padding:20px;text-align:center;background:rgba(212,245,60,0.06);border:1px solid rgba(212,245,60,0.2);">
         <div style="font-size:28px;margin-bottom:8px;">✅</div>
-        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--volt);">Identidad verificada</div>
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--volt);">Identidad verificada</div>
         <div style="font-size:12px;color:var(--muted);margin-top:6px;">Tus documentos ya están en el sistema de Fandom.</div>
       </div>
       <div id="chk_error" class="acc-error"></div>
@@ -1081,10 +1085,10 @@ async function submitSolicitud() {
         <div class="solicitud-ok-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
-        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--paper);margin-bottom:12px;letter-spacing:0.04em;">¡Todo en orden!</h3>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:28px;color:var(--paper);margin-bottom:12px;letter-spacing:0.04em;">¡Todo en orden!</h3>
         <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:32px;">Recibimos tus documentos. Te contactaremos vía WhatsApp para confirmar tu enganche y asegurar tu lugar.</p>
         <button class="btn-ver-boletos" onclick="cerrarPanel()">Volver al marketplace</button>
-        <button onclick="cerrarPanel()" style="margin-top:12px;width:100%;padding:14px;background:transparent;color:var(--volt);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(212,245,60,0.25);cursor:pointer;">
+        <button onclick="cerrarPanel()" style="margin-top:12px;width:100%;padding:14px;background:transparent;color:var(--volt);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(212,245,60,0.25);cursor:pointer;">
           + Agregar otro boleto
         </button>
       </div>`;
