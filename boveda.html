@@ -45,7 +45,7 @@ header {
   border-bottom: 1px solid var(--border);
 }
 .header-inner {
-  max-width: 480px; margin: 0 auto;
+  max-width: 1280px; margin: 0 auto;
   padding: 0 20px; height: 68px;
   display: flex; align-items: center; justify-content: space-between;
 }
@@ -63,6 +63,8 @@ header {
   gap: 8px;
 }
 .header-actions { display: flex; align-items: center; gap: 12px; }
+@media (min-width: 640px) { .header-inner { padding: 0 32px; } }
+@media (min-width: 1024px) { .header-inner { padding: 0 48px; } }
 
 /* CHAT CIRCLE BUTTON */
 .btn-chat-circle {
@@ -89,17 +91,22 @@ header {
 /* MAIN */
 main {
   padding-top: 68px;
-  max-width: 480px;
+  max-width: 1280px;
   margin: 0 auto;
 }
 
 /* BOVEDA VIEW */
 #bovedaView { display: none; padding: 8px 20px 40px; }
+@media (min-width: 640px) { #bovedaView { padding: 16px 32px 60px; } }
+@media (min-width: 1024px) { #bovedaView { padding: 24px 48px 80px; } }
 
 /* WELCOME BAR */
 .welcome-bar {
   margin-bottom: 28px; padding: 8px 0;
   border-bottom: 1px solid var(--border);
+}
+@media (min-width: 1024px) {
+  .welcome-bar { max-width: 720px; }
 }
 .welcome-name {
   font-family: 'Space Grotesk', sans-serif;
@@ -115,6 +122,9 @@ main {
 /* PILL TOGGLE */
 .toggle-wrap {
   margin-bottom: 24px;
+}
+@media (min-width: 1024px) {
+  .toggle-wrap { max-width: 720px; }
 }
 .toggle-pill {
   display: flex;
@@ -144,16 +154,34 @@ main {
   color: var(--paper);
 }
 
+/* CONTENEDORES DE TICKETS Y CEDIDOS */
+#comprasView, #cedidosView {
+  display: grid; grid-template-columns: 1fr; gap: 16px;
+}
+@media (min-width: 640px) {
+  #comprasView, #cedidosView {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+@media (min-width: 1024px) {
+  #comprasView, #cedidosView {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
 /* TICKET CARD */
 .ticket-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  margin-bottom: 16px;
   overflow: hidden;
   position: relative;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, transform 0.25s;
+  display: flex; flex-direction: column;
+  margin-bottom: 0;
 }
-.ticket-card:hover { border-color: rgba(0,0,0,0.3); }
+.ticket-card:hover { border-color: rgba(0,0,0,0.3); transform: translateY(-2px); }
 
 .ticket-img {
   width: 100%; height: 140px;
@@ -179,7 +207,7 @@ main {
 .badge-en_reventa { background: #6b6b6b; color: #fff; }
 .badge-cancelado { background: #ef4444; color: #fff; }
 
-.ticket-body { padding: 20px; }
+.ticket-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
 .ticket-evento {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 28px; letter-spacing: -0.02em; color: var(--ink);
@@ -314,8 +342,12 @@ main {
 
 /* EMPTY STATE */
 .empty-state {
+  grid-column: 1 / -1;
   text-align: center; padding: 60px 24px;
   border: 1px solid var(--border);
+}
+@media (min-width: 1024px) {
+  .empty-state { padding: 80px 48px; }
 }
 .empty-icon {
   font-size: 48px; margin-bottom: 20px; opacity: 0.4;
@@ -366,7 +398,11 @@ main {
   cursor: pointer;
   transition: all 0.2s;
   font-weight: 500;
-  margin-top: 32px;
+  margin-top: 48px;
+  grid-column: 1 / -1;
+}
+@media (min-width: 640px) {
+  .btn-salir-bottom { max-width: 400px; margin: 48px auto 0; }
 }
 .btn-salir-bottom:hover {
   background: rgba(239, 68, 68, 0.1);
@@ -377,27 +413,34 @@ main {
 .cedido-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  margin-bottom: 16px;
   overflow: hidden;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, transform 0.25s;
+  display: flex; flex-direction: column;
+  margin-bottom: 0;
 }
-.cedido-card:hover { border-color: rgba(0,0,0,0.3); }
+.cedido-card:hover { border-color: rgba(0,0,0,0.3); transform: translateY(-2px); }
 
 .cedido-img {
   width: 100%; height: 100px;
   object-fit: cover; display: block;
+}
+@media (min-width: 640px) {
+  .cedido-img { height: 120px; }
 }
 .cedido-img-placeholder {
   width: 100%; height: 100px;
   background: #f5f5f5;
   display: flex; align-items: center; justify-content: center;
 }
+@media (min-width: 640px) {
+  .cedido-img-placeholder { height: 120px; }
+}
 .cedido-img-placeholder span {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 36px; color: rgba(0,0,0,0.05);
 }
 
-.cedido-body { padding: 16px 20px 20px; }
+.cedido-body { padding: 16px 20px 20px; flex: 1; display: flex; flex-direction: column; }
 .cedido-evento {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 24px; letter-spacing: -0.02em;
@@ -692,7 +735,7 @@ function buildTicketCard(c, i) {
         </div>
       </div>
       ${c.estado !== 'En Reventa' && c.estado !== 'Completado' ? `
-<button onclick="abrirReventa('${c.id}', '${c.evento}')" style="width:100%;padding:11px;background:transparent;color:var(--muted);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;margin-top:4px;" onmouseover="this.style.borderColor='#6b6b6b';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Revender este boleto</button>` : ''}
+<button onclick="abrirReventa('${c.id}', '${c.evento}')" style="width:100%;padding:11px;background:transparent;color:var(--muted);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;margin-top:auto;" onmouseover="this.style.borderColor='#6b6b6b';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Revender este boleto</button>` : ''}
     </div>
 
     <div class="ticket-perforation">
@@ -730,13 +773,13 @@ function switchTab(tab) {
   const tabCedidos  = document.getElementById('tabCedidos');
 
   if (tab === 'compras') {
-    comprasView.style.display = 'block';
+    comprasView.style.display = 'grid';
     cedidosView.style.display = 'none';
     tabCompras.classList.add('active');
     tabCedidos.classList.remove('active');
   } else {
     comprasView.style.display = 'none';
-    cedidosView.style.display = 'block';
+    cedidosView.style.display = 'grid';
     tabCompras.classList.remove('active');
     tabCedidos.classList.add('active');
   }
