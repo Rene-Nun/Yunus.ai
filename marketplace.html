@@ -507,6 +507,8 @@ let panelEventoActual = null;
 let panelBoletoActual = null;
 let panelPlanActual = null;
 let panelPaso = 1;
+let panelFechaActual = null;
+let panelCantidad = 1;
 let pendingAction = null; // 'checkout' | 'ceder' | 'general'
 
 let ineFrenteBase64 = null;
@@ -714,21 +716,63 @@ function cerrarPanel() {
   panelEventoActual = null;
   panelBoletoActual = null;
   panelPlanActual = null;
+  panelFechaActual = null;
+  panelCantidad = 1;
   panelPaso = 1;
   resetWizard();
   document.getElementById('panelHeader').classList.remove('has-back');
 }
 
 function volverPanel() {
-  if (panelPaso === 2) {
+  if (panelPaso === 1) {
+    panelPaso = 0;
+    document.getElementById('panelHeader').classList.remove('has-back');
+    document.getElementById('panelNombre').textContent = panelEventoActual.name;
+    document.getElementById('panelMeta').textContent = panelEventoActual.tag + ' · ' + panelEventoActual.fecha;
+    renderPasoFechas(boletosCache);
+  } else if (panelPaso === 2) {
     panelPaso = 1;
     document.getElementById('panelHeader').classList.remove('has-back');
     document.getElementById('panelNombre').textContent = panelEventoActual.name;
     document.getElementById('panelMeta').textContent = panelEventoActual.tag + ' · ' + panelEventoActual.fecha;
-    renderPanelBody(panelEventoActual, boletosCache);
+    const filtrados = boletosCache.filter(b => b.fechaEvento === panelFechaActual);
+    renderPanelBody(panelEventoActual, filtrados);
   } else if (panelPaso === 3) {
     renderStep2(panelBoletoActual);
   }
+}
+
+/* ════════════════════════════════════
+   PASO 0: SELECCIÓN DE FECHA
+════════════════════════════════════ */
+function renderPasoFechas(boletos) {
+  panelPaso = 0;
+  document.getElementById('panelHeader').classList.remove('has-back');
+
+  const fechas = [...new Set(boletos.map(b => b.fechaEvento).filter(Boolean))].sort();
+
+  const html = `
+    <div class="panel-section-label" style="margin-top:4px;">Selecciona la fecha</div>
+    ${fechas.map(f => `
+      <div class="boleto-item" onclick="seleccionarFecha('${f}')">
+        <div>
+          <div class="boleto-item-zona">${formatFecha(f)}</div>
+          <div class="boleto-item-detalle">${boletos.filter(b => b.fechaEvento === f).length} boleto(s) disponible(s)</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>`).join('')}
+    ${fechas.length === 0 ? `<div class="panel-empty"><div class="panel-empty-icon">📅</div><div class="panel-empty-title">Sin fechas disponibles</div><p class="panel-empty-sub">No hay boletos activos para este evento.</p></div>` : ''}`;
+
+  document.getElementById('panelBody').innerHTML = html;
+}
+
+function seleccionarFecha(fecha) {
+  panelFechaActual = fecha;
+  panelPaso = 1;
+  document.getElementById('panelHeader').classList.add('has-back');
+  document.getElementById('panelMeta').textContent = formatFecha(fecha);
+  const filtrados = boletosCache.filter(b => b.fechaEvento === fecha);
+  renderPanelBody(panelEventoActual, filtrados);
 }
 
 /* ════════════════════════════════════
@@ -748,7 +792,7 @@ async function abrirPanel(eventoId) {
     } catch {}
   }
 
-  panelPaso = 1;
+  panelPaso = 0;
   panelEventoActual = ev;
   // Default al primer plan disponible
   const opciones = [2, 3, 4].filter(q => q <= (ev.maxQuincenas || 4));
@@ -765,7 +809,7 @@ async function abrirPanel(eventoId) {
   document.getElementById('panelBody').innerHTML = `
     <div class="panel-loading">
       <div class="spinner-sm"></div>
-      <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">Cargando boletos...</span>
+      <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">Cargando...</span>
     </div>`;
 
   try {
@@ -776,7 +820,16 @@ async function abrirPanel(eventoId) {
       b.evento && b.evento.toLowerCase().includes(ev.apiKey.toLowerCase().split(' ')[0])
     );
     boletosCache = filtrados;
-    renderPanelBody(ev, filtrados);
+
+    const fechas = [...new Set(filtrados.map(b => b.fechaEvento).filter(Boolean))].sort();
+
+    if (fechas.length <= 1) {
+      panelFechaActual = fechas[0] || null;
+      panelPaso = 1;
+      renderPanelBody(ev, filtrados);
+    } else {
+      renderPasoFechas(filtrados);
+    }
   } catch {
     renderPanelBody(ev, []);
   }
@@ -866,6 +919,15 @@ function renderStep2(boleto) {
           <div class="plan-opcion-sub">${meses[q] || ''}</div>
         </div>`).join('')}
     </div>
+    <div class="panel-section-label" style="margin-top:4px;">¿Cuántos boletos?</div>
+    <div style="display:flex;gap:8px;margin-bottom:20px;">
+      ${[1,2,3].map(n => `
+        <div id="qty-${n}" onclick="seleccionarCantidad(${n})"
+          style="flex:1;padding:14px;text-align:center;cursor:pointer;border:1px solid ${panelCantidad===n?'var(--ink)':'var(--border)'};background:${panelCantidad===n?'#f0f0f0':'#fafafa'};">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;color:var(--ink);">${n}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-top:4px;">${n===1?'boleto':'boletos'}</div>
+        </div>`).join('')}
+    </div>
     <div class="panel-section-label">Desglose</div>
     <div id="planDesgloseContainer"></div>
     <button class="btn-ver-boletos" style="margin-top:16px;" onclick="confirmarPlan()">
@@ -885,18 +947,31 @@ function seleccionarQuincenas(q) {
   actualizarDesglose();
 }
 
+function seleccionarCantidad(n) {
+  panelCantidad = n;
+  [1,2,3].forEach(x => {
+    const el = document.getElementById('qty-' + x);
+    if (!el) return;
+    el.style.border = `1px solid ${x === n ? 'var(--ink)' : 'var(--border)'}`;
+    el.style.background = x === n ? '#f0f0f0' : '#fafafa';
+  });
+  actualizarDesglose();
+}
+
 function actualizarDesglose() {
-  const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
+  const precioUnitario = parseFloat(panelBoletoActual.precioReventa) || 0;
+  const precio = precioUnitario * panelCantidad;
   const enganche = precio * 0.15;
   const cuota = (precio * 0.85) / panelPlanActual;
   const container = document.getElementById('planDesgloseContainer');
   if (!container) return;
   container.innerHTML = `
     <div class="plan-desglose">
-      <div class="desglose-row"><span>Precio listado</span><span class="desglose-val">$${precio.toLocaleString('es-MX', {maximumFractionDigits:0})}</span></div>
-      <div class="desglose-row"><span>Enganche (15%)</span><span class="desglose-val">$${enganche.toLocaleString('es-MX', {maximumFractionDigits:0})}</span></div>
-      <div class="desglose-row"><span>${panelPlanActual} quincenas de</span><span class="desglose-val">$${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})} c/u</span></div>
-      <div class="desglose-row"><span>Total a pagar</span><span class="desglose-val">$${precio.toLocaleString('es-MX', {maximumFractionDigits:0})}</span></div>
+      ${panelCantidad > 1 ? `<div class="desglose-row"><span>Precio unitario</span><span class="desglose-val">$${precioUnitario.toLocaleString('es-MX',{maximumFractionDigits:0})}</span></div>` : ''}
+      <div class="desglose-row"><span>Precio total (${panelCantidad} boleto${panelCantidad>1?'s':''})</span><span class="desglose-val">$${precio.toLocaleString('es-MX',{maximumFractionDigits:0})}</span></div>
+      <div class="desglose-row"><span>Enganche (15%)</span><span class="desglose-val">$${enganche.toLocaleString('es-MX',{maximumFractionDigits:0})}</span></div>
+      <div class="desglose-row"><span>${panelPlanActual} quincenas de</span><span class="desglose-val">$${cuota.toLocaleString('es-MX',{maximumFractionDigits:0})} c/u</span></div>
+      <div class="desglose-row"><span>Total a pagar</span><span class="desglose-val">$${precio.toLocaleString('es-MX',{maximumFractionDigits:0})}</span></div>
     </div>`;
 }
 
@@ -915,10 +990,7 @@ function confirmarPlan() {
    PASO 3: CHECKOUT
 ════════════════════════════════════ */
 function resetWizard() {
-  ineFrenteBase64 = null;
-  ineReversoBase64 = null;
-  selfieBase64 = null;
-  uploadStep = 1;
+  panelCantidad = 1;
 }
 
 function renderStep3() {
@@ -926,142 +998,65 @@ function renderStep3() {
   document.getElementById('panelNombre').textContent = 'Confirmar';
   document.getElementById('panelMeta').textContent = 'Último paso';
 
-  const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
+  const precioUnitario = parseFloat(panelBoletoActual.precioReventa) || 0;
+  const precio = precioUnitario * panelCantidad;
   const enganche = precio * 0.15;
   const cuota = (precio * 0.85) / panelPlanActual;
 
-  let html = `
+  const html = `
     <div class="checkout-resumen">
       <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Resumen de tu orden</div>
       <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;color:var(--ink);line-height:1;">${panelEventoActual.name}</div>
-      <div style="font-size:12px;color:var(--muted);margin:4px 0 12px;">${panelBoletoActual.zona || 'Zona General'}</div>
+      <div style="font-size:12px;color:var(--muted);margin:4px 0 12px;">${panelBoletoActual.zona || 'Zona General'} · ${panelCantidad} boleto${panelCantidad>1?'s':''} · ${formatFecha(panelFechaActual)}</div>
       <div style="border-top:1px solid var(--border);padding-top:12px;display:flex;flex-direction:column;gap:8px;">
         <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);">
-          <span>Precio listado</span>
-          <span style="font-family:'Space Mono',monospace;color:var(--ink);">$${precio.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
+          <span>Total (${panelCantidad} × $${precioUnitario.toLocaleString('es-MX',{maximumFractionDigits:0})})</span>
+          <span style="font-family:'Space Mono',monospace;color:var(--ink);">$${precio.toLocaleString('es-MX',{maximumFractionDigits:0})}</span>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);">
-          <span>Enganche (15%)</span>
-          <span style="font-family:'Space Mono',monospace;color:var(--ink);">$${enganche.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
+          <span>Enganche hoy (15%)</span>
+          <span style="font-family:'Space Mono',monospace;color:var(--ink);">$${enganche.toLocaleString('es-MX',{maximumFractionDigits:0})}</span>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:13px;border-top:1px solid var(--border);padding-top:10px;">
-          <span style="color:var(--muted);">Plan elegido</span>
-          <span style="font-family:'Space Mono',monospace;color:var(--ink);font-weight:600;">${panelPlanActual} × $${cuota.toLocaleString('es-MX', {maximumFractionDigits:0})}</span>
+          <span style="color:var(--muted);">Plan</span>
+          <span style="font-family:'Space Mono',monospace;color:var(--ink);font-weight:600;">${panelPlanActual} × $${cuota.toLocaleString('es-MX',{maximumFractionDigits:0})}</span>
         </div>
       </div>
-    </div>`;
-
-  if (kycCompletado) {
-    html += `
-      <div style="margin-bottom:24px;padding:20px;text-align:center;background:#fafafa;border:1px solid var(--border);">
-        <div style="font-size:28px;margin-bottom:8px;">✅</div>
-        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink);">Identidad verificada</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:6px;">Tus documentos ya están en el sistema de Fandom.</div>
-      </div>
-      <div id="chk_error" class="acc-error"></div>
-      <button class="btn-ver-boletos" id="btnSubmitCheckout" onclick="submitSolicitud()">Enviar solicitud →</button>`;
-  } else {
-    html += `
-      <div class="wizard-progress">
-        <span id="prog1" class="wizard-step-ind active">1. FRENTE</span>
-        <span id="prog2" class="wizard-step-ind">2. REVERSO</span>
-        <span id="prog3" class="wizard-step-ind">3. SELFIE</span>
-      </div>
-      <div class="form-group">
-        <label class="form-label" id="wizardLabel">Verificación (1/3): INE Frontal</label>
-        <input type="file" id="chk_upload" accept="image/*" style="display:none;" onchange="handleWizardUpload(event)">
-        <div class="ine-upload" id="chk_upload_trigger" onclick="document.getElementById('chk_upload').click()">
-          <div id="chk_upload_content">
-            <div class="ine-icon">🪪</div>
-            <div class="ine-text">Toca para subir o tomar foto del frente de tu INE</div>
-          </div>
-          <img id="chk_upload_preview" class="ine-preview">
-        </div>
-      </div>
-      <div id="chk_error" class="acc-error"></div>
-      <button class="btn-ver-boletos" id="btnSubmitCheckout" style="display:none;" onclick="submitSolicitud()">Enviar solicitud →</button>`;
-  }
+    </div>
+    <div style="padding:16px;background:#fafafa;border:1px solid var(--border);margin-bottom:20px;font-size:13px;color:var(--muted);line-height:1.65;">
+      Al confirmar, Fandom te contactará vía WhatsApp con los datos para tu enganche de <strong style="color:var(--ink);">$${enganche.toLocaleString('es-MX',{maximumFractionDigits:0})} MXN</strong> vía SPEI. El boleto queda reservado para ti.
+    </div>
+    <div id="chk_error" class="acc-error"></div>
+    <button class="btn-ver-boletos" id="btnSubmitCheckout" onclick="submitSolicitud()">Confirmar reserva →</button>`;
 
   document.getElementById('panelBody').innerHTML = html;
 }
 
-/* ════════════════════════════════════
-   WIZARD DE IMÁGENES
-════════════════════════════════════ */
-function comprimirImagen(file, maxWidth = 1000, calidad = 0.7) {
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const scale = Math.min(1, maxWidth / img.width);
-        canvas.width = img.width * scale;
-        canvas.height = img.height * scale;
-        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL('image/jpeg', calidad));
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-async function handleWizardUpload(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  document.getElementById('chk_upload_content').innerHTML = `<div class="spinner-sm" style="margin:0 auto;"></div>`;
-  const base64 = await comprimirImagen(file);
-
-  if (uploadStep === 1) {
-    ineFrenteBase64 = base64;
-    document.getElementById('prog1').classList.remove('active');
-    document.getElementById('prog1').classList.add('done');
-    document.getElementById('prog2').classList.add('active');
-    uploadStep = 2;
-    document.getElementById('wizardLabel').textContent = 'Verificación (2/3): INE Reverso';
-    document.getElementById('chk_upload_content').innerHTML = `<div class="ine-icon">🪪</div><div class="ine-text">¡Listo! Ahora el reverso del INE</div>`;
-  } else if (uploadStep === 2) {
-    ineReversoBase64 = base64;
-    document.getElementById('prog2').classList.remove('active');
-    document.getElementById('prog2').classList.add('done');
-    document.getElementById('prog3').classList.add('active');
-    uploadStep = 3;
-    document.getElementById('wizardLabel').textContent = 'Verificación (3/3): Selfie';
-    document.getElementById('chk_upload').setAttribute('capture', 'user');
-    document.getElementById('chk_upload_content').innerHTML = `<div class="ine-icon">🤳</div><div class="ine-text">¡Casi! Toca para tomarte una selfie</div>`;
-  } else if (uploadStep === 3) {
-    selfieBase64 = base64;
-    document.getElementById('prog3').classList.remove('active');
-    document.getElementById('prog3').classList.add('done');
-    document.getElementById('chk_upload_content').style.display = 'none';
-    const preview = document.getElementById('chk_upload_preview');
-    preview.src = selfieBase64; preview.style.display = 'block';
-    document.getElementById('wizardLabel').textContent = '¡Documentos completados!';
-    document.getElementById('chk_upload_trigger').style.borderColor = 'var(--ink)';
-    document.getElementById('chk_upload_trigger').onclick = null;
-    document.getElementById('btnSubmitCheckout').style.display = 'block';
-  }
-  e.target.value = '';
-}
-
 async function submitSolicitud() {
-  if (!kycCompletado && (!ineFrenteBase64 || !ineReversoBase64 || !selfieBase64)) {
-    document.getElementById('chk_error').textContent = 'Completa las 3 fotos para continuar.';
-    document.getElementById('chk_error').style.display = 'block'; return;
-  }
   document.getElementById('chk_error').style.display = 'none';
   const btn = document.getElementById('btnSubmitCheckout');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner-sm" style="display:inline-block;width:14px;height:14px;border-width:2px;border-top-color:#fff;margin-right:8px;vertical-align:middle;"></span>Procesando...';
 
+  const precioUnitario = parseFloat(panelBoletoActual.precioReventa) || 0;
+  const precio = precioUnitario * panelCantidad;
+  const enganche = precio * 0.15;
+  const cuota = (precio * 0.85) / panelPlanActual;
+
+  const celular = localStorage.getItem('yunus_celular') || '';
+  const nombre = localStorage.getItem('yunus_nombre') || celular;
+
   const payload = {
-    celular: localStorage.getItem('yunus_celular'),
+    celular,
+    nombre,
     evento: panelEventoActual.name,
     zona: panelBoletoActual.zona || 'General',
-    ineFrente: ineFrenteBase64,
-    ineReverso: ineReversoBase64,
-    selfie: selfieBase64
+    fechaEvento: panelFechaActual,
+    precioTotal: precio,
+    enganche: Math.round(enganche),
+    totalCuotas: panelPlanActual,
+    cuotaQuincenal: Math.round(cuota),
+    cantidad: panelCantidad
   };
 
   try {
@@ -1074,15 +1069,17 @@ async function submitSolicitud() {
     if (!res.ok) throw new Error(data.error || 'Error');
 
     document.getElementById('panelHeader').classList.remove('has-back');
-    document.getElementById('panelNombre').textContent = 'Solicitud enviada';
+    document.getElementById('panelNombre').textContent = '¡Reservado!';
     document.getElementById('panelMeta').textContent = 'En revisión';
     document.getElementById('panelBody').innerHTML = `
       <div class="solicitud-ok fade-up">
         <div class="solicitud-ok-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
-        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:28px;color:var(--ink);margin-bottom:12px;letter-spacing:0.04em;">¡Todo en orden!</h3>
-        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:32px;">Recibimos tus documentos. Te contactaremos vía WhatsApp para confirmar tu enganche y asegurar tu lugar.</p>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:28px;color:var(--ink);margin-bottom:12px;">¡Todo en orden!</h3>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:32px;">
+          Tu reserva está registrada. Te contactaremos por WhatsApp con los datos para tu enganche de <strong style="color:var(--ink);">$${Math.round(enganche).toLocaleString('es-MX')} MXN</strong> vía SPEI.
+        </p>
         <button class="btn-ver-boletos" onclick="cerrarPanel()">Volver al marketplace</button>
         <button onclick="cerrarPanel()" style="margin-top:12px;width:100%;padding:14px;background:transparent;color:var(--ink);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;border:1px solid var(--ink);cursor:pointer;">
           + Agregar otro boleto
@@ -1091,7 +1088,8 @@ async function submitSolicitud() {
   } catch {
     document.getElementById('chk_error').textContent = 'Error de conexión. Intenta de nuevo.';
     document.getElementById('chk_error').style.display = 'block';
-    btn.disabled = false; btn.innerHTML = 'Enviar solicitud →';
+    btn.disabled = false;
+    btn.innerHTML = 'Confirmar reserva →';
   }
 }
 
