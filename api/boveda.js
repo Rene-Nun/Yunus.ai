@@ -5,83 +5,73 @@ const COMPRAS_DATABASE_ID = process.env.NOTION_COMPRAS_DATABASE_ID;
 const USERS_DATABASE_ID   = process.env.NOTION_DATABASE_ID;
 
 export default async function handler(req, res) {
-if (req.method !== "GET") return res.status(405).end();
-res.setHeader("Cache-Control", "no-store");
+  if (req.method !== "GET") return res.status(405).end();
+  res.setHeader("Cache-Control", "no-store");
 
-const celular = req.query.celular;
-if (!celular) return res.status(400).json({ error: "Falta celular" });
+  const celular = req.query.celular;
+  if (!celular) return res.status(400).json({ error: "Falta celular" });
 
-const digits         = celular.replace(/\D/g, "").slice(-10);
-const celularFormato = digits;
+  const digits = celular.replace(/\D/g, "").slice(-10);
+  const celularNormalizado = "+52" + digits;
 
-try {
-// ── 1. Traer todos los registros del usuario ──────────────────────────
-const searchCompras = await notion.databases.query({
-database_id: COMPRAS_DATABASE_ID,
-filter: {
-property: "Celular",
-title: { contains: celularFormato }
-}
-});
+  try {
+    const searchCompras = await notion.databases.query({
+      database_id: COMPRAS_DATABASE_ID,
+      filter: {
+        property: "Celular",
+        rich_text: { contains: digits }
+      }
+    });
 
-// ── 2. Mapear cada registro ───────────────────────────────────────────
-const todos = searchCompras.results.map(page => ({
-  id:             page.id,
-  tipo:           page.properties.Tipo?.select?.name || "Compra", // default Compra
-  evento:         page.properties.Evento?.select?.name || null,
-  zona:           page.properties.Zona?.rich_text[0]?.plain_text || null,
-  fechaEvento:    page.properties.FechaEvento?.date?.start || null,
-  estado:         page.properties.Estado?.select?.name || null,
-  imagenEvento:   page.properties.ImagenEvento?.rich_text[0]?.plain_text || null,
+    const todos = searchCompras.results.map(page => ({
+      id:                   page.id,
+      tipo:                 page.properties.Tipo?.rich_text[0]?.plain_text || "Compra",
+      evento:               page.properties.Evento?.select?.name || null,
+      zona:                 page.properties.Zona?.rich_text[0]?.plain_text || null,
+      fechaEvento:          page.properties.FechaEvento?.date?.start || null,
+      estado:               page.properties.Estado?.select?.name || null,
+      cantidad:             page.properties.Cantidad?.number || 1,
 
-  // Campos de Compra
-  precioTotal:    page.properties.PrecioTotal?.number    || null,
-  enganche:       page.properties.Enganche?.number       || null,
-  cuotaQuincenal: page.properties.CuotaQuincenal?.number || null,
-  totalCuotas:    page.properties.TotalCuotas?.number    || null,
-  cuotasPagadas:  page.properties.CuotasPagadas?.number  || null,
-  proximoPago:    page.properties.ProximoPago?.date?.start || null,
+      // Compra
+      precioTotal:          page.properties.PrecioTotal?.number || null,
+      enganche:             page.properties.Enganche?.number || null,
+      cuotaQuincenal:       page.properties.CuotaQuincenal?.number || null,
+      totalCuotas:          page.properties.TotalCuotas?.number || null,
+      cuotasPagadas:        page.properties.CuotasPagadas?.number || 0,
+      proximoPago:          page.properties.ProximoPago?.date?.start || null,
+      fechaEntregaBoleto:   page.properties.FechaEntregaBoleto?.date?.start || null,
 
-  // Campos de Cesión
-  precioListado:  page.properties.PrecioListado?.number  || null,
-  precioCedente:  page.properties.PrecioCedente?.number  || null, // 94% del listado
-  pagosRecibidos: page.properties.PagosRecibidos?.number || null,
-  proximoDeposito: page.properties.ProximoDeposito?.date?.start || null,
-}));
+      // Cesión
+      precioListado:        page.properties.PrecioListado?.number || null,
+      precioCedente:        page.properties.PrecioCedente?.number || null,
+      fechaDeposito:        page.properties.FechaDeposito?.date?.start || null,
+    }));
 
-// ── 3. Separar por tipo ───────────────────────────────────────────────
-// "Compra" = compras del usuario como comprador
-// "Cesión" = boletos que el usuario cedió al marketplace
-const compras = todos.filter(r => r.tipo !== "Cesión");
-const cedidos = todos.filter(r => r.tipo === "Cesión");
+    const compras = todos.filter(r => r.tipo !== "Cesión");
+    const cedidos = todos.filter(r => r.tipo === "Cesión");
 
-// ── 4. Nombre del usuario ─────────────────────────────────────────────
-let nombreUsuario = celular;
-try {
-  const celularNotion = `whatsapp:+521${digits}`;
-  const searchUser = await notion.databases.query({
-    database_id: USERS_DATABASE_ID,
-    filter: {
-      property: "Teléfono",
-      title: { equals: celularNotion }
+    // Nombre del usuario
+    let nombreUsuario = celularNormalizado;
+    try {
+      const searchUser = await notion.databases.query({
+        database_id: USERS_DATABASE_ID,
+        filter: {
+          property: "Teléfono",
+          title: { equals: celularNormalizado }
+        }
+      });
+      if (searchUser.results.length > 0) {
+        const encontrado = searchUser.results[0].properties.Nombre?.rich_text[0]?.plain_text;
+        if (encontrado) nombreUsuario = encontrado;
+      }
+    } catch (e) {
+      console.error("Error buscando nombre:", e);
     }
-  });
-  if (searchUser.results.length > 0) {
-    const encontrado = searchUser.results[0].properties.Nombre?.rich_text[0]?.plain_text;
-    if (encontrado) nombreUsuario = encontrado;
-  }
-} catch (userError) {
-  console.error("Error buscando nombre, usando celular como fallback:", userError);
-}
 
-// ── 5. Respuesta ──────────────────────────────────────────────────────
-res.status(200).json({
-  compras,   // Tab "Mis boletos"
-  cedidos,   // Tab "Mis cedidos"
-  nombre: nombreUsuario
-});
-} catch (error) {
-console.error("Error en API Bóveda:", error);
-res.status(500).json({ error: "Error interno del servidor" });
-}
+    res.status(200).json({ compras, cedidos, nombre: nombreUsuario });
+
+  } catch (error) {
+    console.error("Error en API Bóveda:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 }
