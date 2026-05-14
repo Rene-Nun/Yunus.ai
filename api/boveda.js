@@ -25,9 +25,9 @@ export default async function handler(req, res) {
 
     const todos = searchCompras.results.map(page => ({
       id:                   page.id,
-      tipo:                 page.properties.Tipo?.rich_text[0]?.plain_text || "Compra",
+      tipo:                 page.properties.Tipo?.rich_text?.[0]?.plain_text || page.properties.Tipo?.select?.name || "Compra",
       evento:               page.properties.Evento?.select?.name || null,
-      zona:                 page.properties.Zona?.rich_text[0]?.plain_text || null,
+      zona:                 page.properties.Zona?.rich_text?.[0]?.plain_text || null,
       fechaEvento:          page.properties.FechaEvento?.date?.start || null,
       estado:               page.properties.Estado?.select?.name || null,
       cantidad:             page.properties.Cantidad?.number || 1,
@@ -61,7 +61,7 @@ export default async function handler(req, res) {
         }
       });
       if (searchUser.results.length > 0) {
-        const encontrado = searchUser.results[0].properties.Nombre?.rich_text[0]?.plain_text;
+        const encontrado = searchUser.results[0].properties.Nombre?.rich_text?.[0]?.plain_text;
         if (encontrado) nombreUsuario = encontrado;
       }
     } catch (e) {
