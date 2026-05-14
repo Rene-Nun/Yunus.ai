@@ -426,7 +426,8 @@ const EVENTOS = [
     descripcion: 'El ícono global del pop/rock llega a México. Una noche de carisma, estilo y sus más grandes éxitos.',
     mapaImg: null,
     apiKey: 'Harry Styles',
-    maxQuincenas: 4
+    maxQuincenas: 4,
+    fechas: ['2026-08-10']
   },
   {
     id: 'enjambre',
@@ -438,7 +439,8 @@ const EVENTOS = [
     descripcion: 'La banda referente del rock mexicano marca un hito con su primer Estadio GNP. Sintetizadores e himnos de una generación.',
     mapaImg: null,
     apiKey: 'Enjambre',
-    maxQuincenas: 4
+    maxQuincenas: 4,
+    fechas: ['2026-08-30']
   },
   {
     id: 'bruno-mars',
@@ -450,7 +452,8 @@ const EVENTOS = [
     descripcion: 'El showman del pop y R&B moderno en el Foro Sol. Música, baile y una producción espectacular.',
     mapaImg: null,
     apiKey: 'Bruno Mars',
-    maxQuincenas: 4
+    maxQuincenas: 4,
+    fechas: ['2026-12-04', '2026-12-07', '2026-12-08']
   },
   {
     id: 'rosalia',
@@ -462,7 +465,8 @@ const EVENTOS = [
     descripcion: 'La artista española más innovadora llega a México. Flamenco futurista y pop experimental de otro nivel.',
     mapaImg: null,
     apiKey: 'Rosalía Lux Tour',
-    maxQuincenas: 4
+    maxQuincenas: 4,
+    fechas: ['2026-08-15']
   },
   {
     id: 'vans-warped',
@@ -474,7 +478,8 @@ const EVENTOS = [
     descripcion: 'El festival de punk rock más icónico del mundo regresa a México. 2 días de mosh pits y cultura alternativa.',
     mapaImg: null,
     apiKey: 'Vans Warped Tour',
-    maxQuincenas: 4
+    maxQuincenas: 4,
+    fechas: null
   },
   {
     id: 'baja-beach',
@@ -486,7 +491,8 @@ const EVENTOS = [
     descripcion: 'El festival de reggaetón más grande de Baja California. 3 días de música, playa y energía sin igual.',
     mapaImg: null,
     apiKey: 'Baja Beach Fest',
-    maxQuincenas: 4
+    maxQuincenas: 4,
+    fechas: null
   }
 ];
 
@@ -725,17 +731,24 @@ function cerrarPanel() {
 
 function volverPanel() {
   if (panelPaso === 1) {
-    panelPaso = 0;
-    document.getElementById('panelHeader').classList.remove('has-back');
-    document.getElementById('panelNombre').textContent = panelEventoActual.name;
-    document.getElementById('panelMeta').textContent = panelEventoActual.tag + ' · ' + panelEventoActual.fecha;
-    renderPasoFechas(boletosCache);
+    // Si el evento tiene fechas, volver al selector; si no (festival), cerrar
+    if (panelEventoActual.fechas && panelEventoActual.fechas.length > 0) {
+      panelPaso = 0;
+      document.getElementById('panelHeader').classList.remove('has-back');
+      document.getElementById('panelNombre').textContent = panelEventoActual.name;
+      document.getElementById('panelMeta').textContent = panelEventoActual.tag + ' · ' + panelEventoActual.fecha;
+      renderPasoFechas(panelEventoActual.fechas);
+    } else {
+      cerrarPanel();
+    }
   } else if (panelPaso === 2) {
     panelPaso = 1;
     document.getElementById('panelHeader').classList.remove('has-back');
     document.getElementById('panelNombre').textContent = panelEventoActual.name;
     document.getElementById('panelMeta').textContent = panelEventoActual.tag + ' · ' + panelEventoActual.fecha;
-    const filtrados = boletosCache.filter(b => b.fechaEvento === panelFechaActual);
+    const filtrados = panelFechaActual
+      ? boletosCache.filter(b => b.fechaEvento === panelFechaActual)
+      : boletosCache;
     renderPanelBody(panelEventoActual, filtrados);
   } else if (panelPaso === 3) {
     renderStep2(panelBoletoActual);
@@ -745,23 +758,23 @@ function volverPanel() {
 /* ════════════════════════════════════
    PASO 0: SELECCIÓN DE FECHA
 ════════════════════════════════════ */
-function renderPasoFechas(boletos) {
+function renderPasoFechas(fechas) {
   panelPaso = 0;
   document.getElementById('panelHeader').classList.remove('has-back');
 
-  const fechas = [...new Set(boletos.map(b => b.fechaEvento).filter(Boolean))].sort();
-
   const html = `
     <div class="panel-section-label" style="margin-top:4px;">Selecciona la fecha</div>
-    ${fechas.map(f => `
-      <div class="boleto-item" onclick="seleccionarFecha('${f}')">
-        <div>
-          <div class="boleto-item-zona">${formatFecha(f)}</div>
-          <div class="boleto-item-detalle">${boletos.filter(b => b.fechaEvento === f).length} boleto(s) disponible(s)</div>
-        </div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </div>`).join('')}
-    ${fechas.length === 0 ? `<div class="panel-empty"><div class="panel-empty-icon">📅</div><div class="panel-empty-title">Sin fechas disponibles</div><p class="panel-empty-sub">No hay boletos activos para este evento.</p></div>` : ''}`;
+    ${fechas.map(f => {
+      const disponibles = boletosCache.filter(b => b.fechaEvento === f).length;
+      return `
+        <div class="boleto-item" onclick="seleccionarFecha('${f}')">
+          <div>
+            <div class="boleto-item-zona">${formatFecha(f)}</div>
+            <div class="boleto-item-detalle">${disponibles > 0 ? disponibles + ' listado(s) disponible(s)' : 'Sin boletos listados aún'}</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>`;
+    }).join('')}`;
 
   document.getElementById('panelBody').innerHTML = html;
 }
@@ -782,19 +795,9 @@ async function abrirPanel(eventoId) {
   const ev = EVENTOS.find(e => e.id === eventoId);
   if (!ev) return;
 
-  // Verificar KYC silenciosamente si hay sesión
-  const celular = localStorage.getItem('yunus_celular');
-  if (celular && !kycCompletado) {
-    try {
-      const r = await fetch(`/api/verificar-kyc?celular=${encodeURIComponent(celular)}`);
-      const d = await r.json();
-      if (d.kycCompletado) kycCompletado = true;
-    } catch {}
-  }
-
   panelPaso = 0;
   panelEventoActual = ev;
-  // Default al primer plan disponible
+  panelFechaActual = null;
   const opciones = [2, 3, 4].filter(q => q <= (ev.maxQuincenas || 4));
   panelPlanActual = opciones[0];
 
@@ -816,23 +819,22 @@ async function abrirPanel(eventoId) {
     const res = await fetch('/api/marketplace');
     const data = await res.json();
     const todos = data.boletos || [];
-    const filtrados = todos.filter(b =>
+    boletosCache = todos.filter(b =>
       b.evento && b.evento.toLowerCase().includes(ev.apiKey.toLowerCase().split(' ')[0])
     );
-    boletosCache = filtrados;
-
-    const fechas = [...new Set(filtrados.map(b => b.fechaEvento).filter(Boolean))].sort();
-
-    if (fechas.length <= 1) {
-      panelFechaActual = fechas[0] || null;
-      panelPaso = 1;
-      renderPanelBody(ev, filtrados);
-    } else {
-      renderPasoFechas(filtrados);
-    }
   } catch {
-    renderPanelBody(ev, []);
+    boletosCache = [];
   }
+
+  // Festivales: sin paso de fechas, ir directo a boletos
+  if (!ev.fechas || ev.fechas.length === 0) {
+    panelPaso = 1;
+    renderPanelBody(ev, boletosCache);
+    return;
+  }
+
+  // Conciertos: siempre mostrar selector de fechas (del array EVENTOS)
+  renderPasoFechas(ev.fechas);
 }
 
 function renderPanelBody(ev, boletos) {
@@ -873,15 +875,17 @@ function buildBoletoItem(b) {
   const precio = b.precioReventa
     ? '$' + Number(b.precioReventa).toLocaleString('es-MX', {maximumFractionDigits:0}) + ' MXN'
     : '—';
+  const cant = b.cantidad || 1;
+  const cantLabel = cant > 1 ? `${cant} boletos` : '1 boleto';
   return `
   <div class="boleto-item" onclick="seleccionarBoleto('${b.id || ''}')">
     <div class="boleto-item-info">
-      <div class="boleto-item-zona">${b.zona || 'Zona general'}</div>
-      <div class="boleto-item-detalle">${b.fechaEvento ? formatFecha(b.fechaEvento) : ''}${b.notas ? ' · ' + b.notas : ''}</div>
+      <div class="boleto-item-zona">${cantLabel} · ${b.zona || 'Zona general'}</div>
+      <div class="boleto-item-detalle">${cant > 1 ? 'Se venden juntos · ' : ''}${b.notas || ''}</div>
     </div>
     <div>
       <div class="boleto-item-precio">${precio}</div>
-      <div class="boleto-item-sub">precio total</div>
+      <div class="boleto-item-sub">${cant > 1 ? 'precio total del bundle' : 'precio total'}</div>
     </div>
   </div>`;
 }
@@ -890,6 +894,7 @@ function seleccionarBoleto(id) {
   const boleto = boletosCache.find(b => b.id === id);
   if (!boleto) return;
   panelBoletoActual = boleto;
+  panelCantidad = boleto.cantidad || 1;
   renderStep2(boleto);
 }
 
@@ -919,15 +924,6 @@ function renderStep2(boleto) {
           <div class="plan-opcion-sub">${meses[q] || ''}</div>
         </div>`).join('')}
     </div>
-    <div class="panel-section-label" style="margin-top:4px;">¿Cuántos boletos?</div>
-    <div style="display:flex;gap:8px;margin-bottom:20px;">
-      ${[1,2,3].map(n => `
-        <div id="qty-${n}" onclick="seleccionarCantidad(${n})"
-          style="flex:1;padding:14px;text-align:center;cursor:pointer;border:1px solid ${panelCantidad===n?'var(--ink)':'var(--border)'};background:${panelCantidad===n?'#f0f0f0':'#fafafa'};">
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;color:var(--ink);">${n}</div>
-          <div style="font-family:'Space Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-top:4px;">${n===1?'boleto':'boletos'}</div>
-        </div>`).join('')}
-    </div>
     <div class="panel-section-label">Desglose</div>
     <div id="planDesgloseContainer"></div>
     <button class="btn-ver-boletos" style="margin-top:16px;" onclick="confirmarPlan()">
@@ -943,17 +939,6 @@ function seleccionarQuincenas(q) {
   [2, 3, 4].filter(x => x <= maxQ).forEach(x => {
     const el = document.getElementById('po-' + x);
     if (el) el.classList.toggle('activa', x === q);
-  });
-  actualizarDesglose();
-}
-
-function seleccionarCantidad(n) {
-  panelCantidad = n;
-  [1,2,3].forEach(x => {
-    const el = document.getElementById('qty-' + x);
-    if (!el) return;
-    el.style.border = `1px solid ${x === n ? 'var(--ink)' : 'var(--border)'}`;
-    el.style.background = x === n ? '#f0f0f0' : '#fafafa';
   });
   actualizarDesglose();
 }
