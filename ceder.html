@@ -509,7 +509,7 @@ header {
   <div id="step1" class="screen active">
     <div class="step-body fade-up">
       <div class="step-title">Tu boleto</div>
-      <p class="step-sub">Cuéntanos qué boleto quieres poner a trabajar.</p>
+      <p class="step-sub">¿Tienes un boleto que ya no puedes usar? Ponlo aquí y ayuda a otro fan a vivir el momento.</p>
 
       <div class="form-group">
         <label class="form-label">Evento</label>
@@ -535,6 +535,34 @@ header {
         <label class="form-label">Zona / tipo de boleto</label>
         <input type="text" id="s1_zona" class="form-input"
           placeholder="Ej. Floor General, Gradería Alta, VIP...">
+        <div style="margin-top:6px;padding:10px 12px;background:#fafafa;border-left:3px solid var(--ink);font-size:clamp(10px,2vw,12px);color:var(--muted);line-height:1.6;">
+          Para conciertos en recintos, incluye zona, fila y lugar si aplica.<br>
+          <span style="font-family:'Space Mono',monospace;font-size:10px;opacity:0.7;">Ej. Gradería Norte · Fila 12 · Asiento 34</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">¿Cuántos boletos?</label>
+        <div style="display:flex;gap:8px;">
+          <div id="qty-1" onclick="seleccionarCantidad(1)"
+            style="flex:1;padding:14px;text-align:center;cursor:pointer;border:1px solid var(--ink);background:#f0f0f0;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;color:var(--ink);">1</div>
+            <div style="font-family:'Space Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-top:4px;">boleto</div>
+          </div>
+          <div id="qty-2" onclick="seleccionarCantidad(2)"
+            style="flex:1;padding:14px;text-align:center;cursor:pointer;border:1px solid var(--border);background:#fafafa;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;color:var(--ink);">2</div>
+            <div style="font-family:'Space Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-top:4px;">boletos</div>
+          </div>
+          <div id="qty-3" onclick="seleccionarCantidad(3)"
+            style="flex:1;padding:14px;text-align:center;cursor:pointer;border:1px solid var(--border);background:#fafafa;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;color:var(--ink);">3</div>
+            <div style="font-family:'Space Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-top:4px;">boletos</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:clamp(10px,2vw,12px);color:var(--muted);line-height:1.6;">
+          Si son más de uno, se venden juntos como un solo listado.
+        </div>
       </div>
 
       <div class="form-group">
@@ -592,20 +620,19 @@ header {
   <!-- STEP 2 -->
   <div id="step2" class="screen">
     <div class="step-body fade-up">
-      <div class="step-title">Verificación</div>
+      <div class="step-title">Tu cuenta</div>
       <p class="step-sub">
-        Necesitamos confirmar tu identidad y tu cuenta de depósito.
-        Tus datos están protegidos y solo los usa Fandom.
+        Aquí recibirás el pago cuando pase el evento. Solo necesitamos tu CLABE.
       </p>
 
       <div class="form-group">
-        <label class="form-label">Cuenta de depósito (CLABE)</label>
+        <label class="form-label">CLABE interbancaria (18 dígitos)</label>
 
         <div id="savedClabeContainer" style="display:none; margin-bottom: 12px;">
           <div class="terms-wrap" style="background: #f0f0f0; border-color: var(--ink);">
             <input type="radio" id="useSavedClabe" name="clabeOption" checked onclick="toggleClabeInput(false)">
             <label for="useSavedClabe" id="savedClabeLabel" style="color: var(--ink);">
-              Usar CLABE guardada (***1234)
+              Usar CLABE guardada
             </label>
           </div>
           <div class="terms-wrap" style="margin-top: 8px;">
@@ -616,73 +643,6 @@ header {
 
         <input type="tel" id="s2_clabe" class="form-input"
           placeholder="000000000000000000" maxlength="18" inputmode="numeric">
-      </div>
-
-      <div class="form-group" id="kycContainer">
-        <label class="form-label">Documentos de identidad</label>
-        <div class="upload-grid">
-
-          <div class="upload-area" id="ineFrenteArea"
-            onclick="document.getElementById('ineFrenteInput').click()">
-            <input type="file" id="ineFrenteInput" accept="image/*"
-              onchange="handleUpload(this, 'ineFrenteArea', 'ineFrentePreview')">
-            <img class="preview" id="ineFrentePreview" style="display:none;">
-            <div class="upload-check">
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="none"
-                stroke="#ffffff" stroke-width="3">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </div>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="rgba(0,0,0,0.2)" stroke-width="1.5">
-              <rect x="2" y="5" width="20" height="14" rx="2"/>
-              <circle cx="8" cy="12" r="2.5"/>
-              <line x1="13" y1="10" x2="19" y2="10"/>
-              <line x1="13" y1="14" x2="17" y2="14"/>
-            </svg>
-            <span class="upload-area-label">INE Frente</span>
-          </div>
-
-          <div class="upload-area" id="ineReversoArea"
-            onclick="document.getElementById('ineReversoInput').click()">
-            <input type="file" id="ineReversoInput" accept="image/*"
-              onchange="handleUpload(this, 'ineReversoArea', 'ineReversoPreview')">
-            <img class="preview" id="ineReversoPreview" style="display:none;">
-            <div class="upload-check">
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="none"
-                stroke="#ffffff" stroke-width="3">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </div>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="rgba(0,0,0,0.2)" stroke-width="1.5">
-              <rect x="2" y="5" width="20" height="14" rx="2"/>
-              <line x1="6" y1="10" x2="10" y2="10"/>
-              <line x1="6" y1="13" x2="14" y2="13"/>
-            </svg>
-            <span class="upload-area-label">INE Reverso</span>
-          </div>
-
-          <div class="upload-area" id="selfieArea" style="grid-column: span 2; height: clamp(90px,18vw,120px);"
-            onclick="document.getElementById('selfieInput').click()">
-            <input type="file" id="selfieInput" accept="image/*"
-              onchange="handleUpload(this, 'selfieArea', 'selfiePreview')">
-            <img class="preview" id="selfiePreview" style="display:none;">
-            <div class="upload-check">
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="none"
-                stroke="#ffffff" stroke-width="3">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </div>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="rgba(0,0,0,0.2)" stroke-width="1.5">
-              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-              <circle cx="12" cy="13" r="4"/>
-            </svg>
-            <span class="upload-area-label">Selfie sosteniendo tu INE</span>
-          </div>
-
-        </div>
       </div>
 
       <div id="error2" class="form-error"></div>
@@ -703,6 +663,11 @@ header {
         para coordinar la transferencia del boleto en Ticketmaster.
         A partir de ese momento, recibirás depósitos quincenales a tu CLABE
         conforme el comprador vaya liquidando su plan.
+      </div>
+
+      <div class="aviso-pago" style="margin-top:8px;border-left-color:#6b6b6b;">
+        <strong>Fecha de pago:</strong><br>
+        El depósito a tu CLABE se realiza dentro de los <strong>5 días hábiles posteriores al evento</strong>, una vez confirmada la entrega del boleto al comprador.
       </div>
 
       <div class="terms-wrap">
@@ -746,7 +711,7 @@ header {
       </div>
       <div class="exito-paso">
         <span class="exito-paso-n">04</span>
-        <span class="exito-paso-t">Recibes depósitos quincenales a tu CLABE hasta cobrar el total.</span>
+        <span class="exito-paso-t">Recibes el pago completo a tu CLABE dentro de los 5 días hábiles posteriores al evento.</span>
       </div>
     </div>
     <button class="btn-ir-marketplace"
@@ -818,6 +783,7 @@ let currentStep = 1;
 let celular     = '';
 let kycCompletado = false;
 let clabeEnBD = "";
+let cantidadCesion = 1;
 
 const imgs = {
   screenshot: null,
@@ -878,6 +844,19 @@ function toggleClabeInput(show) {
 }
 
 /* ════════════════════════════════════════
+   SELECCIÓN DE CANTIDAD
+════════════════════════════════════════ */
+function seleccionarCantidad(n) {
+  cantidadCesion = n;
+  [1, 2, 3].forEach(x => {
+    const el = document.getElementById('qty-' + x);
+    if (!el) return;
+    el.style.border = `1px solid ${x === n ? 'var(--ink)' : 'var(--border)'}`;
+    el.style.background = x === n ? '#f0f0f0' : '#fafafa';
+  });
+}
+
+/* ════════════════════════════════════════
    VALIDACIONES
 ════════════════════════════════════════ */
 function validarStep1() {
@@ -900,15 +879,10 @@ function validarStep1() {
 function validarStep2() {
   const clabe = document.getElementById('s2_clabe').value.trim();
   const errEl = document.getElementById('error2');
-
-  if (clabe.length !== 18) { mostrarError(errEl, 'La CLABE debe tener exactamente 18 dígitos.'); return false; }
-
-  if (!kycCompletado) {
-    if (!imgs.ineFrente)  { mostrarError(errEl, 'Sube la foto del frente de tu INE.'); return false; }
-    if (!imgs.ineReverso) { mostrarError(errEl, 'Sube la foto del reverso de tu INE.'); return false; }
-    if (!imgs.selfie)     { mostrarError(errEl, 'Sube tu selfie sosteniendo la INE.'); return false; }
+  if (clabe.length !== 18) {
+    mostrarError(errEl, 'La CLABE debe tener exactamente 18 dígitos.');
+    return false;
   }
-
   errEl.style.display = 'none';
   return true;
 }
@@ -966,7 +940,8 @@ async function submitCesion() {
     screenshot:    imgs.screenshot,
     ineFrente:     imgs.ineFrente,
     ineReverso:    imgs.ineReverso,
-    selfie:        imgs.selfie
+    selfie:        imgs.selfie,
+    cantidad:      cantidadCesion,
   };
 
   try {
@@ -1016,7 +991,7 @@ function buildResumen() {
     }
     <div class="resumen-body">
       <div class="resumen-evento-nombre">${evento}</div>
-      <div class="resumen-meta">${zona} · ${fecha}</div>
+      <div class="resumen-meta">${cantidadCesion} boleto${cantidadCesion > 1 ? 's' : ''} · ${zona} · ${fecha}</div>
       <div class="resumen-grid">
         <div class="resumen-cell">
           <div class="resumen-cell-label">Tú recibes</div>
@@ -1035,6 +1010,10 @@ function buildResumen() {
           <div class="resumen-cell-val" style="font-size:11px;letter-spacing:0.04em;">
             ···${document.getElementById('s2_clabe').value.slice(-4)}
           </div>
+        </div>
+        <div class="resumen-cell">
+          <div class="resumen-cell-label">Cantidad</div>
+          <div class="resumen-cell-val">${cantidadCesion} boleto${cantidadCesion > 1 ? 's' : ''}</div>
         </div>
       </div>
     </div>`;
