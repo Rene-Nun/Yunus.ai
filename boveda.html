@@ -657,10 +657,12 @@ let celular = '';
 let nombreUsuario = '';
 
 const eventoImgs = {
-  'Baja Beach Fest': 'BajaB.jpeg',
-  'Rosalía Lux Tour': 'Rosalia.jpeg',
-  'Vans Warped Tour': 'VansW.webp',
-  'Bruno Mars': 'BrunoM.jpeg',
+  'Baja Beach Fest':     'BajaB.jpeg',
+  'Rosalía Lux Tour':    'Rosalia.jpeg',
+  'Vans Warped Tour':    'VansW.webp',
+  'Bruno Mars':          'BrunoM.jpeg',
+  'Harry Styles':        'HarryS.webp',
+  'Enjambre Estadio GNP':'Enjambre.webp',
 };
 
 function fmtMXN(n) {
@@ -746,6 +748,8 @@ function buildTicketCard(c, i) {
   const img     = eventoImgs[c.evento] || null;
   const estado  = c.estado || 'Activo';
   const badge   = badgeClass(estado);
+  const cantidad = c.cantidad || 1;
+  const cantLabel = cantidad > 1 ? `${cantidad} boletos` : '1 boleto';
 
   return `
   <div class="ticket-card fade-up d${Math.min(i+1,3)}">
@@ -756,7 +760,9 @@ function buildTicketCard(c, i) {
     <div class="ticket-status-badge ${badge}">${estado}</div>
     <div class="ticket-body">
       <div class="ticket-evento">${c.evento || '—'}</div>
-      <div class="ticket-zona">${c.zona || 'Zona por confirmar'}</div>
+      <div class="ticket-zona">
+        ${cantLabel} · ${c.zona || 'Zona por confirmar'}
+      </div>
       <div class="progress-wrap">
         <div class="progress-header">
           <span class="progress-label">Pagos completados</span>
@@ -791,6 +797,14 @@ function buildTicketCard(c, i) {
       <div class="ticket-perf-line"></div>
       <div class="ticket-perf-line"></div>
     </div>
+    ${c.fechaEntregaBoleto ? `
+    <div class="fecha-evento">
+      <div class="fecha-icon">🎟</div>
+      <div class="fecha-text">
+        <div class="fecha-label">Entrega del boleto</div>
+        <div class="fecha-value">${fmtFecha(c.fechaEntregaBoleto)}</div>
+      </div>
+    </div>` : ''}
     ${c.fechaEvento ? `
     <div class="fecha-evento">
       <div class="fecha-icon">📅</div>
@@ -836,13 +850,9 @@ function renderCedidos(cedidos) {
 }
 
 function buildCedidoCard(c, i) {
-  const img       = eventoImgs[c.evento] || null;
-  const estado    = c.estado || 'Listado';
-  const badge     = badgeClass(estado);
-  const listado   = c.precioListado  || 0;
-  const cedente   = c.precioCedente  || 0;
-  const recibido  = c.pagosRecibidos || 0;
-  const pct       = cedente > 0 ? Math.min(100, Math.round((recibido / cedente) * 100)) : 0;
+  const img    = eventoImgs[c.evento] || null;
+  const estado = c.estado || 'Listado';
+  const badge  = badgeClass(estado);
   const enProceso = estado === 'En Proceso';
 
   return `
@@ -855,49 +865,40 @@ function buildCedidoCard(c, i) {
     <div class="cedido-body">
       <div class="cedido-evento">${c.evento || '—'}</div>
       <div class="cedido-zona">${c.zona || 'Zona por confirmar'}</div>
-      ${enProceso ? `
-      <div class="cobro-wrap">
-        <div class="cobro-header">
-          <span class="cobro-label">Cobrado</span>
-          <span class="cobro-count">${fmtMXN(recibido)} de ${fmtMXN(cedente)}</span>
-        </div>
-        <div class="cobro-track">
-          <div class="cobro-fill" style="width:${pct}%"></div>
-        </div>
+
+      ${estado === 'Listado' ? `
+      <div style="padding:12px 0 4px;font-size:clamp(11px,1.8vw,13px);color:var(--muted);line-height:1.6;">
+        Tu boleto está publicado en el Marketplace. Te avisamos cuando alguien lo tome.
       </div>` : ''}
+
+      ${enProceso ? `
+      <div style="padding:12px 0 4px;font-size:clamp(11px,1.8vw,13px);color:var(--muted);line-height:1.6;">
+        Hay un comprador activo pagando su plan. Tu dinero quedará depositado al terminar el evento.
+      </div>` : ''}
+
       <div class="cedido-grid">
         <div class="cedido-cell">
           <div class="cedido-cell-label">Precio listado</div>
-          <div class="cedido-cell-value">${fmtMXN(listado)}</div>
+          <div class="cedido-cell-value">${fmtMXN(c.precioListado)}</div>
         </div>
         <div class="cedido-cell">
-          <div class="cedido-cell-label">Tú recibes</div>
-          <div class="cedido-cell-value destacado">${fmtMXN(cedente)}</div>
+          <div class="cedido-cell-label">Tú recibirás</div>
+          <div class="cedido-cell-value destacado">${fmtMXN(c.precioCedente)}</div>
         </div>
-        ${enProceso ? `
-        <div class="cedido-cell">
-          <div class="cedido-cell-label">Ya cobrado</div>
-          <div class="cedido-cell-value">${fmtMXN(recibido)}</div>
-        </div>
-        <div class="cedido-cell">
-          <div class="cedido-cell-label">Por cobrar</div>
-          <div class="cedido-cell-value destacado">${fmtMXN(cedente - recibido)}</div>
-        </div>` : ''}
       </div>
-      ${enProceso && c.proximoDeposito ? `
-      <div class="proximo-deposito">
-        <span class="pd-label">Próximo depósito</span>
-        <span class="pd-value">${fmtFecha(c.proximoDeposito)}</span>
-      </div>` : ''}
-      ${estado === 'Listado' ? `
-      <div style="padding: 8px 0 4px; font-size: clamp(11px,1.8vw,13px); color: var(--muted); line-height: 1.6;">
-        Tu boleto está publicado en el Marketplace. Te avisamos cuando alguien lo tome.
-      </div>` : ''}
     </div>
     <div class="ticket-perforation">
       <div class="ticket-perf-line"></div>
       <div class="ticket-perf-line"></div>
     </div>
+    ${c.fechaDeposito ? `
+    <div class="fecha-evento">
+      <div class="fecha-icon">💸</div>
+      <div class="fecha-text">
+        <div class="fecha-label">Fecha de depósito</div>
+        <div class="fecha-value">${fmtFecha(c.fechaDeposito)}</div>
+      </div>
+    </div>` : ''}
     ${c.fechaEvento ? `
     <div class="fecha-evento">
       <div class="fecha-icon">📅</div>
@@ -952,7 +953,7 @@ function cerrarSesion() {
   localStorage.removeItem('yunus_celular');
   localStorage.removeItem('yunus_historial');
   celular = '';
-  window.location.href = '/chat';
+  window.location.href = 'marketplace.html';
 }
 
 window.addEventListener('DOMContentLoaded', () => {
