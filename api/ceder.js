@@ -7,135 +7,83 @@ const USERS_DATABASE_ID   = process.env.NOTION_DATABASE_ID;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
+  api_key:    process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Sube una imagen base64 a Cloudinary y devuelve la URL
 async function subirCloudinary(base64, folder) {
-  try {
-    const result = await cloudinary.uploader.upload(base64, {
-      folder: folder,
-      resource_type: "image"
-    });
-    return result.secure_url;
-  } catch (error) {
-    throw new Error("Cloudinary error: " + JSON.stringify(error));
-  }
+  const result = await cloudinary.uploader.upload(base64, {
+    folder, resource_type: "image"
+  });
+  return result.secure_url;
 }
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
   const {
-    celular,
-    evento,
-    fechaEvento,
-    zona,
-    precioCedente,
-    precioListado,
-    clabe,
-    screenshot,
-    ineFrente,
-    ineReverso,
-    selfie
+    celular, evento, fechaEvento, zona,
+    precioCedente, precioListado, clabe,
+    cantidad, screenshot
   } = req.body;
 
-  // Validacion basica
   if (!celular || !evento || !fechaEvento || !zona || !precioCedente || !precioListado) {
     return res.status(400).json({ error: "Faltan datos del boleto." });
   }
-  
-  // NUEVO: Solo exigimos obligatoriamente la clabe, las fotos pueden no venir si ya tiene KYC
   if (!clabe) {
     return res.status(400).json({ error: "Falta la CLABE interbancaria." });
   }
 
   const digits = celular.replace(/\D/g, "").slice(-10);
+  const celularNormalizado = "+52" + digits;
+  const cantidadFinal = Math.min(Math.max(parseInt(cantidad) || 1, 1), 3);
 
   try {
-    // 1. Subir imagenes a Cloudinary (Solo si existen en la petición)
-    const folder          = `yunus/cedentes/${digits}`;
-    const screenshotUrl   = screenshot ? await subirCloudinary(screenshot,  folder) : null;
-    const ineFrenteUrl    = ineFrente  ? await subirCloudinary(ineFrente,   folder) : null;
-    const ineReversoUrl   = ineReverso ? await subirCloudinary(ineReverso,  folder) : null;
-    const selfieUrl       = selfie     ? await subirCloudinary(selfie,      folder) : null;
+    // 1. Subir comprobante a Cloudinary (único archivo)
+    const folder = `fandom/cedentes/${digits}`;
+    const screenshotUrl = screenshot ? await subirCloudinary(screenshot, folder) : null;
 
-    // 2. Crear registro en BD Compras Yunus
+    // 2. Crear registro en BD Compras
     await notion.pages.create({
       parent: { database_id: COMPRAS_DATABASE_ID },
       properties: {
-        // Celular como titulo (igual que el resto de registros)
-        "Celular": {
-          title: [{ text: { content: digits } }]
-        },
-        "Tipo": {
-          select: { name: "Cesion" }
-        },
-        "Estado": {
-          select: { name: "En Revision" }
-        },
-        "Evento": {
-          select: { name: evento }
-        },
-        "Zona": {
-          rich_text: [{ text: { content: zona } }]
-        },
-        "FechaEvento": {
-          date: { start: fechaEvento }
-        },
-        "PrecioCedente": {
-          number: Number(precioCedente)
-        },
-        "PrecioListado": {
-          number: Number(precioListado)
-        },
+        "Celular":        { title: [{ text: { content: celularNormalizado } }] },
+        "Tipo":           { select: { name: "Cesión" } },
+        "Estado":         { select: { name: "En Revision" } },
+        "Evento":         { select: { name: evento } },
+        "Zona":           { rich_text: [{ text: { content: zona } }] },
+        "FechaEvento":    { date: { start: fechaEvento } },
+        "PrecioCedente":  { number: Number(precioCedente) },
+        "PrecioListado":  { number: Number(precioListado) },
+        "Cantidad":       { number: cantidadFinal },
         ...(screenshotUrl && {
-          "ComprobanteCompra": {
-            url: screenshotUrl
-          }
+          "ComprobanteCompra": { url: screenshotUrl }
         })
       }
     });
 
-    // 3. Buscar si el usuario ya existe en BD Usuarios
-    const celularNotion = "whatsapp:+521" + digits;
+    // 3. Guardar CLABE en BD Usuarios (crear o actualizar)
     const searchUser = await notion.databases.query({
       database_id: USERS_DATABASE_ID,
       filter: {
         property: "Teléfono",
-        title: { equals: celularNotion }
+        title: { equals: celularNormalizado }
       }
     });
 
-    // NUEVO: Construimos las propiedades de KYC de forma dinámica 
-    // para no sobreescribir con valores vacíos si el usuario ya tiene fotos
-    const kycProps = {
-      "CLABE": {
-        rich_text: [{ text: { content: clabe } }]
-      }
-    };
-    
-    if (ineFrenteUrl)  kycProps["INE frente"]  = { rich_text: [{ text: { content: ineFrenteUrl } }] };
-    if (ineReversoUrl) kycProps["INE reverso"] = { rich_text: [{ text: { content: ineReversoUrl } }] };
-    if (selfieUrl)     kycProps["Selfie"]      = { rich_text: [{ text: { content: selfieUrl } }] };
-
-
     if (searchUser.results.length > 0) {
-      // Actualizar registro existente con KYC + CLABE
       await notion.pages.update({
         page_id: searchUser.results[0].id,
-        properties: kycProps
+        properties: {
+          "CLABE": { rich_text: [{ text: { content: clabe } }] }
+        }
       });
     } else {
-      // Crear registro nuevo en BD Usuarios
       await notion.pages.create({
         parent: { database_id: USERS_DATABASE_ID },
         properties: {
-          "Teléfono": {
-            title: [{ text: { content: celularNotion } }]
-          },
-          ...kycProps
+          "Teléfono": { title: [{ text: { content: celularNormalizado } }] },
+          "CLABE":    { rich_text: [{ text: { content: clabe } }] }
         }
       });
     }
