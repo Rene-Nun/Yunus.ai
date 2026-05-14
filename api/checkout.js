@@ -37,7 +37,7 @@ export default async function handler(req, res) {
     await notion.pages.create({
       parent: { database_id: COMPRAS_DB },
       properties: {
-        "Nombre":          { title: [{ text: { content: nombre || celular } }] },
+        "Celular":          { title: [{ text: { content: nombre || celular } }] },
         "Evento":          { select: { name: evento } },
         "Zona":            { rich_text: [{ text: { content: zona || "" } }] },
         "FechaEvento":     { date: fechaEvento ? { start: fechaEvento } : null },
@@ -46,7 +46,6 @@ export default async function handler(req, res) {
         "TotalCuotas":     { number: parseInt(totalCuotas) },
         "CuotaQuincenal":  { number: parseFloat(cuotaQuincenal) },
         "CuotasPagadas":   { number: 0 },
-        "PagosRecibidos":  { number: 0 },
         "Estado":          { select: { name: "Pendiente" } },
         "Tipo":            { rich_text: [{ text: { content: `${cantidadFinal} boleto(s)` } }] },
         "NotasInternas":   { rich_text: [{ text: { content: `Celular: ${celular} · Cantidad: ${cantidadFinal}` } }] }
