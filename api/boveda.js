@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       database_id: COMPRAS_DATABASE_ID,
       filter: {
         property: "Celular",
-        rich_text: { contains: digits }
+        title: { contains: digits }
       }
     });
 
