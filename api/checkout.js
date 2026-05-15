@@ -1,4 +1,4 @@
-=import { Client } from "@notionhq/client";
+import { Client } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const COMPRAS_DB = process.env.NOTION_COMPRAS_DATABASE_ID;
