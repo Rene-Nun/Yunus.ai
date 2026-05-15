@@ -1,4 +1,4 @@
-import { Client } from "@notionhq/client";
+=import { Client } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const COMPRAS_DB = process.env.NOTION_COMPRAS_DATABASE_ID;
@@ -47,8 +47,8 @@ export default async function handler(req, res) {
         "CuotaQuincenal":  { number: parseFloat(cuotaQuincenal) },
         "CuotasPagadas":   { number: 0 },
         "Estado":          { select: { name: "Pendiente" } },
-        "Tipo":            { rich_text: [{ text: { content: `${cantidadFinal} boleto(s)` } }] },
-        "NotasInternas":   { rich_text: [{ text: { content: `Celular: ${celular} · Cantidad: ${cantidadFinal}` } }] }
+        "Tipo":            { select: { name: "Compra" } },
+        "NotasInternas":    { rich_text: [{ text: { content: `Celular: ${celular} · Cantidad: ${cantidadFinal}` } }] }
       }
     });
 
