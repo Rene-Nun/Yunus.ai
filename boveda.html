@@ -1,391 +1,599 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Yunus — Mi Bóveda</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Fandom — Mi Bóveda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink: #0a0a0a;
-  --paper: #F2EFE8;
-  --volt: #D4F53C;
-  --muted: #5C5C5C;
-  --border: rgba(242,239,232,0.1);
-  --card-bg: #111111;
+  --paper: #ffffff;
+  --muted: #6b6b6b;
+  --border: rgba(0,0,0,0.1);
+  --card-bg: #ffffff;
+
+/* Fluid spacing scale */
+--space-xs:  clamp(6px,  1.2vw, 10px);
+--space-sm:  clamp(10px, 2vw,  16px);
+--space-md:  clamp(16px, 3vw,  24px);
+--space-lg:  clamp(24px, 4vw,  40px);
+--space-xl:  clamp(40px, 6vw,  72px);
+
+/* Fluid type scale */
+--text-2xs: clamp(8px,  1vw,  9px);
+--text-xs:  clamp(9px,  1.2vw, 11px);
+--text-sm:  clamp(11px, 1.6vw, 13px);
+--text-md:  clamp(13px, 1.8vw, 15px);
+--text-lg:  clamp(20px, 3vw,  28px);
+--text-xl:  clamp(28px, 4.5vw, 42px);
+--text-2xl: clamp(32px, 5.5vw, 52px);
+
+/* Layout */
+--content-max: 900px;
+--card-max: 480px;
+--header-h: clamp(56px, 8vw, 72px);
+--gutter: clamp(16px, 4vw, 40px);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-::selection { background: var(--volt); color: var(--ink); }
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+::selection { background: var(--ink); color: var(--paper); }
 
 html, body {
-  min-height: 100dvh;
-  background: var(--ink);
-  color: var(--paper);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  overflow-x: hidden;
+min-height: 100dvh;
+background: var(--paper);
+color: var(--ink);
+font-family: 'Manrope', sans-serif;
+font-weight: 400;
+overflow-x: hidden;
 }
 
+/* Grain overlay */
 body::after {
-  content: '';
-  position: fixed; inset: 0;
-  pointer-events: none; z-index: 9999; opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 128px;
+content: '';
+position: fixed; inset: 0;
+pointer-events: none; z-index: 9999; opacity: 0.02;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+background-size: 128px;
 }
 
-/* HEADER */
+/* ── HEADER ── */
 header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(10,10,10,0.9);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+background: rgba(255,255,255,0.96);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border-bottom: 1px solid var(--border);
 }
 .header-inner {
-  max-width: 480px; margin: 0 auto;
-  padding: 0 20px; height: 60px;
-  display: flex; align-items: center; justify-content: space-between;
+max-width: var(--content-max);
+margin: 0 auto;
+padding: 0 var(--gutter);
+height: var(--header-h);
+display: flex; align-items: center; justify-content: space-between;
 }
 .header-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px; letter-spacing: 0.08em; color: var(--paper);
-  display: flex; align-items: center; gap: 8px;
+font-family: 'Space Grotesk', sans-serif;
+font-size: var(--text-lg); letter-spacing: -0.02em; color: var(--ink);
+display: flex; align-items: center; gap: 8px;
 }
-.header-logo img { height: 120px; width: auto; object-fit: contain; }
+.header-logo img {
+height: clamp(28px, 5vw, 40px);
+width: auto; object-fit: contain;
+}
 .header-boveda-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px; letter-spacing: 0.08em; color: var(--paper);
-  display: none;
-  align-items: center;
-  gap: 8px;
-}
-.header-title {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--volt);
+font-family: 'Space Grotesk', sans-serif;
+font-size: var(--text-lg); letter-spacing: -0.02em; color: var(--ink);
+display: none; align-items: center; gap: 8px;
 }
 .header-actions { display: flex; align-items: center; gap: 12px; }
 
-/* CHAT CIRCLE BUTTON */
+/* ── CHAT BUTTON ── */
 .btn-chat-circle {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--volt);
-  color: var(--ink);
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  text-align: center;
-  vertical-align: middle;
-  line-height: 36px;
-  transition: opacity 0.2s;
-  display: none;
+width: clamp(32px, 5vw, 40px);
+height: clamp(32px, 5vw, 40px);
+border-radius: 50%;
+background: var(--ink); color: var(--paper);
+border: none; cursor: pointer; padding: 0;
+display: none; align-items: center; justify-content: center;
+transition: opacity 0.2s;
+flex-shrink: 0;
 }
-.btn-chat-circle:hover { opacity: 0.85; }
-.btn-chat-circle svg {
-  vertical-align: middle;
-  display: inline-block;
-}
+.btn-chat-circle:hover { opacity: 0.8; }
+.btn-chat-circle svg { display: block; }
 
-/* MAIN */
+/* ── MAIN LAYOUT ── */
 main {
-  padding-top: 60px;
-  max-width: 480px;
-  margin: 0 auto;
+padding-top: var(--header-h);
+max-width: var(--content-max);
+margin: 0 auto;
 }
 
-/* BOVEDA VIEW */
-#bovedaView { display: none; padding: 24px 20px 40px; }
+/* ── BÓVEDA VIEW ── */
+#bovedaView { display: none; padding: var(--space-sm) var(--gutter) var(--space-xl); }
 
-.section-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 20px;
-  display: flex; align-items: center; gap: 12px;
+/* On wider screens: two-column layout for cards */
+@media (min-width: 700px) {
+.cards-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+gap: var(--space-md);
+align-items: start;
 }
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+/* Override individual bottom margin when inside grid */
+.cards-grid .ticket-card,
+.cards-grid .cedido-card {
+margin-bottom: 0;
+}
+}
 
-/* WELCOME BAR */
+/* ── WELCOME BAR ── */
 .welcome-bar {
-  margin-bottom: 28px; padding: 16px 0;
-  border-bottom: 1px solid var(--border);
+margin-bottom: var(--space-md);
+padding: var(--space-xs) 0;
+border-bottom: 1px solid var(--border);
 }
 .welcome-name {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 36px; letter-spacing: 0.04em; color: var(--paper);
-  line-height: 1;
+font-family: 'Space Grotesk', sans-serif;
+font-size: var(--text-xl); letter-spacing: -0.02em; color: var(--ink);
+line-height: 1;
 }
 .welcome-sub {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted); margin-top: 4px;
+font-family: 'Space Mono', monospace;
+font-size: var(--text-2xs); letter-spacing: 0.1em; text-transform: uppercase;
+color: var(--muted); margin-top: 4px;
 }
 
-/* TICKET CARD */
-.ticket-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  margin-bottom: 16px;
-  overflow: hidden;
-  position: relative;
-  transition: border-color 0.3s;
+/* ── PILL TOGGLE ── */
+.toggle-wrap { margin-bottom: var(--space-md); }
+.toggle-pill {
+display: flex;
+background: #f5f5f5;
+border: 1px solid var(--border);
+border-radius: 999px;
+padding: 4px; gap: 4px;
+max-width: 400px;
 }
-.ticket-card:hover { border-color: rgba(212,245,60,0.3); }
+.toggle-btn {
+flex: 1;
+padding: clamp(8px, 1.5vw, 12px) clamp(14px, 2.5vw, 24px);
+border: none; border-radius: 999px;
+background: transparent; color: var(--muted);
+font-family: 'Space Mono', monospace;
+font-size: var(--text-2xs);
+letter-spacing: 0.1em; text-transform: uppercase;
+cursor: pointer; transition: all 0.3s ease; font-weight: 400;
+white-space: nowrap;
+}
+.toggle-btn.active { background: var(--ink); color: var(--paper); }
+
+/* ── TICKET CARD ── */
+.ticket-card {
+background: var(--card-bg);
+border: 1px solid var(--border);
+margin-bottom: var(--space-md);
+overflow: hidden; position: relative;
+transition: border-color 0.3s, box-shadow 0.3s;
+}
+.ticket-card:hover {
+border-color: rgba(0,0,0,0.25);
+box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
 
 .ticket-img {
-  width: 100%; height: 140px;
-  object-fit: cover; display: block;
-  filter: brightness(0.7);
+width: 100%;
+height: clamp(120px, 22vw, 180px);
+object-fit: cover; display: block;
 }
 .ticket-img-placeholder {
-  width: 100%; height: 140px;
-  background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
-  display: flex; align-items: center; justify-content: center;
+width: 100%;
+height: clamp(120px, 22vw, 180px);
+background: #f5f5f5;
+display: flex; align-items: center; justify-content: center;
 }
 .ticket-img-placeholder span {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 48px; color: rgba(242,239,232,0.05); letter-spacing: 0.1em;
+font-family: 'Space Grotesk', sans-serif;
+font-size: clamp(32px, 6vw, 56px);
+color: rgba(0,0,0,0.05); letter-spacing: 0.1em;
 }
-.ticket-status-badge {
-  position: absolute; top: 12px; right: 12px;
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  padding: 4px 10px; font-weight: 500;
-}
-.badge-activo { background: var(--volt); color: var(--ink); }
-.badge-completado { background: #22c55e; color: #fff; }
-.badge-en_reventa { background: #f59e0b; color: var(--ink); }
-.badge-cancelado { background: #ef4444; color: #fff; }
 
-.ticket-body { padding: 20px; }
+/* Status badge */
+.ticket-status-badge {
+position: absolute; top: clamp(8px, 1.5vw, 14px); right: clamp(8px, 1.5vw, 14px);
+font-family: 'Space Mono', monospace; font-size: var(--text-2xs);
+letter-spacing: 0.12em; text-transform: uppercase;
+padding: clamp(3px, 0.6vw, 5px) clamp(8px, 1.5vw, 12px);
+font-weight: 500;
+}
+.badge-activo      { background: var(--ink); color: var(--paper); }
+.badge-completado  { background: #4a4a4a; color: #fff; }
+.badge-en_reventa  { background: #6b6b6b; color: #fff; }
+.badge-cancelado   { background: #ef4444; color: #fff; }
+.badge-listado     { background: var(--ink); color: var(--paper); }
+.badge-en_proceso  { background: #4a4a4a; color: #fff; }
+
+.ticket-body { padding: var(--space-md); }
+
 .ticket-evento {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px; letter-spacing: 0.04em; color: var(--paper);
-  line-height: 1; margin-bottom: 4px;
+font-family: 'Space Grotesk', sans-serif;
+font-size: var(--text-xl); letter-spacing: -0.02em; color: var(--ink);
+line-height: 1; margin-bottom: 4px;
 }
 .ticket-zona {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-  margin-bottom: 20px;
+font-family: 'Space Mono', monospace; font-size: var(--text-2xs);
+letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+margin-bottom: var(--space-md);
 }
 
-/* PROGRESS BAR */
-.progress-wrap { margin-bottom: 20px; }
+/* ── PROGRESS BAR ── */
+.progress-wrap { margin-bottom: var(--space-md); }
 .progress-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 8px;
+display: flex; justify-content: space-between; align-items: center;
+margin-bottom: 8px; flex-wrap: wrap; gap: 4px;
 }
 .progress-label {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+font-family: 'Space Mono', monospace; font-size: var(--text-2xs);
+letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
 }
 .progress-count {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  color: var(--volt); font-weight: 500;
+font-family: 'Space Mono', monospace; font-size: var(--text-xs);
+color: var(--ink); font-weight: 500;
 }
 .progress-track {
-  width: 100%; height: 3px;
-  background: rgba(255,255,255,0.06); position: relative; overflow: hidden;
+width: 100%; height: 3px;
+background: #f0f0f0; position: relative; overflow: hidden;
 }
 .progress-fill {
-  height: 100%; background: var(--volt);
-  transition: width 1s ease; position: relative;
+height: 100%; background: var(--ink);
+transition: width 1s ease; position: relative;
 }
 .progress-fill::after {
-  content: ''; position: absolute; right: 0; top: -2px;
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--volt);
+content: ''; position: absolute; right: 0; top: -2px;
+width: 7px; height: 7px; border-radius: 50%; background: var(--ink);
 }
 
-/* TICKET GRID */
+/* ── TICKET GRID ── */
 .ticket-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1px; background: var(--border);
-  border: 1px solid var(--border);
-  margin-bottom: 20px;
+display: grid; grid-template-columns: 1fr 1fr;
+gap: 1px; background: var(--border);
+border: 1px solid var(--border);
+margin-bottom: var(--space-md);
 }
-.ticket-cell {
-  background: var(--card-bg); padding: 14px 16px;
-}
+.ticket-cell { background: #fafafa; padding: clamp(10px, 2vw, 16px) clamp(12px, 2.5vw, 18px); }
 .ticket-cell-label {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
-  margin-bottom: 4px;
+font-family: 'Space Mono', monospace; font-size: var(--text-2xs);
+letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+margin-bottom: 4px;
 }
 .ticket-cell-value {
-  font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: 15px; color: var(--paper);
+font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+font-size: var(--text-md); color: var(--ink);
 }
-.ticket-cell-value.volt { color: var(--volt); }
+.ticket-cell-value.destacado { font-weight: 700; }
 
-/* TICKET PERFORATED EDGE */
+/* ── REVENDER BUTTON (inline) ── */
+.btn-revender {
+width: 100%; padding: clamp(9px, 1.5vw, 13px);
+background: transparent; color: var(--muted);
+font-family: 'Space Mono', monospace; font-size: var(--text-xs);
+letter-spacing: 0.08em; text-transform: uppercase;
+border: 1px solid var(--border); cursor: pointer;
+transition: all 0.2s; margin-top: 4px;
+}
+.btn-revender:hover { border-color: #6b6b6b; color: var(--ink); }
+
+/* ── PERFORATED EDGE ── */
 .ticket-perforation {
-  display: flex; align-items: center;
-  padding: 0 20px; margin: 0 -1px;
-  position: relative;
+display: flex; align-items: center;
+padding: 0 var(--space-md); margin: 0 -1px; position: relative;
 }
 .ticket-perforation::before {
-  content: ''; position: absolute; left: -8px;
-  width: 16px; height: 16px; border-radius: 50%;
-  background: var(--ink); border: 1px solid var(--border);
-  z-index: 1;
+content: ''; position: absolute; left: -8px;
+width: 16px; height: 16px; border-radius: 50%;
+background: var(--paper); border: 1px solid var(--border); z-index: 1;
 }
 .ticket-perforation::after {
-  content: ''; position: absolute; right: -8px;
-  width: 16px; height: 16px; border-radius: 50%;
-  background: var(--ink); border: 1px solid var(--border);
-  z-index: 1;
+content: ''; position: absolute; right: -8px;
+width: 16px; height: 16px; border-radius: 50%;
+background: var(--paper); border: 1px solid var(--border); z-index: 1;
 }
 .ticket-perf-line {
-  flex: 1; height: 1px;
-  background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 6px, transparent 6px, transparent 12px);
-}
-.ticket-perf-label {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-  padding: 10px 12px; flex-shrink: 0;
+flex: 1; height: 1px;
+background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 6px, transparent 6px, transparent 12px);
 }
 
-/* FECHA EVENTO */
+/* ── FECHA EVENTO ── */
 .fecha-evento {
-  display: flex; align-items: center; gap: 12px;
-  padding: 16px 20px;
-  background: rgba(212,245,60,0.05);
-  border-top: 1px solid rgba(212,245,60,0.15);
+display: flex; align-items: center; gap: clamp(8px, 2vw, 14px);
+padding: clamp(12px, 2.5vw, 18px) var(--space-md);
+background: #fafafa;
+border-top: 1px solid var(--border);
 }
-.fecha-icon { font-size: 20px; }
-.fecha-text { flex: 1; }
+.fecha-icon { font-size: clamp(16px, 3vw, 22px); flex-shrink: 0; }
+.fecha-text { flex: 1; min-width: 0; }
 .fecha-label {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
-  margin-bottom: 2px;
+font-family: 'Space Mono', monospace; font-size: var(--text-2xs);
+letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+margin-bottom: 2px;
 }
 .fecha-value {
-  font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: 14px; color: var(--volt);
+font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+font-size: clamp(12px, 2vw, 15px); color: var(--ink);
+white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .dias-restantes {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px; letter-spacing: 0.04em;
-  color: var(--volt); text-align: right; line-height: 1;
+font-family: 'Space Grotesk', sans-serif;
+font-size: clamp(24px, 4.5vw, 38px); letter-spacing: -0.02em;
+color: var(--ink); text-align: right; line-height: 1; flex-shrink: 0;
 }
 .dias-restantes span {
-  display: block; font-family: 'DM Mono', monospace;
-  font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted); font-weight: 400;
+display: block; font-family: 'Space Mono', monospace;
+font-size: var(--text-2xs); letter-spacing: 0.1em; text-transform: uppercase;
+color: var(--muted); font-weight: 400;
 }
 
-/* PROXIMO PAGO */
+/* ── PRÓXIMO PAGO ── */
 .proximo-pago {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 20px; background: rgba(255,255,255,0.02);
-  border-top: 1px solid var(--border);
+display: flex; justify-content: space-between; align-items: center;
+padding: clamp(10px, 2vw, 16px) var(--space-md);
+background: #fafafa; border-top: 1px solid var(--border);
+flex-wrap: wrap; gap: 6px;
 }
 .pp-label {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+font-family: 'Space Mono', monospace; font-size: var(--text-2xs);
+letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
 }
 .pp-value {
-  font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: 14px; color: var(--paper);
+font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+font-size: clamp(12px, 2vw, 15px); color: var(--ink);
 }
 
-/* EMPTY STATE */
+/* ── EMPTY STATE ── */
 .empty-state {
-  text-align: center; padding: 60px 24px;
-  border: 1px solid var(--border);
+text-align: center; padding: clamp(40px, 8vw, 80px) var(--space-md);
+border: 1px solid var(--border);
 }
-.empty-icon {
-  font-size: 48px; margin-bottom: 20px; opacity: 0.4;
-}
+.empty-icon { font-size: clamp(36px, 6vw, 52px); margin-bottom: var(--space-md); opacity: 0.4; }
 .empty-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px; letter-spacing: 0.04em; color: var(--paper);
-  margin-bottom: 8px;
+font-family: 'Space Grotesk', sans-serif;
+font-size: var(--text-xl); letter-spacing: -0.02em; color: var(--ink);
+margin-bottom: 8px;
 }
-.empty-sub { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+.empty-sub { font-size: var(--text-sm); color: var(--muted); line-height: 1.7; margin-bottom: var(--space-md); }
 .btn-volt {
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  background: var(--volt); color: var(--ink);
-  padding: 12px 24px; border: none; cursor: pointer;
-  transition: opacity 0.2s;
+font-family: 'Space Mono', monospace; font-size: var(--text-xs);
+letter-spacing: 0.08em; text-transform: uppercase;
+background: var(--ink); color: var(--paper);
+padding: clamp(10px, 2vw, 14px) clamp(18px, 3vw, 28px);
+border: none; cursor: pointer; transition: opacity 0.2s;
 }
 .btn-volt:hover { opacity: 0.85; }
 
-/* LOADING */
+/* ── LOADING ── */
 #loadingView {
-  display: none; align-items: center; justify-content: center;
-  min-height: calc(100dvh - 60px);
-  flex-direction: column; gap: 20px;
+display: none; align-items: center; justify-content: center;
+min-height: calc(100dvh - var(--header-h));
+flex-direction: column; gap: 20px;
 }
 .spinner {
-  width: 32px; height: 32px; border-radius: 50%;
-  border: 2px solid var(--border); border-top-color: var(--volt);
-  animation: spin 0.8s linear infinite;
+width: 32px; height: 32px; border-radius: 50%;
+border: 2px solid var(--border); border-top-color: var(--ink);
+animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-text {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+font-family: 'Space Mono', monospace; font-size: var(--text-xs);
+letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
 }
 
-/* BOTÓN SALIR BOTTOM */
+/* ── SALIR BUTTON ── */
 .btn-salir-bottom {
-  width: 100%;
-  padding: 14px;
-  background: transparent;
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-weight: 500;
-  margin-top: 32px;
+width: 100%;
+padding: clamp(12px, 2vw, 16px);
+background: transparent; color: #ef4444;
+border: 1px solid rgba(239,68,68,0.3);
+font-family: 'Space Mono', monospace; font-size: var(--text-xs);
+letter-spacing: 0.08em; text-transform: uppercase;
+cursor: pointer; transition: all 0.2s; font-weight: 500;
+margin-top: var(--space-lg);
+max-width: 400px;
 }
-.btn-salir-bottom:hover {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: #ef4444;
+.btn-salir-bottom:hover { background: rgba(239,68,68,0.08); border-color: #ef4444; }
+
+/* ── CEDIDO CARD ── */
+.cedido-card {
+background: var(--card-bg);
+border: 1px solid var(--border);
+margin-bottom: var(--space-md);
+overflow: hidden; transition: border-color 0.3s, box-shadow 0.3s;
+}
+.cedido-card:hover {
+border-color: rgba(0,0,0,0.25);
+box-shadow: 0 4px 24px rgba(0,0,0,0.06);
 }
 
-/* FADE IN */
+.cedido-img {
+width: 100%;
+height: clamp(80px, 16vw, 120px);
+object-fit: cover; display: block;
+}
+.cedido-img-placeholder {
+width: 100%;
+height: clamp(80px, 16vw, 120px);
+background: #f5f5f5;
+display: flex; align-items: center; justify-content: center;
+}
+.cedido-img-placeholder span {
+font-family: 'Space Grotesk', sans-serif;
+font-size: clamp(28px, 5vw, 44px);
+color: rgba(0,0,0,0.05);
+}
+
+.cedido-body { padding: clamp(14px, 2.5vw, 22px); }
+.cedido-evento {
+font-family: 'Space Grotesk', sans-serif;
+font-size: clamp(20px, 3.5vw, 28px); letter-spacing: -0.02em;
+color: var(--ink); line-height: 1; margin-bottom: 4px;
+}
+.cedido-zona {
+font-family: 'Space Mono', monospace; font-size: var(--text-2xs);
+letter-spacing: 0.1em; text-transform: uppercase;
+color: var(--muted); margin-bottom: var(--space-md);
+}
+
+.cobro-wrap { margin-bottom: var(--space-sm); }
+.cobro-header {
+display: flex; justify-content: space-between; align-items: center;
+margin-bottom: 8px; flex-wrap: wrap; gap: 4px;
+}
+.cobro-label {
+font-family: 'Space Mono', monospace; font-size: var(--text-2xs);
+letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+}
+.cobro-count {
+font-family: 'Space Mono', monospace; font-size: var(--text-xs);
+color: var(--ink); font-weight: 500;
+}
+.cobro-track { width: 100%; height: 3px; background: #f0f0f0; overflow: hidden; }
+.cobro-fill {
+height: 100%; background: var(--ink);
+transition: width 1s ease; position: relative;
+}
+.cobro-fill::after {
+content: ''; position: absolute; right: 0; top: -2px;
+width: 7px; height: 7px; border-radius: 50%; background: var(--ink);
+}
+
+.cedido-grid {
+display: grid; grid-template-columns: 1fr 1fr;
+gap: 1px; background: var(--border);
+border: 1px solid var(--border); margin-bottom: var(--space-sm);
+}
+.cedido-cell { background: #fafafa; padding: clamp(10px, 2vw, 14px) clamp(12px, 2.5vw, 16px); }
+.cedido-cell-label {
+font-family: 'Space Mono', monospace; font-size: var(--text-2xs);
+letter-spacing: 0.12em; text-transform: uppercase;
+color: var(--muted); margin-bottom: 4px;
+}
+.cedido-cell-value {
+font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+font-size: var(--text-md); color: var(--ink);
+}
+.cedido-cell-value.destacado { font-weight: 700; }
+
+.proximo-deposito {
+display: flex; justify-content: space-between; align-items: center;
+padding: clamp(10px, 2vw, 14px) clamp(12px, 2.5vw, 16px);
+background: #fafafa; border: 1px solid var(--border);
+margin-bottom: 4px; flex-wrap: wrap; gap: 6px;
+}
+.pd-label {
+font-family: 'Space Mono', monospace; font-size: var(--text-2xs);
+letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+}
+.pd-value {
+font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+font-size: clamp(11px, 1.8vw, 14px); color: var(--ink);
+}
+
+/* ── REVENTA SHEET ── */
+#reventaOverlay {
+display: none; position: fixed; inset: 0;
+background: rgba(0,0,0,0.6); z-index: 200;
+backdrop-filter: blur(4px);
+-webkit-backdrop-filter: blur(4px);
+}
+#reventaSheet {
+display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 201;
+max-width: 600px; margin: 0 auto;
+background: #fff; border-top: 1px solid rgba(0,0,0,0.1);
+padding: clamp(20px, 4vw, 36px) clamp(20px, 5vw, 40px) clamp(32px, 6vw, 52px);
+transform: translateY(100%); transition: transform 0.3s ease;
+border-radius: clamp(0px, 1vw, 12px) clamp(0px, 1vw, 12px) 0 0;
+}
+.sheet-warning {
+font-family: 'Space Mono', monospace; font-size: var(--text-2xs);
+letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+margin-bottom: var(--space-sm);
+}
+.sheet-title {
+font-family: 'Space Grotesk', sans-serif;
+font-size: clamp(22px, 4vw, 32px); letter-spacing: -0.02em;
+color: var(--ink); margin-bottom: var(--space-xs);
+}
+.sheet-body {
+font-size: var(--text-sm); color: var(--muted);
+line-height: 1.7; margin-bottom: var(--space-md);
+}
+.sheet-actions { display: flex; flex-direction: column; gap: 10px; }
+.btn-confirmar {
+width: 100%; padding: clamp(12px, 2.5vw, 16px);
+background: var(--ink); color: var(--paper);
+font-family: 'Space Mono', monospace; font-size: var(--text-xs);
+letter-spacing: 0.08em; text-transform: uppercase;
+border: none; cursor: pointer; font-weight: 500; transition: opacity 0.2s;
+}
+.btn-confirmar:hover { opacity: 0.85; }
+.btn-confirmar:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-cancelar {
+width: 100%; padding: clamp(12px, 2.5vw, 16px);
+background: transparent; color: var(--ink);
+font-family: 'Space Mono', monospace; font-size: var(--text-xs);
+letter-spacing: 0.08em; text-transform: uppercase;
+border: 1px solid var(--ink); cursor: pointer; transition: opacity 0.2s;
+}
+.btn-cancelar:hover { opacity: 0.7; }
+
+/* ── DESKTOP ENHANCEMENTS ── */
+@media (min-width: 900px) {
+#bovedaView { padding-top: var(--space-md); }
+
+.welcome-bar { margin-bottom: var(--space-lg); }
+
+/* Footer row on desktop */
+.footer-row {
+display: flex; align-items: center; justify-content: space-between;
+margin-top: var(--space-lg);
+padding-top: var(--space-md);
+border-top: 1px solid var(--border);
+}
+.footer-row .btn-salir-bottom {
+margin-top: 0; width: auto;
+padding-left: var(--space-md); padding-right: var(--space-md);
+}
+}
+
+/* ── ANIMATIONS ── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+from { opacity: 0; transform: translateY(10px); }
+to   { opacity: 1; transform: translateY(0); }
 }
 .fade-up { animation: fadeUp 0.5s ease both; }
 .d1 { animation-delay: 0.05s; }
-.d2 { animation-delay: 0.1s; }
+.d2 { animation-delay: 0.1s;  }
 .d3 { animation-delay: 0.15s; }
+
+/* ── SAFE AREA (notched phones) ── */
+@supports (padding: env(safe-area-inset-bottom)) {
+#reventaSheet { padding-bottom: calc(clamp(32px, 6vw, 52px) + env(safe-area-inset-bottom)); }
+.btn-salir-bottom { margin-bottom: env(safe-area-inset-bottom); }
+}
 </style>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z36FM1LNY2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-Z36FM1LNY2');
-</script>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
     <div class="header-logo" id="headerLogo">
-      <img src="darklogo.png" alt="Yunus" onerror="this.style.display='none'">
+      <img src="logo.PNG" alt="Fandom" onerror="this.style.display='none'">
     </div>
-    <div class="header-boveda-title" id="headerBovedaTitle">
-      Mi Bóveda
-    </div>
+    <div class="header-boveda-title" id="headerBovedaTitle">Mi Bóveda</div>
     <div class="header-actions">
-      <button class="btn-chat-circle" onclick="window.location.href='/marketplace'" id="btnChat" aria-label="Chat">
+      <button class="btn-chat-circle" onclick="window.location.href='/marketplace'" id="btnChat" aria-label="Marketplace">
         <svg width="16" height="12" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
           <line x1="1" y1="1" x2="17" y2="1"/>
           <line x1="1" y1="7" x2="17" y2="7"/>
@@ -405,47 +613,58 @@ main {
 
   <div id="bovedaView">
 
-    <div id="revoxPromoCard" class="fade-up" style="background: linear-gradient(90deg, rgba(16,28,189,0.05) 0%, rgba(72,168,224,0.05) 100%); border: 1px solid rgba(72,168,224,0.15); border-left: 3px solid #48A8E0; padding: 14px 16px; margin-bottom: 20px; position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
-      <div style="flex: 1;">
-        <div style="font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #48A8E0; margin-bottom: 4px;">Revox · 18% Anual</div>
-        <div style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--paper); line-height: 1.2; margin-bottom: 4px;"><span id="revoxNombreUsuario">Hola</span>, pon tu dinero a trabajar.</div>
-        <div style="font-size: 11px; color: var(--muted); line-height: 1.4;">Fondea boletos con colateral real.</div>
-      </div>
-      <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; height: 100%; gap: 10px;">
-        <button onclick="this.parentElement.parentElement.style.display='none'" style="background: transparent; border: none; color: var(--muted); font-size: 15px; cursor: pointer; padding: 0; line-height: 1; opacity: 0.7;" aria-label="Cerrar">✕</button>
-        <button onclick="window.location.href='revox/index.html'" style="background: linear-gradient(90deg, #101CBD 0%, #48A8E0 100%); color: #fff; border: none; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; padding: 8px 12px; cursor: pointer; transition: opacity 0.2s; white-space: nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Invertir →</button>
-      </div>
-    </div>
-    
     <div class="welcome-bar fade-up d1">
       <div class="welcome-sub" id="welcomeSub">0 boletos en bóveda</div>
     </div>
 
-    <div class="section-label fade-up d2">Mis boletos</div>
+    <div class="toggle-wrap fade-up d2">
+      <div class="toggle-pill">
+        <button class="toggle-btn active" id="tabCompras" onclick="switchTab('compras')">Mis boletos</button>
+        <button class="toggle-btn" id="tabCedidos" onclick="switchTab('cedidos')">Mis cedidos</button>
+      </div>
+    </div>
 
-    <div id="ticketsContainer"></div>
+    <div id="comprasView">
+      <div class="cards-grid" id="ticketsContainer"></div>
+    </div>
 
-    <button class="btn-salir-bottom" id="btnSalirBottom" onclick="cerrarSesion()" style="display:none;">Cerrar sesion</button>
+    <div id="cedidosView" style="display:none;">
+      <div class="cards-grid" id="cedidosContainer"></div>
+    </div>
+
+    <button class="btn-salir-bottom" id="btnSalirBottom" onclick="cerrarSesion()" style="display:none;">Cerrar sesión</button>
 
   </div>
 
 </main>
 
+<!-- REVENTA OVERLAY -->
+
+<div id="reventaOverlay" onclick="cerrarReventa()"></div>
+
+<div id="reventaSheet">
+  <div class="sheet-warning">⚠ Acción irreversible</div>
+  <div class="sheet-title" id="reventaEvento">Revender boleto</div>
+  <p class="sheet-body">Tu boleto será publicado en el Marketplace de Fandom. Una vez confirmado, Fandom gestionará la venta y liquidará tu deuda pendiente. Esta acción no puede deshacerse.</p>
+  <div class="sheet-actions">
+    <button id="btnConfirmarReventa" class="btn-confirmar" onclick="confirmarReventa()">Confirmar reventa →</button>
+    <button class="btn-cancelar" onclick="cerrarReventa()">Cancelar</button>
+  </div>
+</div>
+
 <script>
 let celular = '';
 let nombreUsuario = '';
 
-// ── EVENTOS CONFIG ──
 const eventoImgs = {
-  'Baja Beach Fest': 'BajaB.jpeg',
-  'Rosalía Lux Tour': 'Rosalia.jpeg',
-  'Vans Warped Tour': 'VansW.webp',
-  'Bruno Mars': 'BrunoM.jpeg',
-  'Harry Styles': 'HarryS.webp',
-  'Enjambre': 'Enjambre.webp',
-  };
+  'Baja Beach Fest':     'BajaB.jpeg',
+  'Rosalía Lux Tour':    'Rosalia.jpeg',
+  'Vans Warped Tour':    'VansW.webp',
+  'Bruno Mars':          'BrunoM.jpeg',
+  'Harry Styles':        'HarryS.webp',
+  'Enjambre Estadio GNP':'Enjambre.webp',
+};
 
-// ── HELPERS ──
 function fmtMXN(n) {
   if (!n) return '—';
   return '$' + n.toLocaleString('es-MX', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' MXN';
@@ -460,96 +679,90 @@ function fmtFecha(str) {
 function diasRestantes(str) {
   if (!str) return null;
   const hoy = new Date(); hoy.setHours(0,0,0,0);
-  const ev = new Date(str + 'T12:00:00'); ev.setHours(0,0,0,0);
+  const ev  = new Date(str + 'T12:00:00'); ev.setHours(0,0,0,0);
   return Math.ceil((ev - hoy) / (1000 * 60 * 60 * 24));
 }
 
 function badgeClass(estado) {
   if (!estado) return 'badge-activo';
-  const e = estado.toLowerCase().replace(' ', '_');
-  return 'badge-' + e;
+  return 'badge-' + estado.toLowerCase().replace(/ /g, '_');
 }
 
-// ── CARGAR BÓVEDA ──
 async function cargarBoveda() {
   document.getElementById('loadingView').style.display = 'flex';
-  document.getElementById('btnChat').style.display = 'inline-block';
+  document.getElementById('btnChat').style.display = 'flex';
   document.getElementById('btnSalirBottom').style.display = 'block';
-
-  // Header: ocultar logo, mostrar "Mi Bóveda"
   document.getElementById('headerLogo').style.display = 'none';
   document.getElementById('headerBovedaTitle').style.display = 'flex';
 
   try {
-    const res = await fetch('/api/boveda?celular=' + encodeURIComponent(celular));
+    const res  = await fetch('/api/boveda?celular=' + encodeURIComponent(celular));
     const data = await res.json();
 
     document.getElementById('loadingView').style.display = 'none';
     document.getElementById('bovedaView').style.display = 'block';
 
     const compras = data.compras || [];
-    const nombre = data.nombre || celular;
-    nombreUsuario = nombre;
+    const cedidos = data.cedidos || [];
+    nombreUsuario = data.nombre || celular;
 
-    if (document.getElementById('revoxNombreUsuario')) {
-      document.getElementById('revoxNombreUsuario').textContent = nombreUsuario.split(' ')[0];
-    }
-
+    const total = compras.length + cedidos.length;
     document.getElementById('welcomeSub').textContent =
-      compras.length === 0 ? 'Sin boletos activos' :
-      compras.length === 1 ? '1 boleto en bóveda' :
-      compras.length + ' boletos en bóveda';
+      total === 0 ? 'Sin actividad aún' :
+      total === 1 ? '1 boleto en bóveda' :
+      total + ' boletos en bóveda';
+
+    if (cedidos.length === 0) document.getElementById('tabCedidos').style.display = 'none';
 
     renderTickets(compras);
+    renderCedidos(cedidos);
 
   } catch {
     document.getElementById('loadingView').style.display = 'none';
     document.getElementById('bovedaView').style.display = 'block';
     renderTickets([]);
+    renderCedidos([]);
   }
 }
 
-// ── RENDER TICKETS ──
 function renderTickets(compras) {
   const container = document.getElementById('ticketsContainer');
-
   if (compras.length === 0) {
     container.innerHTML = `
       <div class="empty-state fade-up">
         <div class="empty-icon">🎟</div>
         <div class="empty-title">Bóveda vacía</div>
-        <p class="empty-sub">Aún no tienes boletos financiados. Habla con Yunus para comenzar tu plan.</p>
-        <button class="btn-volt" onclick="window.location.href='/chat'">Hablar con Yunus →</button>
+        <p class="empty-sub">Aún no tienes boletos financiados. Explora los eventos disponibles en el Marketplace y asegura tu lugar hoy mismo.</p>
+        <button class="btn-volt" onclick="window.location.href='/marketplace'">Ver eventos disponibles →</button>
       </div>`;
     return;
   }
-
   container.innerHTML = compras.map((c, i) => buildTicketCard(c, i)).join('');
 }
 
 function buildTicketCard(c, i) {
   const pagadas = c.cuotasPagadas || 0;
-  const total = c.totalCuotas || 1;
-  const pct = Math.min(100, Math.round((pagadas / total) * 100));
-  const dias = diasRestantes(c.fechaEvento);
-  const img = eventoImgs[c.evento] || null;
-  const estado = c.estado || 'Activo';
-  const badge = badgeClass(estado);
+  const total   = c.totalCuotas  || 1;
+  const pct     = Math.min(100, Math.round((pagadas / total) * 100));
+  const dias    = diasRestantes(c.fechaEvento);
+  const img     = eventoImgs[c.evento] || null;
+  const estado  = c.estado || 'Activo';
+  const badge   = badgeClass(estado);
+  const cantidad = c.cantidad || 1;
+  const cantLabel = cantidad > 1 ? `${cantidad} boletos` : '1 boleto';
 
   return `
   <div class="ticket-card fade-up d${Math.min(i+1,3)}">
-
     ${img
-      ? `<img src="${img}" alt="${c.evento}" class="ticket-img">`
-      : `<div class="ticket-img-placeholder"><span>${c.evento || 'YUNUS'}</span></div>`
+      ? `<img src="${img}" alt="${c.evento}" class="ticket-img" loading="lazy">`
+      : `<div class="ticket-img-placeholder"><span>${c.evento || 'FANDOM'}</span></div>`
     }
-
     <div class="ticket-status-badge ${badge}">${estado}</div>
-
     <div class="ticket-body">
       <div class="ticket-evento">${c.evento || '—'}</div>
-      <div class="ticket-zona">${c.zona || 'Zona por confirmar'}</div>
-
+      <div class="ticket-zona">
+        ${cantLabel} · ${c.zona || 'Zona por confirmar'}
+      </div>
       <div class="progress-wrap">
         <div class="progress-header">
           <span class="progress-label">Pagos completados</span>
@@ -559,7 +772,6 @@ function buildTicketCard(c, i) {
           <div class="progress-fill" style="width:${pct}%"></div>
         </div>
       </div>
-
       <div class="ticket-grid">
         <div class="ticket-cell">
           <div class="ticket-cell-label">Total del plan</div>
@@ -567,7 +779,7 @@ function buildTicketCard(c, i) {
         </div>
         <div class="ticket-cell">
           <div class="ticket-cell-label">Cuota quincenal</div>
-          <div class="ticket-cell-value volt">${fmtMXN(c.cuotaQuincenal)}</div>
+          <div class="ticket-cell-value destacado">${fmtMXN(c.cuotaQuincenal)}</div>
         </div>
         <div class="ticket-cell">
           <div class="ticket-cell-label">Enganche pagado</div>
@@ -575,18 +787,24 @@ function buildTicketCard(c, i) {
         </div>
         <div class="ticket-cell">
           <div class="ticket-cell-label">Avance</div>
-          <div class="ticket-cell-value volt">${pct}%</div>
+          <div class="ticket-cell-value destacado">${pct}%</div>
         </div>
       </div>
       ${c.estado !== 'En Reventa' && c.estado !== 'Completado' ? `
-<button onclick="abrirReventa('${c.id}', '${c.evento}')" style="width:100%;padding:11px;background:transparent;color:#5C5C5C;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid rgba(242,239,232,0.08);cursor:pointer;transition:all 0.2s;margin-top:4px;" onmouseover="this.style.borderColor='#f59e0b';this.style.color='#f59e0b'" onmouseout="this.style.borderColor='rgba(242,239,232,0.08)';this.style.color='#5C5C5C'">Revender este boleto</button>` : ''}
+      <button class="btn-revender" onclick="abrirReventa('${c.id}', '${c.evento}')">Revender este boleto</button>` : ''}
     </div>
-
     <div class="ticket-perforation">
       <div class="ticket-perf-line"></div>
       <div class="ticket-perf-line"></div>
     </div>
-
+    ${c.fechaEntregaBoleto ? `
+    <div class="fecha-evento">
+      <div class="fecha-icon">🎟</div>
+      <div class="fecha-text">
+        <div class="fecha-label">Entrega del boleto</div>
+        <div class="fecha-value">${fmtFecha(c.fechaEntregaBoleto)}</div>
+      </div>
+    </div>` : ''}
     ${c.fechaEvento ? `
     <div class="fecha-evento">
       <div class="fecha-icon">📅</div>
@@ -600,13 +818,95 @@ function buildTicketCard(c, i) {
         <span>${dias > 0 ? 'días' : ''}</span>
       </div>` : ''}
     </div>` : ''}
-
     ${c.proximoPago ? `
     <div class="proximo-pago">
       <span class="pp-label">Próximo pago</span>
       <span class="pp-value">${fmtFecha(c.proximoPago)}</span>
     </div>` : ''}
+  </div>`;
+}
 
+function switchTab(tab) {
+  const show = tab === 'compras';
+  document.getElementById('comprasView').style.display  = show ? 'block' : 'none';
+  document.getElementById('cedidosView').style.display  = show ? 'none'  : 'block';
+  document.getElementById('tabCompras').classList.toggle('active',  show);
+  document.getElementById('tabCedidos').classList.toggle('active', !show);
+}
+
+function renderCedidos(cedidos) {
+  const container = document.getElementById('cedidosContainer');
+  if (cedidos.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state fade-up">
+        <div class="empty-icon">🎟</div>
+        <div class="empty-title">Sin cesiones activas</div>
+        <p class="empty-sub">Aún no has listado ningún boleto. Usa el Marketplace para poner tu boleto a trabajar.</p>
+        <button class="btn-volt" onclick="window.location.href='/marketplace'">Ir al Marketplace →</button>
+      </div>`;
+    return;
+  }
+  container.innerHTML = cedidos.map((c, i) => buildCedidoCard(c, i)).join('');
+}
+
+function buildCedidoCard(c, i) {
+  const img    = eventoImgs[c.evento] || null;
+  const estado = c.estado || 'Listado';
+  const badge  = badgeClass(estado);
+  const enProceso = estado === 'En Proceso';
+
+  return `
+  <div class="cedido-card fade-up d${Math.min(i+1,3)}">
+    ${img
+      ? `<img src="${img}" alt="${c.evento}" class="cedido-img" loading="lazy">`
+      : `<div class="cedido-img-placeholder"><span>${c.evento || 'FANDOM'}</span></div>`
+    }
+    <div class="ticket-status-badge ${badge}" style="top:8px;right:8px;">${estado}</div>
+    <div class="cedido-body">
+      <div class="cedido-evento">${c.evento || '—'}</div>
+      <div class="cedido-zona">${c.zona || 'Zona por confirmar'}</div>
+
+      ${estado === 'Listado' ? `
+      <div style="padding:12px 0 4px;font-size:clamp(11px,1.8vw,13px);color:var(--muted);line-height:1.6;">
+        Tu boleto está publicado en el Marketplace. Te avisamos cuando alguien lo tome.
+      </div>` : ''}
+
+      ${enProceso ? `
+      <div style="padding:12px 0 4px;font-size:clamp(11px,1.8vw,13px);color:var(--muted);line-height:1.6;">
+        Hay un comprador activo pagando su plan. Tu dinero quedará depositado al terminar el evento.
+      </div>` : ''}
+
+      <div class="cedido-grid">
+        <div class="cedido-cell">
+          <div class="cedido-cell-label">Precio listado</div>
+          <div class="cedido-cell-value">${fmtMXN(c.precioListado)}</div>
+        </div>
+        <div class="cedido-cell">
+          <div class="cedido-cell-label">Tú recibirás</div>
+          <div class="cedido-cell-value destacado">${fmtMXN(c.precioCedente)}</div>
+        </div>
+      </div>
+    </div>
+    <div class="ticket-perforation">
+      <div class="ticket-perf-line"></div>
+      <div class="ticket-perf-line"></div>
+    </div>
+    ${c.fechaDeposito ? `
+    <div class="fecha-evento">
+      <div class="fecha-icon">💸</div>
+      <div class="fecha-text">
+        <div class="fecha-label">Fecha de depósito</div>
+        <div class="fecha-value">${fmtFecha(c.fechaDeposito)}</div>
+      </div>
+    </div>` : ''}
+    ${c.fechaEvento ? `
+    <div class="fecha-evento">
+      <div class="fecha-icon">📅</div>
+      <div class="fecha-text">
+        <div class="fecha-label">Fecha del evento</div>
+        <div class="fecha-value">${fmtFecha(c.fechaEvento)}</div>
+      </div>
+    </div>` : ''}
   </div>`;
 }
 
@@ -641,57 +941,27 @@ async function confirmarReventa() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: reventaId })
     });
-    if (res.ok) {
-      cerrarReventa();
-      await cargarBoveda();
-    } else throw new Error();
+    if (res.ok) { cerrarReventa(); await cargarBoveda(); }
+    else throw new Error();
   } catch {
     btn.textContent = 'Confirmar reventa →'; btn.disabled = false;
     alert('Error al procesar. Intenta de nuevo.');
   }
 }
 
-// ── CERRAR SESIÓN ──
 function cerrarSesion() {
   localStorage.removeItem('yunus_celular');
   localStorage.removeItem('yunus_historial');
   celular = '';
-
-  // Header: mostrar logo, ocultar "Mi Bóveda"
-  document.getElementById('headerLogo').style.display = 'flex';
-  document.getElementById('headerBovedaTitle').style.display = 'none';
-
-  document.getElementById('bovedaView').style.display = 'none';
-}
-
-// ── AUTO LOGIN ──
-function cerrarSesion() {
-  localStorage.removeItem('yunus_celular');
-  localStorage.removeItem('yunus_historial');
-  celular = '';
-  window.location.href = '/chat';
+  window.location.href = 'marketplace.html';
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   const guardado = localStorage.getItem('yunus_celular');
-  if (guardado) {
-    celular = guardado;
-    cargarBoveda();
-  } else {
-    window.location.href = '/chat';
-  }
+  if (guardado) { celular = guardado; cargarBoveda(); }
+  else window.location.href = '/chat';
 });
 </script>
-<div id="reventaOverlay" onclick="cerrarReventa()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;backdrop-filter:blur(4px);"></div>
 
-<div id="reventaSheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:201;max-width:480px;margin:0 auto;background:#111;border-top:1px solid rgba(242,239,232,0.1);padding:28px 24px 40px;transform:translateY(100%);transition:transform 0.3s ease;">
-  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#D4F53C;margin-bottom:16px;">⚠ Acción irreversible</div>
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.04em;color:#F2EFE8;margin-bottom:10px;" id="reventaEvento">Revender boleto</div>
-  <p style="font-size:13px;color:#5C5C5C;line-height:1.7;margin-bottom:28px;">Tu boleto será publicado en el Marketplace de Yunus. Una vez confirmado, Yunus gestionará la venta y liquidará tu deuda pendiente. Esta acción no puede deshacerse.</p>
-  <div style="display:flex;flex-direction:column;gap:10px;">
-    <button id="btnConfirmarReventa" onclick="confirmarReventa()" style="width:100%;padding:14px;background:#f59e0b;color:#0a0a0a;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;font-weight:500;transition:opacity 0.2s;">Confirmar reventa →</button>
-    <button onclick="cerrarReventa()" style="width:100%;padding:14px;background:transparent;color:#5C5C5C;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid rgba(242,239,232,0.1);cursor:pointer;">Cancelar</button>
-  </div>
-</div>
 </body>
 </html>
