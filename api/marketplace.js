@@ -11,8 +11,16 @@ export default async function handler(req, res) {
   const search = await notion.databases.query({
     database_id: DATABASE_ID,
     filter: {
-      property: "Estado",
-      select: { equals: "En Reventa" }
+      or: [
+        {
+          property: "Estado",
+          select: { equals: "En Reventa" }
+        },
+        {
+          property: "Estado",
+          select: { equals: "Listado" }
+        }
+      ]
     }
   });
 
@@ -23,6 +31,7 @@ export default async function handler(req, res) {
     fechaEvento: page.properties.FechaEvento?.date?.start || null,
     precioReventa: page.properties.PrecioTotal?.number || null,
     imagenEvento: page.properties.ImagenEvento?.rich_text[0]?.plain_text || null,
+    cantidad: page.properties.Cantidad?.number || 1,
   }));
 
   res.status(200).json({ boletos });
