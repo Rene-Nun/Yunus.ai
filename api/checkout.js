@@ -24,7 +24,8 @@ export default async function handler(req, res) {
   const {
     celular, nombre, evento, zona,
     fechaEvento, precioTotal, enganche,
-    totalCuotas, cuotaQuincenal, cantidad
+    totalCuotas, cuotaQuincenal, cantidad,
+    boletoId
   } = req.body;
 
   if (!celular || !evento || !precioTotal) {
@@ -34,10 +35,11 @@ export default async function handler(req, res) {
   const cantidadFinal = Math.min(Math.max(parseInt(cantidad) || 1, 1), 3);
 
   try {
-    await notion.pages.create({
+    // 1. Crear registro de compra en BD Compras
+    const compra = await notion.pages.create({
       parent: { database_id: COMPRAS_DB },
       properties: {
-        "Celular":          { title: [{ text: { content: nombre || celular } }] },
+        "Celular":         { title: [{ text: { content: celular } }] },
         "Evento":          { select: { name: evento } },
         "Zona":            { rich_text: [{ text: { content: zona || "" } }] },
         "FechaEvento":     { date: fechaEvento ? { start: fechaEvento } : null },
@@ -48,9 +50,29 @@ export default async function handler(req, res) {
         "CuotasPagadas":   { number: 0 },
         "Estado":          { select: { name: "Pendiente" } },
         "Tipo":            { select: { name: "Compra" } },
-        "NotasInternas":    { rich_text: [{ text: { content: `Celular: ${celular} · Cantidad: ${cantidadFinal}` } }] }
+        "Cantidad":        { number: cantidadFinal },
+        "NotasInternas":   { rich_text: [{ text: { content: `Celular: ${celular} · Cantidad: ${cantidadFinal}` } }] },
+        ...(boletoId && {
+          "BoletoRef": { rich_text: [{ text: { content: boletoId } }] }
+        })
       }
     });
+
+    // 2. Si viene boletoId, actualizar el boleto: estado → En Proceso + referencia al comprador
+    if (boletoId) {
+      try {
+        await notion.pages.update({
+          page_id: boletoId,
+          properties: {
+            "Estado":        { select: { name: "En Proceso" } },
+            "NotasInternas": { rich_text: [{ text: { content: `Comprador: ${celular} · Compra ID: ${compra.id}` } }] }
+          }
+        });
+      } catch (e) {
+        // No bloquear el checkout si falla el update del boleto
+        console.error("Error actualizando boleto:", e);
+      }
+    }
 
     res.status(200).json({ success: true });
   } catch (error) {
