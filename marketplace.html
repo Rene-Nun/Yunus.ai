@@ -968,6 +968,13 @@ function resetWizard() {
   panelCantidad = 1;
 }
 
+function fechaEntregaEstimada(fechaEventoStr) {
+  if (!fechaEventoStr) return null;
+  const d = new Date(fechaEventoStr + 'T12:00:00');
+  d.setDate(d.getDate() - 5);
+  return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
 function renderStep3() {
   panelPaso = 3;
   document.getElementById('panelNombre').textContent = 'Confirmar';
@@ -977,6 +984,7 @@ function renderStep3() {
   const precio = precioUnitario * panelCantidad;
   const enganche = precio * 0.15;
   const cuota = (precio * 0.85) / panelPlanActual;
+  const fechaEntrega = fechaEntregaEstimada(panelFechaActual);
 
   const html = `
     <div class="checkout-resumen">
@@ -1001,6 +1009,11 @@ function renderStep3() {
     <div style="padding:16px;background:#fafafa;border:1px solid var(--border);margin-bottom:20px;font-size:13px;color:var(--muted);line-height:1.65;">
       Al confirmar, Fandom te contactará vía WhatsApp con los datos para tu enganche de <strong style="color:var(--ink);">$${enganche.toLocaleString('es-MX',{maximumFractionDigits:0})} MXN</strong> vía SPEI. El boleto queda reservado para ti.
     </div>
+    ${fechaEntrega ? `
+    <div style="padding:16px;background:#fafafa;border:1px solid var(--border);margin-bottom:20px;font-size:13px;color:var(--muted);line-height:1.65;display:flex;align-items:flex-start;gap:12px;">
+      <span style="font-size:18px;flex-shrink:0;">🎟</span>
+      <span>Recibirás tu boleto a partir del <strong style="color:var(--ink);">${fechaEntrega}</strong>, una vez que hayas completado o estés al corriente con tu plan de pagos.</span>
+    </div>` : ''}
     <div id="chk_error" class="acc-error"></div>
     <button class="btn-ver-boletos" id="btnSubmitCheckout" onclick="submitSolicitud()">Confirmar reserva →</button>`;
 
@@ -1031,7 +1044,8 @@ async function submitSolicitud() {
     enganche: Math.round(enganche),
     totalCuotas: panelPlanActual,
     cuotaQuincenal: Math.round(cuota),
-    cantidad: panelCantidad
+    cantidad: panelCantidad,
+    boletoId: panelBoletoActual.id || null
   };
 
   try {
