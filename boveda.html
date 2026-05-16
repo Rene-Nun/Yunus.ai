@@ -864,7 +864,7 @@ function buildCedidoCard(c, i) {
     <div class="ticket-status-badge ${badge}" style="top:8px;right:8px;">${estado}</div>
     <div class="cedido-body">
       <div class="cedido-evento">${c.evento || '—'}</div>
-      <div class="cedido-zona">${c.zona || 'Zona por confirmar'}</div>
+      <div class="cedido-zona">${c.cantidad > 1 ? c.cantidad + ' boletos · ' : ''}${c.zona || 'Zona por confirmar'}</div>
 
       ${estado === 'Listado' ? `
       <div style="padding:12px 0 4px;font-size:clamp(11px,1.8vw,13px);color:var(--muted);line-height:1.6;">
