@@ -652,6 +652,66 @@ to   { opacity: 1; transform: translateY(0); }
   </div>
 </div>
 
+<div id="pagoOverlay" onclick="cerrarPago()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;backdrop-filter:blur(4px);"></div>
+
+<div id="pagoSheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:201;max-width:600px;margin:0 auto;background:#fff;border-top:1px solid rgba(0,0,0,0.1);padding:28px 24px 48px;transform:translateY(100%);transition:transform 0.3s ease;border-radius:12px 12px 0 0;max-height:90dvh;overflow-y:auto;">
+  <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Pendiente de pago</div>
+  <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:4px;" id="pagoEventoNombre">—</div>
+  <div style="font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:var(--ink);letter-spacing:-0.02em;margin-bottom:20px;" id="pagoEnganche">—</div>
+
+  <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Opción 1 — SPEI · Sin comisión</div>
+  <div style="border:1px solid var(--border);padding:14px;background:#fafafa;margin-bottom:6px;">
+    <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">CLABE</div>
+    <div style="font-family:'Space Mono',monospace;font-size:18px;color:var(--ink);font-weight:700;letter-spacing:0.04em;">7211 8010 0037 0012 23</div>
+    <div style="display:flex;gap:20px;margin-top:10px;">
+      <div><div style="font-size:10px;color:var(--muted);">Beneficiario</div><div style="font-size:12px;font-weight:600;color:var(--ink);">Christian Nuñez</div></div>
+      <div><div style="font-size:10px;color:var(--muted);">Banco</div><div style="font-size:12px;font-weight:600;color:var(--ink);">Albo</div></div>
+    </div>
+  </div>
+  <button onclick="navigator.clipboard.writeText('721180100037001223').then(()=>{this.textContent='✓ Copiada';setTimeout(()=>{this.textContent='Copiar CLABE'},2000)})"
+    style="width:100%;padding:10px;background:transparent;color:var(--ink);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--ink);cursor:pointer;margin-bottom:20px;">
+    Copiar CLABE
+  </button>
+
+  <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Opción 2 — Soriana en efectivo · $12 comisión</div>
+  <div style="border:1px solid var(--border);padding:14px;background:#fafafa;margin-bottom:4px;">
+    <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Referencia Dapp · dile al cajero "CB"</div>
+    <div style="font-family:'Space Mono',monospace;font-size:22px;color:var(--ink);font-weight:700;">028890581575</div>
+  </div>
+  <button onclick="navigator.clipboard.writeText('028890581575').then(()=>{this.textContent='✓ Copiada';setTimeout(()=>{this.textContent='Copiar referencia'},2000)})"
+    style="width:100%;padding:10px;background:transparent;color:var(--ink);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--ink);cursor:pointer;margin-bottom:20px;">
+    Copiar referencia
+  </button>
+
+  <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Opción 3 — Walmart, Bodega, Sam's, Farmacias del Ahorro · $10–$15 comisión</div>
+  <div style="border:1px solid var(--border);padding:14px;background:#fafafa;margin-bottom:4px;">
+    <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Referencia PESPay · 20 dígitos</div>
+    <div style="font-family:'Space Mono',monospace;font-size:15px;color:var(--ink);font-weight:700;word-break:break-all;letter-spacing:0.04em;">10036314159276640833</div>
+  </div>
+  <button onclick="navigator.clipboard.writeText('10036314159276640833').then(()=>{this.textContent='✓ Copiada';setTimeout(()=>{this.textContent='Copiar referencia'},2000)})"
+    style="width:100%;padding:10px;background:transparent;color:var(--ink);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--ink);cursor:pointer;margin-bottom:20px;">
+    Copiar referencia
+  </button>
+
+  <div style="border:1px solid rgba(239,68,68,0.3);padding:14px;background:rgba(239,68,68,0.04);display:flex;gap:12px;align-items:flex-start;margin-bottom:16px;">
+    <span style="font-size:16px;flex-shrink:0;">⚠️</span>
+    <div style="font-size:12px;color:var(--muted);line-height:1.65;">
+      Si tu pago no se refleja en un máximo de <strong style="color:#ef4444;">12 horas</strong>, tu reserva será cancelada y el boleto quedará disponible para otros fans.
+    </div>
+  </div>
+
+  <a id="pagoWhatsApp" href="#" target="_blank"
+    style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:#25D366;color:#fff;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;margin-bottom:10px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Enviar comprobante por WhatsApp
+  </a>
+
+  <button onclick="cerrarPago()"
+    style="width:100%;padding:12px;background:transparent;color:var(--muted);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);cursor:pointer;">
+    Cerrar
+  </button>
+</div>
+
 <script>
 let celular = '';
 let nombreUsuario = '';
@@ -790,7 +850,9 @@ function buildTicketCard(c, i) {
           <div class="ticket-cell-value destacado">${pct}%</div>
         </div>
       </div>
-      ${c.estado !== 'En Reventa' && c.estado !== 'Completado' ? `
+      ${(c.estado === 'Pendiente' || c.estado === 'Activo') ? `
+      <button class="btn-revender" style="border-color:var(--ink);color:var(--ink);margin-bottom:6px;" onclick="abrirPago('${c.evento}', ${c.enganche || 0})">Ver instrucciones de pago →</button>` : ''}
+      ${c.estado !== 'En Reventa' && c.estado !== 'Completado' && c.estado !== 'Pendiente' ? `
       <button class="btn-revender" onclick="abrirReventa('${c.id}', '${c.evento}')">Revender este boleto</button>` : ''}
     </div>
     <div class="ticket-perforation">
@@ -954,6 +1016,25 @@ function cerrarSesion() {
   localStorage.removeItem('yunus_historial');
   celular = '';
   window.location.href = 'marketplace.html';
+}
+
+function abrirPago(evento, enganche) {
+  document.getElementById('pagoEventoNombre').textContent = evento;
+  document.getElementById('pagoEnganche').textContent = '$' + Number(enganche).toLocaleString('es-MX', {maximumFractionDigits:0}) + ' MXN enganche';
+  document.getElementById('pagoWhatsApp').href = `https://wa.me/526563161314?text=Hola%2C%20aquí%20mi%20comprobante%20de%20pago%20para%20${encodeURIComponent(evento)}`;
+  document.getElementById('pagoOverlay').style.display = 'block';
+  const sheet = document.getElementById('pagoSheet');
+  sheet.style.display = 'block';
+  setTimeout(() => sheet.style.transform = 'translateY(0)', 10);
+}
+
+function cerrarPago() {
+  const sheet = document.getElementById('pagoSheet');
+  sheet.style.transform = 'translateY(100%)';
+  setTimeout(() => {
+    sheet.style.display = 'none';
+    document.getElementById('pagoOverlay').style.display = 'none';
+  }, 300);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
