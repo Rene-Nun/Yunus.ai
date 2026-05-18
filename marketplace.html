@@ -119,6 +119,14 @@ main { max-width: 1280px; margin: 0 auto; }
   cursor: pointer; display: flex; flex-direction: column;
 }
 .evento-card:hover { border-color: rgba(0,0,0,0.3); transform: translateY(-2px); }
+.evento-card.desactivado {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: grayscale(0.3);
+}
+.evento-card.desactivado .btn-ver-boletos {
+  cursor: not-allowed;
+}
 .evento-img-wrap { position: relative; width: 100%; height: 180px; overflow: hidden; flex-shrink: 0; background: #f5f5f5; }
 .evento-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: filter 0.3s; }
 .evento-card:hover .evento-img { filter: brightness(0.95); }
@@ -414,6 +422,7 @@ main { max-width: 1280px; margin: 0 auto; }
 /* ════════════════════════════════════
    DATOS DE EVENTOS
    maxQuincenas: límite por evento (opciones: 2, 3, 4)
+   desactivado: true => el evento se muestra con efecto "próximamente"
 ════════════════════════════════════ */
 const EVENTOS = [
   {
@@ -427,20 +436,8 @@ const EVENTOS = [
     mapaImg: 'https://res.cloudinary.com/dfkv1jkfu/image/upload/v1778889226/Harrygnp.png',
     apiKey: 'Harry Styles',
     maxQuincenas: 4,
-    fechas: ['2026-07-31', '2026-08-01', '2026-08-04', '2026-08-07', '2026-08-08', '2026-08-10']
-  },
-  {
-    id: 'enjambre',
-    name: 'Enjambre Estadio GNP',
-    tag: 'Concierto',
-    ciudad: 'CDMX',
-    fecha: '30 Ago 2026',
-    precio: 'Por confirmar',
-    img: 'Enjambre.webp',
-    mapaImg: null,
-    apiKey: 'Enjambre',
-    maxQuincenas: 4,
-    fechas: ['2026-08-30']
+    fechas: ['2026-07-31', '2026-08-01', '2026-08-04', '2026-08-07', '2026-08-08', '2026-08-10'],
+    desactivado: false
   },
   {
     id: 'bruno-mars',
@@ -453,20 +450,8 @@ const EVENTOS = [
     mapaImg: null,
     apiKey: 'Bruno Mars',
     maxQuincenas: 4,
-    fechas: ['2026-12-04', '2026-12-07', '2026-12-08']
-  },
-  {
-    id: 'rosalia',
-    name: 'Rosalía: Lux Tour',
-    tag: 'Concierto',
-    ciudad: 'CDMX / GDL',
-    fecha: 'Ago 2026',
-    precio: 'Desde $381 MXN × quinc.',
-    img: 'Rosalia.jpeg',
-    mapaImg: null,
-    apiKey: 'Rosalía Lux Tour',
-    maxQuincenas: 4,
-    fechas: ['2026-08-15']
+    fechas: ['2026-12-04', '2026-12-07', '2026-12-08'],
+    desactivado: true
   },
   {
     id: 'vans-warped',
@@ -479,20 +464,50 @@ const EVENTOS = [
     mapaImg: null,
     apiKey: 'Vans Warped Tour',
     maxQuincenas: 4,
-    fechas: null
+    fechas: null,
+    desactivado: true
   },
   {
-    id: 'baja-beach',
-    name: 'Baja Beach Fest',
-    tag: 'Festival',
-    ciudad: 'Rosarito',
-    fecha: '7–9 Ago 2026',
-    precio: 'Desde $525 MXN × quinc.',
-    img: 'BajaB.jpeg',
+    id: 'karol-g',
+    name: 'Karol G',
+    tag: 'Concierto',
+    ciudad: 'CDMX',
+    fecha: '13–14–15 Nov 2026',
+    precio: 'Por confirmar',
+    img: 'KarolG.PNG',
     mapaImg: null,
-    apiKey: 'Baja Beach Fest',
+    apiKey: 'Karol G',
     maxQuincenas: 4,
-    fechas: null
+    fechas: ['2026-11-13', '2026-11-14', '2026-11-15'],
+    desactivado: true
+  },
+  {
+    id: 'the-neighbourhood',
+    name: 'The Neighbourhood',
+    tag: 'Concierto',
+    ciudad: 'Zapopan / Monterrey / CDMX',
+    fecha: '21–23–25–26 Sep 2026',
+    precio: 'Por confirmar',
+    img: 'TN.PNG',
+    mapaImg: null,
+    apiKey: 'The Neighbourhood',
+    maxQuincenas: 4,
+    fechas: ['2026-09-21', '2026-09-23', '2026-09-25', '2026-09-26'],
+    desactivado: true
+  },
+  {
+    id: 'corona-capital',
+    name: 'Corona Capital',
+    tag: 'Festival',
+    ciudad: 'CDMX',
+    fecha: '20–21–22 Nov 2026',
+    precio: 'Por confirmar',
+    img: 'CC.PNG',
+    mapaImg: null,
+    apiKey: 'Corona Capital',
+    maxQuincenas: 4,
+    fechas: null,
+    desactivado: true
   }
 ];
 
@@ -795,17 +810,18 @@ function renderEventos() {
 }
 
 function buildEventoCard(ev, i) {
+  const desactivado = ev.desactivado;
   return `
-  <div class="evento-card fade-up d${Math.min(i+1,6)}" onclick="abrirPanel('${ev.id}')">
+  <div class="evento-card fade-up d${Math.min(i+1,6)} ${desactivado ? 'desactivado' : ''}" ${!desactivado ? `onclick="abrirPanel('${ev.id}')"` : ''}>
     <div class="evento-img-wrap">
       <img src="${ev.img}" alt="${ev.name}" class="evento-img" onerror="this.parentElement.style.background='#f5f5f5'">
-      <div class="evento-precio-badge">${ev.precio}</div>
+      <div class="evento-precio-badge">${desactivado ? 'Próximamente' : ev.precio}</div>
     </div>
     <div class="evento-body">
       <div class="evento-nombre">${ev.name}</div>
-      <button class="btn-ver-boletos">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        Ver boletos disponibles
+      <button class="btn-ver-boletos" ${desactivado ? 'disabled' : ''}>
+        ${desactivado ? 'Próximamente' : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        Ver boletos disponibles`}
       </button>
     </div>
   </div>`;
