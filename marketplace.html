@@ -1062,15 +1062,14 @@ function seleccionarQuincenas(q) {
 }
 
 function actualizarDesglose() {
-  const precioUnitario = parseFloat(panelBoletoActual.precioReventa) || 0;
-  const precio = precioUnitario * panelCantidad;
+  // precioReventa ya es el precio total del bundle
+  const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
   const enganche = precio * 0.15;
   const cuota = (precio * 0.85) / panelPlanActual;
   const container = document.getElementById('planDesgloseContainer');
   if (!container) return;
   container.innerHTML = `
     <div class="plan-desglose">
-      ${panelCantidad > 1 ? `<div class="desglose-row"><span>Precio unitario</span><span class="desglose-val">$${precioUnitario.toLocaleString('es-MX',{maximumFractionDigits:0})}</span></div>` : ''}
       <div class="desglose-row"><span>Precio total (${panelCantidad} boleto${panelCantidad>1?'s':''})</span><span class="desglose-val">$${precio.toLocaleString('es-MX',{maximumFractionDigits:0})}</span></div>
       <div class="desglose-row"><span>Enganche (15%)</span><span class="desglose-val">$${enganche.toLocaleString('es-MX',{maximumFractionDigits:0})}</span></div>
       <div class="desglose-row"><span>${panelPlanActual} quincenas de</span><span class="desglose-val">$${cuota.toLocaleString('es-MX',{maximumFractionDigits:0})} c/u</span></div>
@@ -1108,8 +1107,8 @@ function renderStep3() {
   document.getElementById('panelNombre').textContent = 'Confirmar';
   document.getElementById('panelMeta').textContent = 'Confirmar reserva';
 
-  const precioUnitario = parseFloat(panelBoletoActual.precioReventa) || 0;
-  const precio = precioUnitario * panelCantidad;
+  // precioReventa ya es el precio total del bundle
+  const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
   const enganche = precio * 0.15;
   const cuota = (precio * 0.85) / panelPlanActual;
   const fechaEntrega = fechaEntregaEstimada(panelFechaActual);
@@ -1121,7 +1120,7 @@ function renderStep3() {
       <div style="font-size:12px;color:var(--muted);margin:4px 0 12px;">${panelBoletoActual.zona || 'Zona General'} · ${panelCantidad} boleto${panelCantidad>1?'s':''} · ${formatFecha(panelFechaActual)} · ${panelEventoActual.ciudad}</div>
       <div style="border-top:1px solid var(--border);padding-top:12px;display:flex;flex-direction:column;gap:8px;">
         <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);">
-          <span>Total (${panelCantidad} × $${precioUnitario.toLocaleString('es-MX',{maximumFractionDigits:0})})</span>
+          <span>Total (${panelCantidad} boleto${panelCantidad>1?'s':''})</span>
           <span style="font-family:'Space Mono',monospace;color:var(--ink);">$${precio.toLocaleString('es-MX',{maximumFractionDigits:0})}</span>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);">
@@ -1165,8 +1164,8 @@ async function submitSolicitud() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner-sm" style="display:inline-block;width:14px;height:14px;border-width:2px;border-top-color:#fff;margin-right:8px;vertical-align:middle;"></span>Procesando...';
 
-  const precioUnitario = parseFloat(panelBoletoActual.precioReventa) || 0;
-  const precio = precioUnitario * panelCantidad;
+  // precioReventa ya es el precio total del bundle
+  const precio = parseFloat(panelBoletoActual.precioReventa) || 0;
   const enganche = precio * 0.15;
   const cuota = (precio * 0.85) / panelPlanActual;
 
